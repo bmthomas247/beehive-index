@@ -439,6 +439,49 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
   margin-right:7px}
 .livingtag{display:block;font-family:"Oswald",sans-serif;font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--sodium);margin-top:9px}
+/* ---------- combine card ---------- */
+.combine{margin:12px 0 4px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:1px;
+  background:var(--line-soft);border:1px solid var(--line)}
+.cgrid>div{background:var(--surface);padding:9px 11px}
+.ck{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--ink-3)}
+.cv{font-family:"Oswald",sans-serif;font-size:18px;font-weight:600;line-height:1.15;margin-top:2px}
+.cnote{font-size:11.5px;color:var(--ink-3);line-height:1.55;margin:7px 0 0}
+.cnote a{color:var(--steel)}
+.combine.none{font-size:13px;color:var(--ink-2);background:var(--surface-2);
+  border:1px solid var(--line);padding:11px 13px;line-height:1.55}
+/* ---------- getting recruited ---------- */
+.rcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;
+  background:var(--line-soft);border:1px solid var(--line-soft)}
+.rcard{background:var(--surface);padding:14px 16px}
+.rcard h4{font-family:"Oswald",sans-serif;font-size:14px;font-weight:600;margin:0 0 6px;
+  letter-spacing:.01em}
+.rcard p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
+.rtimeline{border-top:1px solid var(--line-soft)}
+.rtl{display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;padding:11px 0;
+  border-bottom:1px solid var(--line-soft);font-size:13.5px;line-height:1.6;color:var(--ink-2)}
+.rtly{font-family:"Oswald",sans-serif;font-size:14px;font-weight:600;color:var(--ink)}
+.rlinks{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.rlinks a{display:block;border:1px solid var(--line);border-radius:var(--r);padding:10px 13px;
+  font-size:13px;color:var(--steel);text-decoration:none;line-height:1.4}
+.rlinks a:hover{border-color:var(--sodium);color:var(--sodium)}
+@media(max-width:520px){.rcards{grid-template-columns:1fr}
+  .rtl{grid-template-columns:1fr;gap:3px}}
+/* ---------- weekly honors ---------- */
+.awards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;
+  background:var(--line-soft);border:1px solid var(--line)}
+.award{background:var(--surface);padding:13px 15px}
+.award[data-t],.award[data-recap],.award[data-p]{cursor:pointer}
+.award:hover{background:var(--surface-2)}
+.akick{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  color:var(--sodium);margin-bottom:8px}
+.ahead{display:flex;align-items:center;gap:10px}
+.ahead>div{min-width:0}
+.aname{font-family:"Oswald",sans-serif;font-size:17px;font-weight:600;line-height:1.2}
+.asub{font-size:11.5px;color:var(--ink-3);margin-top:2px}
+.anote{font-size:12.5px;color:var(--ink-2);margin-top:8px;line-height:1.5}
+@media(max-width:520px){.awards{grid-template-columns:1fr}}
 /* ---------- video ---------- */
 .vrail{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:4px}
 .vrail.tight{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:11px}
@@ -1424,6 +1467,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   <section id="v-home" hidden></section>
   <section id="v-breakdown" hidden></section>
   <section id="v-send" hidden></section>
+  <section id="v-recruit101" hidden></section>
 
   <section id="v-sources" hidden>
     <div class="panel" style="margin-bottom:16px">
@@ -2347,6 +2391,42 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         : "");
   }
 
+  /* What a college coach looks at first. Weber State's staff put it plainly:
+     height, weight, and any testing numbers you can get -- bench, squat, clean.
+     So it sits at the top of the card rather than buried under the write-up. */
+  function combineCard(p) {
+    var bits = [];
+    if (p.ht) bits.push(["Height", esc(p.ht)]);
+    if (p.wt) bits.push(["Weight", esc(p.wt) + " lb"]);
+    // testing comes as "40: 4.84s · Bench: 280 lb · ..." -- split it into cells
+    var lifts = [];
+    (p.testing || "").split("·").forEach(function (part) {
+      var kv = part.split(":");
+      if (kv.length < 2) return;
+      var k = kv[0].trim(), v = kv.slice(1).join(":").trim();
+      if (k && v) lifts.push([k === "40" ? "40 yd" : k, v]);
+    });
+    if (!bits.length && !lifts.length) {
+      return '<div class="combine none"><b>No height, weight or testing numbers yet.</b> ' +
+        "If you have them &mdash; or your program does &mdash; " +
+        '<a href="#" data-go="send">send them here</a> and they go on this card.</div>';
+    }
+    var all = bits.concat(lifts);
+    return '<div class="combine"><div class="cgrid">' +
+      all.map(function (c) {
+        return '<div><div class="ck">' + c[0] + '</div><div class="cv">' + c[1] + "</div></div>";
+      }).join("") + "</div>" +
+      (lifts.length
+        ? '<p class="cnote"><strong>Reported, not tested by us.</strong> ' +
+          (p.testing_source ? "Source: " + esc(p.testing_source) + ". " : "") +
+          "These come from the player, his program or a combine. A college staff will " +
+          "re-test anyway &mdash; this is the number that gets you in the room.</p>"
+        : '<p class="cnote">Height and weight as listed on his roster or Hudl profile. ' +
+          "Testing numbers &mdash; 40, shuttle, vertical, bench, squat, clean &mdash; are what " +
+          'college staffs ask for next. <a href="#" data-go="send">Send yours here.</a></p>') +
+      "</div>";
+  }
+
   function openPlayer(name, school) {
     var p = PKEY[pkeyOf(name, school)];
     if (!p) return;
@@ -2384,6 +2464,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
               '" target="_blank" rel="noopener">@' + esc(p.twitter) + "</a>"
             : "") + "</div>"
         : "") + "</div></div>" +
+      combineCard(p) +
       fullPageLink(p.school) +
       (p.summary
         ? '<div class="psum">' + esc(p.summary) + "</div>"
@@ -2511,13 +2592,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           (p.honors ? "<p style='margin:0;font-size:14px'>" + esc(p.honors) + "</p>" : "") +
           (p.letters ? "<p style='margin:4px 0 0;font-size:13.5px;color:var(--ink-2)'>Lettered in " + esc(p.letters) + ".</p>" : "")
         : "") +
-      (p.testing
-        ? '<div class="sect">Speed and strength</div>' +
-          "<p style='margin:0;font-size:14.5px'>" + esc(p.testing) + "</p>" +
-          "<p style='margin:5px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'><strong>Not timed or tested by us.</strong> " +
-          (p.testing_source ? "Reported by " + esc(p.testing_source) + ". " : "Reported figure. ") +
-          "Every number here comes from the player, his program or a combine, and none of it has been verified by this page. Treat it the way a college staff will &mdash; as a starting point they will re-test themselves.</p>"
-        : "") +
+      // height, weight and testing moved to the combine card at the top
       (p.transfer_from || (p.prior_schools && p.prior_schools.length) || (p.clubs && p.clubs.length)
         ? '<div class="sect">Where else he has played</div>' +
           (p.transfer_from
@@ -2978,7 +3053,67 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       "<small>" + esc(r.winner) + " won</small></div></div>";
   }
 
+  /* The week's awards. Every one is computed from the box scores and adjusted
+     for who the opponent was, so a big number against a good team beats the
+     same number against a bad one. */
+  function awardsBlock() {
+    var A = DATA.awards || {};
+    if (!A.game && !A.offense) return "";
+    function card(kick, title, sub, note, school, tag) {
+      return '<div class="award"' + (tag || "") + '>' +
+        '<div class="akick">' + esc(kick) + "</div>" +
+        '<div class="ahead">' + (school ? logo(school, "md") : "") +
+        "<div><div class=\"aname\">" + title + "</div>" +
+        (sub ? '<div class="asub">' + sub + "</div>" : "") + "</div></div>" +
+        (note ? '<div class="anote">' + note + "</div>" : "") + "</div>";
+    }
+    var out = [];
+    var g = A.game;
+    if (g) {
+      out.push(card("Game of the week",
+        esc(g.winner) + " " + Math.max(g.away_score, g.home_score) + ", " +
+        esc(g.winner === g.home ? g.away : g.home) + " " + Math.min(g.away_score, g.home_score),
+        (g.rivalry ? esc(g.rivalry) + " &middot; " : "") + "decided by " + g.margin,
+        "The closest game between the two best teams that played.", g.winner,
+        ' data-recap="' + esc(g.key) + '" style="cursor:pointer"'));
+    }
+    function pcard(kick, p, note) {
+      if (!p) return "";
+      return card(kick, esc(p.name), esc(p.team) + " &middot; vs " + esc(p.opp),
+        esc(p.line) + (note ? " &mdash; " + note : ""), p.team,
+        pAttr(p.name, p.team) ? pAttr(p.name, p.team) : "");
+    }
+    out.push(pcard("Offensive player", A.offense));
+    out.push(pcard("Defensive player", A.defense));
+    out.push(pcard("Kicker", A.kicker));
+    if (A.oline) {
+      out.push(card("Offensive line", esc(A.oline.team),
+        "vs " + esc(A.oline.opp),
+        A.oline.yds + " rushing yards on " + A.oline.att + " carries, " +
+        A.oline.ypc.toFixed(1) + " a carry. Credited to the unit, because rushing " +
+        "yards are a five-man stat.", A.oline.team,
+        ' data-t="' + esc(A.oline.team) + '" style="cursor:pointer"'));
+    }
+    if (A.off_team) {
+      out.push(card("Offense of the week", esc(A.off_team.team),
+        A.off_team.pf + " points vs " + esc(A.off_team.opp), "",
+        A.off_team.team, ' data-t="' + esc(A.off_team.team) + '" style="cursor:pointer"'));
+    }
+    if (A.def_team) {
+      out.push(card("Defense of the week", esc(A.def_team.team),
+        "held " + esc(A.def_team.opp) + " to " + A.def_team.pa, "",
+        A.def_team.team, ' data-t="' + esc(A.def_team.team) + '" style="cursor:pointer"'));
+    }
+    return '<div class="panel" style="margin-bottom:16px"><h2>Week ' + DATA.week +
+      " honors</h2>" +
+      '<p class="lede">Picked by the numbers, not by us. Every one is adjusted for who ' +
+      "the opponent was &mdash; 240 yards against a good defense beats 240 against a bad " +
+      "one, and a board that ignores that just rewards the easy schedule.</p>" +
+      '<div class="awards">' + out.filter(Boolean).join("") + "</div></div>";
+  }
+
   document.getElementById("v-recap").innerHTML =
+    awardsBlock() +
     '<div class="panel" style="margin-bottom:16px"><h2>Week ' + DATA.week + ' summary</h2>' +
     '<p class="lede">Everything that happened on the most recent slate, closest games first, with rivalries at the top. ' +
     (rivN ? "<strong>" + rivN + " rivalr" + (rivN === 1 ? "y" : "ies") + "</strong> were played. " : "") +
@@ -5103,6 +5238,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     { id: "programs", label: "Programs", views: [
         ["breakdown", "All 106"], ["coach", "Coaches"],
         ["xfer", "Transfers"], ["realign", "Realignment"]] },
+    { id: "recruit101", label: "Getting Recruited", views: [["recruit101", "Getting Recruited"]] },
     { id: "send", label: "Send Info", views: [["send", "Send Info"]] },
     { id: "about", label: "About", views: [
         ["sources", "Sources & Trust"], ["method", "Method"]] },
@@ -5174,6 +5310,45 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     showView(j.dataset.go);
   });
   /* ================= SCORE TICKER ================= */
+  /* The recruiting roadmap. Built from the Cyprus presentation, checked against
+     the NCAA's own pages, and corrected where the source deck had gone stale.
+     Contact routes to the Send Info form -- no email is published anywhere. */
+  function drawRecruit101() {
+    var R = DATA.recruiting || {};
+    var el = document.getElementById("v-recruit101");
+    if (!el || !R.sections) return;
+    function cards(list) {
+      return '<div class="rcards">' + list.map(function (c) {
+        return '<div class="rcard"><h4>' + esc(c[0]) + "</h4><p>" + c[1] + "</p></div>";
+      }).join("") + "</div>";
+    }
+    el.innerHTML =
+      '<div class="panel" style="margin-bottom:16px"><h2>' + esc(R.title) + "</h2>" +
+      '<p class="lede">' + esc(R.dek) + "</p>" +
+      '<p class="lede">' + esc(R.intro) + "</p>" +
+      '<p class="notbet">' + esc(R.note) + "</p></div>" +
+      R.sections.map(function (sec) {
+        return '<div class="panel" style="margin-bottom:14px"><h2>' + esc(sec.h) + "</h2>" +
+          (sec.p ? '<p class="lede">' + esc(sec.p) + "</p>" : "") +
+          (sec.cards ? cards(sec.cards) : "") +
+          (sec.rows
+            ? '<div class="rtimeline">' + sec.rows.map(function (r) {
+                return '<div class="rtl"><div class="rtly">' + esc(r[0]) + "</div>" +
+                  "<div>" + esc(r[1]) + "</div></div>";
+              }).join("") + "</div>"
+            : "") + "</div>";
+      }).join("") +
+      '<div class="panel" style="margin-bottom:14px"><h2>Go to the source</h2>' +
+      '<p class="lede">Rules change. These are the association&rsquo;s own pages, not ours.</p>' +
+      '<div class="rlinks">' + (R.links || []).map(function (l) {
+        return '<a href="' + esc(l[1]) + '" target="_blank" rel="noopener noreferrer">' +
+          esc(l[0]) + "</a>";
+      }).join("") + "</div></div>" +
+      '<div class="panel"><h2>Questions, or something to add</h2>' +
+      '<p class="lede">' + esc(R.close) + "</p>" +
+      '<a href="#" class="fullpage" data-go="send">Go to the form &rarr;</a></div>';
+  }
+
   function drawTicker() {
     var TK = DATA.ticker || [];
     var wrap = document.getElementById("tickwrap");
@@ -5237,6 +5412,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     rail.scrollLeft = 0;
     arrows();
   }
+  drawRecruit101();
   drawTicker();
 
   /* Link every program's static page from the footer. These are real crawlable
