@@ -420,6 +420,25 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
   .qrow{font-size:12px;padding:7px 8px;grid-template-columns:minmax(0,1fr) repeat(var(--qc,5),26px)}
   .qrow .qt{font-size:12px}
 }
+.timeline{border-top:1px solid var(--line-soft)}
+.tl{display:grid;grid-template-columns:78px minmax(0,1fr);gap:14px;padding:10px 0;
+  border-bottom:1px solid var(--line-soft)}
+.tl.past{opacity:.45}
+.tl.public{background:color-mix(in srgb,var(--sodium) 8%,transparent);
+  margin:0 -10px;padding-left:10px;padding-right:10px}
+.tl.final{border-bottom:2px solid var(--ink)}
+.tlwhen b{display:block;font-family:"Oswald",sans-serif;font-size:15px;font-weight:600}
+.tlwhen span{display:block;font-size:10.5px;color:var(--ink-3);margin-top:1px}
+.tlwhat{font-size:14px;font-weight:600}
+.tlnote{font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:2px}
+.openq{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.6}
+.openq li{margin-bottom:5px}
+.uplog div{font-size:13px;color:var(--ink-2);padding:7px 0;
+  border-top:1px solid var(--line-soft);line-height:1.55}
+.uplog b{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
+  margin-right:7px}
+.livingtag{display:block;font-family:"Oswald",sans-serif;font-size:10.5px;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--sodium);margin-top:9px}
 /* ---------- video ---------- */
 .vrail{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:4px}
 .vrail.tight{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:11px}
@@ -2786,6 +2805,37 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       (a.lede ? "<p class=\"lede1\">" + md(a.lede) + "</p>" : "") +
       (a.body || []).map(function (p) { return "<p>" + md(p) + "</p>"; }).join("") +
       "</div>" +
+      // A living story: the dates people need, what is still unanswered, and a
+      // log of what changed since it went up.
+      ((a.dates && a.dates.length)
+        ? '<div class="sect">Dates that matter</div>' +
+          (a.standing ? '<p class="lede" style="margin:-2px 0 10px">' + esc(a.standing) + "</p>" : "") +
+          '<div class="timeline">' + a.dates.map(function (d) {
+            var when = new Date(d[0] + "T12:00:00");
+            var past = when < new Date();
+            var days = Math.round((when - new Date()) / 86400000);
+            return '<div class="tl' + (past ? " past" : "") +
+              (d[3] ? " " + d[3] : "") + '">' +
+              '<div class="tlwhen"><b>' + when.toLocaleDateString("en-US",
+                { month: "short", day: "numeric" }) + "</b>" +
+              "<span>" + (past ? "done" : days === 0 ? "today"
+                : days === 1 ? "tomorrow" : days + " days") + "</span></div>" +
+              '<div><div class="tlwhat">' + esc(d[1]) + "</div>" +
+              '<div class="tlnote">' + esc(d[2]) + "</div></div></div>";
+          }).join("") + "</div>"
+        : "") +
+      ((a.open && a.open.length)
+        ? '<div class="sect">Still unanswered</div>' +
+          '<p class="lede" style="margin:-2px 0 8px">Things we went looking for and could not ' +
+          "find. We would rather say so than fill the gap.</p><ul class=\"openq\">" +
+          a.open.map(function (q) { return "<li>" + esc(q) + "</li>"; }).join("") + "</ul>"
+        : "") +
+      ((a.updates && a.updates.length)
+        ? '<div class="sect">Updates</div><div class="uplog">' +
+          a.updates.slice().reverse().map(function (u) {
+            return "<div><b>" + esc(u[0]) + "</b> " + esc(u[1]) + "</div>";
+          }).join("") + "</div>"
+        : "") +
       (a.note ? '<div class="sect">How we sourced this</div><p class="lede">' +
         esc(a.note) + "</p>" : "") +
       ((a.sources && a.sources.length)
@@ -4182,6 +4232,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
             '<span class="kick own">' + esc(a.kicker) + " &middot; Beehive Index</span>" +
             "<h3>" + esc(a.title) + "</h3>" +
             '<p class="dek">' + esc(a.dek) + "</p>" +
+            (a.living ? '<span class="livingtag">Following this one &middot; updated ' +
+              esc(a.updated || a.date) + "</span>" : "") +
             '<span class="readon">Read the story &rarr;</span></div>';
         }).join("")
       : "";
