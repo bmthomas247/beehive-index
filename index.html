@@ -442,7 +442,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 /* ---------- video ---------- */
 .vrail{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:4px}
 .vrail.tight{grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:11px}
-.vcard{display:block;text-decoration:none;color:inherit}
+.vcard{display:block;text-decoration:none;color:inherit;cursor:pointer}
 .vthumb{display:block;position:relative;aspect-ratio:16/9;background:var(--surface-2);
   border:1px solid var(--line);border-radius:3px;overflow:hidden}
 .vthumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -494,6 +494,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 a.rrow{text-decoration:none;color:inherit}
 /* ---------- news ---------- */
 .srcchip{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:15px;
+  white-space:nowrap;
   padding:0 5px;border-radius:2px;color:#fff;font-family:"Oswald",sans-serif;font-size:9.5px;
   font-weight:600;letter-spacing:.06em;flex:none}
 .story{cursor:pointer}
@@ -1353,8 +1354,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         <th class="num" data-s="rating">Rating</th>
         <th>Spread of field</th>
         <th class="num" data-s="w">Rec</th>
-        <th class="num" data-s="off">Off<small>rating · pts/g</small></th>
-        <th class="num" data-s="def">Def<small>rating · allowed</small></th>
+        <th class="num" data-s="pf">PF<small>total · per game</small></th>
+        <th class="num" data-s="pa">PA<small>total · per game</small></th>
         <th class="num" data-s="ypg">Yds/g</th>
         <th class="num" data-s="sos">SOS</th>
         <th>Head coach</th>
@@ -1705,10 +1706,10 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         '<td class="num mono rtg ' + cls(t.rating) + '">' + sgn(t.rating) + "</td>" +
         "<td>" + spine(t) + "</td>" +
         '<td class="num mono">' + t.w + "–" + t.l + "</td>" +
-        '<td class="num mono ' + cls(t.off) + '">' + sgn(t.off) +
-          '<small class="raw">' + t.ppg.toFixed(1) + " pts</small></td>" +
-        '<td class="num mono ' + cls(t["def"]) + '">' + sgn(t["def"]) +
-          '<small class="raw">' + t.papg.toFixed(1) + " all</small></td>" +
+        '<td class="num mono">' + t.pf +
+          '<small class="raw">' + t.ppg.toFixed(1) + "/gm</small></td>" +
+        '<td class="num mono">' + t.pa +
+          '<small class="raw">' + t.papg.toFixed(1) + "/gm</small></td>" +
         '<td class="num mono">' + (t.ypg === null ? '<span class="none">—</span>' : t.ypg) + "</td>" +
         '<td class="num mono">' + sgn(t.sos) + "</td>" +
         "<td>" + esc(t.coach) + '<small style="display:block;font-size:11px;color:var(--ink-3)">' +
@@ -2721,7 +2722,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     "KSL Sports": ["KSL", "#C8102E"],
     "KUTV 2News": ["2", "#0A5EA8"],
     "The Rush": ["RUSH", "#B0402F"],
-    "Deseret News": ["DN", "#12395B"]
+    "Deseret News": ["DESERET", "#12395B"]
   };
   function srcChip(src) {
     var m = SRCMARK[src] || [(src || "?").slice(0, 3).toUpperCase(), "#6C7883"];
@@ -2732,6 +2733,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
      own data. Reading the piece itself is one more click, on their site. */
   var NEWSBY = {};
   (DATA.news_feed || []).forEach(function (n) { NEWSBY[n.u] = n; });
+  (DATA.videos || []).forEach(function (v) { if (!NEWSBY[v.u]) NEWSBY[v.u] = v; });
   function openStory(url) {
     var n = NEWSBY[url]; if (!n) { window.open(url, "_blank", "noopener"); return; }
     lastFocus = document.activeElement;
@@ -2862,11 +2864,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     return '<div class="sect">Watch ' + esc(school) + "</div>" +
       '<p class="lede" style="margin:-2px 0 8px">Each one opens on the channel that filmed it.</p>' +
       '<div class="vrail tight">' + list.map(function (v) {
-        return '<a class="vcard" href="' + esc(v.u) + '" target="_blank" rel="noopener noreferrer">' +
+        return '<div class="vcard" data-story="' + esc(v.u) + '">' +
           '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
           '<i class="vplay" aria-hidden="true"></i></span>' +
           '<span class="vmeta">' + esc(v.src) + (v.d ? " &middot; " + esc(v.d) : "") + "</span>" +
-          '<span class="vt">' + esc(v.t) + "</span></a>";
+          '<span class="vt">' + esc(v.t) + "</span></div>";
       }).join("") + "</div>";
   }
 
@@ -4211,7 +4213,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         '<p class="lede">Highlights and coverage from the people filming Utah high ' +
         'school football. Every one opens on their channel.</p>' +
         '<div class="vrail">' + VID.slice(0, 10).map(function (v) {
-          return '<a class="vcard" href="' + esc(v.u) + '" target="_blank" rel="noopener noreferrer">' +
+          return '<div class="vcard" data-story="' + esc(v.u) + '">' +
             '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
             '<i class="vplay" aria-hidden="true"></i></span>' +
             '<span class="vmeta">' + esc(v.src) + (v.d ? " &middot; " + esc(v.d) : "") + "</span>" +
@@ -4220,7 +4222,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
               ? '<span class="vsch">' + v.schools.slice(0, 2).map(function (sc) {
                   return logo(sc, "sm");
                 }).join("") + esc(v.schools.slice(0, 2).join(" · ")) + "</span>"
-              : "") + "</a>";
+              : "") + "</div>";
         }).join("") + "</div></div>"
       : "";
 
