@@ -2018,7 +2018,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       (t.cnotes ? "<p style='margin:6px 0 0;font-size:13.5px;color:var(--ink-3)'>" + esc(t.cnotes) + "</p>" : "") +
       // This is the quick look. Transfers, program history and the full line-play
       // breakdown live on the program page, which is the main card.
-      videoBlock(t.school) +
+      videoBlock(t.school) + pressBlock(t.school, 4) +
       projBlock + qblock + yblock + lineQuick(t.school) + staff + rivBlock + talBlock + vets +
       contactBlock(t, false) +
       '<div class="sect">Rating build</div>' +
@@ -2470,6 +2470,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       (p.summary
         ? '<div class="psum">' + esc(p.summary) + "</div>"
         : "") +
+      playerPress(p.name, p.school) +
       (p.commit || (p.offers && p.offers.length) || (p.visits && p.visits.length)
         ? offerBlock(p) : "") +
       ((p.awards && p.awards.length) || (p.honors_ext && p.honors_ext.length) || p.profile_note
@@ -2930,6 +2931,47 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   }
 
   /* A program's videos, on its card. */
+  /* Brandon: a story does not stop mattering when it scrolls off the front page.
+     It becomes part of the program's record, and part of the record of any player
+     it names. So every story is indexed twice -- by school and by player -- and
+     the front page is just the newest slice of the same pile. */
+  var PRESS_SCHOOL = {}, PRESS_PLAYER = {};
+  (DATA.news_feed || []).forEach(function (n) {
+    (n.schools || []).forEach(function (s) {
+      (PRESS_SCHOOL[s] = PRESS_SCHOOL[s] || []).push(n);
+    });
+    (n.who || []).forEach(function (w) {
+      var k = pkeyOf(w.name, w.school);
+      (PRESS_PLAYER[k] = PRESS_PLAYER[k] || []).push(n);
+    });
+  });
+
+  function pressRows(list, limit) {
+    return '<div class="games">' + list.slice(0, limit || 12).map(function (n) {
+      return '<div class="game" style="grid-template-columns:78px 1fr;cursor:pointer" data-story="' +
+        esc(n.u) + '">' +
+        '<div class="dt">' + esc(n.d ? mdy(n.d) : "") + "</div>" +
+        '<div class="op">' + esc(n.t) +
+        '<span class="tagline rep">' + esc(n.src) + "</span></div></div>";
+    }).join("") + "</div>";
+  }
+
+  function pressBlock(school, limit) {
+    var list = PRESS_SCHOOL[school] || [];
+    if (!list.length) return "";
+    return '<div class="sect">' + esc(school) + " in the news</div>" +
+      pressRows(list, limit) +
+      "<p style='margin:7px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>" +
+      "Headlines only, linked back to whoever wrote them. Stories stay here after they " +
+      "leave the front page.</p>";
+  }
+
+  function playerPress(name, school) {
+    var list = PRESS_PLAYER[pkeyOf(name, school)] || [];
+    if (!list.length) return "";
+    return '<div class="sect">Written about</div>' + pressRows(list, 8);
+  }
+
   function videoBlock(school) {
     var ids = (DATA.videos_by_school || {})[school] || [];
     if (!ids.length) return "";
