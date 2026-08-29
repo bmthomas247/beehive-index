@@ -711,6 +711,9 @@ a.rrow{text-decoration:none;color:inherit}
 .utchip img{width:22px;height:22px;object-fit:contain;flex:0 0 22px}
 .utchip .utdot{width:16px;height:16px;border-radius:50%;background:var(--uc);flex:0 0 16px}
 .utchip b{display:block;font-size:12.5px;line-height:1.2}
+a.utchip{text-decoration:none;color:inherit}
+a.utchip:hover{background:var(--surface);border-color:var(--uc)}
+a.utchip:hover b{text-decoration:underline}
 .utchip em{display:block;font-style:normal;font-size:10.5px;color:var(--ink-3);letter-spacing:.02em}
 .utnone{margin-top:11px;padding-top:11px;border-top:1px solid var(--line);
   font-size:12.5px;color:var(--ink-3);line-height:1.5}
@@ -5580,10 +5583,15 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       if (x.utnone) return '<div class="utnone">' + esc(x.utnone) + "</div>";
       if (!x.ut || !x.ut.length) return "";
       return '<div class="utchips">' + x.ut.map(function (u) {
-        return '<div class="utchip" style="--uc:' + esc(u.c) + '">' +
+        // A program a kid has never heard of should be one click away, so a
+        // chip carrying a site becomes a link rather than a label.
+        var open = u.u ? '<a class="utchip" href="' + esc(u.u) + '" target="_blank" rel="noopener"'
+                       : '<div class="utchip"';
+        return open + ' style="--uc:' + esc(u.c) + '">' +
           (u.logo ? '<img src="' + esc(u.logo) + '" alt="" loading="lazy">'
                   : '<span class="utdot"></span>') +
-          "<div><b>" + esc(u.n) + "</b><em>" + esc(u.note) + "</em></div></div>";
+          "<div><b>" + esc(u.n) + "</b><em>" + esc(u.note) + "</em></div>" +
+          (u.u ? "</a>" : "</div>");
       }).join("") + "</div>";
     }
     function cards(list) {
