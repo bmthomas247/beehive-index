@@ -5096,6 +5096,9 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       "</div></div>";
   }
 
+  // The week in the masthead was baked into the shell and stayed at 2 while the
+  // tab beside it said Week 3. Everything in this strip now comes from the data.
+  document.getElementById("s-week").textContent = "Week " + DATA.week;
   document.getElementById("s-teams").textContent = T.length;
   document.getElementById("s-games").textContent = DATA.games_count;
   document.getElementById("foot").innerHTML =
