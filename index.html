@@ -2509,6 +2509,16 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           (p.hudl
             ? '<a class="dlink film" href="' + esc(p.hudl) + '" target="_blank" rel="noopener">Watch his film</a>'
             : "") +
+          // Brandon noticed a lot of kids have already cut their own reels and
+          // they sit one tab over from the profile we were linking to. Hudl
+          // puts them at /highlights on the same profile URL, so this reaches
+          // every player who has film without asking anything of him. We link
+          // rather than embed, exactly as with the game video: the view count
+          // belongs to the kid who made the reel.
+          (p.hudl && /\/profile\/\d+/.test(p.hudl)
+            ? '<a class="dlink" href="' + esc(p.hudl.replace(/\/+$/, "") + "/highlights") +
+              '" target="_blank" rel="noopener">His highlight reels</a>'
+            : "") +
           (p.twitter
             ? '<a class="dlink" href="https://x.com/' + esc(p.twitter) +
               '" target="_blank" rel="noopener">@' + esc(p.twitter) + "</a>"
