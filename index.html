@@ -698,6 +698,7 @@ a.rrow{text-decoration:none;color:inherit}
 .rctag.riv{background:color-mix(in srgb,var(--fall) 14%,transparent);color:var(--fall)}
 .rctag.sh{background:color-mix(in srgb,var(--steel) 16%,transparent);color:var(--steel)}
 .rctag.up{background:color-mix(in srgb,var(--sodium) 16%,transparent);color:var(--sodium)}
+.rctag.film{background:color-mix(in srgb,var(--rise) 16%,transparent);color:var(--rise)}
 
 .psum{margin:12px 0 4px;padding:11px 13px;background:color-mix(in srgb,var(--steel) 7%,var(--surface));
   border-left:3px solid var(--steel);font-size:14px;line-height:1.55;color:var(--ink)}
@@ -2947,6 +2948,22 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       }).join("") + "</div>";
   }
 
+  // Brandon: when somebody films a whole game, that film belongs on the summary
+  // of THAT game as well as on the two program pages. A kid who just read what
+  // happened is one click from watching it happen.
+  function gameFilm(list) {
+    if (!list || !list.length) return "";
+    var anyFull = list.some(function (v) { return v.full; });
+    return '<div class="sect">' + (anyFull ? "Watch the full game" : "Watch this game") + "</div>" +
+      '<div class="vrail tight">' + list.map(function (v) {
+        return '<div class="vcard" data-story="' + esc(v.u) + '">' +
+          '<span class="vthumb"><img src="' + esc(v.thumb || "") + '" alt="" loading="lazy">' +
+          '<i class="vplay" aria-hidden="true"></i></span>' +
+          '<span class="vmeta">' + esc(v.src) + (v.full ? " &middot; full broadcast" : " &middot; highlights") + "</span>" +
+          '<span class="vt">' + esc(v.t) + "</span></div>";
+      }).join("") + "</div>";
+  }
+
   function recapKey(r) { return r.date + "|" + r.away + "|" + r.home; }
   var RECAPBY = {};
   RECAP.forEach(function (r) { RECAPBY[recapKey(r)] = r; });
@@ -2997,6 +3014,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         ? '<div class="sect">What happened</div><div class="article"><p>' +
           linkNames(esc(r.summary), r.named || []).replace(/\n+/g, "</p><p>") + "</p></div>"
         : "") +
+      gameFilm(r.video) +
       (hasQ
         ? '<div class="sect">Quarter by quarter</div>' +
           '<div class="carogrid" style="--qc:' + (cols + (anyOT ? 1 : 0) + 1) + '">' +
@@ -3045,6 +3063,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       "<div><div class=\"rcline\">" +
         (r.rivalry ? '<span class="rctag riv">' + esc(r.rivalry.name || "Rivalry") + "</span>" : "") +
         (r.shutout ? '<span class="rctag sh">Shutout</span>' : "") +
+        (r.video && r.video.length ? '<span class="rctag film">' + (r.video[0].full ? "Full game" : "Film") + "</span>" : "") +
         esc(r.away) + ' <span class="l">at</span> ' + esc(r.home) + "</div>" +
         (note ? '<div class="rcnote">' + note + "</div>" : "") +
         '<div class="rcnote" style="color:var(--ink-3)">' + mdy(r.date) + " · " +
@@ -3059,6 +3078,21 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   function awardsBlock() {
     var A = DATA.awards || {};
     if (!A.game && !A.offense) return "";
+    // Brandon's rule: honors are not announced off the model. The board is
+    // computed as finalists, a person picks the winner, and nothing shows until
+    // the week is actually over -- Saturday can still beat everything on it.
+    if (!A.published) {
+      return '<div class="panel"><h2>Week ' + esc(String(A.week || "")) + " honors</h2>" +
+        '<p class="lede">' +
+        (A.complete
+          ? "Week " + esc(String(A.week || "")) + " is in the books. Honors are being finalized and post shortly."
+          : "Honors post once every Week " + esc(String(A.week || "")) + " game is final" +
+            (A.games_left > 0
+              ? " &mdash; " + A.games_left + " still to play."
+              : ".")) +
+        " The numbers narrow the field; a coach picks the winner." +
+        "</p></div>";
+    }
     function card(kick, title, sub, note, school, tag) {
       return '<div class="award"' + (tag || "") + '>' +
         '<div class="akick">' + esc(kick) + "</div>" +
@@ -3369,7 +3403,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       // No pick grading here. The story is the game; how our number did is our
       // business and lives on the pick record.
       (f.summary ? '<div class="sect">What happened</div><div class="article"><p>' +
-        linkNames(esc(f.summary), f.named || []).replace(/\n+/g, "</p><p>") + "</p></div>" : "");
+        linkNames(esc(f.summary), f.named || []).replace(/\n+/g, "</p><p>") + "</p></div>" : "") +
+      gameFilm(f.video);
   }
 
   function openGame(id) {
