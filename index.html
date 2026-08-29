@@ -720,6 +720,12 @@ a.rrow{text-decoration:none;color:inherit}
 .storyteam:hover{background:var(--surface)}
 .storyteam b{display:block;font-size:14px;line-height:1.2}
 .storyteam em{display:block;font-style:normal;font-size:11.5px;color:var(--ink-3)}
+.qforms{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px;margin:2px 0 12px}
+.qform{display:block;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--surface-2);text-decoration:none;color:inherit}
+.qform:hover{background:var(--surface);border-color:var(--ink-3)}
+.qform b{display:block;font-size:14px;line-height:1.25}
+.qform em{display:block;font-style:normal;font-size:11.5px;color:var(--ink-3);margin-top:1px}
 
 .psum{margin:12px 0 4px;padding:11px 13px;background:color-mix(in srgb,var(--steel) 7%,var(--surface));
   border-left:3px solid var(--steel);font-size:14px;line-height:1.55;color:var(--ink)}
@@ -3856,19 +3862,20 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<button id="leadclear" class="dclose" style="position:static;font-size:12px">Clear</button>' +
     "</div>" +
     '<p class="lede" id="leadcut" style="margin-top:4px"></p>' +
+    "</div>" +
+    '<div id="leadgrid"></div>' +
+    '<div class="panel" style="margin-top:16px"><h2>How these boards are built</h2>' +
     (SILENT.length
       ? '<p class="notbet">' + SILENT.join(" and ") +
         (SILENT.length === 1 ? " has" : " have") +
-        ' not entered any 2026 statistics, so no player from ' +
-        (SILENT.length === 1 ? "that program" : "those programs") +
-        ' can appear on any list below. That is not a judgement about the players &mdash; it means nobody at the school has filled the numbers in.</p>'
+        ' not entered any 2026 season statistics. Players there still appear when an opponent\u2019s box score recorded them &mdash; a season line built that way is marked as coming from box scores &mdash; but the totals are only as complete as the games somebody charted. That is not a judgement about the players; it means nobody at the school has filled the numbers in.</p>'
       : "") +
     '<p class="notbet">About the two line boards. Both are <strong>unit</strong> ratings, identical for every lineman on the roster, because sacks and rushing yards are things five men do together. Since Deseret charts defense game by game, <strong>sacks allowed and sacks generated are now measured rather than inferred</strong> &mdash; an O-line is graded on the sacks it actually gave up, priced against how much pass rush its schedule generates, and a front on the sacks it actually got, priced against how easily the lines it rushed give them up. Click either to open the program.</p>' +
     '<p class="notbet">About the offensive line board. It is a <strong>unit</strong> rating, identical for all five starters, because rushing yards are a five-man stat and pretending otherwise would be dishonest. Run blocking comes from yards per carry and rushing yards per game priced against the defenses actually faced; pass blocking is inferred from quarterback negative rushing, since Utah records no sacks allowed anywhere &mdash; each line carries a confidence flag for how clean that read is. Click a line to open the program.</p>' +
     '<p class="notbet">About the kicking boards. Utah publishes made field goals and made extra points and nothing else &mdash; no attempts, no percentage, no long, and <strong>no punting statistics anywhere in the state</strong>. So the two specialist boards are <strong>field goals made</strong> and <strong>extra points made</strong> &mdash; what a kicker has actually put through the uprights, which is a real fact and the one college coaches count. They are <em>not</em> accuracy rankings, because the attempts nobody records are what accuracy is made of. ' +
     'Specialists get recruited off camp results &mdash; Kohl\'s, Chris Sailer, Prokick &mdash; and off a leg on film. <strong>If you kick or punt in Utah and have a camp ranking, a charted percentage or a measured kickoff, send it and it goes on your profile.</strong> That is the only way this gets better, and it is worth doing.</p>' +
-    "</div>" +
-    '<div id="leadgrid"></div>';
+    "</div>";
+
 
   document.getElementById("v-stats").innerHTML = leadHtml;
   drawLeaders();
@@ -5333,9 +5340,9 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     email:  "entry.1307921896",
     role:   "entry.155683173"
   };
-  var SEND_KINDS = ["Report stats", "Fix something wrong", "Offer or commitment",
-    "Kicker or punter numbers", "Player film or X handle", "Take my profile down",
-    "Program contacts", "Something else"];
+  var SEND_KINDS = ["Report stats", "Hudl game export", "Fix something wrong",
+    "Offer or commitment", "Kicker or punter numbers", "Player film or X handle",
+    "Take my profile down", "Program contacts", "Something else"];
   var SEND_ROLES = ["Coach", "Player", "Parent or guardian", "Media", "Fan", "Other"];
 
   function selOpts(list, ph) {
@@ -5346,6 +5353,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   document.getElementById("v-send").innerHTML =
     '<div class="panel" style="margin-bottom:16px"><h2>Send us something</h2>' +
     '<p class="lede">This site gets better the way a program does &mdash; somebody who was actually there tells you what happened. <strong>A lot of what belongs here does not exist in any public feed.</strong> Utah publishes no per-game player box scores, no sacks allowed, no kicking attempts, and no punting statistics at all. For those, what a coach or a parent sends is the only data there will ever be.</p>' +
+    '<p class="lede">Coaches: <strong>a Hudl game export is the most useful thing you can send.</strong> Hudl will export a game\u2019s stats to a file or a share link, and that one file fills in a game nothing else has \u2014 every carry, every tackle, sacks allowed, the things Utah publishes nowhere. Pick <em>Hudl game export</em> above and paste the share link in the proof field. If it has to be a file, say so in the details and we will come back to you with somewhere to send it.</p>' +
     '<p class="notbet">Bring the receipt. Every claim needs something that backs it up &mdash; a stat sheet, a box score, the all-state list itself, the post where the offer was announced, the school page a coach&rsquo;s address is published on. <strong>&ldquo;He was all-state&rdquo; is not enough; the link to the all-state team is.</strong> This is the whole reason a college coach can trust a number on this site, and it is why anything sent without a source waits until there is one.</p>' +
     "</div>" +
 
@@ -5544,6 +5552,18 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         return '<div class="panel" style="margin-bottom:14px"><h2>' + esc(sec.h) + "</h2>" +
           (sec.p ? '<p class="lede">' + esc(sec.p) + "</p>" : "") +
           (sec.cards ? cards(sec.cards) : "") +
+          // Brandon: combine. A video that explains this section belongs inside
+          // it, not in a Watch panel at the bottom of the page.
+          ((sec.videos && sec.videos.length)
+            ? (sec.videos_note ? '<p class="lede" style="margin-top:12px">' + esc(sec.videos_note) + "</p>" : "") +
+              '<div class="vrail tight">' + sec.videos.map(function (v) {
+                return '<div class="vcard" data-story="' + esc(v.u) + '">' +
+                  '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
+                  '<i class="vplay" aria-hidden="true"></i></span>' +
+                  '<span class="vmeta">' + esc(v.src) + "</span>" +
+                  '<span class="vt">' + esc(v.t) + "</span></div>";
+              }).join("") + "</div>"
+            : "") +
           (sec.rows
             ? '<div class="rtimeline">' + sec.rows.map(function (r) {
                 return '<div class="rtl"><div class="rtly">' + esc(r[0]) + "</div>" +
@@ -5551,16 +5571,14 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
               }).join("") + "</div>"
             : "") + "</div>";
       }).join("") +
-      ((R.videos && R.videos.length)
-        ? '<div class="panel" style="margin-bottom:14px"><h2>Watch</h2>' +
-          (R.videos_note ? '<p class="lede">' + esc(R.videos_note) + "</p>" : "") +
-          '<div class="vrail tight">' + R.videos.map(function (v) {
-            return '<div class="vcard" data-story="' + esc(v.u) + '">' +
-              '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
-              '<i class="vplay" aria-hidden="true"></i></span>' +
-              '<span class="vmeta">' + esc(v.src) + "</span>" +
-              '<span class="vt">' + esc(v.t) + "</span></div>";
-          }).join("") + "</div></div>"
+      ((R.forms && R.forms.links)
+        ? '<div class="panel" style="margin-bottom:14px"><h2>' + esc(R.forms.h) + "</h2>" +
+          '<p class="lede">' + esc(R.forms.p) + "</p>" +
+          '<div class="qforms">' + R.forms.links.map(function (f) {
+            return '<a class="qform" href="' + esc(f.u) + '" target="_blank" rel="noopener noreferrer">' +
+              "<b>" + esc(f.n) + "</b><em>" + esc(f.note) + "</em></a>";
+          }).join("") + "</div>" +
+          '<p class="notbet">' + R.forms.note + "</p></div>"
         : "") +
       '<div class="panel" style="margin-bottom:14px"><h2>Go to the source</h2>' +
       '<p class="lede">Rules change. These are the association&rsquo;s own pages, not ours.</p>' +
