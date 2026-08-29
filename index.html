@@ -3245,14 +3245,28 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     DAYNAME[p.date] = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][dd.getDay()] +
       ", " + mdy(p.date);
   });
-  var tossN = PRED.filter(function (p) { return p.toss; }).length;
-  var upsetN = PRED.filter(function (p) { return p.upset; }).length;
-  var biggest = PRED.slice().sort(function (a, b) { return b.spread - a.spread; })[0];
-  var closest = PRED.slice().sort(function (a, b) { return a.spread - b.spread; })[0];
-  var top5 = PRED.filter(function (p) { return p.top5; })
-                 .sort(function (a, b) { return a.top5_rank - b.top5_rank; });
-  var rivWeek = PRED.filter(function (p) { return p.rivalry; })
-                    .sort(function (a, b) { return b.marquee - a.marquee; });
+  /* Brandon: three weeks of picks up at a time. The slate carries them; this
+     pages between them and everything on the page follows the chosen week. */
+  var PDWEEKS = [];
+  PRED.forEach(function (p) {
+    var w = +p.wk || 0;
+    if (w && PDWEEKS.indexOf(w) < 0) PDWEEKS.push(w);
+  });
+  PDWEEKS.sort(function (a, b) { return a - b; });
+  var pdWeek = PDWEEKS.length ? PDWEEKS[0] : (+DATA.next_week || 0);
+  var PW = PRED, tossN = 0, upsetN = 0, biggest = null, top5 = [], rivWeek = [];
+
+  function predWeekStats() {
+    PW = PRED.filter(function (p) { return (+p.wk || 0) === pdWeek; });
+    if (!PW.length) PW = PRED;
+    tossN = PW.filter(function (p) { return p.toss; }).length;
+    upsetN = PW.filter(function (p) { return p.upset; }).length;
+    biggest = PW.slice().sort(function (a, b) { return b.spread - a.spread; })[0];
+    top5 = PW.filter(function (p) { return p.top5; })
+             .sort(function (a, b) { return a.top5_rank - b.top5_rank; });
+    rivWeek = PW.filter(function (p) { return p.rivalry; })
+                .sort(function (a, b) { return b.marquee - a.marquee; });
+  }
 
   function side(team, pts, isWin, cls, rec, rtg, ranked) {
     return '<div class="side' + (isWin ? " win" : "") + '"><div class="t"><b>' + esc(team) + "</b>" +
@@ -3294,13 +3308,20 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       p.wp + '%"></i></div><div class="probn">' + p.wp + "%</div></div></div>";
   }
 
+  function drawPred() {
+  predWeekStats();
   document.getElementById("v-pred").innerHTML =
-    '<div class="panel" style="margin-bottom:16px"><h2>Week ' + DATA.next_week + ' picks</h2>' +
+    '<div class="panel" style="margin-bottom:16px"><h2>Week ' + pdWeek + ' picks</h2>' +
+    (PDWEEKS.length > 1
+      ? '<div class="wkpick">' + PDWEEKS.map(function (w) {
+          return '<button class="wkb' + (w === pdWeek ? " on" : "") + '" data-pw="' + w + '">Week ' + w + "</button>";
+        }).join("") + "</div>"
+      : "") +
     '<p class="lede">The line is <strong>rating difference plus 2.6 for home field</strong>. The projected score splits that margin around an expected total built from how much scoring each team\'s games have actually produced, shrunk toward the league average of ' +
     'what each offense actually produces against what that defense actually gives up — so treat the margin as the real prediction and the score as its plausible shape, not a forecast of the exact number.</p>' +
-    '<p class="lede"><strong>Reading the numbers.</strong> The line is the projected margin, written the familiar way: <span class="mono">Tooele −1.5</span> means Tooele is favored by a point and a half. <span class="mono">O/U</span> is the projected combined score. The bar underneath is the model\'s confidence — how often this matchup goes the favorite\'s way if you played it out. Half-points everywhere, because a whole number can land exactly on the margin.</p>' +
+    '<p class="lede">Reading the numbers. The line is the projected margin, written the familiar way: <span class="mono">Tooele −1.5</span> means Tooele is favored by a point and a half. <span class="mono">O/U</span> is the projected combined score. The bar underneath is the model\'s confidence — how often this matchup goes the favorite\'s way if you played it out. Half-points everywhere, because a whole number can land exactly on the margin.</p>' +
     '<p class="lede">Coin flips (inside three points) are marked in amber; upset watch — where the model favors the team with the worse record — is marked in blue. Two weeks of data with the preseason prior still carrying about half the weight: a starting point, not a verdict.</p>' +
-    '<p class="lede"><strong>Click any game</strong> for the full card: why the model landed there, a short preview, and the two teams side by side. Rivalry games are marked in red.</p>' +
+    '<p class="lede">Click any game for the full card: why the model landed there, a short preview, and the two teams side by side. Rivalry games are marked in red.</p>' +
     '<p class="notbet">A line and a total are borrowed terms, not a betting product. <strong>There are no odds on this page and there will not be</strong> — nobody should be wagering on teenagers. A margin and a combined score are kept because they say "how big a favorite" and "how much scoring" more precisely than words do.</p></div>' +
     (top5.length
       ? '<div class="panel" style="margin-bottom:20px"><h2>The five games to watch</h2>' +
@@ -3338,7 +3359,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         'A model that only shows you the games it has not been tested on is not telling you anything. ' +
         'The number graded is the one that was published <em>before</em> kickoff &mdash; once a game is played its line is ' +
         'frozen, because rerunning the model on a result it already knows would be marking our own homework.</p>' +
-        '<p class="lede"><strong>The record starts at Week ' + (weeks[0] || DATA.next_week) + '.</strong> ' +
+        '<p class="lede">The record starts at Week ' + (weeks[0] || DATA.next_week) + '. ' +
         'Nothing before that was ever published, and back-filling picks after seeing the scores would be worthless &mdash; ' +
         'anybody can predict last week.</p>' +
         (m ? '<p class="lede">Furthest off so far: <strong>' + esc(m.away) + " at " + esc(m.home) + "</strong> &mdash; " +
@@ -3355,14 +3376,14 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     '<p class="lede">Every projected winner on the games shown above, most confident first. This is the slate boiled down &mdash; the cards are where the reasoning is.</p>' +
     '<div class="sheet" id="pdsheet"></div></div>' +
     '<div class="grid cards" style="margin-top:22px">' +
-    ['<div class="card"><div class="k">Games</div><div class="v mono">' + PRED.length + '</div><div class="sub">involving a ranked Utah team</div></div>',
+    ['<div class="card"><div class="k">Games</div><div class="v mono">' + PW.length + '</div><div class="sub">involving a ranked Utah team</div></div>',
      '<div class="card"><div class="k">Coin flips</div><div class="v mono">' + tossN + '</div><div class="sub">inside three points</div></div>',
      '<div class="card"><div class="k">Upset watch</div><div class="v mono">' + upsetN + '</div><div class="sub">favorite has the worse record</div></div>',
      '<div class="card"><div class="k">Widest line</div><div class="v mono">' + biggest.spread.toFixed(0) +
        '</div><div class="sub">' + esc(biggest.fav) + " over " + esc(biggest.dog) + "</div></div>"
     ].join("") + "</div>";
 
-  slateFilter("pd", PRED, function (kept) {
+  slateFilter("pd", PW, function (kept) {
     var byDay = {};
     kept.forEach(function (p) { (byDay[p.date] = byDay[p.date] || []).push(p); });
     document.getElementById("pdgames").innerHTML = kept.length
@@ -3381,6 +3402,15 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           '<span class="sc">' + (p.pk ? "PK" : "−" + p.line) + " · " + p.fav_pts + "–" + p.dog_pts +
           " · " + p.wp + "%</span></div>";
       }).join("");
+  });
+  }
+  drawPred();
+  document.getElementById("v-pred").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-pw]");
+    if (!b) return;
+    pdWeek = +b.dataset.pw;
+    drawPred();
+    document.getElementById("v-pred").scrollIntoView({ block: "start" });
   });
 
   /* ---- game detail ---- */
@@ -3599,7 +3629,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     '<div class="panel" style="margin-bottom:14px"><h2>Recruiting board</h2>' +
     '<p class="lede">There is a belief around high school football that if it is not Division I, you are not really being recruited. It is not true, and the numbers are not close. The NCAA counts about <strong>1,030,000</strong> high school football players and <strong>83,800</strong> playing in college. Division I takes <strong>3.4%</strong> of them. Division II and Division III together take <strong>4.7%</strong> &mdash; <strong>more players go on to play outside Division I than inside it</strong>, and that is before NAIA and junior college, which the NCAA does not count at all.</p>' +
     '<p class="lede">Of roughly 880 college football programs in this country, 138 are FBS. That is about one in six. The other five in six are FCS, Division II, Division III, NAIA and JUCO &mdash; and real scholarship money exists at most of them. Division II funds 36 scholarships a roster. NJCAA Division I junior colleges can offer a full ride, tuition and room and board included. Division III offers no athletic money but is often generous with academic and need-based aid.</p>' +
-    '<p class="notbet"><strong>Read the commitments below with that in mind.</strong> They come from 247Sports\' Utah commit board, which lists a player whether or not anybody ranked him &mdash; that is why unrated kids appear here. What it still will not show you is Division II, NAIA or junior college, because the recruiting services do not cover those levels at all. So a thin list below the FBS line is a hole in the coverage, not a fact about where Utah kids play. <strong>If a player you know has signed anywhere, at any level, that belongs on this page.</strong></p></div>' +
+    '<p class="notbet">Read the commitments below with that in mind. They come from 247Sports\' Utah commit board, which lists a player whether or not anybody ranked him &mdash; that is why unrated kids appear here. What it still will not show you is Division II, NAIA or junior college, because the recruiting services do not cover those levels at all. So a thin list below the FBS line is a hole in the coverage, not a fact about where Utah kids play. <strong>If a player you know has signed anywhere, at any level, that belongs on this page.</strong></p></div>' +
     (function () {
       var lv = {};
       COLLEGES.forEach(function (c) { lv[c.level || "unlisted"] = (lv[c.level || "unlisted"] || 0) + c.n; });
@@ -3754,13 +3784,18 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           // crest column and wrapped one word per line on a phone.
           logo(r.school, "sm") +
           '<div class="ldname">' + esc(r.school) +
+          // Brandon: totals, not rates. Sacks and interceptions are counted in
+          // every charted box score; yardage allowed only exists for the games
+          // somebody filled in, so the game count rides along with it.
           '<span class="ldmeta">' + esc(r.cls) +
-          (r.ypc_allowed_adj !== null && r.ypc_allowed_adj !== undefined
-            ? " &middot; " + r.ypc_allowed_adj + " ypc allowed" : "") +
-          "<br>run " + r.run_grade +
-          (r.pass_grade !== null && r.pass_grade !== undefined
-            ? " &middot; rush " + r.pass_grade + (r.sacks_pg ? " (" + r.sacks_pg + " sk/g)" : "")
-            : " &middot; no pass-rush read") +
+          (r.sacks ? " &middot; " + r.sacks + " sack" + (r.sacks === 1 ? "" : "s") : "") +
+          (r.ints ? " &middot; " + r.ints + " INT" : "") +
+          (r.games_yds
+            ? "<br>" + r.rush_allow_pg + " rush, " + r.pass_allow_pg + " pass yds allowed/gm" +
+              " (" + r.games_yds + " gm)"
+            : "<br>run " + r.run_grade +
+              (r.pass_grade !== null && r.pass_grade !== undefined
+                ? " &middot; rush " + r.pass_grade : " &middot; no pass-rush read")) +
           "</span></div>" +
           '<div class="ldv">' + r.grade + "</div></div>";
       }).join("") + "</div>";
@@ -3802,15 +3837,15 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     "</div>" +
     '<p class="lede" id="leadcut" style="margin-top:4px"></p>' +
     (SILENT.length
-      ? '<p class="notbet"><strong>' + SILENT.join(" and ") +
+      ? '<p class="notbet">' + SILENT.join(" and ") +
         (SILENT.length === 1 ? " has" : " have") +
-        ' not entered any 2026 statistics,</strong> so no player from ' +
+        ' not entered any 2026 statistics, so no player from ' +
         (SILENT.length === 1 ? "that program" : "those programs") +
         ' can appear on any list below. That is not a judgement about the players &mdash; it means nobody at the school has filled the numbers in.</p>'
       : "") +
-    '<p class="notbet"><strong>About the two line boards.</strong> Both are <strong>unit</strong> ratings, identical for every lineman on the roster, because sacks and rushing yards are things five men do together. Since Deseret charts defense game by game, <strong>sacks allowed and sacks generated are now measured rather than inferred</strong> &mdash; an O-line is graded on the sacks it actually gave up, priced against how much pass rush its schedule generates, and a front on the sacks it actually got, priced against how easily the lines it rushed give them up. Click either to open the program.</p>' +
-    '<p class="notbet"><strong>About the offensive line board.</strong> It is a <strong>unit</strong> rating, identical for all five starters, because rushing yards are a five-man stat and pretending otherwise would be dishonest. Run blocking comes from yards per carry and rushing yards per game priced against the defenses actually faced; pass blocking is inferred from quarterback negative rushing, since Utah records no sacks allowed anywhere &mdash; each line carries a confidence flag for how clean that read is. Click a line to open the program.</p>' +
-    '<p class="notbet"><strong>About the kicking boards.</strong> Utah publishes made field goals and made extra points and nothing else &mdash; no attempts, no percentage, no long, and <strong>no punting statistics anywhere in the state</strong>. So the two specialist boards are <strong>field goals made</strong> and <strong>extra points made</strong> &mdash; what a kicker has actually put through the uprights, which is a real fact and the one college coaches count. They are <em>not</em> accuracy rankings, because the attempts nobody records are what accuracy is made of. ' +
+    '<p class="notbet">About the two line boards. Both are <strong>unit</strong> ratings, identical for every lineman on the roster, because sacks and rushing yards are things five men do together. Since Deseret charts defense game by game, <strong>sacks allowed and sacks generated are now measured rather than inferred</strong> &mdash; an O-line is graded on the sacks it actually gave up, priced against how much pass rush its schedule generates, and a front on the sacks it actually got, priced against how easily the lines it rushed give them up. Click either to open the program.</p>' +
+    '<p class="notbet">About the offensive line board. It is a <strong>unit</strong> rating, identical for all five starters, because rushing yards are a five-man stat and pretending otherwise would be dishonest. Run blocking comes from yards per carry and rushing yards per game priced against the defenses actually faced; pass blocking is inferred from quarterback negative rushing, since Utah records no sacks allowed anywhere &mdash; each line carries a confidence flag for how clean that read is. Click a line to open the program.</p>' +
+    '<p class="notbet">About the kicking boards. Utah publishes made field goals and made extra points and nothing else &mdash; no attempts, no percentage, no long, and <strong>no punting statistics anywhere in the state</strong>. So the two specialist boards are <strong>field goals made</strong> and <strong>extra points made</strong> &mdash; what a kicker has actually put through the uprights, which is a real fact and the one college coaches count. They are <em>not</em> accuracy rankings, because the attempts nobody records are what accuracy is made of. ' +
     'Specialists get recruited off camp results &mdash; Kohl\'s, Chris Sailer, Prokick &mdash; and off a leg on film. <strong>If you kick or punt in Utah and have a camp ranking, a charted percentage or a measured kickoff, send it and it goes on your profile.</strong> That is the only way this gets better, and it is worth doing.</p>' +
     "</div>" +
     '<div id="leadgrid"></div>';
@@ -3897,7 +3932,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     ].join("") + "</div>" +
     '<div class="panel" style="margin-bottom:16px"><h2>The cut line</h2>' +
     '<p class="lede">UHSAA capped the 2026 playoffs at <strong>16 teams per classification</strong> and seeds them by RPI. For 6A, 3A, 2A and 1A nothing changes — those classes have 17, 13, 10 and 9 programs. For <strong>5A and 4A it is a real cut</strong>: both used to take 24 seeds with byes for the top eight, so ' + missing5 + " and " + missing4 + ' teams now miss entirely.</p>' +
-    '<p class="lede"><strong>Read the RPI column with suspicion right now.</strong> RPI is three-quarters opponents\' records, and after two games almost nobody has a meaningful record — a third of 5A sits on exactly .500. As it stands, RPI has 2–0 Viewmont <em>outside</em> the cut and 0–1 Kearns inside it. That is not a flaw in RPI so much as a fact about August. The seeding below is ordered by <strong>power rating</strong>, which is opponent-adjusted and far steadier this early, with each team\'s current RPI seed shown alongside so you can see where the two disagree. By late October they converge; today they do not.</p></div>' +
+    '<p class="lede">Read the RPI column with suspicion right now. RPI is three-quarters opponents\' records, and after two games almost nobody has a meaningful record — a third of 5A sits on exactly .500. As it stands, RPI has 2–0 Viewmont <em>outside</em> the cut and 0–1 Kearns inside it. That is not a flaw in RPI so much as a fact about August. The seeding below is ordered by <strong>power rating</strong>, which is opponent-adjusted and far steadier this early, with each team\'s current RPI seed shown alongside so you can see where the two disagree. By late October they converge; today they do not.</p></div>' +
     '<div class="panel" style="margin-bottom:16px"><h2>Projected bracket</h2>' +
     '<p class="lede">The 16-team bracket as it would be seeded today, with the higher seed hosting through the semifinals and the final treated as neutral. Highlighted teams are the chalk path — the favourite advancing every round. The percentages underneath come from running the whole bracket <strong>' +
     (SIMS ? SIMS.toLocaleString() : "20,000") + ' times</strong> and counting how often each team gets there, which is a fairer picture than chalk: a 63% favourite still loses a third of the time.</p>' +
@@ -4130,7 +4165,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     'so each is set from outside context. <strong>IMG Academy opened the season No. 1 in the country</strong> and is pinned at +52, ' +
     'which is why Lone Peak losing 59–3 to them barely moves Lone Peak — the model expected a beating and still has them ' +
     'third in the state. Get that pin wrong and you punish a program for scheduling up.</p>' +
-    '<p class="lede"><strong>Five states are calibrated, not guessed.</strong> Idaho, Nevada, Hawaii, California and Arizona all ' +
+    '<p class="lede">Five states are calibrated, not guessed. Idaho, Nevada, Hawaii, California and Arizona all ' +
     'publish team ratings. Fitting the eleven games Utah has played against rated opponents gave a slope of <strong>0.93</strong> ' +
     '— close enough to 1 that these are one national scale, sitting about <strong>55 points above</strong> this one. ' +
     'Every pin is that same subtraction: published rating minus 55.</p>' +
@@ -4223,7 +4258,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<p class="lede">Every state championship Utah has awarded, back to <strong>1898</strong> &mdash; ' + CH.length +
       ' titles across ' + years.length + ' seasons &mdash; and the all-time individual and program records from ' +
       "UHSAA's own book. Click any school still playing to open its card.</p>" +
-      '<p class="lede"><strong>What is here is what could be sourced.</strong> Championship scores were never compiled ' +
+      '<p class="lede">What is here is what could be sourced. Championship scores were never compiled ' +
       'anywhere for most of this history, so ' + withScore + ' of ' + CH.length + ' rows carry one and the rest are blank ' +
       'rather than guessed. Same for winning coaches: UHSAA published them through the mid-1990s and stopped. ' +
       'A blank on this page means nobody wrote it down, not that we did not look.</p></div>' +
@@ -4943,7 +4978,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   document.getElementById("v-realign").innerHTML =
     '<div class="panel" style="margin-bottom:14px"><h2>Possible realignment</h2>' +
     '<p class="lede">UHSAA has approved a new <strong>Composite Realignment Index</strong> for the 2027&ndash;29 cycle. Classification will no longer be set by enrollment alone: the CRI combines <strong>enrollment</strong>, <strong>socioeconomic status</strong> and <strong>competitive performance</strong>, and football is aligned separately from every other sport. It is the biggest procedural change to Utah realignment in years, and it applies to all 162 member schools.</p>' +
-    '<p class="notbet"><strong>Read what follows as one third of the answer, not the answer.</strong> Of the three CRI factors this page can measure exactly one &mdash; competitive performance. There is no enrollment figure here and no socioeconomic data, and guessing at either would be worse than admitting the gap. The list below is therefore <em>not</em> a prediction of who moves. It is the narrower, honest question: which programs are winning at a level that does not match the classification they are currently in. The Board also keeps final say over geography and appeals, which no index can anticipate.</p></div>' +
+    '<p class="notbet">Read what follows as one third of the answer, not the answer. Of the three CRI factors this page can measure exactly one &mdash; competitive performance. There is no enrollment figure here and no socioeconomic data, and guessing at either would be worse than admitting the gap. The list below is therefore <em>not</em> a prediction of who moves. It is the narrower, honest question: which programs are winning at a level that does not match the classification they are currently in. The Board also keeps final say over geography and appeals, which no index can anticipate.</p></div>' +
     '<h3 class="divhead">The calendar<span>placement starts in November, final in December, played in 2027</span></h3>' +
     '<div class="tl">' + RAD.map(function (d) {
       return '<div class="tlrow"><div class="tld">' + esc(d[0]) + '</div><div class="tlw">' + esc(d[1]) + "</div></div>";
@@ -5291,7 +5326,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   document.getElementById("v-send").innerHTML =
     '<div class="panel" style="margin-bottom:16px"><h2>Send us something</h2>' +
     '<p class="lede">This site gets better the way a program does &mdash; somebody who was actually there tells you what happened. <strong>A lot of what belongs here does not exist in any public feed.</strong> Utah publishes no per-game player box scores, no sacks allowed, no kicking attempts, and no punting statistics at all. For those, what a coach or a parent sends is the only data there will ever be.</p>' +
-    '<p class="notbet"><strong>Bring the receipt.</strong> Every claim needs something that backs it up &mdash; a stat sheet, a box score, the all-state list itself, the post where the offer was announced, the school page a coach&rsquo;s address is published on. <strong>&ldquo;He was all-state&rdquo; is not enough; the link to the all-state team is.</strong> This is the whole reason a college coach can trust a number on this site, and it is why anything sent without a source waits until there is one.</p>' +
+    '<p class="notbet">Bring the receipt. Every claim needs something that backs it up &mdash; a stat sheet, a box score, the all-state list itself, the post where the offer was announced, the school page a coach&rsquo;s address is published on. <strong>&ldquo;He was all-state&rdquo; is not enough; the link to the all-state team is.</strong> This is the whole reason a college coach can trust a number on this site, and it is why anything sent without a source waits until there is one.</p>' +
     "</div>" +
 
     '<div class="panel" style="margin-bottom:16px">' +
@@ -5322,7 +5357,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       "</div>" +
     "</form>" +
     '<div id="sendok" hidden><h2>Thank you for your submission.</h2>' +
-      '<p class="lede"><strong>These are handled in the order they come in, as quickly as we can get to them.</strong> We cannot promise a turnaround inside 48 hours, but that is what we are aiming for. One person reads every one of these, so you will get a real reply rather than a ticket number.</p>' +
+      '<p class="lede">These are handled in the order they come in, as quickly as we can get to them. We cannot promise a turnaround inside 48 hours, but that is what we are aiming for. One person reads every one of these, so you will get a real reply rather than a ticket number.</p>' +
       '<p class="lede">Anything you sent goes on the site once it has been checked against the source you gave us.</p>' +
       '<p><button type="button" class="sendbtn" id="sendagain">Send something else</button></p></div>' +
     '<datalist id="schoollist"></datalist>' +
@@ -5371,8 +5406,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     { id: "recap", label: "Weekly Summary", views: [
         ["recap", "Weekly Summary"], ["oos", "Out of State"]] },
     { id: "pred", label: "Weekly Picks", views: [
-        ["pred", "Week " + NW + " Picks"], ["oosnext", "Out of State Ahead"],
-        ["cmp", "Predictor Calculator"], ["playoffs", "Playoff Predictions"]] },
+        ["pred", "Week " + NW + " Picks"], ["playoffs", "Playoff Predictions"],
+        ["oosnext", "Out of State"], ["cmp", "Prediction Calculator"]] },
     { id: "leaders", label: "State Leaders", views: [
         ["stats", "State Leaders"], ["history", "History"]] },
     { id: "people", label: "Players", views: [
