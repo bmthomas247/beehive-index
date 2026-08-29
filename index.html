@@ -705,6 +705,15 @@ a.rrow{text-decoration:none;color:inherit}
   border-radius:var(--r);cursor:pointer}
 .wkb:hover{background:var(--surface-2)}
 .wkb.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.utchips{display:flex;flex-wrap:wrap;gap:7px;margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}
+.utchip{display:flex;align-items:center;gap:7px;padding:5px 9px 5px 6px;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--surface-2);border-left:3px solid var(--uc)}
+.utchip img{width:22px;height:22px;object-fit:contain;flex:0 0 22px}
+.utchip .utdot{width:16px;height:16px;border-radius:50%;background:var(--uc);flex:0 0 16px}
+.utchip b{display:block;font-size:12.5px;line-height:1.2}
+.utchip em{display:block;font-style:normal;font-size:10.5px;color:var(--ink-3);letter-spacing:.02em}
+.utnone{margin-top:11px;padding-top:11px;border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--ink-3);line-height:1.5}
 
 .psum{margin:12px 0 4px;padding:11px 13px;background:color-mix(in srgb,var(--steel) 7%,var(--surface));
   border-left:3px solid var(--steel);font-size:14px;line-height:1.55;color:var(--ink)}
@@ -2440,8 +2449,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     if (!p) return;
     lastFocus = document.activeElement;
     var t = byName[p.school];
-    var line = [p.no ? "#" + p.no : "", p.pos, p.cls ? yr2(p.cls) : "",
-                p.ht || "", p.wt ? p.wt + " lb" : ""].filter(Boolean).join(" · ") +
+    var line = [p.no ? "#" + p.no : "", p.pos, p.cls ? yr2(p.cls) : ""]
+                 .filter(Boolean).join(" \u00b7 ") +
       (p.pos_src ? ' <span class="tagline rep">position ' + esc(p.pos_src) + "</span>" : "");
     function yearRows(blob) {
       return Object.keys(blob || {}).map(function (k) {
@@ -3621,8 +3630,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<div><div class="lvname">' + esc(x.program) +
       "<small>" + esc(x.city) + (x.conf ? " · " + esc(x.conf) : "") + "</small></div>" +
       (x.note ? '<div class="lvnote">' + esc(x.note) + "</div>" : "") + "</div>" +
-      '<div class="lvn">' + (x.commits ? "<b>" + x.commits + " committed</b>"
-        : x.level === "FBS" ? "no commits this class" : "not tracked by the services") +
+      '<div class="lvn">' + (x.commits ? "<b>" + x.commits + " committed</b>" : "") +
       "</div></div>";
   }
   document.getElementById("v-recruit").innerHTML =
@@ -5495,9 +5503,24 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     var R = DATA.recruiting || {};
     var el = document.getElementById("v-recruit101");
     if (!el || !R.sections) return;
+    // Brandon: show Utah's own programs under the level they play at. A kid
+    // reading "Division II" should be able to see immediately that no Utah
+    // school is there, which is the actual information.
+    function utBlock(x) {
+      if (!x) return "";
+      if (x.utnone) return '<div class="utnone">' + esc(x.utnone) + "</div>";
+      if (!x.ut || !x.ut.length) return "";
+      return '<div class="utchips">' + x.ut.map(function (u) {
+        return '<div class="utchip" style="--uc:' + esc(u.c) + '">' +
+          (u.logo ? '<img src="' + esc(u.logo) + '" alt="" loading="lazy">'
+                  : '<span class="utdot"></span>') +
+          "<div><b>" + esc(u.n) + "</b><em>" + esc(u.note) + "</em></div></div>";
+      }).join("") + "</div>";
+    }
     function cards(list) {
       return '<div class="rcards">' + list.map(function (c) {
-        return '<div class="rcard"><h4>' + esc(c[0]) + "</h4><p>" + c[1] + "</p></div>";
+        return '<div class="rcard"><h4>' + esc(c[0]) + "</h4><p>" + c[1] + "</p>" +
+          utBlock(c[2]) + "</div>";
       }).join("") + "</div>";
     }
     el.innerHTML =
@@ -5516,6 +5539,17 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
               }).join("") + "</div>"
             : "") + "</div>";
       }).join("") +
+      ((R.videos && R.videos.length)
+        ? '<div class="panel" style="margin-bottom:14px"><h2>Watch</h2>' +
+          (R.videos_note ? '<p class="lede">' + esc(R.videos_note) + "</p>" : "") +
+          '<div class="vrail tight">' + R.videos.map(function (v) {
+            return '<div class="vcard" data-story="' + esc(v.u) + '">' +
+              '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
+              '<i class="vplay" aria-hidden="true"></i></span>' +
+              '<span class="vmeta">' + esc(v.src) + "</span>" +
+              '<span class="vt">' + esc(v.t) + "</span></div>";
+          }).join("") + "</div></div>"
+        : "") +
       '<div class="panel" style="margin-bottom:14px"><h2>Go to the source</h2>' +
       '<p class="lede">Rules change. These are the association&rsquo;s own pages, not ours.</p>' +
       '<div class="rlinks">' + (R.links || []).map(function (l) {
