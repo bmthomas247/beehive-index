@@ -1174,6 +1174,13 @@ a.utchip:hover b{text-decoration:underline}
 .never{margin:10px 0 0;padding-left:18px}
 .never li{font-size:13.5px;line-height:1.7;color:var(--ink-2)}
 .notbet{font-size:11.5px;color:var(--ink-3);margin-top:10px;padding-left:11px;border-left:2px solid var(--line)}
+/* An offer we were told about, with the telling attached. */
+.toldlist{margin-top:9px;display:grid;gap:7px}
+.told{padding:8px 11px;border:1px solid var(--line);border-left:3px solid var(--fall);
+  border-radius:2px;background:var(--surface-2);font-size:12.5px;line-height:1.5}
+.told b{font-size:13.5px}
+.told .lvl{color:var(--ink-3);font-size:11.5px;margin-left:5px}
+.told .src{display:block;color:var(--ink-3);font-size:11px;margin-top:3px}
 /* Methodology moved out of the way. Somebody opening the picks wants the
    picks; the explanation waits at the bottom for whoever goes looking. */
 .finenote{opacity:.9}
@@ -2324,7 +2331,19 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
             ? "<strong>" + p.offer_n + " offers</strong> on file at " + esc(p.offers_source || "the services") +
               ", " + off.length + " of them named above. "
             : off.length + " offer" + (off.length === 1 ? "" : "s") + " on file" +
-              (p.offers_source ? ", from " + esc(p.offers_source) : "") + ".") + "</p>" + visitRows(p)
+              (p.offers_source ? ", from " + esc(p.offers_source) : "") + ".") + "</p>" +
+          // An offer somebody told us about is only worth anything if a reader
+          // can check where it came from, so each one carries its own line --
+          // separate from whatever the services have, so the two never blur.
+          ((p.offers_told || []).length
+            ? '<div class="toldlist">' + p.offers_told.map(function (t) {
+                return '<div class="told"><b>' + esc(t.college) + "</b>" +
+                  (t.level ? ' <span class="lvl">' + esc(t.level) + "</span>" : "") +
+                  '<span class="src">' + esc(t.source) +
+                  (t.date ? " &middot; " + mdy(t.date) : "") + "</span>" +
+                  (t.note ? '<span class="src">' + esc(t.note) + "</span>" : "") + "</div>";
+              }).join("") + "</div>"
+            : "") + visitRows(p)
         : "<p style='margin:0;font-size:12px;color:var(--ink-3);line-height:1.55'>" +
           "No offer list on file yet. Nobody publishes a statewide offer table, so this is fed by hand from a player\'s own announcement or his coach &mdash; " +
           "<strong>an empty list here is a gap in what we have been told, never a statement about him</strong>.</p>" + visitRows(p));
@@ -3093,7 +3112,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     rush_yds: "rushing yards", rush_att: "carries", rush_td: "rushing touchdowns",
     rec_yds: "receiving yards", rec: "catches", rec_td: "receiving touchdowns",
     pass_yds: "passing yards", pass_td: "touchdown passes",
-    tkl: "tackles", sack: "sacks", int: "interceptions"
+    tkl: "tackles", sack: "sacks", int: "interceptions",
+    fum_rec: "fumble recovery", tfl: "tackles for loss"
   };
   function broadcastBlock(b) {
     if (!b || (!b.stats.length && !b.plays.length)) return "";
@@ -3101,7 +3121,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     b.stats.forEach(function (s) {
       teamOf[s.player] = s.team;
       (byPlayer[s.player] = byPlayer[s.player] || []).push(
-        (s.approx ? "more than " : "") + s.value + " " + (STATWORD[s.field] || s.field));
+        s.value + " " + (STATWORD[s.field] || s.field));
     });
     var lines = Object.keys(byPlayer).map(function (n) {
       return "<li><span" + pAttr(n, teamOf[n]) + ">" + esc(n) + "</span> — " +
@@ -3113,8 +3133,9 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     });
     return '<div class="sect">From the broadcast</div>' +
       '<ul class="bcast">' + lines.join("") + "</ul>" +
-      '<div class="bnote">Counted on the game broadcast, not in the box score the school filed. ' +
-      "Checked against that box score where the two overlap.</div>";
+      '<div class="bnote">Counted on the game broadcast. Shown only where neither ' +
+      "Deseret nor MaxPreps recorded it at all &mdash; where a stat crew counted, their number is " +
+      "the one above. Replaced as soon as a filed number arrives.</div>";
   }
 
   function recapKey(r) { return r.date + "|" + r.away + "|" + r.home; }
