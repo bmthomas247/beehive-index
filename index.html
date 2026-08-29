@@ -1172,6 +1172,11 @@ a.rrow{text-decoration:none;color:inherit}
 .article{font-size:14.5px;line-height:1.62;color:var(--ink-2)}
 .article p{margin:0 0 10px}
 .article p:first-letter{font-family:"Oswald",sans-serif;font-size:1.05em;font-weight:600;color:var(--ink)}
+.bcast{margin:0;padding:0 0 0 17px;font-size:14px;line-height:1.55;color:var(--ink-2)}
+.bcast li{margin:0 0 4px}
+.bcast [data-p]{font-weight:600;color:var(--ink);cursor:pointer}
+.bcast [data-p]:hover{text-decoration:underline}
+.bnote{margin-top:7px;font-size:11.5px;line-height:1.5;color:var(--ink-3)}
 .whylist{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .whyrow{background:var(--surface);padding:10px 12px}
 .whyrow .wk{font-family:"Oswald",sans-serif;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
@@ -3038,6 +3043,40 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       }).join("") + "</div>";
   }
 
+  // Numbers the broadcast crew counted and the school never reported. Utah
+  // schools file touchdowns to Deseret and little else, so a 54-7 game shows up
+  // with no yardage in it at all -- while the two men calling the game had the
+  // carries, the catches and the tackles all night. Every figure here was
+  // checked against the box score first: anything that disagreed with it was
+  // thrown out rather than shown. Labelled, because a reader is owed the source.
+  var STATWORD = {
+    rush_yds: "rushing yards", rush_att: "carries", rush_td: "rushing touchdowns",
+    rec_yds: "receiving yards", rec: "catches", rec_td: "receiving touchdowns",
+    pass_yds: "passing yards", pass_td: "touchdown passes",
+    tkl: "tackles", sack: "sacks", int: "interceptions"
+  };
+  function broadcastBlock(b) {
+    if (!b || (!b.stats.length && !b.plays.length)) return "";
+    var byPlayer = {}, teamOf = {};
+    b.stats.forEach(function (s) {
+      teamOf[s.player] = s.team;
+      (byPlayer[s.player] = byPlayer[s.player] || []).push(
+        (s.approx ? "more than " : "") + s.value + " " + (STATWORD[s.field] || s.field));
+    });
+    var lines = Object.keys(byPlayer).map(function (n) {
+      return "<li><span" + pAttr(n, teamOf[n]) + ">" + esc(n) + "</span> — " +
+        esc(byPlayer[n].join(", ")) + "</li>";
+    });
+    b.plays.forEach(function (p) {
+      lines.push("<li>" + p.yds + "-yard touchdown " + esc(p.kind) +
+        (p.who && p.who.length ? " — " + esc(p.who.join(" to ")) : "") + "</li>");
+    });
+    return '<div class="sect">From the broadcast</div>' +
+      '<ul class="bcast">' + lines.join("") + "</ul>" +
+      '<div class="bnote">Counted on the game broadcast, not in the box score the school filed. ' +
+      "Checked against that box score where the two overlap.</div>";
+  }
+
   function recapKey(r) { return r.date + "|" + r.away + "|" + r.home; }
   var RECAPBY = {};
   RECAP.forEach(function (r) { RECAPBY[recapKey(r)] = r; });
@@ -3088,6 +3127,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         ? '<div class="sect">What happened</div><div class="article"><p>' +
           linkNames(esc(r.summary), r.named || []).replace(/\n+/g, "</p><p>") + "</p></div>"
         : "") +
+      broadcastBlock(r.broadcast) +
       gameFilm(r.video) +
       (hasQ
         ? '<div class="sect">Quarter by quarter</div>' +
