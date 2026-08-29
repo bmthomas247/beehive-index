@@ -5222,11 +5222,15 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
      groups that hold more than one view. Nothing was deleted — every view that
      existed still exists, it just lives under a heading now. */
   var W = parseInt(DATA.week, 10) || 0;
+  /* The picks tab is whatever is still unplayed, which on a Saturday morning is
+     the rest of THIS week, not next week. The engine says which week that is;
+     assuming W + 1 labelled Saturday's games as next week's slate. */
+  var NW = parseInt(DATA.next_week, 10) || (W + 1);
   var GROUPS = [
     { id: "home", label: "Home", views: [["home", "Home"]] },
     { id: "rank", label: "Rankings", views: [["rank", "Rankings"]] },
     { id: "recap", label: "Week " + W, views: [["recap", "Week " + W + " Summary"]] },
-    { id: "pred", label: "Week " + (W + 1) + " Picks", views: [["pred", "Week " + (W + 1) + " Picks"]] },
+    { id: "pred", label: "Week " + NW + " Picks", views: [["pred", "Week " + NW + " Picks"]] },
     { id: "predict", label: "Predictions", views: [
         ["cmp", "Matchup"], ["playoffs", "Playoffs"]] },
     { id: "oos", label: "Out of State", views: [["oos", "Out of State"]] },
