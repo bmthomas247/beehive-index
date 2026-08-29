@@ -2476,6 +2476,15 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       }).join("");
     }
     var statRows = yearRows(p.stats);
+    // Where a school has published nothing, the season line is added up out of
+    // the box scores. Say so, with the game count, so nobody reads a partial
+    // total as a full season.
+    var statFrom = p.stats_src === "box scores"
+      ? "<p style='margin:6px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>" +
+        "Added up from the box scores of the " + (p.stats_games || 0) + " game" +
+        ((p.stats_games || 0) === 1 ? "" : "s") + " he has a line in, because " +
+        esc(p.school) + " has not entered season statistics. It is as complete as those box scores are.</p>"
+      : "";
     var stat25Rows = yearRows(p.stats25);
     var stat24Rows = yearRows(p.stats24);
     document.getElementById("drawer-in").innerHTML =
@@ -2546,7 +2555,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           "final scores and published statistics.</p>"
         : "") +
       (statRows
-        ? '<div class="sect">2026 season</div><div class="games">' + statRows + "</div>"
+        ? '<div class="sect">2026 season</div><div class="games">' + statRows + "</div>" + statFrom
         : '<div class="sect">2026 season</div>' +
           "<p style='margin:0;font-size:13px;color:var(--ink-3)'>No statistics published" +
           ((DATA.stats_silent || []).indexOf(p.school) >= 0
