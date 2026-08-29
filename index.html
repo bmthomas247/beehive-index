@@ -5030,7 +5030,21 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     '<p><strong>GPA.</strong> Grades belong on a recruiting page &mdash; plenty of rosters get built off a transcript rather than a forty time. But there is no way to fill this in for every player, so it is <strong>not a column and not a sort</strong>: a half-empty ranking would say more about who sent us a number than about who has the grades. It shows on a player\'s own profile when he or his coach supplies one. Hudl holds GPAs but serves them only to a viewer with a coaching relationship to that player, which is a sensible guard on a minor\'s school record and not one to work around.</p>' +
     '<p><strong>X handles.</strong> A college coach gets a capped number of contact hours and a direct message on X does not spend one, which is why a public recruiting account is often the cheapest door into a player\'s own recruiting. Handles show on a profile when we have one &mdash; ' +
     PIDX.filter(function (p) { return p.twitter; }).length + ' so far. <strong>They are never guessed.</strong> Players and coaches can send theirs and they go on. Beyond that, only what is already published about a player as an athlete appears here &mdash; no phone, no email, no address, no personal accounts. To reach a player cold, go through his head coach; every staff is on the Coaches tab.</p>' +
-    '</div></details></div>' +
+    '</div></details>' +
+    // Brandon did not like the standalone Recruiting Talent page and he was
+    // right: it led with three paragraphs about how a grade is computed, which
+    // is not what anybody opens a player page to find out. The one part worth
+    // keeping is the short list of players every service agrees on -- so it
+    // lives here, folded shut, next to the search people actually came for.
+    (multiRated.length
+      ? '<details class="foldout"><summary>Rated by more than one service (' +
+        multiRated.length + ')</summary><div class="foldbody">' +
+        '<p>The players every service agrees are real, best grade first. Amber is graded 86 or better, ' +
+        'a green outline means committed. Everyone else on this page is here on production alone.</p>' +
+        '<div class="plist">' + multiRated.slice(0, 60).map(function (p) { return pchip(p, true); }).join("") +
+        '</div></div></details>'
+      : "") +
+    '</div>' +
     '<div class="psearch"><input type="search" id="pq" placeholder="Search a player or a school…" aria-label="Search players">' +
     '<div class="pfilters">' +
     '<select id="pfpos" aria-label="Position">' + POSGROUPS.map(function (g) {
@@ -5524,7 +5538,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         ["stats", "State Leaders"], ["history", "History"]] },
     { id: "people", label: "Players", views: [
         ["players", "Player Search"],
-        ["talent", "Recruiting Talent"], ["recruit", "Commitments"]] },
+        ["recruit", "Commitments"]] },
     { id: "programs", label: "Programs", views: [
         ["breakdown", "All 106"], ["coach", "Coaches"],
         ["xfer", "Transfers"], ["realign", "Realignment"]] },
