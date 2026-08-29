@@ -90,6 +90,13 @@ header.mast{
 }
 .brand h1 em{font-style:normal;color:var(--sodium)}
 .brand p{margin:6px 0 0;color:var(--ink-3);font-size:13px;max-width:52ch}
+.brand p.social{margin-top:9px;font-size:12px}
+.brand p.social a{display:inline-flex;align-items:center;gap:7px;color:var(--ink-2);text-decoration:none;
+  border:1px solid var(--line);border-radius:2px;padding:4px 10px 4px 7px}
+.brand p.social a:hover{border-color:var(--sodium);color:var(--sodium)}
+.xmark{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;
+  background:var(--ink);color:var(--surface);font-family:"Oswald",sans-serif;font-size:11px;
+  font-weight:600;line-height:1;border-radius:2px}
 .stamp{display:flex;gap:22px;align-items:flex-end}
 .stamp div{text-align:right}
 .stamp .k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
@@ -1414,6 +1421,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     <div class="brand">
       <h1>Beehive <em>Index</em></h1>
       <p><strong>Utah high school football.</strong> Every 11-man program on one scale and every player on those rosters &mdash; not just the ones somebody already noticed. Results-driven, opponent-adjusted, blowout-capped.</p>
+      <!-- Somewhere to follow the thing. Deliberately not an email address:
+           the contact route is the Send Info form, so that a coach sending a
+           roster correction lands somewhere it can be acted on. -->
+      <p class="social"><a href="https://x.com/BeehiveIndex" target="_blank" rel="noopener">
+        <span class="xmark" aria-hidden="true">X</span> @BeehiveIndex</a></p>
     </div>
     <div class="stamp">
       <div><div class="k">Through</div><div class="v" id="s-week">Week 2</div></div>
