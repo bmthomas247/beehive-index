@@ -528,7 +528,6 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 @media(max-width:520px){
   .vrail{grid-template-columns:1fr 1fr;gap:11px}
   .vrail.tight{grid-template-columns:1fr 1fr}
-  .rcgrid{grid-template-columns:1fr 1fr}
   .vt{font-size:12px}
   .ourstory h3{font-size:19px}
 }
@@ -694,21 +693,37 @@ a.rrow{text-decoration:none;color:inherit}
    turns a week into something you can take in at once. The card restacks --
    the score can no longer sit in a fixed 118px column beside the matchup at a
    quarter of the width, so it drops underneath it. */
-.rcgrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
-  grid-template-columns:repeat(4,minmax(0,1fr))}
-@media(max-width:1180px){.rcgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:900px){.rcgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.rc{display:flex;flex-direction:column;justify-content:space-between;gap:7px;
-  background:var(--surface);padding:10px 12px;cursor:pointer;min-height:96px}
+/* Six across, grouped by division, and the rows breathe. The old hairline
+   grid ran every result into its neighbour; each card now stands on its own
+   with real space around it. */
+.rcgrid{display:grid;gap:10px;grid-template-columns:repeat(6,minmax(0,1fr))}
+@media(max-width:1500px){.rcgrid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:1280px){.rcgrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:1020px){.rcgrid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.rcgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.divsec{margin-bottom:26px}
+.divhead{display:flex;align-items:baseline;justify-content:space-between;
+  font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-2);margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.divhead span{font-family:"Archivo",sans-serif;font-size:11px;letter-spacing:0;
+  text-transform:none;color:var(--ink-3);font-weight:400}
+.rc{display:flex;flex-direction:column;justify-content:space-between;gap:6px;
+  background:var(--surface);padding:9px 11px;cursor:pointer;min-height:92px;
+  border:1px solid var(--line-soft);border-radius:3px}
 .rc:hover{background:var(--surface-2)}
 .rc.riv{border-left:3px solid var(--fall)}
 .rc.marq{border-left:3px solid var(--sodium)}
-.rcline{font-size:13.5px;font-weight:600;line-height:1.3}
-.rcline .l{font-weight:400;color:var(--ink-3)}
-.rcnote{font-size:11.5px;color:var(--ink-2);margin-top:3px;line-height:1.4}
-.rcsc{display:flex;align-items:baseline;gap:8px;font-family:"IBM Plex Mono",monospace;
-  font-size:16px;font-weight:600;border-top:1px solid var(--line-soft);padding-top:6px}
-.rcsc small{font-family:"Archivo",sans-serif;font-size:10.5px;font-weight:400;color:var(--ink-3)}
+.rctags{margin-bottom:1px}
+.rcteams{display:grid;gap:3px}
+.rcteam{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:7px;
+  font-size:12.5px;color:var(--ink-3)}
+.rcteam.w{color:var(--ink);font-weight:600}
+.rcteam .crest{width:18px;height:18px}
+.rcteam .swatch{width:11px;height:11px;border-radius:2px;display:inline-block}
+.rcteam .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rcteam .ts{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600}
+.rcnote{font-size:11px;color:var(--ink-2);line-height:1.4}
+.rcfoot{font-size:10.5px;color:var(--ink-3);border-top:1px solid var(--line-soft);padding-top:5px}
 .rctag{display:inline-block;font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
   padding:1px 5px;border-radius:2px;margin-right:5px;vertical-align:middle}
 .rctag.riv{background:color-mix(in srgb,var(--fall) 14%,transparent);color:var(--fall)}
@@ -1182,6 +1197,8 @@ a.utchip:hover b{text-decoration:underline}
 .srctab td:first-child{font-weight:600;white-space:nowrap}
 .never{margin:10px 0 0;padding-left:18px}
 .never li{font-size:13.5px;line-height:1.7;color:var(--ink-2)}
+.game.ourhon{border-left:3px solid var(--fall);padding-left:9px}
+.hnote{display:block;font-weight:400;font-size:11.5px;color:var(--ink-3);margin-top:2px}
 .gcount{font-family:"Archivo",sans-serif;font-size:10.5px;letter-spacing:0;text-transform:none;
   color:var(--ink-3);font-weight:400;margin-left:8px}
 .notbet{font-size:11.5px;color:var(--ink-3);margin-top:10px;padding-left:11px;border-left:2px solid var(--line)}
@@ -2597,8 +2614,12 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
             : "") +
           (p.honors_ext && p.honors_ext.length
             ? '<div class="games" style="margin-bottom:8px">' + p.honors_ext.map(function (h) {
-                return '<div class="game" style="grid-template-columns:1fr auto"><div class="op" style="font-weight:600">' +
-                  esc(h.t) + '</div><div class="dt" style="text-align:right">' + esc(h.y || "") + "</div></div>";
+                // an honor we gave is marked as ours, so nobody mistakes it for
+                // a UHSAA or Deseret selection
+                return '<div class="game' + (h.kind === "beehive" ? " ourhon" : "") +
+                  '" style="grid-template-columns:1fr auto"><div class="op" style="font-weight:600">' +
+                  esc(h.t) + (h.note ? '<span class="hnote">' + esc(h.note) + "</span>" : "") +
+                  '</div><div class="dt" style="text-align:right">' + esc(h.y || "") + "</div></div>";
               }).join("") + "</div>"
             : "") +
           (p.awards && p.awards.length
@@ -3249,17 +3270,28 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
 
   function recapCard(r) {
     var note = recapNote(r);
+    // Six across is too narrow for "Away at Home" on one line, and a crest
+    // reads faster than a name anyway. Two rows, the way a scoreboard is
+    // written: who, and what they scored. The winner is the bold one.
+    function side(team, score, cls, won) {
+      return '<div class="rcteam' + (won ? " w" : "") + '">' +
+        logo(team, "sm") +
+        '<span class="tn">' + esc(team) + "</span>" +
+        '<span class="ts">' + score + "</span></div>";
+    }
+    var tags =
+      (r.rivalry ? '<span class="rctag riv">' + esc(r.rivalry.name || "Rivalry") + "</span>" : "") +
+      (r.shutout ? '<span class="rctag sh">Shutout</span>' : "") +
+      (r.video && r.video.length ? '<span class="rctag film">' + (r.video[0].full ? "Full game" : "Film") + "</span>" : "");
     return '<div class="rc' + (r.rivalry ? " riv" : "") + '" data-recap="' + esc(recapKey(r)) + '">' +
-      "<div><div class=\"rcline\">" +
-        (r.rivalry ? '<span class="rctag riv">' + esc(r.rivalry.name || "Rivalry") + "</span>" : "") +
-        (r.shutout ? '<span class="rctag sh">Shutout</span>' : "") +
-        (r.video && r.video.length ? '<span class="rctag film">' + (r.video[0].full ? "Full game" : "Film") + "</span>" : "") +
-        esc(r.away) + ' <span class="l">at</span> ' + esc(r.home) + "</div>" +
-        (note ? '<div class="rcnote">' + note + "</div>" : "") +
-        '<div class="rcnote" style="color:var(--ink-3)">' + mdy(r.date) + " · " +
-        esc(r.away_cls) + " at " + esc(r.home_cls) + "</div></div>" +
-      '<div class="rcsc">' + r.away_score + "–" + r.home_score +
-      "<small>" + esc(r.winner) + " won</small></div></div>";
+      (tags ? '<div class="rctags">' + tags + "</div>" : "") +
+      '<div class="rcteams">' +
+        side(r.away, r.away_score, r.away_cls, r.winner === r.away) +
+        side(r.home, r.home_score, r.home_cls, r.winner === r.home) +
+      "</div>" +
+      (note ? '<div class="rcnote">' + note + "</div>" : "") +
+      '<div class="rcfoot">' + mdy(r.date) + " · " +
+      esc(r.away_cls) + " at " + esc(r.home_cls) + "</div></div>";
   }
 
   /* The week's awards. Every one is computed from the box scores and adjusted
@@ -3383,9 +3415,35 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
        '<div class="card"><div class="k">Blowouts</div><div class="v mono">' + blow + '</div><div class="sub">28 points or more</div></div>'
       ].join("") + "</div>";
 
+    // Brandon: group the results by division. Sixty cards in one wall is a
+    // wall; six divisions of ten is a page somebody can find their own corner
+    // of. A game between two classes is filed under the higher one -- it is
+    // the harder test of the two teams, and filing it under both would double
+    // the count and make the totals lie.
+    var DIVORDER = ["6A", "5A", "4A", "3A", "2A", "1A"];
+    function divOf(r) {
+      var a = r.away_cls, h = r.home_cls;
+      var ia = DIVORDER.indexOf(a), ih = DIVORDER.indexOf(h);
+      if (ia < 0 && ih < 0) return "Out of state";
+      if (ia < 0) return h;
+      if (ih < 0) return a;
+      return DIVORDER[Math.min(ia, ih)];
+    }
+    function byDivision(list) {
+      var buckets = {};
+      list.forEach(function (r) { (buckets[divOf(r)] = buckets[divOf(r)] || []).push(r); });
+      var order = DIVORDER.concat(["Out of state"]).filter(function (d) { return buckets[d]; });
+      return order.map(function (d) {
+        return '<div class="divsec"><h3 class="divhead">' + esc(d) +
+          "<span>" + buckets[d].length + " game" + (buckets[d].length === 1 ? "" : "s") +
+          "</span></h3>" +
+          '<div class="rcgrid">' + buckets[d].map(recapCard).join("") + "</div></div>";
+      }).join("");
+    }
+
     slateFilter("rc", games, function (kept) {
       document.getElementById("rcgames").innerHTML = kept.length
-        ? '<div class="rcgrid">' + kept.map(recapCard).join("") + "</div>"
+        ? byDivision(kept)
         : '<div class="slatenone">No games that week for that division or region.</div>';
     });
   }
