@@ -4255,8 +4255,24 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   }
 
   /* ================= HOME ================= */
+  /* Headlines come from two shapes: Deseret publishes a real headline, KSL we
+     rebuild from the article slug and it arrives all lowercase. Title-casing
+     everything mangled the real ones -- "Parry\u2019s" became "Parry\u2019S" -- so
+     a headline that already has capitals is left exactly as its outlet wrote it. */
+  var ACRONYM = { nfl:"NFL", nba:"NBA", mlb:"MLB", ncaa:"NCAA", naia:"NAIA",
+    uhsaa:"UHSAA", byu:"BYU", usu:"USU", suu:"SUU", uvu:"UVU", wwii:"WWII",
+    ksl:"KSL", kutv:"KUTV", kjzz:"KJZZ", abc4:"ABC4", tnl:"TNL",
+    qb:"QB", rb:"RB", wr:"WR", te:"TE", dl:"DL", lb:"LB", db:"DB", ol:"OL",
+    td:"TD", mvp:"MVP", jv:"JV", ot:"OT", gpa:"GPA", rpi:"RPI", sec:"SEC" };
+
   function titleCase(t) {
-    return t.replace(/\b[a-z]/g, function (m) { return m.toUpperCase(); })
+    t = String(t || "").replace(/^\s*high school football\s*[:\u2014-]?\s*/i, "");
+    // Test BEFORE touching the first letter, or capitalising it makes the string
+    // look mixed-case to the next line and "provo" comes out "PRovo".
+    if (/[A-Z]/.test(t)) return t.charAt(0).toUpperCase() + t.slice(1);
+    return t.replace(/[a-z0-9]+/g, function (w) {
+              return ACRONYM[w] || w.charAt(0).toUpperCase() + w.slice(1);
+            })
             .replace(/\b(A|An|The|And|Or|Of|In|On|At|To|For|Vs|With|Over)\b/g, function (m, _o, off) {
               return off === 0 ? m : m.toLowerCase();
             });
@@ -4456,7 +4472,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       leadHtml +
       (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "") +
       vidHtml +
-      '<div class="panel"><h2>Around Utah high school football</h2>' +
+      '<div class="panel"><h2>Around Utah</h2>' +
       '<p class="lede">Reported by people who were there. Links go to the original story &mdash; ' +
       "this page does not reproduce anyone else&rsquo;s writing.</p>" +
       '<div class="river">' + riverHtml + "</div></div>" +
