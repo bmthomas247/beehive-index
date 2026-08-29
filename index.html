@@ -2470,7 +2470,6 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       (p.summary
         ? '<div class="psum">' + esc(p.summary) + "</div>"
         : "") +
-      playerPress(p.name, p.school) +
       (p.commit || (p.offers && p.offers.length) || (p.visits && p.visits.length)
         ? offerBlock(p) : "") +
       ((p.awards && p.awards.length) || (p.honors_ext && p.honors_ext.length) || p.profile_note
@@ -2935,14 +2934,10 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
      It becomes part of the program's record, and part of the record of any player
      it names. So every story is indexed twice -- by school and by player -- and
      the front page is just the newest slice of the same pile. */
-  var PRESS_SCHOOL = {}, PRESS_PLAYER = {};
+  var PRESS_SCHOOL = {};
   (DATA.news_feed || []).forEach(function (n) {
     (n.schools || []).forEach(function (s) {
       (PRESS_SCHOOL[s] = PRESS_SCHOOL[s] || []).push(n);
-    });
-    (n.who || []).forEach(function (w) {
-      var k = pkeyOf(w.name, w.school);
-      (PRESS_PLAYER[k] = PRESS_PLAYER[k] || []).push(n);
     });
   });
 
@@ -2964,12 +2959,6 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       "<p style='margin:7px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>" +
       "Headlines only, linked back to whoever wrote them. Stories stay here after they " +
       "leave the front page.</p>";
-  }
-
-  function playerPress(name, school) {
-    var list = PRESS_PLAYER[pkeyOf(name, school)] || [];
-    if (!list.length) return "";
-    return '<div class="sect">Written about</div>' + pressRows(list, 8);
   }
 
   function videoBlock(school) {
@@ -3672,7 +3661,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           '<div class="ldname">' + esc(p.name) +
           '<span class="ldmeta">' + esc(p.school) + " " + esc(p.cls) +
           (p.reg && !leadReg ? " " + esc(p.reg) : "") +
-          (p.yr ? " · " + esc(p.yr) : "") + (p.pg ? " · " + p.pg + "/gm" : "") +
+          (p.yr ? " · " + esc(p.yr) : "") +
           (ex ? "<br>" + esc(ex) : "") + "</span></div>" +
           '<div class="ldv">' + p.v + "</div></div>";
       }).join("") + "</div>";
@@ -3696,6 +3685,10 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       list.slice(0, 10).map(function (r, i) {
         return '<div class="ldrow" data-t="' + esc(r.school) + '" style="cursor:pointer"><div class="ldn">' +
           (i + 1) + "</div>" +
+          // The row is a four-column grid: rank, crest, name, value. These two
+          // boards were emitting three cells, so the NAME landed in the 22px
+          // crest column and wrapped one word per line on a phone.
+          logo(r.school, "sm") +
           '<div class="ldname">' + esc(r.school) +
           '<span class="ldmeta">' + esc(r.cls) + " &middot; " + r.ypc_adj + " ypc adj" +
           (r.pass_grade !== null && r.pass_grade !== undefined
@@ -3720,6 +3713,10 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       list.slice(0, 10).map(function (r, i) {
         return '<div class="ldrow" data-t="' + esc(r.school) + '" style="cursor:pointer"><div class="ldn">' +
           (i + 1) + "</div>" +
+          // The row is a four-column grid: rank, crest, name, value. These two
+          // boards were emitting three cells, so the NAME landed in the 22px
+          // crest column and wrapped one word per line on a phone.
+          logo(r.school, "sm") +
           '<div class="ldname">' + esc(r.school) +
           '<span class="ldmeta">' + esc(r.cls) +
           (r.ypc_allowed_adj !== null && r.ypc_allowed_adj !== undefined
@@ -4812,20 +4809,23 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
 
   document.getElementById("v-players").innerHTML =
     '<div class="panel" style="margin-bottom:14px"><h2>Player search</h2>' +
+    // Brandon: assume nobody reads a wall of text. The lede is two sentences and
+    // a number; the method, the GPA rule and the handles rule are still here in
+    // full, one click down, for the people who want to check us.
     '<p class="lede">Every player on every 2026 varsity roster in the state &mdash; <strong>' +
-    PIDX.length.toLocaleString() + '</strong> of them &mdash; joined to his own season statistics and to whatever the recruiting services say about him. A service only carries a player somebody already noticed. A roster carries everybody.</p>' +
-    '<p class="lede">That difference is the reason this exists. <strong>' +
+    PIDX.length.toLocaleString() + '</strong> of them, not just the ones a service noticed. <strong>' +
     PIDX.filter(function (p) { return p.has_stats && !p.grade; }).length.toLocaleString() +
-    ' players are producing this season with no recruiting grade anywhere</strong> &mdash; filter to <em>Producing, unranked</em> to see only them. <strong>Click any column heading to sort by it</strong>, and click it again to flip the order.</p>' +
-    '<p class="lede"><strong>The Beehive grade</strong> is the middle number: what the services say about a player and what he has actually done, on one scale. ' +
-    'Raw production is not comparable across the state &mdash; a back running at 1A defenses will out-produce a back running at 6A defenses and the raw number cannot tell which is better. ' +
-    'So production is re-priced against the teams a player <em>actually played</em>: offense against the defensive ratings he faced, defense against the offenses that faced him. ' +
-    'Classification is never used directly, because a strong 3A schedule beats a weak 6A one and should count that way. ' +
-    'Then it is ranked inside his own position group, so a corner is not asked to out-produce a quarterback. ' +
-    'It is then scored on the <strong>Beehive 10</strong>: a ten-point budget split down the middle. Half is football &mdash; what the services say and what he has actually done. The other half is the rest of the athlete, on purpose: <strong>state honors, a second sport and grades are worth real points here</strong>, not decoration. Nothing is capped and nothing is forbidden &mdash; every category is something a player can go earn. The state median is <span class="mono">1.2</span> and the best player in Utah is still under <span class="mono">5</span>, so a ten stays a long way off.</p>' +
-    '<p class="notbet"><strong>On GPA.</strong> Grades belong on a recruiting page &mdash; plenty of rosters get built off a transcript rather than a forty time. But there is no way to fill this in for every player, so it is <strong>not a column and not a sort</strong>: a half-empty ranking would say more about who sent us a number than about who has the grades. It shows on a player\'s own profile when he or his coach supplies one. Hudl holds GPAs but serves them only to a viewer with a coaching relationship to that player, which is a sensible guard on a minor\'s school record and not one to work around. Many players do post a GPA in their own public X bio &mdash; where a handle is listed, that bio is one click away.</p>' +
-    '<p class="notbet"><strong>On X handles.</strong> A college coach gets a capped number of contact hours and a direct message on X does not spend one, which is why a public recruiting account is often the cheapest door into a player\'s own recruiting. Handles show on a profile when we have one &mdash; ' +
-    PIDX.filter(function (p) { return p.twitter; }).length + ' so far. <strong>They are never guessed.</strong> No source maps Utah players to handles, and inferring one from a name search would eventually put a stranger\'s account on a teenager\'s page. Players and coaches can send theirs and they go on. Beyond that, only what is already published about a player as an athlete appears here &mdash; no phone, no email, no address, and no personal accounts. To reach a player cold, go through his head coach; every staff is on the Coaches tab.</p></div>' +
+    ' are producing this season with no recruiting grade anywhere.</strong> Filter to <em>Producing, unranked</em> to see only them, and click any column heading to sort.</p>' +
+    '<details class="foldout"><summary>How the Beehive grade works</summary><div class="foldbody">' +
+    '<p>It is the middle number: what the services say about a player and what he has actually done, on one scale.</p>' +
+    '<p>Raw production is not comparable across the state &mdash; a back running at 1A defenses will out-produce a back running at 6A defenses, and the raw number cannot tell which is better. So production is re-priced against the teams a player <em>actually played</em>: offense against the defensive ratings he faced, defense against the offenses that faced him. Classification is never used directly, because a strong 3A schedule beats a weak 6A one and should count that way. Then it is ranked inside his own position group, so a corner is not asked to out-produce a quarterback.</p>' +
+    '<p>It is then scored on the <strong>Beehive 10</strong>: a ten-point budget split down the middle. Half is football. The other half is the rest of the athlete, on purpose &mdash; <strong>state honors, a second sport and grades are worth real points here</strong>, not decoration. Nothing is capped and nothing is forbidden; every category is something a player can go earn. The state median is <span class="mono">1.2</span> and the best player in Utah is still under <span class="mono">5</span>, so a ten stays a long way off.</p>' +
+    '</div></details>' +
+    '<details class="foldout"><summary>On GPA and X handles</summary><div class="foldbody">' +
+    '<p><strong>GPA.</strong> Grades belong on a recruiting page &mdash; plenty of rosters get built off a transcript rather than a forty time. But there is no way to fill this in for every player, so it is <strong>not a column and not a sort</strong>: a half-empty ranking would say more about who sent us a number than about who has the grades. It shows on a player\'s own profile when he or his coach supplies one. Hudl holds GPAs but serves them only to a viewer with a coaching relationship to that player, which is a sensible guard on a minor\'s school record and not one to work around.</p>' +
+    '<p><strong>X handles.</strong> A college coach gets a capped number of contact hours and a direct message on X does not spend one, which is why a public recruiting account is often the cheapest door into a player\'s own recruiting. Handles show on a profile when we have one &mdash; ' +
+    PIDX.filter(function (p) { return p.twitter; }).length + ' so far. <strong>They are never guessed.</strong> Players and coaches can send theirs and they go on. Beyond that, only what is already published about a player as an athlete appears here &mdash; no phone, no email, no address, no personal accounts. To reach a player cold, go through his head coach; every staff is on the Coaches tab.</p>' +
+    '</div></details></div>' +
     '<div class="psearch"><input type="search" id="pq" placeholder="Search a player or a school…" aria-label="Search players">' +
     '<div class="pfilters">' +
     '<select id="pfpos" aria-label="Position">' + POSGROUPS.map(function (g) {
