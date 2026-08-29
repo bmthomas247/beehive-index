@@ -873,6 +873,12 @@ a.utchip:hover b{text-decoration:underline}
   border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
 .dlink:hover{border-color:var(--sodium);color:var(--sodium)}
 .dlink.film{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+/* The Hudl button. Their orange and their name, drawn rather than copied --
+   the mark stays theirs and the button still reads at a glance. */
+.dlink.hudl{display:inline-flex;align-items:center;gap:7px;background:#ff6300;color:#fff;border-color:#ff6300}
+.dlink.hudl:hover{background:#e65a00;border-color:#e65a00;color:#fff}
+.hudlmark{width:13px;height:13px;flex:0 0 13px;background:#fff;
+  clip-path:polygon(0 0,32% 0,32% 38%,68% 38%,68% 0,100% 0,100% 100%,68% 100%,68% 62%,32% 62%,32% 100%,0 100%)}
 .dlink.film:hover{background:var(--sodium);border-color:var(--sodium);color:var(--surface)}
 .beebig{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;background:var(--surface-2);
   border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
@@ -1161,6 +1167,11 @@ a.utchip:hover b{text-decoration:underline}
 .never{margin:10px 0 0;padding-left:18px}
 .never li{font-size:13.5px;line-height:1.7;color:var(--ink-2)}
 .notbet{font-size:11.5px;color:var(--ink-3);margin-top:10px;padding-left:11px;border-left:2px solid var(--line)}
+/* Methodology moved out of the way. Somebody opening the picks wants the
+   picks; the explanation waits at the bottom for whoever goes looking. */
+.finenote{opacity:.9}
+.finenote h2{font-size:13px;color:var(--ink-3)}
+.finenote .lede{font-size:12px;line-height:1.55;color:var(--ink-3)}
 .probwrap{display:flex;align-items:center;gap:8px}
 .prob{flex:1;height:8px;background:var(--surface-2);position:relative;overflow:hidden}
 .prob i{position:absolute;inset:0 auto 0 0;background:var(--steel)}
@@ -2507,7 +2518,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       (p.twitter || p.hudl
         ? '<div class="dlinks">' +
           (p.hudl
-            ? '<a class="dlink film" href="' + esc(p.hudl) + '" target="_blank" rel="noopener">Watch his film</a>'
+            // Brandon: call it what it is. Everybody in recruiting knows the
+            // name, and "Watch his film" made two buttons that read as the
+            // same thing sit next to each other.
+            ? '<a class="dlink hudl" href="' + esc(p.hudl) + '" target="_blank" rel="noopener">' +
+              '<span class="hudlmark" aria-hidden="true"></span>Hudl</a>'
             : "") +
           // Brandon noticed a lot of kids have already cut their own reels and
           // they sit one tab over from the profile we were linking to. Hudl
@@ -2517,7 +2532,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           // belongs to the kid who made the reel.
           (p.hudl && /\/profile\/\d+/.test(p.hudl)
             ? '<a class="dlink" href="' + esc(p.hudl.replace(/\/+$/, "") + "/highlights") +
-              '" target="_blank" rel="noopener">His highlight reels</a>'
+              '" target="_blank" rel="noopener">Highlights</a>'
             : "") +
           (p.twitter
             ? '<a class="dlink" href="https://x.com/' + esc(p.twitter) +
@@ -3399,6 +3414,16 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
 
   function drawPred() {
   predWeekStats();
+  var PRED_FOOTNOTE =
+    '<div class="panel finenote" style="margin-top:18px"><h2>How the numbers are built</h2>' +
+    '<p class="lede">The line is <strong>rating difference plus 2.6 for home field</strong>. The projected score splits that margin around an expected total built from how much scoring each team\'s games have actually produced, shrunk toward the league average of ' +
+    'what each offense actually produces against what that defense actually gives up — so treat the margin as the real prediction and the score as its plausible shape, not a forecast of the exact number.</p>' +
+    '<p class="lede">Reading the numbers. The line is the projected margin, written the familiar way: <span class="mono">Tooele −1.5</span> means Tooele is favored by a point and a half. <span class="mono">O/U</span> is the projected combined score. The bar underneath is the model\'s confidence — how often this matchup goes the favorite\'s way if you played it out. Half-points everywhere, because a whole number can land exactly on the margin.</p>' +
+    '<p class="lede">Coin flips (inside three points) are marked in amber; upset watch — where the model favors the team with the worse record — is marked in blue. Two weeks of data with the preseason prior still carrying about half the weight: a starting point, not a verdict.</p>' +
+    '<p class="lede">Click any game for the full card: why the model landed there, a short preview, and the two teams side by side. Rivalry games are marked in red.</p>' +
+    '<p class="notbet">A line and a total are borrowed terms, not a betting product. <strong>There are no odds on this page and there will not be</strong> — nobody should be wagering on teenagers. A margin and a combined score are kept because they say "how big a favorite" and "how much scoring" more precisely than words do.</p>' +
+    '</div>';
+
   document.getElementById("v-pred").innerHTML =
     '<div class="panel" style="margin-bottom:16px"><h2>Week ' + pdWeek + ' picks</h2>' +
     (PDWEEKS.length > 1
@@ -3406,12 +3431,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           return '<button class="wkb' + (w === pdWeek ? " on" : "") + '" data-pw="' + w + '">Week ' + w + "</button>";
         }).join("") + "</div>"
       : "") +
-    '<p class="lede">The line is <strong>rating difference plus 2.6 for home field</strong>. The projected score splits that margin around an expected total built from how much scoring each team\'s games have actually produced, shrunk toward the league average of ' +
-    'what each offense actually produces against what that defense actually gives up — so treat the margin as the real prediction and the score as its plausible shape, not a forecast of the exact number.</p>' +
-    '<p class="lede">Reading the numbers. The line is the projected margin, written the familiar way: <span class="mono">Tooele −1.5</span> means Tooele is favored by a point and a half. <span class="mono">O/U</span> is the projected combined score. The bar underneath is the model\'s confidence — how often this matchup goes the favorite\'s way if you played it out. Half-points everywhere, because a whole number can land exactly on the margin.</p>' +
-    '<p class="lede">Coin flips (inside three points) are marked in amber; upset watch — where the model favors the team with the worse record — is marked in blue. Two weeks of data with the preseason prior still carrying about half the weight: a starting point, not a verdict.</p>' +
-    '<p class="lede">Click any game for the full card: why the model landed there, a short preview, and the two teams side by side. Rivalry games are marked in red.</p>' +
-    '<p class="notbet">A line and a total are borrowed terms, not a betting product. <strong>There are no odds on this page and there will not be</strong> — nobody should be wagering on teenagers. A margin and a combined score are kept because they say "how big a favorite" and "how much scoring" more precisely than words do.</p></div>' +
+    '</div>' +
     (top5.length
       ? '<div class="panel" style="margin-bottom:20px"><h2>The five games to watch</h2>' +
         '<p class="lede">Ranked by how good both teams are <em>and</em> how close the model thinks it will be. The weaker side counts for more than the stronger one, so a great team beating up on a bad one does not make this list — two good teams within a score of each other does. Rivalry games get a bump, because they fill a stadium whatever the ratings say.</p>' +
@@ -3439,10 +3459,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         '<div class="recgrid">' +
         '<div><div class="rn">' + R.right + "&ndash;" + (R.n - R.right) + '</div><div class="rl">Picking winners</div>' +
           '<div class="rs">' + pct + "% of " + R.n + " graded game" + (R.n === 1 ? "" : "s") + "</div></div>" +
-        '<div><div class="rn">' + R.ats + "&ndash;" + (R.n - R.ats) + '</div><div class="rl">Against our own number</div>' +
-          '<div class="rs">favourite beat the projected margin</div></div>' +
-        '<div><div class="rn">' + R.over + "&ndash;" + (R.n - R.over) + '</div><div class="rl">Over the projected total</div>' +
-          '<div class="rs">how often the scoring beat the number</div></div>' +
+        // Brandon's line on all of this: we like the Vegas vocabulary, we are
+        // not going to bet on high school kids. An against-the-spread record
+        // and an over/under record are the two things here that are only good
+        // for betting, so they come off. How often we pick the winner is a
+        // measure of the model and stays.
         "</div>" +
         '<p class="lede" style="margin-top:12px"><strong>Every pick gets graded and none of them come down.</strong> ' +
         'A model that only shows you the games it has not been tested on is not telling you anything. ' +
@@ -3470,7 +3491,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
      '<div class="card"><div class="k">Upset watch</div><div class="v mono">' + upsetN + '</div><div class="sub">favorite has the worse record</div></div>',
      '<div class="card"><div class="k">Widest line</div><div class="v mono">' + biggest.spread.toFixed(0) +
        '</div><div class="sub">' + esc(biggest.fav) + " over " + esc(biggest.dog) + "</div></div>"
-    ].join("") + "</div>";
+    ].join("") + "</div>" +
+    PRED_FOOTNOTE;
 
   slateFilter("pd", PW, function (kept) {
     var byDay = {};
