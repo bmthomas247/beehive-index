@@ -3259,8 +3259,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   /* The week's awards. Every one is computed from the box scores and adjusted
      for who the opponent was, so a big number against a good team beats the
      same number against a bad one. */
-  function awardsBlock() {
-    var A = DATA.awards || {};
+  function awardsBlock(wk) {
+    // Every finished week has its own board now, so the honors shown follow
+    // the week the reader is looking at rather than always being the newest.
+    var ALL = (DATA.awards && DATA.awards.weeks) || {};
+    var A = (wk != null && ALL[String(wk)]) || DATA.awards || {};
     if (!A.game && !A.offense) return "";
     // Brandon's rule: honors are not announced off the model. The board is
     // computed as finalists, a person picks the winner, and nothing shows until
@@ -3286,7 +3289,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         (note ? '<div class="anote">' + note + "</div>" : "") + "</div>";
     }
     var out = [];
-    var g = A.game;
+    var P = A.picks || {};
+    var g = P.game || A.game;
     if (g) {
       out.push(card("Game of the week",
         esc(g.winner) + " " + Math.max(g.away_score, g.home_score) + ", " +
@@ -3301,32 +3305,37 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         esc(p.line) + (note ? " &mdash; " + note : ""), p.team,
         pAttr(p.name, p.team) ? pAttr(p.name, p.team) : "");
     }
-    out.push(pcard("Offensive player", A.offense));
-    out.push(pcard("Defensive player", A.defense));
-    out.push(pcard("Kicker", A.kicker));
-    if (A.oline) {
-      out.push(card("Offensive line", esc(A.oline.team),
-        "vs " + esc(A.oline.opp),
-        A.oline.yds + " rushing yards on " + A.oline.att + " carries, " +
-        A.oline.ypc.toFixed(1) + " a carry. Credited to the unit, because rushing " +
-        "yards are a five-man stat.", A.oline.team,
-        ' data-t="' + esc(A.oline.team) + '" style="cursor:pointer"'));
+    out.push(pcard("Offensive player", P.offense || A.offense));
+    out.push(pcard("Defensive player", P.defense || A.defense));
+    out.push(pcard("Kicker", P.kicker || A.kicker));
+    var OL = P.oline || A.oline, OT = P.off_team || A.off_team, DT = P.def_team || A.def_team;
+    if (OL) {
+      out.push(card("Offensive line", esc(OL.team),
+        "vs " + esc(OL.opp),
+        OL.yds + " rushing yards on " + OL.att + " carries, " + OL.ypc.toFixed(1) +
+        " a carry" +
+        (OL.pass_yds ? ", and " + OL.pass_yds + " passing yards protected" : "") +
+        (OL.sacks_allowed === 0 ? ". No sacks allowed." :
+         OL.sacks_allowed ? ". " + OL.sacks_allowed + " sacks allowed." : ".") +
+        " Credited to the unit, because none of it is a one-man stat.", OL.team,
+        ' data-t="' + esc(OL.team) + '" style="cursor:pointer"'));
     }
-    if (A.off_team) {
-      out.push(card("Offense of the week", esc(A.off_team.team),
-        A.off_team.pf + " points vs " + esc(A.off_team.opp), "",
-        A.off_team.team, ' data-t="' + esc(A.off_team.team) + '" style="cursor:pointer"'));
+    if (OT) {
+      out.push(card("Offense of the week", esc(OT.team),
+        OT.pf + " points vs " + esc(OT.opp), "",
+        OT.team, ' data-t="' + esc(OT.team) + '" style="cursor:pointer"'));
     }
-    if (A.def_team) {
-      out.push(card("Defense of the week", esc(A.def_team.team),
-        "held " + esc(A.def_team.opp) + " to " + A.def_team.pa, "",
-        A.def_team.team, ' data-t="' + esc(A.def_team.team) + '" style="cursor:pointer"'));
+    if (DT) {
+      out.push(card("Defense of the week", esc(DT.team),
+        "held " + esc(DT.opp) + " to " + DT.pa, "",
+        DT.team, ' data-t="' + esc(DT.team) + '" style="cursor:pointer"'));
     }
-    return '<div class="panel" style="margin-bottom:16px"><h2>Week ' + DATA.week +
+    return '<div class="panel" style="margin-bottom:16px"><h2>Week ' + esc(String(A.week)) +
       " honors</h2>" +
-      '<p class="lede">Picked by the numbers, not by us. Every one is adjusted for who ' +
-      "the opponent was &mdash; 240 yards against a good defense beats 240 against a bad " +
-      "one, and a board that ignores that just rewards the easy schedule.</p>" +
+      '<p class="lede">The numbers narrow it to three; a coach picks the winner. Every ' +
+      "number is adjusted for who the opponent was &mdash; 240 yards against a good " +
+      "defense beats 240 against a bad one, and a board that ignores that just rewards " +
+      "the easy schedule.</p>" +
       '<div class="awards">' + out.filter(Boolean).join("") + "</div></div>";
   }
 
@@ -3350,7 +3359,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     var isNow = rcWeek === RCWEEKS[0];
 
     document.getElementById("v-recap").innerHTML =
-      (isNow ? awardsBlock() : "") +
+      awardsBlock(rcWeek) +
       '<div class="panel" style="margin-bottom:16px"><h2>Week ' + rcWeek + ' summary</h2>' +
       '<div class="wkpick">' + RCWEEKS.map(function (w) {
         return '<button class="wkb' + (w === rcWeek ? " on" : "") + '" data-wk="' + w + '">Week ' + w + "</button>";
