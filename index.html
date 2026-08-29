@@ -699,6 +699,12 @@ a.rrow{text-decoration:none;color:inherit}
 .rctag.sh{background:color-mix(in srgb,var(--steel) 16%,transparent);color:var(--steel)}
 .rctag.up{background:color-mix(in srgb,var(--sodium) 16%,transparent);color:var(--sodium)}
 .rctag.film{background:color-mix(in srgb,var(--rise) 16%,transparent);color:var(--rise)}
+.wkpick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.wkb{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 12px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);
+  border-radius:var(--r);cursor:pointer}
+.wkb:hover{background:var(--surface-2)}
+.wkb.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 
 .psum{margin:12px 0 4px;padding:11px 13px;background:color-mix(in srgb,var(--steel) 7%,var(--surface));
   border-left:3px solid var(--steel);font-size:14px;line-height:1.55;color:var(--ink)}
@@ -1414,6 +1420,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   <section id="v-cmp" hidden></section>
   <section id="v-playoffs" hidden></section>
   <section id="v-oos" hidden></section>
+  <section id="v-oosnext" hidden></section>
   <section id="v-recruit" hidden></section>
   <section id="v-talent" hidden></section>
   <section id="v-stats" hidden></section>
@@ -3177,28 +3184,57 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<div class="awards">' + out.filter(Boolean).join("") + "</div></div>";
   }
 
-  document.getElementById("v-recap").innerHTML =
-    awardsBlock() +
-    '<div class="panel" style="margin-bottom:16px"><h2>Week ' + DATA.week + ' summary</h2>' +
-    '<p class="lede">Everything that happened on the most recent slate, closest games first, with rivalries at the top. ' +
-    (rivN ? "<strong>" + rivN + " rivalr" + (rivN === 1 ? "y" : "ies") + "</strong> were played. " : "") +
-    'Of ' + RECAP.length + ' games, <strong>' + oneN + '</strong> were inside one possession and <strong>' + blowN +
-    '</strong> were decided by four touchdowns or more &mdash; which is the shape of Utah football, and the reason this model caps blowouts rather than rewarding them.</p>' +
-    '<p class="lede"><strong>Filter by classification or region</strong> to pull out just your corner of the state. A game shows up under a division or a region when <em>either</em> team belongs to it, so a 4A team playing up into 5A still appears on the 4A board.</p>' +
-    '<p class="lede"><strong>Click any game</strong> for the full card: the quarter-by-quarter, both teams side by side, and how it moved the ratings.</p></div>' +
-    '<div id="rcbar"></div>' +
-    '<div id="rcgames"></div>' +
-    '<div class="grid cards" style="margin-top:22px">' +
-    ['<div class="card"><div class="k">Games</div><div class="v mono">' + RECAP.length + '</div><div class="sub">played last week</div></div>',
-     '<div class="card"><div class="k">One possession</div><div class="v mono">' + oneN + '</div><div class="sub">decided by 8 or fewer</div></div>',
-     '<div class="card"><div class="k">Shutouts</div><div class="v mono">' + shutN + '</div><div class="sub">somebody held at zero</div></div>',
-     '<div class="card"><div class="k">Blowouts</div><div class="v mono">' + blowN + '</div><div class="sub">28 points or more</div></div>'
-    ].join("") + "</div>";
+  /* Brandon: the summary should let somebody look back further than one week.
+     recap now carries every completed game with the week it belongs to, so this
+     is a week picker over the same cards rather than a second page. */
+  var RCWEEKS = [];
+  RECAP.forEach(function (r) {
+    var w = +r.wk || 0;
+    if (w && RCWEEKS.indexOf(w) < 0) RCWEEKS.push(w);
+  });
+  RCWEEKS.sort(function (a, b) { return b - a; });
+  var rcWeek = RCWEEKS.length ? RCWEEKS[0] : (+DATA.week || 0);
 
-  slateFilter("rc", RECAP, function (kept) {
-    document.getElementById("rcgames").innerHTML = kept.length
-      ? '<div class="rcgrid">' + kept.map(recapCard).join("") + "</div>"
-      : '<div class="slatenone">No games on this slate for that division or region.</div>';
+  function drawRecap() {
+    var games = RECAP.filter(function (r) { return (+r.wk || 0) === rcWeek; });
+    var riv = games.filter(function (r) { return r.rivalry; }).length;
+    var one = games.filter(function (r) { return r.oneposs; }).length;
+    var shut = games.filter(function (r) { return r.shutout; }).length;
+    var blow = games.filter(function (r) { return r.blowout; }).length;
+    var isNow = rcWeek === RCWEEKS[0];
+
+    document.getElementById("v-recap").innerHTML =
+      (isNow ? awardsBlock() : "") +
+      '<div class="panel" style="margin-bottom:16px"><h2>Week ' + rcWeek + ' summary</h2>' +
+      '<div class="wkpick">' + RCWEEKS.map(function (w) {
+        return '<button class="wkb' + (w === rcWeek ? " on" : "") + '" data-wk="' + w + '">Week ' + w + "</button>";
+      }).join("") + "</div>" +
+      '<p class="lede">' + games.length + ' games, closest first, rivalries at the top. ' +
+      (riv ? "<strong>" + riv + " rivalr" + (riv === 1 ? "y" : "ies") + "</strong> were played. " : "") +
+      one + ' were inside one possession, ' + blow + ' were decided by four touchdowns or more. ' +
+      '<strong>Click any game</strong> for the full card.</p></div>' +
+      '<div id="rcbar"></div>' +
+      '<div id="rcgames"></div>' +
+      '<div class="grid cards" style="margin-top:22px">' +
+      ['<div class="card"><div class="k">Games</div><div class="v mono">' + games.length + '</div><div class="sub">played in Week ' + rcWeek + '</div></div>',
+       '<div class="card"><div class="k">One possession</div><div class="v mono">' + one + '</div><div class="sub">decided by 8 or fewer</div></div>',
+       '<div class="card"><div class="k">Shutouts</div><div class="v mono">' + shut + '</div><div class="sub">somebody held at zero</div></div>',
+       '<div class="card"><div class="k">Blowouts</div><div class="v mono">' + blow + '</div><div class="sub">28 points or more</div></div>'
+      ].join("") + "</div>";
+
+    slateFilter("rc", games, function (kept) {
+      document.getElementById("rcgames").innerHTML = kept.length
+        ? '<div class="rcgrid">' + kept.map(recapCard).join("") + "</div>"
+        : '<div class="slatenone">No games that week for that division or region.</div>';
+    });
+  }
+  drawRecap();
+  document.getElementById("v-recap").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-wk]");
+    if (!b) return;
+    rcWeek = +b.dataset.wk;
+    drawRecap();
+    document.getElementById("v-recap").scrollIntoView({ block: "start" });
   });
 
   /* ================= WEEK 3 PICKS ================= */
@@ -4042,12 +4078,19 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       oosWeekBody(w);
   }
 
-  document.getElementById("v-oos").innerHTML =
+  // Brandon: out of state is not its own destination. What has already been
+  // played sits with the weekly summary; what is still on the schedule sits with
+  // the weekly picks, because that is when somebody goes looking for it.
+  document.getElementById("v-oosnext").innerHTML =
     '<div class="panel" style="margin-bottom:14px"><h2>Utah\'s next games outside Utah</h2>' +
-    '<p class="lede">' + OOSUP.length + ' out-of-state games are still on Utah schedules. These are the only games that ' +
-    'tell anyone where Utah actually sits, because an out-of-state opponent is the one thing on the schedule ' +
-    'that is anchored to a scale Utah does not control. Page through the weeks below.</p></div>' +
-    '<div id="oosweek" style="margin-bottom:18px"></div>' +
+    '<p class="lede">' + OOSUP.length + ' out-of-state games are still on Utah schedules. An out-of-state opponent is ' +
+    'the one thing on the schedule anchored to a scale Utah does not control, which is what makes these ' +
+    'the games that tell you where the state actually sits.</p></div>' +
+    '<div id="oosweek" style="margin-bottom:18px"></div>';
+
+  document.getElementById("v-oos").innerHTML =
+    '<div class="panel" style="margin-bottom:14px"><h2>Utah against everybody else</h2>' +
+    '<p class="lede">Every game a Utah program has played outside the state this season, hardest opponent first.</p></div>' +
     '<div class="grid cards" style="margin-bottom:14px">' +
     ['<div class="card"><div class="k">Utah\'s record</div><div class="v mono">' + orec[0] + "–" + orec[1] +
        '</div><div class="sub">against teams from other states</div></div>',
@@ -4059,7 +4102,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
        '</div><div class="sub">opponent rated above average</div></div>'
     ].join("") + "</div>" +
 
-    '<details class="foldout"><summary>Every out-of-state game already played (' + OOS.length + ")</summary>" +
+    '<details class="foldout" open><summary>Every out-of-state game already played (' + OOS.length + ")</summary>" +
     '<div class="foldbody">' +
     '<p class="lede" style="margin-bottom:12px">Hardest opponent first. These cut both ways — a loss to a national ' +
     'title contender says something very different from a loss at home to a neighbouring state.</p>' +
@@ -4097,7 +4140,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     'so that number sits between what the scale says and what the scoreboard said.</p></div></details>';
 
   drawOosWeek();
-  document.getElementById("v-oos").addEventListener("click", function (e) {
+  document.getElementById("v-oosnext").addEventListener("click", function (e) {
     var step = e.target.closest("[data-ow]"), go = e.target.closest("[data-ow-go]");
     if (step) { owkNow = Math.max(0, Math.min(OWK.length - 1, owkNow + (+step.dataset.ow))); drawOosWeek(); }
     else if (go) { owkNow = +go.dataset.owGo; drawOosWeek(); }
@@ -5325,11 +5368,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   var GROUPS = [
     { id: "home", label: "Home", views: [["home", "Home"]] },
     { id: "rank", label: "Rankings", views: [["rank", "Rankings"]] },
-    { id: "recap", label: "Week " + W, views: [["recap", "Week " + W + " Summary"]] },
-    { id: "pred", label: "Week " + NW + " Picks", views: [["pred", "Week " + NW + " Picks"]] },
-    { id: "predict", label: "Predictions", views: [
-        ["cmp", "Matchup"], ["playoffs", "Playoffs"]] },
-    { id: "oos", label: "Out of State", views: [["oos", "Out of State"]] },
+    { id: "recap", label: "Weekly Summary", views: [
+        ["recap", "Weekly Summary"], ["oos", "Out of State"]] },
+    { id: "pred", label: "Weekly Picks", views: [
+        ["pred", "Week " + NW + " Picks"], ["oosnext", "Out of State Ahead"],
+        ["cmp", "Predictor Calculator"], ["playoffs", "Playoff Predictions"]] },
     { id: "leaders", label: "State Leaders", views: [
         ["stats", "State Leaders"], ["history", "History"]] },
     { id: "people", label: "Players", views: [
