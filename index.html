@@ -714,6 +714,12 @@ a.rrow{text-decoration:none;color:inherit}
 .utchip em{display:block;font-style:normal;font-size:10.5px;color:var(--ink-3);letter-spacing:.02em}
 .utnone{margin-top:11px;padding-top:11px;border-top:1px solid var(--line);
   font-size:12.5px;color:var(--ink-3);line-height:1.5}
+.storyteams{display:flex;flex-wrap:wrap;gap:8px;margin:-2px 0 4px}
+.storyteam{display:flex;align-items:center;gap:9px;padding:8px 12px 8px 9px;cursor:pointer;
+  border:1px solid var(--line);border-radius:var(--r);background:var(--surface-2)}
+.storyteam:hover{background:var(--surface)}
+.storyteam b{display:block;font-size:14px;line-height:1.2}
+.storyteam em{display:block;font-style:normal;font-size:11.5px;color:var(--ink-3)}
 
 .psum{margin:12px 0 4px;padding:11px 13px;background:color-mix(in srgb,var(--steel) 7%,var(--surface));
   border-left:3px solid var(--steel);font-size:14px;line-height:1.55;color:var(--ink)}
@@ -1531,6 +1537,10 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           <tr><td>Sports Illustrated</td><td>Utah player of the week</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>Hudl public profiles</td><td>Height, weight, jersey, positions, testing numbers, awards, previous and club teams, film links</td><td><span class="tierbadge t-self">Self-reported</span></td></tr>
           <tr><td>Player&rsquo;s own public posts</td><td>GPA, when he has published it himself for recruiting</td><td><span class="tierbadge t-self">Self-reported</span></td></tr>
+          <tr><td>X, Instagram and Facebook &mdash; public accounts</td><td>Commitment and offer announcements, camp and combine results, and a player&rsquo;s own X handle when he or his program publishes it. Read one post at a time, never scraped in bulk, and never from a private account. Handles are never guessed</td><td><span class="tierbadge t-self">Self-reported</span></td></tr>
+          <tr><td>School and program social accounts</td><td>Scores, honors and roster news a program posts about itself</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
+          <tr><td>MaxPreps</td><td>National team ratings, used to pin out-of-state opponents to a scale Utah does not control. Player statistics from MaxPreps are not in yet</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
+          <tr><td>ESPN</td><td>College team logos on the Getting Recruited page</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>The Rush</td><td>Utah high school sports video coverage &mdash; highlights, interviews and weekly features. Linked where a player appears in one</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>KSL Sports</td><td>High school news coverage. Linked from a player&rsquo;s page when an article names him</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>NFHS Network</td><td>Where a Utah game is being streamed or was broadcast</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
@@ -2842,7 +2852,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
           }).join("") + "</div>"
         : "") +
       (who.length
-        ? '<div class="sect">Who is in this story</div>' +
+        ? '<div class="sect">Players in this story</div>' +
           '<p class="lede" style="margin:-2px 0 8px">Matched against our player index. Click anyone for his full card.</p>' +
           who.map(function (w) {
             return '<div class="storyp"' + pAttr(w.name, w.school) + ">" +
@@ -2856,9 +2866,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
               (w.bee != null ? '<div class="spb">' + w.bee.toFixed(2) +
                 "<small>/ 10</small></div>" : "<div></div>") + "</div>";
           }).join("")
-        : '<div class="sect">Who is in this story</div>' +
-          '<p class="lede">We have not matched any player in our index to this one yet. ' +
-          "Headlines are matched by name, so a story that only names a school will show none.</p>") +
+        : ((n.schools || []).length
+            ? ""
+            : '<div class="sect">Who is in this story</div>' +
+              '<p class="lede">No player or program in our index is named in this headline yet. ' +
+              "Matching is done on names, so a story can be about a game and still show none here.</p>")) +
       // A YouTube link is watched, not read. Getting that verb wrong reads as
       // sloppy to anyone who clicks it.
       (function () {
