@@ -500,6 +500,13 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
   background:rgba(13,19,25,.72);border:1.5px solid rgba(255,255,255,.85)}
 .vplay::after{content:"";position:absolute;top:50%;left:53%;transform:translate(-50%,-50%);
   border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent}
+.capbadge{display:inline-block;vertical-align:middle;margin-left:9px;padding:2px 7px;
+  border:1px solid var(--fall);border-radius:2px;background:transparent;color:var(--fall);
+  font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.09em;
+  text-transform:uppercase;font-weight:500;cursor:help}
+.vdur{position:absolute;right:4px;bottom:4px;padding:1px 5px;border-radius:2px;
+  background:rgba(13,19,25,.82);color:#fff;font-family:"Oswald",sans-serif;
+  font-size:10px;letter-spacing:.06em;line-height:1.5}
 .vcard:hover .vthumb{border-color:var(--sodium)}
 .vcard:hover .vt{color:var(--sodium)}
 .vmeta{display:block;font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.08em;
@@ -2399,6 +2406,13 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<span>/ 10</span></b>' +
       '<span class="beectx">State median <span class="mono">' + BEE_MED +
       '</span> &middot; best in Utah <span class="mono">' + BEE_TOP + "</span></span></div>";
+    // A hand-set floor is NOT shown, and nothing about it reaches this file:
+    // playerindex.py strips it before the record is written, so the published
+    // grade is just a grade. Brandon's call, and the right one -- a kid reading
+    // his own page should not find out a coach thought his number was too low,
+    // and a rival coach should not be able to tell which grades were argued up.
+    // The reasoning lives in bee_floor.csv and the build log, where we can see
+    // it and nobody else can.
   }
 
   // Each service published its own number. A recruiter wants to see them side
@@ -2473,6 +2487,23 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         : "<span style='color:var(--ink-3)'>Not on file yet &mdash; listed on the school&rsquo;s athletics page</span>"]);
     if (!forPlayer && t.oc) rows.push(["Offensive coord.", esc(t.oc)]);
     if (!forPlayer && t.dc) rows.push(["Defensive coord.", esc(t.dc)]);
+    // The program's own accounts. Half these schools file nothing to Deseret and
+    // still post their own scores the same night, so this is a door as real as
+    // the phone number above it. Transcribed off the accounts, never guessed.
+    var soc = t.social || {};
+    if (soc.x || soc.instagram || (t.coach_x && t.coach_x.length)) {
+      var bits = [];
+      if (soc.x) bits.push('<a href="https://x.com/' + esc(soc.x) +
+        '" target="_blank" rel="noopener">@' + esc(soc.x) + "</a>");
+      if (soc.instagram) bits.push('<a href="https://instagram.com/' + esc(soc.instagram) +
+        '" target="_blank" rel="noopener">IG ' + esc(soc.instagram) + "</a>");
+      (t.coach_x || []).forEach(function (c) {
+        bits.push('<a href="https://x.com/' + esc(c.x) + '" target="_blank" rel="noopener">@' +
+          esc(c.x) + "</a> <span style='color:var(--ink-3)'>" + esc(c.n) +
+          (c.role ? ", " + esc(c.role) : "") + "</span>");
+      });
+      rows.push(["Online", bits.join(" &middot; ")]);
+    }
     if (c.phone) rows.push(["School", esc(c.phone)]);
     if (c.address) rows.push(["Address", esc(c.address)]);
     if (c.athletics_url) rows.push(["Athletics", '<a href="' + esc(c.athletics_url) +
@@ -2569,7 +2600,13 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<button class="dclose" id="dclose" aria-label="Close">Close ✕</button>' +
       colorBand(p.school) +
       '<div class="dhead withcrest">' + logo(p.school, "xl") +
-      '<div><h3>' + esc(p.name) + "</h3>" +
+      '<div><h3>' + esc(p.name) +
+      // Voted by his teammates. It is the one line on a profile that is not a
+      // number and not a measurement, and college staffs ask about it.
+      (p.captain ? '<span class="capbadge" title="' +
+        esc(p.captain.src || "reported by the program") + '">' +
+        esc(p.captain.note ? p.captain.note : "team captain") + "</span>" : "") +
+      "</h3>" +
       '<div class="dsub">' + (line || "—") + "</div>" +
       '<div class="dsub"><span data-t="' + esc(p.school) + '" style="cursor:pointer;text-decoration:underline">' +
       esc(p.school) + "</span> · " + esc(p.team_cls) + (p.region ? " · " + esc(p.region) : "") +
@@ -2600,6 +2637,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         : "") + "</div></div>" +
       combineCard(p) +
       fullPageLink(p.school) +
+      reelBlock(p) +
       (p.summary
         ? '<div class="psum">' + esc(p.summary) + "</div>"
         : "") +
@@ -3102,6 +3140,30 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       "<p style='margin:7px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>" +
       "Headlines only, linked back to whoever wrote them. Stories stay here after they " +
       "leave the front page.</p>";
+  }
+
+  // A player's own highlight reels, shown the way the front page shows video
+  // news: the still, the length, who it is against. Brandon asked for exactly
+  // this treatment on player pages.
+  //
+  // Nothing is copied. The still is hot-linked off Hudl and every click goes
+  // back to Hudl, so the view count stays on the reel the kid cut. If he has
+  // not made one, this renders nothing at all rather than an empty shelf.
+  function reelBlock(p) {
+    var list = (p.reels || []).slice(0, 4);
+    if (!list.length) return "";
+    return '<div class="sect">His highlights</div>' +
+      '<p class="lede" style="margin:-2px 0 8px">' +
+      "He cut these himself. Each one opens on his Hudl profile.</p>" +
+      '<div class="vrail tight">' + list.map(function (v) {
+        return '<div class="vcard" data-story="' + esc(v.u) + '">' +
+          '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
+          '<i class="vplay" aria-hidden="true"></i>' +
+          (v.d ? '<span class="vdur">' + esc(v.d) + "</span>" : "") + "</span>" +
+          '<span class="vmeta">' + (v.s ? esc(String(v.s)) + " season" : "Hudl") +
+          (v.v ? " &middot; " + esc(String(v.v)) + " views" : "") + "</span>" +
+          '<span class="vt">' + esc(v.t) + "</span></div>";
+      }).join("") + "</div>";
   }
 
   function videoBlock(school) {
