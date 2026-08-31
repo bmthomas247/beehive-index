@@ -3975,7 +3975,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   // that it changes what they mean. A statewide list answers "who is the best
   // in Utah." A 2A list answers "who is the best in a league that actually
   // plays each other," which is the list a 2A kid and his coach care about.
-  var leadCls = "", leadReg = "";
+  var leadCls = "", leadReg = "", leadSch = "";
   function leadOpts() {
     var cls = {}, reg = {};
     LEADORDER.forEach(function (k) {
@@ -3984,16 +3984,26 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         if (p.reg) reg[p.reg] = 1;
       });
     });
+    var sch = {};
+    LEADORDER.forEach(function (k) {
+      ((LEAD[k] || {}).players || []).forEach(function (p) { if (p.school) sch[p.school] = 1; });
+    });
+    // the two line boards are unit boards keyed by school, so they carry schools
+    // the player boards may not
+    [OL, DL].forEach(function (U) {
+      Object.keys(U).forEach(function (k) { if (U[k] && U[k].school) sch[U[k].school] = 1; });
+    });
     return [Object.keys(cls).sort(), Object.keys(reg).sort(function (a, b) {
       var na = parseInt(a.replace(/\D/g, ""), 10), nb = parseInt(b.replace(/\D/g, ""), 10);
       return a.slice(0, 2) === b.slice(0, 2) ? na - nb : a.localeCompare(b);
-    })];
+    }), Object.keys(sch).sort(function (a, b) { return a.localeCompare(b); })];
   }
   function leadCard(key) {
     var c = LEAD[key];
     if (!c || !c.players || !c.players.length) return "";
     var list = c.players.filter(function (p) {
-      return (!leadCls || p.cls === leadCls) && (!leadReg || p.reg === leadReg);
+      return (!leadCls || p.cls === leadCls) && (!leadReg || p.reg === leadReg) &&
+             (!leadSch || p.school === leadSch);
     });
     if (!list.length) {
       return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
@@ -4003,7 +4013,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     }
     return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
       '<div class="cnt">top ' + Math.min(10, list.length) +
-      (leadCls || leadReg ? " in " + esc(leadReg || leadCls) : " in the state") + "</div>" +
+      (leadSch ? " at " + esc(leadSch)
+        : leadCls || leadReg ? " in " + esc(leadReg || leadCls) : " in the state") + "</div>" +
       list.slice(0, 10).map(function (p, i) {
         // an empty key lets a category supply a whole phrase instead of "3 td"
         var ex = Object.keys(p.extra || {}).map(function (k) {
@@ -4028,7 +4039,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     var list = Object.keys(OL).map(function (k) { return OL[k]; })
       .filter(function (r) {
         return (!leadCls || r.cls === leadCls) &&
-               (!leadReg || (byName[r.school] || {}).region === leadReg);
+               (!leadReg || (byName[r.school] || {}).region === leadReg) &&
+               (!leadSch || r.school === leadSch);
       })
       .sort(function (a, b) { return b.grade - a.grade; });
     if (!list.length) return "";
@@ -4056,7 +4068,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     var list = Object.keys(DL).map(function (k) { return DL[k]; })
       .filter(function (r) {
         return (!leadCls || r.cls === leadCls) &&
-               (!leadReg || (byName[r.school] || {}).region === leadReg);
+               (!leadReg || (byName[r.school] || {}).region === leadReg) &&
+               (!leadSch || r.school === leadSch);
       })
       .sort(function (a, b) { return b.grade - a.grade; });
     if (!list.length) return "";
@@ -4100,7 +4113,10 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     }).join("");
     var cut = document.getElementById("leadcut");
     if (cut) {
-      cut.innerHTML = leadCls || leadReg
+      cut.innerHTML = leadSch
+        ? "Showing <strong>" + esc(leadSch) + "</strong> only. " +
+          "One school's board answers a narrower question than the state list: who on this roster is actually producing, and in what. A blank board here means the program has not reported that category, not that nobody did it."
+        : leadCls || leadReg
         ? "Showing <strong>" + esc(leadReg || leadCls) + "</strong> only. " +
           "A division or region board is a different question from the state board, and usually the more useful one: it ranks a player against the teams he actually lines up against."
         : "Every classification and region mixed together, so a 1A running back appears next to a 6A one. <strong>Nobody is filtered out for playing at a small school.</strong> Use the cuts above to rank inside a division or a region instead.";
@@ -4119,6 +4135,10 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<label style="font-size:12.5px;color:var(--ink-2)">Region ' +
       '<select id="leadreg"><option value="">All regions</option>' +
       _lo[1].map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + "</option>"; }).join("") +
+      "</select></label>" +
+      '<label style="font-size:12.5px;color:var(--ink-2)">School ' +
+      '<select id="leadsch"><option value="">All schools</option>' +
+      _lo[2].map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + "</option>"; }).join("") +
       "</select></label>" +
       '<button id="leadclear" class="dclose" style="position:static;font-size:12px">Clear</button>' +
     "</div>" +
@@ -4142,11 +4162,14 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   drawLeaders();
   (function () {
     var c = document.getElementById("leadcls"), r = document.getElementById("leadreg"),
-        b = document.getElementById("leadclear");
+        sc = document.getElementById("leadsch"), b = document.getElementById("leadclear");
     if (c) c.addEventListener("change", function () { leadCls = c.value; drawLeaders(); });
     if (r) r.addEventListener("change", function () { leadReg = r.value; drawLeaders(); });
+    if (sc) sc.addEventListener("change", function () { leadSch = sc.value; drawLeaders(); });
     if (b) b.addEventListener("click", function () {
-      leadCls = leadReg = ""; if (c) c.value = ""; if (r) r.value = ""; drawLeaders();
+      leadCls = leadReg = leadSch = "";
+      if (c) c.value = ""; if (r) r.value = ""; if (sc) sc.value = "";
+      drawLeaders();
     });
   })();
 
@@ -5109,6 +5132,14 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     return toks.some(function (t) { return want.indexOf(t) >= 0; });
   }
   var pShown = 60, pSort = "bee", pDir = 1;      // pDir 1 = best first
+  // Brandon wanted every board cuttable by school. A coach opens this page to
+  // look at one roster, not at 6,463 players, and the search box only helps if
+  // you already know the spelling.
+  var PSCHOOLS = (function () {
+    var m = {};
+    PIDX.forEach(function (p) { if (p.school) m[p.school] = 1; });
+    return Object.keys(m).sort(function (a, b) { return a.localeCompare(b); });
+  })();
   var PCOLS = [["bee", "Beehive"], ["grade", "Scouting"], ["prod", "Prod"]];
   function pVal(p, k) {
     return k === "bee" ? (p.bee10 || 0) : k === "grade" ? (p.grade || 0) : (p.prod_adj || 0);
@@ -5126,12 +5157,14 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     var pos = document.getElementById("pfpos").value;
     var yr = document.getElementById("pfyr").value;
     var cl = document.getElementById("pfcls").value;
+    var sch = document.getElementById("pfsch").value;
     var only = document.getElementById("pfonly").value;
     var list = PIDX.filter(function (p) {
       if (q && (p.name + " " + p.school).toLowerCase().indexOf(q) < 0) return false;
       if (!posHit(p.pos, pos)) return false;
       if (yr && p.cls !== yr) return false;
       if (cl && p.team_cls !== cl) return false;
+      if (sch && p.school !== sch) return false;
       if (only === "stats" && !p.has_stats) return false;
       if (only === "graded" && !p.grade) return false;
       if (only === "hidden" && (p.grade || !p.has_stats)) return false;
@@ -5141,7 +5174,15 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       if (only === "film" && !p.hudl) return false;
       return true;
     });
-    list.sort(function (a, b) {
+    if (pSort === "school") {
+      // A name sort, not a number sort: within a school the best player still
+      // leads, so a coach opening his own roster sees his top man first.
+      list.sort(function (a, b) {
+        var c = String(a.school || "").localeCompare(String(b.school || ""));
+        if (c) return pDir * c;
+        return (b.bee10 || 0) - (a.bee10 || 0) || (b.prod_adj || 0) - (a.prod_adj || 0);
+      });
+    } else list.sort(function (a, b) {
       var x = pVal(a, pSort), y = pVal(b, pSort);
       // Sorting ascending should show the smallest REAL number first, not four
       // thousand blanks. Players with nothing in that column always sort last.
@@ -5231,6 +5272,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         var kv = o.split("|"); return '<option value="' + kv[0] + '">' + kv[1] + "</option>"; }).join("") + "</select>" +
     '<select id="pfcls" aria-label="Classification"><option value="">All classifications</option>' +
       DIVS.map(function (d) { return '<option value="' + d + '">' + d + "</option>"; }).join("") + "</select>" +
+    '<select id="pfsch" aria-label="School"><option value="">All schools</option>' +
+      PSCHOOLS.map(function (t) { return '<option value="' + esc(t) + '">' + esc(t) + "</option>"; }).join("") + "</select>" +
     '<select id="pfonly" aria-label="Show"><option value="">Everyone</option>' +
       '<option value="stats">Has 2026 stats</option>' +
       '<option value="hidden">Producing, unranked</option>' +
@@ -5241,11 +5284,12 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<option value="social">Has an X handle</option></select>' +
     '<select id="pfsort" aria-label="Sort"><option value="bee">Sort by Beehive grade</option>' +
       '<option value="grade">Sort by scouting grade</option>' +
-      '<option value="prod">Sort by production</option></select>' +
+      '<option value="prod">Sort by production</option>' +
+      '<option value="school">Sort by school (A\u2013Z)</option></select>' +
     '<span class="pcount" id="pcount"></span></div></div>' +
     '<div class="phead" id="phead"></div><div class="pgridr" id="pgridr"></div>';
 
-  ["pq", "pfpos", "pfyr", "pfcls", "pfonly"].forEach(function (id) {
+  ["pq", "pfpos", "pfyr", "pfcls", "pfsch", "pfonly"].forEach(function (id) {
     document.getElementById(id).addEventListener("input", function () { pShown = 60; drawPlayers(); });
   });
   document.getElementById("pfsort").addEventListener("input", function () {
