@@ -947,11 +947,19 @@ a.utchip:hover b{text-decoration:underline}
 .dyn .n{font-family:"Oswald",sans-serif;font-size:22px;font-weight:600;line-height:1}
 .dyn .l{font-size:12.5px;color:var(--ink-2);margin-top:2px}
 .dyn .s{font-size:11.5px;color:var(--ink-3);margin-top:1px}
-.rec3{display:grid;grid-template-columns:1fr 88px;gap:10px;padding:9px 0;border-top:1px solid var(--line-soft);align-items:baseline}
-.rec3:first-of-type{border-top:0}
-.rec3 .rc{font-size:13.5px;font-weight:600}
-.rec3 .rw{display:block;font-weight:400;font-size:12px;color:var(--ink-3);margin-top:1px}
-.rec3 .rv{font-family:"IBM Plex Mono",monospace;font-size:17px;font-weight:600;text-align:right;color:var(--sodium)}
+/* Record cards. These used to be one tall row each, and the category span
+   carried class "rc" -- which collides with the game-card .rc defined further
+   up and inherited its padding and border, so every record rendered as a big
+   empty box with the text stranded at the top. New class names, and the grid
+   puts four or five across instead of one. */
+.recg{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px}
+.recg .rcard{background:var(--surface);border:1px solid var(--line-soft);
+  padding:11px 13px 12px;min-width:0}
+.recg .rcv{font-family:"Oswald",sans-serif;font-size:25px;font-weight:600;line-height:1;
+  color:var(--sodium);font-variant-numeric:tabular-nums}
+.recg .rck{font-size:12.5px;font-weight:600;color:var(--ink);margin-top:5px;line-height:1.25}
+.recg .rcw{font-size:11.5px;color:var(--ink-3);margin-top:3px;line-height:1.35}
+.recg .rcw b{font-weight:600;color:var(--ink-2)}
 .uns{font-size:10px;color:var(--ink-3);border:1px solid var(--line);border-radius:2px;padding:1px 4px;margin-left:5px;white-space:nowrap}
 @media(max-width:620px){
   .hyear{grid-template-columns:46px 1fr;gap:9px}
@@ -959,8 +967,9 @@ a.utchip:hover b{text-decoration:underline}
   .htitle{grid-template-columns:70px minmax(0,1fr);gap:7px;font-size:12.5px}
   .htitle .hsc{grid-column:2;font-size:11.5px}
   .htitle .hc{font-size:10px;padding:1px 4px}
-  .rec3{grid-template-columns:1fr 66px}
-  .rec3 .rv{font-size:15px}
+  .recg{grid-template-columns:repeat(auto-fill,minmax(142px,1fr))}
+  .recg .rcv{font-size:21px}
+  .recg .rck{font-size:11.5px}
   .dyn{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
 }
 /* ---------- Programs breakdown ---------- */
@@ -2977,7 +2986,8 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     "KSL Sports": ["KSL", "#C8102E"],
     "KUTV 2News": ["2", "#0A5EA8"],
     "The Rush": ["RUSH", "#B0402F"],
-    "Deseret News": ["DESERET", "#12395B"]
+    "Deseret News": ["DESERET", "#12395B"],
+    "Slingin' the Pill": ["STP", "#5B3A8E"]
   };
   function srcChip(src) {
     var m = SRCMARK[src] || [(src || "?").slice(0, 3).toUpperCase(), "#6C7883"];
@@ -3975,7 +3985,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   // that it changes what they mean. A statewide list answers "who is the best
   // in Utah." A 2A list answers "who is the best in a league that actually
   // plays each other," which is the list a 2A kid and his coach care about.
-  var leadCls = "", leadReg = "", leadSch = "";
+  var leadCls = "", leadReg = "";
   function leadOpts() {
     var cls = {}, reg = {};
     LEADORDER.forEach(function (k) {
@@ -3984,26 +3994,16 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         if (p.reg) reg[p.reg] = 1;
       });
     });
-    var sch = {};
-    LEADORDER.forEach(function (k) {
-      ((LEAD[k] || {}).players || []).forEach(function (p) { if (p.school) sch[p.school] = 1; });
-    });
-    // the two line boards are unit boards keyed by school, so they carry schools
-    // the player boards may not
-    [OL, DL].forEach(function (U) {
-      Object.keys(U).forEach(function (k) { if (U[k] && U[k].school) sch[U[k].school] = 1; });
-    });
     return [Object.keys(cls).sort(), Object.keys(reg).sort(function (a, b) {
       var na = parseInt(a.replace(/\D/g, ""), 10), nb = parseInt(b.replace(/\D/g, ""), 10);
       return a.slice(0, 2) === b.slice(0, 2) ? na - nb : a.localeCompare(b);
-    }), Object.keys(sch).sort(function (a, b) { return a.localeCompare(b); })];
+    })];
   }
   function leadCard(key) {
     var c = LEAD[key];
     if (!c || !c.players || !c.players.length) return "";
     var list = c.players.filter(function (p) {
-      return (!leadCls || p.cls === leadCls) && (!leadReg || p.reg === leadReg) &&
-             (!leadSch || p.school === leadSch);
+      return (!leadCls || p.cls === leadCls) && (!leadReg || p.reg === leadReg);
     });
     if (!list.length) {
       return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
@@ -4013,8 +4013,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     }
     return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
       '<div class="cnt">top ' + Math.min(10, list.length) +
-      (leadSch ? " at " + esc(leadSch)
-        : leadCls || leadReg ? " in " + esc(leadReg || leadCls) : " in the state") + "</div>" +
+      (leadCls || leadReg ? " in " + esc(leadReg || leadCls) : " in the state") + "</div>" +
       list.slice(0, 10).map(function (p, i) {
         // an empty key lets a category supply a whole phrase instead of "3 td"
         var ex = Object.keys(p.extra || {}).map(function (k) {
@@ -4039,8 +4038,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     var list = Object.keys(OL).map(function (k) { return OL[k]; })
       .filter(function (r) {
         return (!leadCls || r.cls === leadCls) &&
-               (!leadReg || (byName[r.school] || {}).region === leadReg) &&
-               (!leadSch || r.school === leadSch);
+               (!leadReg || (byName[r.school] || {}).region === leadReg);
       })
       .sort(function (a, b) { return b.grade - a.grade; });
     if (!list.length) return "";
@@ -4068,8 +4066,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     var list = Object.keys(DL).map(function (k) { return DL[k]; })
       .filter(function (r) {
         return (!leadCls || r.cls === leadCls) &&
-               (!leadReg || (byName[r.school] || {}).region === leadReg) &&
-               (!leadSch || r.school === leadSch);
+               (!leadReg || (byName[r.school] || {}).region === leadReg);
       })
       .sort(function (a, b) { return b.grade - a.grade; });
     if (!list.length) return "";
@@ -4113,10 +4110,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     }).join("");
     var cut = document.getElementById("leadcut");
     if (cut) {
-      cut.innerHTML = leadSch
-        ? "Showing <strong>" + esc(leadSch) + "</strong> only. " +
-          "One school's board answers a narrower question than the state list: who on this roster is actually producing, and in what. A blank board here means the program has not reported that category, not that nobody did it."
-        : leadCls || leadReg
+      cut.innerHTML = leadCls || leadReg
         ? "Showing <strong>" + esc(leadReg || leadCls) + "</strong> only. " +
           "A division or region board is a different question from the state board, and usually the more useful one: it ranks a player against the teams he actually lines up against."
         : "Every classification and region mixed together, so a 1A running back appears next to a 6A one. <strong>Nobody is filtered out for playing at a small school.</strong> Use the cuts above to rank inside a division or a region instead.";
@@ -4135,10 +4129,6 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<label style="font-size:12.5px;color:var(--ink-2)">Region ' +
       '<select id="leadreg"><option value="">All regions</option>' +
       _lo[1].map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + "</option>"; }).join("") +
-      "</select></label>" +
-      '<label style="font-size:12.5px;color:var(--ink-2)">School ' +
-      '<select id="leadsch"><option value="">All schools</option>' +
-      _lo[2].map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + "</option>"; }).join("") +
       "</select></label>" +
       '<button id="leadclear" class="dclose" style="position:static;font-size:12px">Clear</button>' +
     "</div>" +
@@ -4162,14 +4152,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   drawLeaders();
   (function () {
     var c = document.getElementById("leadcls"), r = document.getElementById("leadreg"),
-        sc = document.getElementById("leadsch"), b = document.getElementById("leadclear");
+        b = document.getElementById("leadclear");
     if (c) c.addEventListener("change", function () { leadCls = c.value; drawLeaders(); });
     if (r) r.addEventListener("change", function () { leadReg = r.value; drawLeaders(); });
-    if (sc) sc.addEventListener("change", function () { leadSch = sc.value; drawLeaders(); });
     if (b) b.addEventListener("click", function () {
-      leadCls = leadReg = leadSch = "";
-      if (c) c.value = ""; if (r) r.value = ""; if (sc) sc.value = "";
-      drawLeaders();
+      leadCls = leadReg = ""; if (c) c.value = ""; if (r) r.value = ""; drawLeaders();
     });
   })();
 
@@ -4591,12 +4578,18 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         var rows = AREC.filter(function (r) { return r.scope === sc[0]; });
         if (!rows.length) return "";
         return '<div class="panel" style="margin-bottom:16px"><h2>' + sc[1] + " records</h2>" +
-          '<div>' + rows.map(function (r) {
-            return '<div class="rec3"><div><span class="rc">' + esc(r.cat) +
-              (r.src === "uhsaa only" ? '<span class="uns">UHSAA book only</span>' : "") + "</span>" +
-              '<span class="rw">' + esc(r.who) + (r.school ? " &middot; " + esc(r.school) : "") +
-              (r.y ? " &middot; " + esc(r.y) : "") + "</span></div>" +
-              '<div class="rv">' + esc(r.v) + "</div></div>";
+          '<div class="recg">' + rows.map(function (r) {
+            // who and school both exist for an individual record; a program
+            // record has only the school, so do not print a stray separator.
+            var line = [r.who, r.school].filter(Boolean).map(function (x, i) {
+              return i === 0 ? "<b>" + esc(x) + "</b>" : esc(x);
+            }).join(" &middot; ");
+            return '<div class="rcard">' +
+              '<div class="rcv">' + esc(r.v) + "</div>" +
+              '<div class="rck">' + esc(r.cat) +
+              (r.src === "uhsaa only" ? '<span class="uns">UHSAA book only</span>' : "") + "</div>" +
+              '<div class="rcw">' + line + (r.y ? "<br>" + esc(r.y) : "") + "</div>" +
+              "</div>";
           }).join("") + "</div></div>";
       }).join("") +
 
@@ -5132,14 +5125,6 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     return toks.some(function (t) { return want.indexOf(t) >= 0; });
   }
   var pShown = 60, pSort = "bee", pDir = 1;      // pDir 1 = best first
-  // Brandon wanted every board cuttable by school. A coach opens this page to
-  // look at one roster, not at 6,463 players, and the search box only helps if
-  // you already know the spelling.
-  var PSCHOOLS = (function () {
-    var m = {};
-    PIDX.forEach(function (p) { if (p.school) m[p.school] = 1; });
-    return Object.keys(m).sort(function (a, b) { return a.localeCompare(b); });
-  })();
   var PCOLS = [["bee", "Beehive"], ["grade", "Scouting"], ["prod", "Prod"]];
   function pVal(p, k) {
     return k === "bee" ? (p.bee10 || 0) : k === "grade" ? (p.grade || 0) : (p.prod_adj || 0);
@@ -5157,14 +5142,12 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     var pos = document.getElementById("pfpos").value;
     var yr = document.getElementById("pfyr").value;
     var cl = document.getElementById("pfcls").value;
-    var sch = document.getElementById("pfsch").value;
     var only = document.getElementById("pfonly").value;
     var list = PIDX.filter(function (p) {
       if (q && (p.name + " " + p.school).toLowerCase().indexOf(q) < 0) return false;
       if (!posHit(p.pos, pos)) return false;
       if (yr && p.cls !== yr) return false;
       if (cl && p.team_cls !== cl) return false;
-      if (sch && p.school !== sch) return false;
       if (only === "stats" && !p.has_stats) return false;
       if (only === "graded" && !p.grade) return false;
       if (only === "hidden" && (p.grade || !p.has_stats)) return false;
@@ -5174,15 +5157,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       if (only === "film" && !p.hudl) return false;
       return true;
     });
-    if (pSort === "school") {
-      // A name sort, not a number sort: within a school the best player still
-      // leads, so a coach opening his own roster sees his top man first.
-      list.sort(function (a, b) {
-        var c = String(a.school || "").localeCompare(String(b.school || ""));
-        if (c) return pDir * c;
-        return (b.bee10 || 0) - (a.bee10 || 0) || (b.prod_adj || 0) - (a.prod_adj || 0);
-      });
-    } else list.sort(function (a, b) {
+    list.sort(function (a, b) {
       var x = pVal(a, pSort), y = pVal(b, pSort);
       // Sorting ascending should show the smallest REAL number first, not four
       // thousand blanks. Players with nothing in that column always sort last.
@@ -5272,8 +5247,6 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         var kv = o.split("|"); return '<option value="' + kv[0] + '">' + kv[1] + "</option>"; }).join("") + "</select>" +
     '<select id="pfcls" aria-label="Classification"><option value="">All classifications</option>' +
       DIVS.map(function (d) { return '<option value="' + d + '">' + d + "</option>"; }).join("") + "</select>" +
-    '<select id="pfsch" aria-label="School"><option value="">All schools</option>' +
-      PSCHOOLS.map(function (t) { return '<option value="' + esc(t) + '">' + esc(t) + "</option>"; }).join("") + "</select>" +
     '<select id="pfonly" aria-label="Show"><option value="">Everyone</option>' +
       '<option value="stats">Has 2026 stats</option>' +
       '<option value="hidden">Producing, unranked</option>' +
@@ -5284,12 +5257,11 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       '<option value="social">Has an X handle</option></select>' +
     '<select id="pfsort" aria-label="Sort"><option value="bee">Sort by Beehive grade</option>' +
       '<option value="grade">Sort by scouting grade</option>' +
-      '<option value="prod">Sort by production</option>' +
-      '<option value="school">Sort by school (A\u2013Z)</option></select>' +
+      '<option value="prod">Sort by production</option></select>' +
     '<span class="pcount" id="pcount"></span></div></div>' +
     '<div class="phead" id="phead"></div><div class="pgridr" id="pgridr"></div>';
 
-  ["pq", "pfpos", "pfyr", "pfcls", "pfsch", "pfonly"].forEach(function (id) {
+  ["pq", "pfpos", "pfyr", "pfcls", "pfonly"].forEach(function (id) {
     document.getElementById(id).addEventListener("input", function () { pShown = 60; drawPlayers(); });
   });
   document.getElementById("pfsort").addEventListener("input", function () {
