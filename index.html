@@ -1463,14 +1463,41 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
 /* ===== v2 broadcast theme — generated, do not hand-edit above this line ===== */
 
 /* ---- palette ---- */
-/* Palette C — "Broadcast": near-black, wide display type, team colors carry the color */
-:root,
-:root:not([data-theme="light"]),
-:root[data-theme="dark"]{
+/* Broadcast palette.
+   Light by default, dark when the reader's device asks for it — the same
+   contract the site had before. The hero stays dark in both, because it is a
+   broadcast graphic rather than a surface.
+
+   Not the old slate-and-amber: the neutrals are warm, the accent is a deeper
+   amber that survives on white, and the type is one family across the board. */
+:root{
   --f-display:"Archivo",sans-serif;
   --f-ui:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
   --f-num:"Archivo",ui-monospace,SFMono-Regular,Menlo,monospace;
 
+  --ink:#16161A; --ink-2:#54545E; --ink-3:#7D7D87;
+  --ground:#F3F2EF; --surface:#FFFFFF; --surface-2:#F8F7F3;
+  --line:#E1E0DA; --line-soft:#ECEBE6;
+  --steel:#2C63AE; --steel-soft:#9CB6D8;
+  --sodium:#9A6206; --sodium-bright:#B87708;
+  --rise:#1D7A4E; --fall:#B0402F;
+  --spine:#D6D5CF;
+  --shadow:none;
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ink:#F3F3F6; --ink-2:#A6A6B2; --ink-3:#72727E;
+    --ground:#08080A; --surface:#121216; --surface-2:#1A1A20;
+    --line:#26262E; --line-soft:#1E1E25;
+    --steel:#74A8FF; --steel-soft:#39507A;
+    --sodium:#FFC64B; --sodium-bright:#FFD681;
+    --rise:#3ED9A0; --fall:#FF6A56;
+    --spine:#2C2C35;
+    --shadow:none;
+  }
+}
+:root[data-theme="dark"]{
   --ink:#F3F3F6; --ink-2:#A6A6B2; --ink-3:#72727E;
   --ground:#08080A; --surface:#121216; --surface-2:#1A1A20;
   --line:#26262E; --line-soft:#1E1E25;
@@ -1480,13 +1507,15 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   --spine:#2C2C35;
   --shadow:none;
 }
-h1,h2,h3,.disp,.lead h3,.scard h4,.card .v,.rk,.tab,.stamp .v{
+
+/* the wide display type that makes this Broadcast rather than a default */
+h1,h2,h3,.disp,.lead h3,.scard h4,.card .v,.rk,.stamp .v{
   font-stretch:112%; font-weight:800; letter-spacing:-.02em;
 }
 .brand h1{ font-stretch:118%; font-weight:800 }
 .brand h1 em{ color:var(--sodium) }
 .tab{ font-stretch:100%; font-weight:600 }
-.tab[aria-selected="true"]{ background:var(--ink); color:#0A0A0C }
+.tab[aria-selected="true"]{ background:var(--ink); color:var(--surface) }
 .mono,.lteam .lsc,.tteam .tsc,td.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" }
 .rk.top{ color:var(--sodium) }
 
