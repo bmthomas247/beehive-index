@@ -31,7 +31,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1116'/%3E%3Cpath d='M16 5l9 5.2v10.4L16 26l-9-5.4V10.2z' fill='none' stroke='%23f2b33d' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M11 13h10M11 17h10' stroke='%23f2b33d' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
 
 <style>
 :root{
@@ -71,11 +71,11 @@
 *{box-sizing:border-box}
 body{
   margin:0; background:var(--ground); color:var(--ink);
-  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:var(--f-ui);
   font-size:15px; line-height:1.5; -webkit-font-smoothing:antialiased;
 }
-.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
-h1,h2,h3,.disp{font-family:"Oswald","Archivo",sans-serif;text-wrap:balance;margin:0}
+.mono{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+h1,h2,h3,.disp{font-family:var(--f-display);text-wrap:balance;margin:0}
 .wrap{max-width:1240px;margin:0 auto;padding:0 20px}
 
 /* ---------- masthead ---------- */
@@ -95,21 +95,21 @@ header.mast{
   border:1px solid var(--line);border-radius:2px;padding:4px 10px 4px 7px}
 .brand p.social a:hover{border-color:var(--sodium);color:var(--sodium)}
 .xmark{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;
-  background:var(--ink);color:var(--surface);font-family:"Oswald",sans-serif;font-size:11px;
+  background:var(--ink);color:var(--surface);font-family:var(--f-display);font-size:11px;
   font-weight:600;line-height:1;border-radius:2px}
 .stamp{display:flex;gap:22px;align-items:flex-end}
 .stamp div{text-align:right}
 .stamp .k{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.stamp .v{font-family:"Oswald",sans-serif;font-size:22px;font-weight:600;line-height:1.1}
+.stamp .v{font-family:var(--f-display);font-size:22px;font-weight:600;line-height:1.1}
 .stamp .upd{border-left:1px solid var(--line);padding-left:22px}
 .stamp .upd .v{font-size:14px;font-weight:500;line-height:1.25;max-width:15ch}
-.stamp .upd .clk{display:block;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:500;color:var(--sodium);letter-spacing:.01em;margin-top:1px}
+.stamp .upd .clk{display:block;font-family:var(--f-num);font-size:12px;font-weight:500;color:var(--sodium);letter-spacing:.01em;margin-top:1px}
 .stamp .sub2{font-size:11px;color:var(--ink-3);margin-top:3px;max-width:22ch}
 
 /* ---------- data status ---------- */
 .statusgrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin:12px 0}
 .strow{display:grid;grid-template-columns:180px 210px 1fr;gap:14px;background:var(--surface);padding:10px 13px;align-items:start}
-.strow.hdr{background:var(--surface-2);font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.strow.hdr{background:var(--surface-2);font-family:var(--f-display);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
 .strow .w{font-weight:600;font-size:13.5px}
 .strow .a{font-size:13px;color:var(--ink)}
 .strow .a small{display:block;color:var(--ink-3);font-size:11.5px;margin-top:2px}
@@ -121,7 +121,7 @@ nav.tabs{background:var(--surface);border-bottom:1px solid var(--line);position:
 .tabs-in{display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
 .tab{
   appearance:none;background:none;border:0;border-bottom:3px solid transparent;
-  font-family:"Oswald",sans-serif;font-size:13px;font-weight:500;letter-spacing:.09em;
+  font-family:var(--f-display);font-size:13px;font-weight:500;letter-spacing:.09em;
   text-transform:uppercase;color:var(--ink-3);padding:13px 15px;cursor:pointer;white-space:nowrap;
 }
 .tab:hover{color:var(--ink)}
@@ -133,7 +133,7 @@ nav.tabs{background:var(--surface);border-bottom:1px solid var(--line);position:
 .subs-in{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding:9px 0}
 .subtab{
   appearance:none;background:none;border:1px solid transparent;border-radius:999px;
-  font-family:"Archivo",sans-serif;font-size:12.5px;font-weight:600;letter-spacing:.01em;
+  font-family:var(--f-ui);font-size:12.5px;font-weight:600;letter-spacing:.01em;
   color:var(--ink-3);padding:6px 14px;cursor:pointer;white-space:nowrap;
 }
 .subtab:hover{color:var(--ink);border-color:var(--line)}
@@ -144,11 +144,11 @@ nav.tabs{background:var(--surface);border-bottom:1px solid var(--line);position:
 .sendgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px}
 .fl{display:flex;flex-direction:column;gap:5px}
 .fl.wide{grid-column:1/-1}
-.fl>span{font-family:"Oswald",sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2)}
+.fl>span{font-family:var(--f-display);font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2)}
 .fl>span i{color:var(--sodium);font-style:normal;margin-left:3px}
 .fl>em{font-size:12px;color:var(--ink-3);line-height:1.5;font-style:normal}
 .fl input,.fl select,.fl textarea{
-  font-family:"Archivo",sans-serif;font-size:14px;color:var(--ink);
+  font-family:var(--f-ui);font-size:14px;color:var(--ink);
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
   padding:9px 11px;width:100%;box-sizing:border-box;
 }
@@ -162,7 +162,7 @@ nav.tabs{background:var(--surface);border-bottom:1px solid var(--line);position:
 .sendbtn{
   appearance:none;border:0;border-radius:var(--r);cursor:pointer;
   background:var(--ink);color:var(--surface);
-  font-family:"Oswald",sans-serif;font-size:14px;letter-spacing:.07em;text-transform:uppercase;
+  font-family:var(--f-display);font-size:14px;letter-spacing:.07em;text-transform:uppercase;
   padding:11px 26px;
 }
 .sendbtn:hover{background:var(--steel)}
@@ -176,13 +176,13 @@ nav.tabs{background:var(--surface);border-bottom:1px solid var(--line);position:
 .flagbtn{
   display:inline-block;margin-top:8px;text-decoration:none;
   background:var(--sodium);color:#fff;border-radius:var(--r);
-  font-family:"Oswald",sans-serif;font-size:16px;letter-spacing:.07em;text-transform:uppercase;
+  font-family:var(--f-display);font-size:16px;letter-spacing:.07em;text-transform:uppercase;
   padding:13px 30px;
 }
 .flagbtn:hover{background:var(--sodium-bright)}
 .flagstat{display:flex;gap:26px;flex-wrap:wrap;margin:16px 0 4px}
 .flagstat div{min-width:110px}
-.flagstat b{display:block;font-family:"Oswald",sans-serif;font-size:30px;color:var(--sodium-bright);line-height:1}
+.flagstat b{display:block;font-family:var(--f-display);font-size:30px;color:var(--sodium-bright);line-height:1}
 .flagstat span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#9aa6b0}
 
 main{padding:22px 0 70px}
@@ -193,14 +193,14 @@ section[hidden]{display:none}
 .seg{display:flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
 .seg button{
   appearance:none;background:none;border:0;border-right:1px solid var(--line-soft);
-  font-family:"Oswald",sans-serif;font-size:12px;font-weight:500;letter-spacing:.07em;
+  font-family:var(--f-display);font-size:12px;font-weight:500;letter-spacing:.07em;
   color:var(--ink-3);padding:8px 13px;cursor:pointer;
 }
 .seg button:last-child{border-right:0}
 .seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
 .seg button:focus-visible{outline:2px solid var(--steel);outline-offset:-2px}
 input[type="search"]{
-  font-family:"Archivo",sans-serif;font-size:14px;color:var(--ink);
+  font-family:var(--f-ui);font-size:14px;color:var(--ink);
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
   padding:8px 11px;min-width:220px;flex:1 1 220px;max-width:340px;width:100%;
 }
@@ -215,7 +215,7 @@ input[type="search"]:focus-visible{outline:2px solid var(--steel);outline-offset
 table{border-collapse:collapse;width:100%;min-width:1080px}
 thead th{
   position:sticky;top:0;background:var(--surface);z-index:10;
-  font-family:"Oswald",sans-serif;font-size:10px;font-weight:500;letter-spacing:.13em;
+  font-family:var(--f-display);font-size:10px;font-weight:500;letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink-3);text-align:left;
   padding:9px 10px;border-bottom:2px solid var(--ink);white-space:nowrap;cursor:pointer;user-select:none;
 }
@@ -229,13 +229,13 @@ tbody tr{border-bottom:1px solid var(--line-soft);cursor:pointer}
 tbody tr:hover{background:var(--surface-2)}
 td{padding:8px 10px;vertical-align:middle}
 td.num{text-align:right;white-space:nowrap}
-.rk{font-family:"Oswald",sans-serif;font-size:17px;font-weight:600;color:var(--ink-2);width:46px}
+.rk{font-family:var(--f-display);font-size:17px;font-weight:600;color:var(--ink-2);width:46px}
 .rk.top{color:var(--sodium)}
 .tm{font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:9px}
 .tm>div{min-width:0}
 .tm small{display:block;font-weight:400;font-size:11px;color:var(--ink-3);letter-spacing:.02em}
 .chip{
-  display:inline-block;font-family:"Oswald",sans-serif;font-size:10px;font-weight:600;
+  display:inline-block;font-family:var(--f-display);font-size:10px;font-weight:600;
   letter-spacing:.08em;padding:2px 6px;border-radius:2px;border:1px solid;
 }
 .rtg{font-size:15px;font-weight:600}
@@ -251,8 +251,8 @@ td.num{text-align:right;white-space:nowrap}
 .grid{display:grid;gap:14px}
 .cards{grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
 .card{background:var(--surface);border:1px solid var(--line);padding:14px 16px;box-shadow:var(--shadow)}
-.card .k{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.card .v{font-family:"Oswald",sans-serif;font-size:34px;font-weight:600;line-height:1.05;margin-top:3px}
+.card .k{font-family:var(--f-display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.card .v{font-family:var(--f-display);font-size:34px;font-weight:600;line-height:1.05;margin-top:3px}
 .card .sub{font-size:12px;color:var(--ink-3);margin-top:3px}
 .panel{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);padding:18px 20px}
 .panel h2{font-size:19px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;margin-bottom:3px}
@@ -265,7 +265,7 @@ td.num{text-align:right;white-space:nowrap}
 .game .op{font-weight:600;font-size:14px}
 .game .op span{font-weight:400;color:var(--ink-3);font-size:12px;margin-left:6px}
 .game .sc{font-size:14px;font-weight:600}
-.game .rs{font-family:"Oswald",sans-serif;font-size:11px;font-weight:600;letter-spacing:.09em;padding:2px 7px;border-radius:2px}
+.game .rs{font-family:var(--f-display);font-size:11px;font-weight:600;letter-spacing:.09em;padding:2px 7px;border-radius:2px}
 .rs.w{background:color-mix(in srgb,var(--rise) 17%,transparent);color:var(--rise)}
 .rs.l{background:color-mix(in srgb,var(--fall) 17%,transparent);color:var(--fall)}
 
@@ -276,7 +276,7 @@ td.num{text-align:right;white-space:nowrap}
 .seat.warm{border-left-color:var(--sodium)}
 .seat.watch{border-left-color:var(--steel-soft)}
 .gauge{text-align:center}
-.gauge .n{font-family:"Oswald",sans-serif;font-size:26px;font-weight:700;line-height:1}
+.gauge .n{font-family:var(--f-display);font-size:26px;font-weight:700;line-height:1}
 .gauge .lab{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
 .seat .who{font-weight:600;font-size:15px}
 .seat .det{font-size:12.5px;color:var(--ink-2);margin-top:2px}
@@ -284,31 +284,31 @@ td.num{text-align:right;white-space:nowrap}
 
 /* ---------- matchup simulator ---------- */
 .mpick{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:end;margin-bottom:16px}
-.mpick .mside label{display:block;font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.13em;
+.mpick .mside label{display:block;font-family:var(--f-display);font-size:10px;letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink-3);margin-bottom:5px}
 .mpick select{width:100%;max-width:none}
-.mpick .mid{padding-bottom:9px;font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.12em;color:var(--ink-3)}
+.mpick .mid{padding-bottom:9px;font-family:var(--f-display);font-size:12px;letter-spacing:.12em;color:var(--ink-3)}
 @media (max-width:640px){.mpick{grid-template-columns:1fr}.mpick .mid{padding:0;text-align:center}}
 
 .scoreboard{display:grid;grid-template-columns:1fr 110px 1fr;background:var(--ink);color:var(--surface);
   border:1px solid var(--ink);align-items:stretch}
 .sb-team{padding:18px 18px;display:flex;flex-direction:column;justify-content:center;gap:3px}
 .sb-team.right{text-align:right}
-.sb-team .nm{font-family:"Oswald",sans-serif;font-size:clamp(17px,2.4vw,25px);font-weight:600;
+.sb-team .nm{font-family:var(--f-display);font-size:clamp(17px,2.4vw,25px);font-weight:600;
   text-transform:uppercase;line-height:1.05;letter-spacing:-.005em}
 .sb-team .sub{font-size:11.5px;opacity:.62}
-.sb-team .pts{font-family:"Oswald",sans-serif;font-size:clamp(38px,6vw,58px);font-weight:700;line-height:.95;margin-top:4px}
+.sb-team .pts{font-family:var(--f-display);font-size:clamp(38px,6vw,58px);font-weight:700;line-height:.95;margin-top:4px}
 .sb-team.win .pts{color:var(--sodium-bright)}
 .sb-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
   border-left:1px solid rgba(255,255,255,.16);border-right:1px solid rgba(255,255,255,.16);padding:10px 4px}
-.sb-mid .at{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.16em;opacity:.55}
-.sb-mid .sp{font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;text-align:center;line-height:1.15}
+.sb-mid .at{font-family:var(--f-display);font-size:11px;letter-spacing:.16em;opacity:.55}
+.sb-mid .sp{font-family:var(--f-display);font-size:15px;font-weight:600;text-align:center;line-height:1.15}
 .verdictbar{background:var(--surface);border:1px solid var(--line);border-top:0;padding:13px 16px;
   display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .wpbar{flex:1 1 220px;min-width:180px;height:22px;background:var(--surface-2);position:relative;overflow:hidden;
   border:1px solid var(--line-soft)}
 .wpbar i{position:absolute;inset:0 auto 0 0;background:color-mix(in srgb,var(--steel) 78%,transparent)}
-.wpbar span{position:absolute;top:0;bottom:0;display:flex;align-items:center;font-family:"IBM Plex Mono",monospace;
+.wpbar span{position:absolute;top:0;bottom:0;display:flex;align-items:center;font-family:var(--f-num);
   font-size:12px;font-weight:600;padding:0 8px}
 .wpbar span.l{left:0;color:var(--surface)}
 .wpbar span.r{right:0;color:var(--ink-2)}
@@ -316,15 +316,15 @@ td.num{text-align:right;white-space:nowrap}
 
 .cmprows{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:18px}
 .crow2{display:grid;grid-template-columns:1fr 210px 1fr;gap:12px;align-items:center;background:var(--surface);padding:9px 13px}
-.crow2.hdr{background:var(--surface-2);font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.13em;
+.crow2.hdr{background:var(--surface-2);font-family:var(--f-display);font-size:10px;letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink-3);text-align:center}
 .crow2 .lab{text-align:center;font-size:11.5px;color:var(--ink-3);line-height:1.3}
-.crow2 .v{font-family:"IBM Plex Mono",monospace;font-size:14px;font-variant-numeric:tabular-nums;display:flex;
+.crow2 .v{font-family:var(--f-num);font-size:14px;font-variant-numeric:tabular-nums;display:flex;
   align-items:center;gap:9px}
 .crow2 .v.a{justify-content:flex-end}
 .crow2 .v.b{justify-content:flex-start}
 .crow2 .v b{font-weight:600}
-.crow2 .v .edge{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.08em;color:var(--rise);
+.crow2 .v .edge{font-family:var(--f-display);font-size:10px;letter-spacing:.08em;color:var(--rise);
   background:color-mix(in srgb,var(--rise) 15%,transparent);padding:1px 5px;border-radius:2px}
 .crow2 .mini{flex:1;height:5px;background:var(--surface-2);position:relative;max-width:76px}
 .crow2 .mini i{position:absolute;top:0;bottom:0;background:var(--steel-soft)}
@@ -334,14 +334,14 @@ td.num{text-align:right;white-space:nowrap}
 /* ---------- comparator ---------- */
 .cmp-head{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
 select{
-  font-family:"Archivo",sans-serif;font-size:14px;color:var(--ink);background:var(--surface);
+  font-family:var(--f-ui);font-size:14px;color:var(--ink);background:var(--surface);
   border:1px solid var(--line);border-radius:var(--r);padding:8px 10px;max-width:100%;
 }
 select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .cmp{display:flex;flex-direction:column;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .cmprow{display:grid;grid-template-columns:1fr 150px 90px 150px;gap:10px;align-items:center;background:var(--surface);padding:10px 12px}
-.cmprow.hdr{background:var(--surface-2);font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
-.cmprow .edge{font-family:"Oswald",sans-serif;font-size:17px;font-weight:600;text-align:center}
+.cmprow.hdr{background:var(--surface-2);font-family:var(--f-display);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.cmprow .edge{font-family:var(--f-display);font-size:17px;font-weight:600;text-align:center}
 .verdict{margin-top:14px;padding:13px 15px;background:var(--surface-2);border-left:3px solid var(--steel);font-size:14px}
 
 /* ---------- drawer ---------- */
@@ -371,7 +371,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 }
 .dclose{
   position:sticky;top:0;float:right;appearance:none;background:var(--surface);border:1px solid var(--line);
-  color:var(--ink);font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.08em;
+  color:var(--ink);font-family:var(--f-display);font-size:12px;letter-spacing:.08em;
   padding:6px 11px;cursor:pointer;border-radius:var(--r);z-index:2;
 }
 .dclose:focus-visible{outline:2px solid var(--steel)}
@@ -400,7 +400,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .dyn .l>span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sitemapnav{margin-top:22px;padding-top:18px;border-top:1px solid var(--line-soft);
   font-size:12.5px;color:var(--ink-3)}
-.sitemapnav h4{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.12em;
+.sitemapnav h4{font-family:var(--f-display);font-size:11px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--ink-3);margin:0 0 6px}
 .sitemapnav p{margin:0 0 8px}
 .sitemapnav a{color:var(--steel);text-decoration:none}
@@ -411,14 +411,14 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
   align-items:center;background:var(--ink);color:var(--surface);margin-top:12px;border-radius:3px}
 .matchtop .mt{padding:12px 13px;min-width:0}
 .matchtop .mt:last-child{text-align:right}
-.matchtop .mt .n{font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;
+.matchtop .mt .n{font-family:var(--f-display);font-size:15px;font-weight:600;
   text-transform:uppercase;line-height:1.15;cursor:pointer;overflow:hidden;text-overflow:ellipsis}
 .matchtop .mt .n:hover{color:var(--sodium-bright)}
 .matchtop .mt .s{font-size:10.5px;opacity:.62;margin-top:3px;line-height:1.4}
-.matchtop .mt .p{font-family:"Oswald",sans-serif;font-size:30px;font-weight:700;
+.matchtop .mt .p{font-family:var(--f-display);font-size:30px;font-weight:700;
   line-height:1;margin-top:5px}
 .matchtop .mt.l{opacity:.6}
-.matchtop .mid{text-align:center;font-family:"Oswald",sans-serif;font-size:10px;
+.matchtop .mid{text-align:center;font-family:var(--f-display);font-size:10px;
   letter-spacing:.14em;text-transform:uppercase;opacity:.5}
 @media(max-width:520px){
   .matchtop .mt .n{font-size:13px}
@@ -434,7 +434,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .tl.public{background:color-mix(in srgb,var(--sodium) 8%,transparent);
   margin:0 -10px;padding-left:10px;padding-right:10px}
 .tl.final{border-bottom:2px solid var(--ink)}
-.tlwhen b{display:block;font-family:"Oswald",sans-serif;font-size:15px;font-weight:600}
+.tlwhen b{display:block;font-family:var(--f-display);font-size:15px;font-weight:600}
 .tlwhen span{display:block;font-size:10.5px;color:var(--ink-3);margin-top:1px}
 .tlwhat{font-size:14px;font-weight:600}
 .tlnote{font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:2px}
@@ -442,18 +442,18 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .openq li{margin-bottom:5px}
 .uplog div{font-size:13px;color:var(--ink-2);padding:7px 0;
   border-top:1px solid var(--line-soft);line-height:1.55}
-.uplog b{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
+.uplog b{font-family:var(--f-num);font-size:11.5px;color:var(--ink-3);
   margin-right:7px}
-.livingtag{display:block;font-family:"Oswald",sans-serif;font-size:10.5px;letter-spacing:.08em;
+.livingtag{display:block;font-family:var(--f-display);font-size:10.5px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--sodium);margin-top:9px}
 /* ---------- combine card ---------- */
 .combine{margin:12px 0 4px}
 .cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(84px,1fr));gap:1px;
   background:var(--line-soft);border:1px solid var(--line)}
 .cgrid>div{background:var(--surface);padding:9px 11px}
-.ck{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
+.ck{font-family:var(--f-display);font-size:9.5px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--ink-3)}
-.cv{font-family:"Oswald",sans-serif;font-size:18px;font-weight:600;line-height:1.15;margin-top:2px}
+.cv{font-family:var(--f-display);font-size:18px;font-weight:600;line-height:1.15;margin-top:2px}
 .cnote{font-size:11.5px;color:var(--ink-3);line-height:1.55;margin:7px 0 0}
 .cnote a{color:var(--steel)}
 .combine.none{font-size:13px;color:var(--ink-2);background:var(--surface-2);
@@ -462,13 +462,13 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .rcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1px;
   background:var(--line-soft);border:1px solid var(--line-soft)}
 .rcard{background:var(--surface);padding:14px 16px}
-.rcard h4{font-family:"Oswald",sans-serif;font-size:14px;font-weight:600;margin:0 0 6px;
+.rcard h4{font-family:var(--f-display);font-size:14px;font-weight:600;margin:0 0 6px;
   letter-spacing:.01em}
 .rcard p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
 .rtimeline{border-top:1px solid var(--line-soft)}
 .rtl{display:grid;grid-template-columns:104px minmax(0,1fr);gap:14px;padding:11px 0;
   border-bottom:1px solid var(--line-soft);font-size:13.5px;line-height:1.6;color:var(--ink-2)}
-.rtly{font-family:"Oswald",sans-serif;font-size:14px;font-weight:600;color:var(--ink)}
+.rtly{font-family:var(--f-display);font-size:14px;font-weight:600;color:var(--ink)}
 .rlinks{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
 .rlinks a{display:block;border:1px solid var(--line);border-radius:var(--r);padding:10px 13px;
   font-size:13px;color:var(--steel);text-decoration:none;line-height:1.4}
@@ -481,11 +481,11 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .award{background:var(--surface);padding:13px 15px}
 .award[data-t],.award[data-recap],.award[data-p]{cursor:pointer}
 .award:hover{background:var(--surface-2)}
-.akick{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+.akick{font-family:var(--f-display);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--sodium);margin-bottom:8px}
 .ahead{display:flex;align-items:center;gap:10px}
 .ahead>div{min-width:0}
-.aname{font-family:"Oswald",sans-serif;font-size:17px;font-weight:600;line-height:1.2}
+.aname{font-family:var(--f-display);font-size:17px;font-weight:600;line-height:1.2}
 .asub{font-size:11.5px;color:var(--ink-3);margin-top:2px}
 .anote{font-size:12.5px;color:var(--ink-2);margin-top:8px;line-height:1.5}
 @media(max-width:520px){.awards{grid-template-columns:1fr}}
@@ -502,14 +502,14 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
   border-left:11px solid #fff;border-top:7px solid transparent;border-bottom:7px solid transparent}
 .capbadge{display:inline-block;vertical-align:middle;margin-left:9px;padding:2px 7px;
   border:1px solid var(--fall);border-radius:2px;background:transparent;color:var(--fall);
-  font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.09em;
+  font-family:var(--f-display);font-size:10px;letter-spacing:.09em;
   text-transform:uppercase;font-weight:500;cursor:help}
 .vdur{position:absolute;right:4px;bottom:4px;padding:1px 5px;border-radius:2px;
-  background:rgba(13,19,25,.82);color:#fff;font-family:"Oswald",sans-serif;
+  background:rgba(13,19,25,.82);color:#fff;font-family:var(--f-display);
   font-size:10px;letter-spacing:.06em;line-height:1.5}
 .vcard:hover .vthumb{border-color:var(--sodium)}
 .vcard:hover .vt{color:var(--sodium)}
-.vmeta{display:block;font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.08em;
+.vmeta{display:block;font-family:var(--f-display);font-size:10px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--steel);margin:7px 0 3px}
 .vt{display:block;font-size:13px;line-height:1.35;font-weight:500;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
@@ -520,7 +520,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .ourstory{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--sodium);
   box-shadow:var(--shadow);padding:16px 19px;cursor:pointer}
 .ourstory:hover{border-left-color:var(--sodium-bright)}
-.ourstory h3{font-family:"Oswald",sans-serif;font-size:23px;line-height:1.2;font-weight:600;
+.ourstory h3{font-family:var(--f-display);font-size:23px;line-height:1.2;font-weight:600;
   margin:9px 0 6px}
 .ourstory .dek{font-size:14px;color:var(--ink-2);margin:0;line-height:1.55}
 .ourstory .readon{display:inline-block;margin-top:9px;font-size:12.5px;color:var(--steel);
@@ -540,7 +540,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 }
 
 /* ---------- hub and spoke ---------- */
-.fullpage{display:inline-block;margin:12px 0 2px;font-family:"Oswald",sans-serif;
+.fullpage{display:inline-block;margin:12px 0 2px;font-family:var(--f-display);
   font-size:13px;letter-spacing:.03em;color:var(--surface);background:var(--ink);
   text-decoration:none;padding:9px 15px;border-radius:var(--r)}
 .fullpage:hover{background:var(--sodium)}
@@ -552,7 +552,7 @@ a.rrow{text-decoration:none;color:inherit}
 /* ---------- news ---------- */
 .srcchip{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:15px;
   white-space:nowrap;
-  padding:0 5px;border-radius:2px;color:#fff;font-family:"Oswald",sans-serif;font-size:9.5px;
+  padding:0 5px;border-radius:2px;color:#fff;font-family:var(--f-display);font-size:9.5px;
   font-weight:600;letter-spacing:.06em;flex:none}
 .story{cursor:pointer}
 .story .ssrc{display:flex;align-items:center;gap:6px}
@@ -568,13 +568,13 @@ a.rrow{text-decoration:none;color:inherit}
   padding:9px 0;border-top:1px solid var(--line-soft);cursor:pointer}
 .storyp:hover .spn{color:var(--sodium)}
 .storyp .spn{font-size:14.5px;font-weight:600}
-.storyp .spno{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);font-weight:400}
+.storyp .spno{font-family:var(--f-num);font-size:11.5px;color:var(--ink-3);font-weight:400}
 .storyp .spm{font-size:11.5px;color:var(--ink-3);margin-top:1px}
 .storyp .sps{font-size:12px;color:var(--ink-2);margin-top:3px;line-height:1.45}
-.storyp .spb{font-family:"Oswald",sans-serif;font-size:19px;font-weight:600;text-align:right}
+.storyp .spb{font-family:var(--f-display);font-size:19px;font-weight:600;text-align:right}
 .storyp .spb small{display:block;font-size:9.5px;font-weight:400;color:var(--ink-3);letter-spacing:.08em}
 .readbtn{display:inline-block;background:var(--ink);color:var(--surface);text-decoration:none;
-  font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.05em;padding:9px 16px;border-radius:var(--r)}
+  font-family:var(--f-display);font-size:13px;letter-spacing:.05em;padding:9px 16px;border-radius:var(--r)}
 .readbtn:hover{background:var(--sodium)}
 
 /* ---------- finished game ---------- */
@@ -585,18 +585,18 @@ a.rrow{text-decoration:none;color:inherit}
 .fteam .fn{font-size:16px;font-weight:600;cursor:pointer;overflow:hidden;text-overflow:ellipsis;
   white-space:nowrap}
 .fteam .fn:hover{color:var(--sodium)}
-.fteam .fs{font-family:"Oswald",sans-serif;font-size:26px;font-weight:600;line-height:1;min-width:2ch;
+.fteam .fs{font-family:var(--f-display);font-size:26px;font-weight:600;line-height:1;min-width:2ch;
   text-align:right}
 .fteam.lost .fn,.fteam.lost .fs{color:var(--ink-3);font-weight:500}
 /* NOTE: ".qrow"/".qbox" already belong to the Week-summary quarter table further
    down this sheet. These are the finished-game box and must not reuse the name --
    the earlier definition silently overrode it and stacked every cell vertically. */
-.fbox{display:grid;gap:0;margin-top:10px;font-family:"IBM Plex Mono",monospace;font-size:12px}
+.fbox{display:grid;gap:0;margin-top:10px;font-family:var(--f-num);font-size:12px}
 .frow{display:contents}
 .frow>span{padding:5px 0;text-align:center;border-bottom:1px solid var(--line-soft)}
 .frow .qn{text-align:left;font-family:inherit;font-size:12.5px;overflow:hidden;
   text-overflow:ellipsis;white-space:nowrap;padding-right:8px}
-.frow.hdr>span{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.1em;color:var(--ink-3);
+.frow.hdr>span{font-family:var(--f-display);font-size:10px;letter-spacing:.1em;color:var(--ink-3);
   border-bottom:1px solid var(--line)}
 .frow .qf{font-weight:600;color:var(--ink)}
 .frow.lost>span{color:var(--ink-3)}
@@ -612,9 +612,9 @@ a.rrow{text-decoration:none;color:inherit}
 .dhead .meta{color:var(--ink-3);font-size:13px;margin-top:2px}
 .kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin:14px 0}
 .kv div{background:var(--surface);padding:9px 10px}
-.kv .k{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-family:"Oswald",sans-serif}
-.kv .v{font-family:"Oswald",sans-serif;font-size:19px;font-weight:600;line-height:1.15;margin-top:1px}
-.sect{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:18px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--line)}
+.kv .k{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-family:var(--f-display)}
+.kv .v{font-family:var(--f-display);font-size:19px;font-weight:600;line-height:1.15;margin-top:1px}
+.sect{font-family:var(--f-display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:18px 0 7px;padding-bottom:5px;border-bottom:1px solid var(--line)}
 
 /* ---------- method ---------- */
 .method{max-width:74ch}
@@ -622,7 +622,7 @@ a.rrow{text-decoration:none;color:inherit}
 .method p{margin:0 0 11px;color:var(--ink-2);font-size:14.5px}
 .method ul{margin:0 0 11px;padding-left:19px;color:var(--ink-2);font-size:14.5px}
 .method li{margin-bottom:5px}
-.method code{font-family:"IBM Plex Mono",monospace;font-size:13px;background:var(--surface-2);padding:1px 5px;border-radius:2px}
+.method code{font-family:var(--f-num);font-size:13px;background:var(--surface-2);padding:1px 5px;border-radius:2px}
 .wgt{display:flex;flex-direction:column;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin:12px 0}
 .wgtrow{display:grid;grid-template-columns:1fr 62px 130px;gap:10px;align-items:center;background:var(--surface);padding:8px 12px;font-size:13.5px}
 .wgtrow .bar{height:7px;background:var(--surface-2);position:relative}
@@ -632,13 +632,13 @@ a.rrow{text-decoration:none;color:inherit}
 
 /* ---------- predictions ---------- */
 .daygroup{margin-bottom:18px}
-.dayhead{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);margin:0 0 7px;display:flex;gap:10px;align-items:baseline}
-.dayhead span{color:var(--ink-3);letter-spacing:0;font-family:"Archivo",sans-serif;font-size:12px;text-transform:none}
+.dayhead{font-family:var(--f-display);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3);margin:0 0 7px;display:flex;gap:10px;align-items:baseline}
+.dayhead span{color:var(--ink-3);letter-spacing:0;font-family:var(--f-ui);font-size:12px;text-transform:none}
 /* ---------- coaches rankings ---------- */
 .crgrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .crrow{display:grid;grid-template-columns:52px 1fr 110px 52px;gap:14px;align-items:center;background:var(--surface);padding:9px 13px;cursor:pointer}
 .crrow:hover{background:var(--surface-2)}
-.crno{font-family:"Oswald",sans-serif;font-size:19px;font-weight:600;color:var(--ink-3);text-align:center}
+.crno{font-family:var(--f-display);font-size:19px;font-weight:600;color:var(--ink-3);text-align:center}
 .crno.top{color:var(--sodium)}
 .crname{font-size:14.5px;font-weight:600}
 .crteam{font-weight:400;color:var(--ink-3);font-size:12.5px}
@@ -652,7 +652,7 @@ a.rrow{text-decoration:none;color:inherit}
 /* ---------- star matchups ---------- */
 .duels{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .duel{background:var(--surface);padding:9px 12px}
-.dlab{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+.dlab{font-family:var(--f-display);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
 .drow{display:grid;grid-template-columns:1fr 78px 1fr;gap:10px;align-items:center}
 .dside .dn{font-size:14px;font-weight:600;line-height:1.25}
 .dside .dm{font-size:11.5px;color:var(--ink-3);margin-top:1px}
@@ -660,7 +660,7 @@ a.rrow{text-decoration:none;color:inherit}
 .dside.r{text-align:right}
 .dvs{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1px}
 .dvs i{font-style:normal;font-size:15px;font-weight:600;color:var(--sodium)}
-.dvs span{font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.dvs span{font-family:var(--f-display);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .dvs b{font-size:10.5px;font-weight:500;color:var(--ink-3)}
 .dline{font-size:12.5px;color:var(--ink-2);margin-top:5px;text-align:center;font-style:italic}
 @media(max-width:520px){.drow{grid-template-columns:1fr 56px 1fr;gap:6px}.dside .dn{font-size:12.5px}}
@@ -668,7 +668,7 @@ a.rrow{text-decoration:none;color:inherit}
 /* ---------- pipeline (where you can actually play) ---------- */
 .lvgrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-bottom:8px}
 .lvrow{display:grid;grid-template-columns:64px 1fr 90px;gap:12px;background:var(--surface);padding:9px 13px;align-items:baseline}
-.lvtag{font-family:"Oswald",sans-serif;font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--sodium)}
+.lvtag{font-family:var(--f-display);font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--sodium)}
 .lvname{font-size:14px;font-weight:600}
 .lvname small{display:block;font-weight:400;font-size:11.5px;color:var(--ink-3);margin-top:1px}
 .lvnote{font-size:11.5px;color:var(--ink-2);margin-top:3px;line-height:1.45}
@@ -682,18 +682,18 @@ a.rrow{text-decoration:none;color:inherit}
 .tl{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-bottom:20px}
 .tlrow{display:grid;grid-template-columns:132px 1fr;gap:14px;background:var(--surface);padding:9px 13px;align-items:baseline}
 .tlrow.now{background:color-mix(in srgb,var(--sodium) 7%,var(--surface))}
-.tld{font-family:"Oswald",sans-serif;font-size:12px;font-weight:600;letter-spacing:.02em}
+.tld{font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.02em}
 .tlw{font-size:13.5px;color:var(--ink-2)}
 .rag{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:760px){.rag{grid-template-columns:1fr}}
-.racol h4{margin:0 0 3px;font-family:"Oswald",sans-serif;font-size:15px;font-weight:600}
+.racol h4{margin:0 0 3px;font-family:var(--f-display);font-size:15px;font-weight:600}
 .rarow{display:grid;grid-template-columns:1fr 62px;gap:10px;padding:8px 0;border-top:1px solid var(--line-soft);align-items:center;cursor:pointer}
 .rarow:first-of-type{border-top:0}
 .raname{font-size:14px;font-weight:600}
 .rameta{font-size:11.5px;color:var(--ink-3);margin-top:1px}
-.raz{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600}
+.raz{text-align:right;font-family:var(--f-num);font-size:13px;font-weight:600}
 .raz.up{color:var(--rise)} .raz.dn{color:var(--fall)}
-.ramove{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.08em;color:var(--ink-3)}
+.ramove{font-family:var(--f-display);font-size:10px;letter-spacing:.08em;color:var(--ink-3)}
 
 /* ---------- week recap ---------- */
 /* Brandon: sixty results down a single column is a very long page. Four across
@@ -710,9 +710,9 @@ a.rrow{text-decoration:none;color:inherit}
 @media(max-width:760px){.rcgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .divsec{margin-bottom:26px}
 .divhead{display:flex;align-items:baseline;justify-content:space-between;
-  font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;
+  font-family:var(--f-display);font-size:13px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--ink-2);margin:0 0 10px;padding-bottom:6px;border-bottom:2px solid var(--line)}
-.divhead span{font-family:"Archivo",sans-serif;font-size:11px;letter-spacing:0;
+.divhead span{font-family:var(--f-ui);font-size:11px;letter-spacing:0;
   text-transform:none;color:var(--ink-3);font-weight:400}
 .rc{display:flex;flex-direction:column;justify-content:space-between;gap:6px;
   background:var(--surface);padding:9px 11px;cursor:pointer;min-height:92px;
@@ -728,17 +728,17 @@ a.rrow{text-decoration:none;color:inherit}
 .rcteam .crest{width:18px;height:18px}
 .rcteam .swatch{width:11px;height:11px;border-radius:2px;display:inline-block}
 .rcteam .tn{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rcteam .ts{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600}
+.rcteam .ts{font-family:var(--f-num);font-size:14px;font-weight:600}
 .rcnote{font-size:11px;color:var(--ink-2);line-height:1.4}
 .rcfoot{font-size:10.5px;color:var(--ink-3);border-top:1px solid var(--line-soft);padding-top:5px}
-.rctag{display:inline-block;font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.12em;text-transform:uppercase;
+.rctag{display:inline-block;font-family:var(--f-display);font-size:9px;letter-spacing:.12em;text-transform:uppercase;
   padding:1px 5px;border-radius:2px;margin-right:5px;vertical-align:middle}
 .rctag.riv{background:color-mix(in srgb,var(--fall) 14%,transparent);color:var(--fall)}
 .rctag.sh{background:color-mix(in srgb,var(--steel) 16%,transparent);color:var(--steel)}
 .rctag.up{background:color-mix(in srgb,var(--sodium) 16%,transparent);color:var(--sodium)}
 .rctag.film{background:color-mix(in srgb,var(--rise) 16%,transparent);color:var(--rise)}
 .wkpick{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
-.wkb{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+.wkb{font-family:var(--f-display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;
   padding:6px 12px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);
   border-radius:var(--r);cursor:pointer}
 .wkb:hover{background:var(--surface-2)}
@@ -774,7 +774,7 @@ a.utchip:hover b{text-decoration:underline}
 /* ---------- per-service recruiting board ---------- */
 .blend{display:flex;align-items:baseline;gap:10px;padding:10px 12px;margin-bottom:9px;
   background:color-mix(in srgb,var(--sodium) 9%,var(--surface));border:1px solid var(--line-soft)}
-.blend b{font-family:"Archivo",sans-serif;font-size:28px;line-height:1;letter-spacing:-.02em;color:var(--ink)}
+.blend b{font-family:var(--f-ui);font-size:28px;line-height:1;letter-spacing:-.02em;color:var(--ink)}
 .blend span{font-size:12px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.07em}
 /* the rankings table sets a 1180px min-width globally; this one lives in a
    540px drawer and must be allowed to shrink or its numbers scroll out of view */
@@ -796,7 +796,7 @@ a.utchip:hover b{text-decoration:underline}
 .brow span{display:block;font-size:11.5px;color:var(--ink-3);line-height:1.4}
 .bbar{height:7px;background:var(--line-soft);position:relative}
 .bbar i{position:absolute;left:0;top:0;bottom:0;background:var(--sodium)}
-.bpts{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;text-align:right;color:var(--ink)}
+.bpts{font-family:var(--f-num);font-size:13px;font-weight:600;text-align:right;color:var(--ink)}
 .brow:not(.has) .bpts{color:var(--ink-3);font-weight:400}
 .bpts em{font-style:normal;font-size:10.5px;color:var(--ink-3);margin-left:3px}
 
@@ -809,19 +809,19 @@ a.utchip:hover b{text-decoration:underline}
 .grow b{display:block;font-size:13.5px;font-weight:600;color:var(--ink-3)}
 .grow.ok b{color:var(--ink)}
 .grow span{display:block;font-size:11.5px;color:var(--ink-3);line-height:1.4}
-.grow .gcap{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);white-space:nowrap}
+.grow .gcap{font-family:var(--f-num);font-size:11px;color:var(--ink-3);white-space:nowrap}
 .grow.ok .gcap{color:var(--sodium)}
 
 /* ---------- O-line: run block / pass block groups ---------- */
 .olwrap{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:620px){.olwrap{grid-template-columns:1fr}}
 .olg{border:1px solid var(--line-soft);background:var(--surface)}
-.olg h4{margin:0;padding:6px 10px;font-family:"Oswald",sans-serif;font-size:10.5px;letter-spacing:.11em;
+.olg h4{margin:0;padding:6px 10px;font-family:var(--f-display);font-size:10.5px;letter-spacing:.11em;
   text-transform:uppercase;color:var(--surface);background:var(--ink-2)}
 .olg.run h4{background:#3f6b45}
 .olg.pass h4{background:#2f4d73}
 .olg .big{display:flex;align-items:baseline;gap:8px;padding:9px 10px 4px}
-.olg .big b{font-family:"Archivo",sans-serif;font-size:26px;line-height:1;letter-spacing:-.02em;color:var(--ink)}
+.olg .big b{font-family:var(--f-ui);font-size:26px;line-height:1;letter-spacing:-.02em;color:var(--ink)}
 .olg .big span{font-size:11px;color:var(--ink-3)}
 .olg .kvs{padding:2px 10px 9px;font-size:12px;color:var(--ink-2);line-height:1.6}
 .olg .kvs i{font-style:normal;color:var(--ink-3)}
@@ -837,14 +837,14 @@ a.utchip:hover b{text-decoration:underline}
 /* ---------- player search ---------- */
 .psearch{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:14px}
 .pfilters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.pfilters select{font-family:"Archivo",sans-serif;font-size:13px;color:var(--ink);
+.pfilters select{font-family:var(--f-ui);font-size:13px;color:var(--ink);
   background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:7px 9px}
 .pcount{font-size:12px;color:var(--ink-3);margin-left:auto}
 .pgridr{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 /* ---------- player search sort header ---------- */
 .phead{display:grid;grid-template-columns:1fr 74px 120px 64px;gap:12px;background:var(--surface-2);
   border:1px solid var(--line-soft);border-bottom:none;padding:7px 12px;align-items:center}
-.phead .h{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+.phead .h{font-family:var(--f-display);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--ink-3);text-align:right;cursor:pointer;user-select:none;white-space:nowrap}
 .phead .h:first-child{text-align:left;cursor:default;color:var(--ink-3)}
 .phead .h:hover:not(:first-child){color:var(--ink)}
@@ -854,14 +854,14 @@ a.utchip:hover b{text-decoration:underline}
   padding:9px 13px;align-items:center;cursor:pointer}
 .prow:hover{background:var(--surface-2)}
 .pname{font-size:14.5px;font-weight:600}
-.pname .badge{font-family:"Oswald",sans-serif;font-size:9px;letter-spacing:.1em;text-transform:uppercase;
+.pname .badge{font-family:var(--f-display);font-size:9px;letter-spacing:.1em;text-transform:uppercase;
   padding:1px 5px;border-radius:2px;margin-left:6px;vertical-align:middle}
 .badge.cm{background:color-mix(in srgb,var(--rise) 16%,transparent);color:var(--rise)}
 .badge.xf{background:color-mix(in srgb,var(--steel) 16%,transparent);color:var(--steel)}
 .pmeta{font-size:11.5px;color:var(--ink-3);margin-top:1px}
 .pstat{font-size:11.5px;color:var(--ink-2);margin-top:2px;line-height:1.45}
-.pgrade{text-align:right;font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600}
-.pgrade small{display:block;font-family:"Archivo",sans-serif;font-size:10px;font-weight:400;color:var(--ink-3)}
+.pgrade{text-align:right;font-family:var(--f-num);font-size:14px;font-weight:600}
+.pgrade small{display:block;font-family:var(--f-ui);font-size:10px;font-weight:400;color:var(--ink-3)}
 .pnone{color:var(--ink-3);font-weight:400;font-size:12px}
 .pmore{text-align:center;padding:11px;background:var(--surface);font-size:13px;color:var(--steel);cursor:pointer}
 .pmore:hover{background:var(--surface-2)}
@@ -877,36 +877,36 @@ a.utchip:hover b{text-decoration:underline}
 .ldrow{display:grid;grid-template-columns:20px 22px minmax(0,1fr) auto;gap:8px;align-items:center;
   padding:6px 0;border-top:1px solid var(--line-soft)}
 .ldrow:first-of-type{border-top:0}
-.ldn{font-family:"Oswald",sans-serif;font-size:11px;font-weight:600;color:var(--ink-3);text-align:right}
+.ldn{font-family:var(--f-display);font-size:11px;font-weight:600;color:var(--ink-3);text-align:right}
 .ldname{font-size:13.5px;font-weight:600;line-height:1.25}
 .ldmeta{display:block;font-weight:400;font-size:11px;color:var(--ink-3);margin-top:1px}
-.ldv{font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;color:var(--ink)}
+.ldv{font-family:var(--f-num);font-size:13px;font-weight:600;color:var(--ink)}
 
 /* ---------- recruiting board ---------- */
 .rbgrid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
 .recgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--line-soft);
   border:1px solid var(--line-soft)}
 .recgrid>div{background:var(--surface);padding:12px 14px}
-.recgrid .rn{font-family:"Oswald",sans-serif;font-size:28px;font-weight:600;line-height:1;color:var(--sodium)}
+.recgrid .rn{font-family:var(--f-display);font-size:28px;font-weight:600;line-height:1;color:var(--sodium)}
 .recgrid .rl{font-size:13px;font-weight:600;margin-top:4px}
 .recgrid .rs{font-size:11.5px;color:var(--ink-3);margin-top:2px}
 /* a pick whose game has been played */
 .pred.done{background:var(--surface-2)}
 .pred.done .side .p{color:var(--ink)}
-.odds .fin{font-family:"Oswald",sans-serif;font-size:13px;font-weight:600;letter-spacing:.13em;color:var(--ink-3);text-align:right}
-.grade{font-family:"Oswald",sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.08em;padding:3px 7px;border-radius:2px;white-space:nowrap}
+.odds .fin{font-family:var(--f-display);font-size:13px;font-weight:600;letter-spacing:.13em;color:var(--ink-3);text-align:right}
+.grade{font-family:var(--f-display);font-size:10.5px;font-weight:600;letter-spacing:.08em;padding:3px 7px;border-radius:2px;white-space:nowrap}
 .grade.hit{background:color-mix(in srgb,var(--rise) 17%,transparent);color:var(--rise)}
 .grade.miss{background:color-mix(in srgb,var(--fall) 15%,transparent);color:var(--fall)}
 /* The column count is set inline per game -- "repeat(auto-fit, minmax(34px,44px))"
    resolves to ZERO tracks next to a 1fr, which stacked every quarter vertically. */
 .qrow{display:grid;grid-template-columns:minmax(0,1fr) repeat(var(--qc,5),34px);gap:1px;background:var(--surface);
-  padding:8px 10px;align-items:center;font-family:"IBM Plex Mono",monospace;font-size:13px;text-align:center}
-.qrow.hdr{background:var(--surface-2);font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.12em;color:var(--ink-3)}
-.qrow .qt{text-align:left;font-family:"Archivo",sans-serif;font-size:13.5px;font-weight:600}
+  padding:8px 10px;align-items:center;font-family:var(--f-num);font-size:13px;text-align:center}
+.qrow.hdr{background:var(--surface-2);font-family:var(--f-display);font-size:10px;letter-spacing:.12em;color:var(--ink-3)}
+.qrow .qt{text-align:left;font-family:var(--f-ui);font-size:13.5px;font-weight:600}
 .qrow b{color:var(--sodium)}
 .crow2 .lab{font-size:12px;color:var(--ink-3);text-align:center}
 .dlinks{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
-.dlink{display:inline-block;font-family:"Oswald",sans-serif;font-size:12px;font-weight:500;letter-spacing:.06em;
+.dlink{display:inline-block;font-family:var(--f-display);font-size:12px;font-weight:500;letter-spacing:.06em;
   text-transform:uppercase;text-decoration:none;padding:6px 12px;border-radius:2px;
   border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
 .dlink:hover{border-color:var(--sodium);color:var(--sodium)}
@@ -920,31 +920,31 @@ a.utchip:hover b{text-decoration:underline}
 .dlink.film:hover{background:var(--sodium);border-color:var(--sodium);color:var(--surface)}
 .beebig{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;background:var(--surface-2);
   border:1px solid var(--line);border-radius:var(--r);padding:14px 16px}
-.beebig b{font-family:"Oswald",sans-serif;font-size:38px;font-weight:600;line-height:1;color:var(--sodium)}
+.beebig b{font-family:var(--f-display);font-size:38px;font-weight:600;line-height:1;color:var(--sodium)}
 .beebig b span{font-size:16px;color:var(--ink-3);font-weight:400;margin-left:5px}
 .beebig .beectx{font-size:12px;color:var(--ink-3)}
 /* ---------- History ---------- */
 .hyear{display:grid;grid-template-columns:62px 1fr;gap:14px;padding:11px 0;border-top:1px solid var(--line-soft);align-items:start}
 .hyear:first-of-type{border-top:0}
-.hyear .hy{font-family:"Oswald",sans-serif;font-size:19px;font-weight:600;color:var(--sodium);line-height:1.1}
+.hyear .hy{font-family:var(--f-display);font-size:19px;font-weight:600;color:var(--sodium);line-height:1.1}
 .htitles{display:grid;gap:7px}
 .htitle{display:grid;grid-template-columns:84px minmax(0,1fr) auto;gap:10px;align-items:baseline;font-size:13.5px}
 .htitle>span{min-width:0}
-.htitle .hc{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+.htitle .hc{font-family:var(--f-display);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
   background:var(--surface-2);border-radius:2px;padding:2px 6px;text-align:center;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.htitle .hco-tag{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.06em;text-transform:uppercase;
+.htitle .hco-tag{font-family:var(--f-display);font-size:10px;letter-spacing:.06em;text-transform:uppercase;
   color:var(--fall);border:1px solid currentColor;border-radius:2px;padding:0 4px;white-space:nowrap;vertical-align:1px}
 .htitle b{font-weight:600;cursor:pointer}
 .htitle .hu{color:var(--ink-3)}
-.htitle .hsc{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);white-space:nowrap}
+.htitle .hsc{font-family:var(--f-num);font-size:12px;color:var(--ink-2);white-space:nowrap}
 .htitle .hco{display:block;font-size:11.5px;color:var(--ink-3)}
 .hgap{background:var(--surface-2);border-left:3px solid var(--sodium);padding:9px 12px;margin:9px 0;font-size:12.5px;line-height:1.55;color:var(--ink-2)}
 .hgap b{color:var(--ink)}
 .dyn{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--line-soft);
   border:1px solid var(--line-soft);margin-bottom:18px}
 .dyn div{background:var(--surface);padding:10px 13px}
-.dyn .n{font-family:"Oswald",sans-serif;font-size:22px;font-weight:600;line-height:1}
+.dyn .n{font-family:var(--f-display);font-size:22px;font-weight:600;line-height:1}
 .dyn .l{font-size:12.5px;color:var(--ink-2);margin-top:2px}
 .dyn .s{font-size:11.5px;color:var(--ink-3);margin-top:1px}
 /* Record cards. These used to be one tall row each, and the category span
@@ -955,7 +955,7 @@ a.utchip:hover b{text-decoration:underline}
 .recg{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:10px}
 .recg .rcard{background:var(--surface);border:1px solid var(--line-soft);
   padding:11px 13px 12px;min-width:0}
-.recg .rcv{font-family:"Oswald",sans-serif;font-size:25px;font-weight:600;line-height:1;
+.recg .rcv{font-family:var(--f-display);font-size:25px;font-weight:600;line-height:1;
   color:var(--sodium);font-variant-numeric:tabular-nums}
 .recg .rck{font-size:12.5px;font-weight:600;color:var(--ink);margin-top:5px;line-height:1.25}
 .recg .rcw{font-size:11.5px;color:var(--ink-3);margin-top:3px;line-height:1.35}
@@ -974,16 +974,16 @@ a.utchip:hover b{text-decoration:underline}
 }
 /* ---------- Programs breakdown ---------- */
 .bdiv{margin-bottom:24px}
-.bdivhead{font-family:"Oswald",sans-serif;font-size:17px;font-weight:600;letter-spacing:.04em;margin:0 0 3px;
+.bdivhead{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:.04em;margin:0 0 3px;
   padding-bottom:5px;border-bottom:2px solid var(--ink)}
 .bdivsub{font-size:12px;color:var(--ink-3);margin:0 0 12px}
 .bregs{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
 .breg{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:11px 13px}
-.breg h5{margin:0 0 7px;font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+.breg h5{margin:0 0 7px;font-family:var(--f-display);font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
 .bschool{display:grid;grid-template-columns:26px 22px minmax(0,1fr) auto;gap:8px;padding:4px 0;font-size:13px;align-items:center;cursor:pointer}
 .bschool:hover{background:var(--surface-2)}
-.bschool .bn{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);text-align:right}
-.bschool .br{font-family:"IBM Plex Mono",monospace;font-size:12px;white-space:nowrap}
+.bschool .bn{font-family:var(--f-num);font-size:11px;color:var(--ink-3);text-align:right}
+.bschool .br{font-family:var(--f-num);font-size:12px;white-space:nowrap}
 /* ---------- Home ---------- */
 .hero{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:18px 20px;margin-bottom:16px}
 .hero h2{font-size:23px;margin:0 0 5px}
@@ -997,7 +997,7 @@ a.utchip:hover b{text-decoration:underline}
   .frail{position:static}
 }
 
-.kick{display:inline-block;font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.09em;
+.kick{display:inline-block;font-family:var(--f-display);font-size:10px;letter-spacing:.09em;
   text-transform:uppercase;color:var(--surface);background:var(--ink-2);
   border-radius:2px;padding:2px 7px;margin:0 6px 0 0}
 .kick.riv{background:var(--fall)}
@@ -1006,7 +1006,7 @@ a.utchip:hover b{text-decoration:underline}
   border-left:4px solid var(--sodium);padding:18px 20px;cursor:pointer}
 .lead:hover{border-left-color:var(--sodium-bright)}
 .leadhead{margin-bottom:9px}
-.lead h3{font-family:"Oswald",sans-serif;font-size:27px;line-height:1.15;font-weight:600;
+.lead h3{font-family:var(--f-display);font-size:27px;line-height:1.15;font-weight:600;
   margin:0 0 12px;letter-spacing:-.01em}
 @media(max-width:640px){.lead h3{font-size:21px}}
 .leadteams{border-top:1px solid var(--line-soft);margin-bottom:10px}
@@ -1015,8 +1015,8 @@ a.utchip:hover b{text-decoration:underline}
 .lteam .lname{font-size:14.5px;font-weight:600;cursor:pointer;overflow:hidden;text-overflow:ellipsis;
   white-space:nowrap}
 .lteam .lname:hover{color:var(--sodium)}
-.lteam .lrec{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3)}
-.lteam .lsc{font-family:"IBM Plex Mono",monospace;font-size:19px;font-weight:600;min-width:2ch;
+.lteam .lrec{font-family:var(--f-num);font-size:11.5px;color:var(--ink-3)}
+.lteam .lsc{font-family:var(--f-num);font-size:19px;font-weight:600;min-width:2ch;
   text-align:right}
 .lteam.lost .lname,.lteam.lost .lsc{color:var(--ink-3);font-weight:500}
 .swatch{display:block;width:8px;height:8px;border-radius:1px;align-self:center;
@@ -1029,7 +1029,7 @@ a.utchip:hover b{text-decoration:underline}
   background:var(--line-soft);border:1px solid var(--line);box-shadow:var(--shadow)}
 .scard{background:var(--surface);padding:13px 15px;cursor:pointer}
 .scard:hover{background:var(--surface-2)}
-.scard h4{font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;line-height:1.25;
+.scard h4{font-family:var(--f-display);font-size:15px;font-weight:600;line-height:1.25;
   margin:8px 0 5px}
 .scard p{font-size:11.5px;color:var(--ink-3);margin:0;line-height:1.5}
 .scard .good{color:var(--rise)}
@@ -1043,18 +1043,18 @@ a.utchip:hover b{text-decoration:underline}
 .story:hover h4{color:var(--sodium)}
 .story.big{grid-column:1/-1}
 .story.big h4{font-size:19px;line-height:1.25}
-.story .ssrc{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.08em;
+.story .ssrc{font-family:var(--f-display);font-size:10px;letter-spacing:.08em;
   text-transform:uppercase;color:var(--steel);margin-bottom:5px}
-.story h4{font-family:"Oswald",sans-serif;font-size:14.5px;font-weight:500;line-height:1.35;margin:0}
+.story h4{font-family:var(--f-display);font-size:14.5px;font-weight:500;line-height:1.35;margin:0}
 
 .rpanel{padding:15px 16px}
 .rpanel h2{font-size:15px}
 .rrow{display:grid;grid-template-columns:26px 22px minmax(0,1fr) auto auto;gap:8px;align-items:center;
   padding:6px 0;border-top:1px solid var(--line-soft);cursor:pointer;font-size:13px}
 .rrow:hover .rname{color:var(--sodium)}
-.rrow .rnum{font-family:"Oswald",sans-serif;font-size:13px;color:var(--ink-3);text-align:right}
+.rrow .rnum{font-family:var(--f-display);font-size:13px;color:var(--ink-3);text-align:right}
 .rrow .rname{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rrow .rrec,.rrow .rrat{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3)}
+.rrow .rrec,.rrow .rrat{font-family:var(--f-num);font-size:11.5px;color:var(--ink-3)}
 .rrow .rrat{color:var(--ink-2);min-width:5ch;text-align:right}
 .rrow2{display:flex;justify-content:space-between;gap:10px;align-items:baseline;padding:6px 0;
   border-top:1px solid var(--line-soft);cursor:pointer;font-size:12.5px}
@@ -1067,7 +1067,7 @@ a.utchip:hover b{text-decoration:underline}
 .recgrid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);
   border:1px solid var(--line-soft)}
 .recgrid>div{background:var(--surface);padding:9px 11px}
-.recgrid b{display:block;font-family:"Oswald",sans-serif;font-size:21px;font-weight:600;line-height:1}
+.recgrid b{display:block;font-family:var(--f-display);font-size:21px;font-weight:600;line-height:1}
 .recgrid span{display:block;font-size:10.5px;color:var(--ink-3);margin-top:3px}
 
 /* ---------- score ticker ---------- */
@@ -1085,7 +1085,7 @@ a.utchip:hover b{text-decoration:underline}
 .tbars i{flex:1;display:block;box-shadow:inset 0 -1px 0 rgba(128,128,128,.35)}
 .tbody{padding:7px 9px 8px}
 .tmeta{display:flex;justify-content:space-between;align-items:center;
-  font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  font-family:var(--f-display);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
   color:var(--ink-3);margin-bottom:5px}
 .tmeta .tstat{color:var(--ink-2)}
 .tmeta .tstat.live{color:var(--fall)}
@@ -1093,14 +1093,14 @@ a.utchip:hover b{text-decoration:underline}
   min-height:2.7em;line-height:1.25}
 /* Full names run long -- "American Leadership Academy" gets two lines, and the
    fixed two-line box keeps every card the same height down the strip. */
-.tteam .tab{font-family:"Oswald",sans-serif;font-size:13.5px;font-weight:600;letter-spacing:.01em;
+.tteam .tab{font-family:var(--f-display);font-size:13.5px;font-weight:600;letter-spacing:.01em;
   color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
   overflow:hidden}
-.tteam .trec{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-3)}
-.tteam .tsc{font-family:"IBM Plex Mono",monospace;font-size:14px;font-weight:600;color:var(--ink)}
+.tteam .trec{font-family:var(--f-num);font-size:10.5px;color:var(--ink-3)}
+.tteam .tsc{font-family:var(--f-num);font-size:14px;font-weight:600;color:var(--ink)}
 .tteam.lost .tab,.tteam.lost .tsc{color:var(--ink-3);font-weight:500}
 .tfoot{margin-top:6px;padding-top:5px;border-top:1px solid var(--line-soft);
-  font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink-3);
+  font-family:var(--f-num);font-size:10.5px;color:var(--ink-3);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .tfoot .pk-ok{color:var(--rise)}
 .tfoot .pk-no{color:var(--fall)}
@@ -1127,23 +1127,23 @@ a.utchip:hover b{text-decoration:underline}
 /* State Leaders split into offense / defense / special teams */
 .rk .tie{font-size:.72em;color:var(--ink-3);letter-spacing:0}
 .phase{margin-bottom:26px}
-.phasehead{font-family:"Oswald",sans-serif;font-size:19px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;
+.phasehead{font-family:var(--f-display);font-size:19px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;
   margin:0;padding-bottom:6px;border-bottom:2px solid var(--ink)}
 .phasenote{margin:8px 0 14px;font-size:12.5px;color:var(--ink-3);line-height:1.55;max-width:78ch}
 .rbcol{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);padding:13px 15px}
-.rbcol h4{margin:0 0 3px;font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;letter-spacing:.01em}
+.rbcol h4{margin:0 0 3px;font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacing:.01em}
 .rbcol .cnt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
 .rbp{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-top:1px solid var(--line-soft);font-size:13.5px}
 .rbp:first-of-type{border-top:0}
 .rbp b{font-weight:600}
 .rbp span{color:var(--ink-3);font-size:12px;text-align:right;white-space:nowrap}
-.rbp i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);font-weight:600}
+.rbp i{font-style:normal;font-family:var(--f-num);font-size:12px;color:var(--ink-2);font-weight:600}
 
 .pgrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .statsnote{margin-top:12px;padding:11px 14px;border-left:3px solid var(--sodium);background:color-mix(in srgb,var(--sodium) 7%,var(--surface));font-size:12.5px;color:var(--ink-2);line-height:1.55}
 .statsnote strong{color:var(--ink)}
 .marquee-wrap{display:grid;grid-template-columns:52px 1fr;align-items:stretch;background:var(--surface)}
-.marquee-no{display:flex;align-items:center;justify-content:center;font-family:"Oswald",sans-serif;font-size:22px;font-weight:600;color:var(--sodium);background:color-mix(in srgb,var(--sodium) 9%,var(--surface));border-right:1px solid var(--line-soft)}
+.marquee-no{display:flex;align-items:center;justify-content:center;font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--sodium);background:color-mix(in srgb,var(--sodium) 9%,var(--surface));border-right:1px solid var(--line-soft)}
 .marquee-no.riv{font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fall);background:color-mix(in srgb,var(--fall) 10%,var(--surface));text-align:center;line-height:1.25;padding:0 4px}
 .marquee-wrap .pred{padding-left:13px}
 @media(max-width:560px){.marquee-wrap{grid-template-columns:36px 1fr}.marquee-no{font-size:17px}}
@@ -1153,25 +1153,25 @@ a.utchip:hover b{text-decoration:underline}
 .side .t{font-size:14px;font-weight:500}
 .side .t b{font-weight:600}
 .side .t em{font-style:normal;color:var(--ink-3);font-size:11.5px;margin-left:5px}
-.side .p{font-family:"IBM Plex Mono",monospace;font-size:16px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-3)}
+.side .p{font-family:var(--f-num);font-size:16px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-3)}
 .side.win .t b{font-weight:700}
 .side.win .p{color:var(--ink)}
 .pred.up{border-left:3px solid var(--steel)}
 .sheet{columns:280px;column-gap:22px}
 .sheetrow{break-inside:avoid;display:grid;grid-template-columns:1fr auto;gap:10px;padding:5px 0;border-bottom:1px solid var(--line-soft);font-size:13.5px;align-items:baseline}
 .sheetrow b{font-weight:600}
-.sheetrow .sc{font-family:"IBM Plex Mono",monospace;font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.sheetrow .sc{font-family:var(--f-num);font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
 .pred:hover{background:var(--surface-2)}
 .pred.toss{border-left:3px solid var(--sodium)}
 .matchup{font-size:14.5px;font-weight:600;line-height:1.35}
 .matchup .at{color:var(--ink-3);font-weight:400}
 .matchup small{display:block;font-weight:400;font-size:11.5px;color:var(--ink-3);margin-top:2px}
 .line{text-align:right}
-.line .f{font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;line-height:1.15}
-.line .s{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
-.odds{display:flex;flex-direction:column;gap:2px;align-items:flex-end;font-family:"IBM Plex Mono",monospace;
+.line .f{font-family:var(--f-display);font-size:15px;font-weight:600;line-height:1.15}
+.line .s{font-family:var(--f-num);font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.odds{display:flex;flex-direction:column;gap:2px;align-items:flex-end;font-family:var(--f-num);
   font-variant-numeric:tabular-nums}
-.odds .ln{font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;letter-spacing:.01em;
+.odds .ln{font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacing:.01em;
   text-align:right;line-height:1.15}
 /* National opponents have long names; let the line shrink rather than wrap into three rows */
 .odds .ln.long{font-size:12.5px}
@@ -1195,8 +1195,8 @@ a.utchip:hover b{text-decoration:underline}
 .board3{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-soft);
   border:1px solid var(--line);border-top:0}
 .board3 div{background:var(--surface);padding:12px 14px;text-align:center}
-.board3 .k{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.board3 .v{font-family:"Oswald",sans-serif;font-size:23px;font-weight:600;line-height:1.1;margin-top:3px}
+.board3 .k{font-family:var(--f-display);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.board3 .v{font-family:var(--f-display);font-size:23px;font-weight:600;line-height:1.1;margin-top:3px}
 .board3 .sub3{font-size:11px;color:var(--ink-3);margin-top:2px}
 
 /* ---- Sources & Trust ---- */
@@ -1215,7 +1215,7 @@ a.utchip:hover b{text-decoration:underline}
 .never li{font-size:13.5px;line-height:1.7;color:var(--ink-2)}
 .game.ourhon{border-left:3px solid var(--fall);padding-left:9px}
 .hnote{display:block;font-weight:400;font-size:11.5px;color:var(--ink-3);margin-top:2px}
-.gcount{font-family:"Archivo",sans-serif;font-size:10.5px;letter-spacing:0;text-transform:none;
+.gcount{font-family:var(--f-ui);font-size:10.5px;letter-spacing:0;text-transform:none;
   color:var(--ink-3);font-weight:400;margin-left:8px}
 .notbet{font-size:11.5px;color:var(--ink-3);margin-top:10px;padding-left:11px;border-left:2px solid var(--line)}
 /* An offer we were told about, with the telling attached. */
@@ -1234,16 +1234,16 @@ a.utchip:hover b{text-decoration:underline}
 .prob{flex:1;height:8px;background:var(--surface-2);position:relative;overflow:hidden}
 .prob i{position:absolute;inset:0 auto 0 0;background:var(--steel)}
 .prob.toss i{background:var(--sodium)}
-.probn{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);width:34px;text-align:right;font-variant-numeric:tabular-nums}
+.probn{font-family:var(--f-num);font-size:12px;color:var(--ink-2);width:34px;text-align:right;font-variant-numeric:tabular-nums}
 
 /* ---------- rivalry + game detail ---------- */
-.rivtag{display:inline-block;font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.1em;
+.rivtag{display:inline-block;font-family:var(--f-display);font-size:9.5px;letter-spacing:.1em;
   text-transform:uppercase;padding:2px 7px;border-radius:2px;margin-left:7px;vertical-align:1px;
   background:color-mix(in srgb,var(--fall) 15%,transparent);color:var(--fall);font-weight:600}
 .pred.riv{border-left:3px solid var(--fall)}
 .article{font-size:14.5px;line-height:1.62;color:var(--ink-2)}
 .article p{margin:0 0 10px}
-.article p:first-letter{font-family:"Oswald",sans-serif;font-size:1.05em;font-weight:600;color:var(--ink)}
+.article p:first-letter{font-family:var(--f-display);font-size:1.05em;font-weight:600;color:var(--ink)}
 .bcast{margin:0;padding:0 0 0 17px;font-size:14px;line-height:1.55;color:var(--ink-2)}
 .bcast li{margin:0 0 4px}
 .bcast [data-p]{font-weight:600;color:var(--ink);cursor:pointer}
@@ -1251,26 +1251,26 @@ a.utchip:hover b{text-decoration:underline}
 .bnote{margin-top:7px;font-size:11.5px;line-height:1.5;color:var(--ink-3)}
 .whylist{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .whyrow{background:var(--surface);padding:10px 12px}
-.whyrow .wk{font-family:"Oswald",sans-serif;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+.whyrow .wk{font-family:var(--f-display);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
   color:var(--steel);margin-bottom:3px}
 .whyrow .wv{font-size:13px;color:var(--ink-2);line-height:1.5}
 .minisb{display:grid;grid-template-columns:1fr 76px 1fr;background:var(--ink);color:var(--surface);align-items:center}
 .minisb .mt{padding:13px 14px}
 .minisb .mt.r{text-align:right}
-.minisb .mt .n{font-family:"Oswald",sans-serif;font-size:16px;font-weight:600;text-transform:uppercase;line-height:1.1}
+.minisb .mt .n{font-family:var(--f-display);font-size:16px;font-weight:600;text-transform:uppercase;line-height:1.1}
 .minisb .mt .s{font-size:11px;opacity:.6;margin-top:2px}
-.minisb .mt .p{font-family:"Oswald",sans-serif;font-size:30px;font-weight:700;line-height:1;margin-top:4px}
+.minisb .mt .p{font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1;margin-top:4px}
 .minisb .mm{text-align:center;border-left:1px solid rgba(255,255,255,.16);border-right:1px solid rgba(255,255,255,.16);
-  padding:10px 4px;font-family:"Oswald",sans-serif;font-size:12px;font-weight:600;line-height:1.2}
+  padding:10px 4px;font-family:var(--f-display);font-size:12px;font-weight:600;line-height:1.2}
 .minisb .mm small{display:block;font-size:9px;letter-spacing:.12em;opacity:.55;font-weight:400}
 
 /* ---------- coaches ---------- */
 .divhead{
-  font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  font-family:var(--f-display);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
   color:var(--ink);margin:22px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--ink);
   display:flex;gap:10px;align-items:baseline;
 }
-.divhead span{font-family:"Archivo",sans-serif;font-size:12px;letter-spacing:0;text-transform:none;color:var(--ink-3)}
+.divhead span{font-family:var(--f-ui);font-size:12px;letter-spacing:0;text-transform:none;color:var(--ink-3)}
 .ctable{overflow-x:auto;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
 .ctable table{min-width:840px}
 .ctable th{position:static;border-bottom:1px solid var(--line);cursor:default}
@@ -1292,9 +1292,9 @@ a.utchip:hover b{text-decoration:underline}
 .caro .who{font-weight:600;font-size:14px}
 .caro .who small{display:block;font-weight:400;font-size:11px;color:var(--ink-3);margin-top:2px}
 .caro .basis{font-size:13.5px}
-.caro .basis em{font-style:normal;color:var(--ink-3);font-family:"IBM Plex Mono",monospace;font-size:12px}
+.caro .basis em{font-style:normal;color:var(--ink-3);font-family:var(--f-num);font-size:12px}
 .caro .dtl{font-size:12.5px;color:var(--ink-2);margin-top:3px;line-height:1.45}
-.tagline{display:inline-block;font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.1em;
+.tagline{display:inline-block;font-family:var(--f-display);font-size:9.5px;letter-spacing:.1em;
   text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-left:7px;vertical-align:1px}
 .tagline.rep{background:color-mix(in srgb,var(--rise) 15%,transparent);color:var(--rise)}
 .tagline.inf{background:color-mix(in srgb,var(--sodium) 17%,transparent);color:var(--sodium)}
@@ -1302,30 +1302,30 @@ a.utchip:hover b{text-decoration:underline}
 /* ---------- quarter profile ---------- */
 .qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .qcell{background:var(--surface);padding:9px 6px;text-align:center}
-.qcell .lab{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
-.qcell .d{font-family:"Oswald",sans-serif;font-size:20px;font-weight:600;line-height:1.1;margin-top:2px}
-.qcell .fa{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);margin-top:2px}
+.qcell .lab{font-family:var(--f-display);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.qcell .d{font-family:var(--f-display);font-size:20px;font-weight:600;line-height:1.1;margin-top:2px}
+.qcell .fa{font-family:var(--f-num);font-size:11px;color:var(--ink-3);margin-top:2px}
 .qbar{height:4px;background:var(--surface-2);margin-top:6px;position:relative}
 .qbar i{position:absolute;top:0;bottom:0;background:var(--steel)}
 .qbar i.neg{background:var(--fall)}
 .halves{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);border-top:0}
 .halves div{background:var(--surface);padding:8px 10px;text-align:center}
-.halves .k{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
-.halves .v{font-family:"Oswald",sans-serif;font-size:17px;font-weight:600;margin-top:1px}
+.halves .k{font-family:var(--f-display);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.halves .v{font-family:var(--f-display);font-size:17px;font-weight:600;margin-top:1px}
 
 /* ---------- playoffs ---------- */
 .porow{display:grid;grid-template-columns:52px 1fr 84px 92px 96px;gap:12px;align-items:center;
   background:var(--surface);padding:9px 13px}
-.porow.hdr{background:var(--surface-2);font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.13em;
+.porow.hdr{background:var(--surface-2);font-family:var(--f-display);font-size:10px;letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink-3)}
-.porow .sd{font-family:"Oswald",sans-serif;font-size:18px;font-weight:600;text-align:center;color:var(--ink-2)}
+.porow .sd{font-family:var(--f-display);font-size:18px;font-weight:600;text-align:center;color:var(--ink-2)}
 .porow.out{opacity:.66}
 .porow .tmn{font-weight:600;font-size:14px;cursor:pointer}
 .porow .tmn small{display:block;font-weight:400;font-size:11px;color:var(--ink-3)}
-.porow .n{font-family:"IBM Plex Mono",monospace;font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
-.cutline{background:var(--ink);color:var(--surface);padding:6px 13px;font-family:"Oswald",sans-serif;
+.porow .n{font-family:var(--f-num);font-size:13px;text-align:right;font-variant-numeric:tabular-nums}
+.cutline{background:var(--ink);color:var(--surface);padding:6px 13px;font-family:var(--f-display);
   font-size:10px;letter-spacing:.16em;text-transform:uppercase;display:flex;justify-content:space-between}
-.diverge{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.08em;padding:1px 5px;border-radius:2px;
+.diverge{font-family:var(--f-display);font-size:9.5px;letter-spacing:.08em;padding:1px 5px;border-radius:2px;
   background:color-mix(in srgb,var(--sodium) 18%,transparent);color:var(--sodium);margin-left:6px}
 @media (max-width:660px){.porow{grid-template-columns:40px 1fr 70px}.porow .n:nth-child(4),.porow .n:nth-child(5){display:none}.porow.hdr{display:none}}
 
@@ -1333,29 +1333,29 @@ a.utchip:hover b{text-decoration:underline}
 .brwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);padding:16px}
 .bracket{display:grid;grid-template-columns:repeat(4,minmax(178px,1fr));gap:16px;min-width:760px}
 .brcol{display:flex;flex-direction:column;justify-content:space-around;gap:8px}
-.brhead{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+.brhead{font-family:var(--f-display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   color:var(--ink-3);text-align:center;padding-bottom:7px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .game2{border:1px solid var(--line-soft);background:var(--surface)}
 .gside{display:grid;grid-template-columns:22px 1fr auto;gap:7px;align-items:center;padding:6px 8px;font-size:12.5px}
 .gside + .gside{border-top:1px solid var(--line-soft)}
-.gside .sd2{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3);text-align:right}
+.gside .sd2{font-family:var(--f-num);font-size:11px;color:var(--ink-3);text-align:right}
 .gside .nm2{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gside .rt2{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-3)}
+.gside .rt2{font-family:var(--f-num);font-size:11px;color:var(--ink-3)}
 .gside.adv{background:color-mix(in srgb,var(--steel) 11%,transparent)}
 .gside.adv .nm2{font-weight:600}
 .gside.adv .rt2{color:var(--ink-2)}
 .gside.bye{color:var(--ink-3);font-style:italic}
 .champbox{border:2px solid var(--sodium);background:color-mix(in srgb,var(--sodium) 9%,transparent);
   padding:12px;text-align:center}
-.champbox .k2{font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
-.champbox .v2{font-family:"Oswald",sans-serif;font-size:19px;font-weight:700;text-transform:uppercase;margin-top:3px;line-height:1.1}
-.champbox .o2{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);margin-top:3px}
+.champbox .k2{font-family:var(--f-display);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-3)}
+.champbox .v2{font-family:var(--f-display);font-size:19px;font-weight:700;text-transform:uppercase;margin-top:3px;line-height:1.1}
+.champbox .o2{font-family:var(--f-num);font-size:12px;color:var(--ink-2);margin-top:3px}
 .oddstrip{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:14px}
 .oddrow{display:grid;grid-template-columns:34px 1fr 62px 62px 62px;gap:10px;align-items:center;
   background:var(--surface);padding:7px 12px;font-size:13px}
-.oddrow.hdr{background:var(--surface-2);font-family:"Oswald",sans-serif;font-size:9.5px;letter-spacing:.12em;
+.oddrow.hdr{background:var(--surface-2);font-family:var(--f-display);font-size:9.5px;letter-spacing:.12em;
   text-transform:uppercase;color:var(--ink-3)}
-.oddrow .p2{font-family:"IBM Plex Mono",monospace;text-align:right;font-variant-numeric:tabular-nums;font-size:12.5px}
+.oddrow .p2{font-family:var(--f-num);text-align:right;font-variant-numeric:tabular-nums;font-size:12.5px}
 .oddrow .p2.big{font-weight:600;color:var(--ink)}
 .oddrow .tb{position:relative}
 .oddrow .tb i{position:absolute;left:0;top:50%;transform:translateY(-50%);height:5px;
@@ -1380,22 +1380,22 @@ a.utchip:hover b{text-decoration:underline}
 @media(max-width:640px){.slatecount{margin-left:0;width:100%}.slatebar .fl select{min-width:0;flex:1}}
 /* ---- Out of State: week navigator ---- */
 .wknav{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:9px 11px;margin-bottom:12px}
-.wknav button{font-family:"Oswald",sans-serif;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 11px;border-radius:2px;cursor:pointer;white-space:nowrap}
+.wknav button{font-family:var(--f-display);font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 11px;border-radius:2px;cursor:pointer;white-space:nowrap}
 .wknav button:hover:not(:disabled){background:var(--surface-2)}
 .wknav button:disabled{opacity:.3;cursor:default}
 .wknav .owhome{border-color:var(--sodium);color:var(--sodium)}
 .wknav .owhome:disabled{border-color:var(--line);color:var(--ink-3)}
-.wknav .wklab{flex:1;text-align:center;font-family:"Oswald",sans-serif;font-size:15px;font-weight:600;letter-spacing:.04em}
-.wknav .wklab small{display:block;font-family:"Archivo",sans-serif;font-size:11.5px;font-weight:400;letter-spacing:0;color:var(--ink-3);margin-top:2px}
+.wknav .wklab{flex:1;text-align:center;font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacing:.04em}
+.wknav .wklab small{display:block;font-family:var(--f-ui);font-size:11.5px;font-weight:400;letter-spacing:0;color:var(--ink-3);margin-top:2px}
 .oosdot{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 16px}
 .oosdot i{width:7px;height:7px;border-radius:50%;background:var(--line);cursor:pointer;transition:background .12s}
 .oosdot i.on{background:var(--sodium)}
 .oosdot i:hover{background:var(--ink-3)}
-.oosdate{font-family:"Oswald",sans-serif;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line-soft)}
+.oosdate{font-family:var(--f-display);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--line-soft)}
 .oosdate:first-child{margin-top:0}
 .oosnone{padding:26px 14px;text-align:center;color:var(--ink-3);font-size:14px;border:1px dashed var(--line);border-radius:var(--r)}
 details.foldout{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);padding:0;margin-bottom:16px}
-details.foldout>summary{cursor:pointer;padding:12px 14px;font-family:"Oswald",sans-serif;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);list-style:none}
+details.foldout>summary{cursor:pointer;padding:12px 14px;font-family:var(--f-display);font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);list-style:none}
 details.foldout>summary::-webkit-details-marker{display:none}
 details.foldout>summary::after{content:"+";float:right;color:var(--sodium);font-size:15px;line-height:1}
 details.foldout[open]>summary::after{content:"\2212"}
@@ -1404,19 +1404,19 @@ details.foldout .foldbody{padding:0 14px 14px}
 details.foldout .foldbody p{margin:0 0 10px}
 @media(max-width:600px){.wknav .wklab{font-size:13px}.wknav button{padding:6px 8px;font-size:11px}}
 .oosrow{display:grid;grid-template-columns:78px 1fr 96px 88px;gap:12px;align-items:center;background:var(--surface);padding:11px 13px}
-.oosrow.hdr{background:var(--surface-2);font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
-.oosrow .res{font-family:"Oswald",sans-serif;font-size:12px;font-weight:600;letter-spacing:.08em;padding:3px 8px;border-radius:2px;text-align:center}
+.oosrow.hdr{background:var(--surface-2);font-family:var(--f-display);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.oosrow .res{font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.08em;padding:3px 8px;border-radius:2px;text-align:center}
 .oosrow .mu{font-size:14px}
 .oosrow .mu b{font-weight:600;cursor:pointer}
 .oosrow .mu small{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px}
-.oosrow .sc{font-family:"IBM Plex Mono",monospace;font-size:15px;font-weight:600;text-align:right}
-.oosrow .or{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-3);text-align:right}
+.oosrow .sc{font-family:var(--f-num);font-size:15px;font-weight:600;text-align:right}
+.oosrow .or{font-family:var(--f-num);font-size:12px;color:var(--ink-3);text-align:right}
 @media (max-width:660px){.oosrow{grid-template-columns:70px 1fr auto}.oosrow .or{display:none}.oosrow.hdr{display:none}}
 
 /* ---------- talent ---------- */
 .talrow{display:grid;grid-template-columns:46px 1fr;gap:14px;background:var(--surface);padding:12px 13px;align-items:start}
 .talrow .tscore{text-align:center}
-.talrow .tscore .n{font-family:"Oswald",sans-serif;font-size:22px;font-weight:600;line-height:1;color:var(--steel)}
+.talrow .tscore .n{font-family:var(--f-display);font-size:22px;font-weight:600;line-height:1;color:var(--steel)}
 .talrow .tscore .lab{font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
 .talhead{display:flex;gap:11px;align-items:baseline;flex-wrap:wrap}
 .talhead .nm{font-weight:600;font-size:14.5px;cursor:pointer}
@@ -1424,7 +1424,7 @@ details.foldout .foldbody p{margin:0 0 10px}
 .plist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .pl{font-size:12px;background:var(--surface-2);border:1px solid var(--line-soft);padding:3px 8px;border-radius:2px}
 .pl b{font-weight:600}
-.pl i{font-style:normal;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--steel);margin-right:5px}
+.pl i{font-style:normal;font-family:var(--f-num);font-size:11px;color:var(--steel);margin-right:5px}
 .pl span{color:var(--ink-3)}
 .pl.elite{background:color-mix(in srgb,var(--sodium) 13%,transparent);border-color:color-mix(in srgb,var(--sodium) 35%,transparent)}
 .pl.elite i{color:var(--sodium)}
@@ -1434,18 +1434,18 @@ details.foldout .foldbody p{margin:0 0 10px}
 /* ---------- star players ---------- */
 .stars{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .star{display:grid;grid-template-columns:46px 1fr auto;gap:11px;align-items:center;background:var(--surface);padding:8px 11px}
-.star .cat{font-family:"Oswald",sans-serif;font-size:10px;letter-spacing:.09em;color:var(--ink-3);text-align:center;
+.star .cat{font-family:var(--f-display);font-size:10px;letter-spacing:.09em;color:var(--ink-3);text-align:center;
   background:var(--surface-2);padding:3px 0;border-radius:2px}
 .star .nm{font-weight:600;font-size:13.5px}
 .star .nm span{font-weight:400;color:var(--ink-3);font-size:11.5px;margin-left:6px}
-.star .ln{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);text-align:right}
+.star .ln{font-family:var(--f-num);font-size:12px;color:var(--ink-2);text-align:right}
 
 /* ---------- transfers ---------- */
 .xgrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .xrow{background:var(--surface);padding:11px 13px}
 .xhead{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
 .xhead .nm{font-weight:600;font-size:14.5px;cursor:pointer}
-.xhead .ct{font-family:"Oswald",sans-serif;font-size:13px;font-weight:600}
+.xhead .ct{font-family:var(--f-display);font-size:13px;font-weight:600}
 .xhead .ct.in{color:var(--rise)} .xhead .ct.out{color:var(--fall)}
 .xplayers{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .xp{font-size:12px;background:var(--surface-2);border:1px solid var(--line-soft);padding:3px 8px;border-radius:2px}
@@ -1459,6 +1459,438 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
   .stamp{width:100%;justify-content:flex-start}
   .stamp div{text-align:left}
 }
+
+/* ===== v2 broadcast theme — generated, do not hand-edit above this line ===== */
+
+/* ---- palette ---- */
+/* Palette C — "Broadcast": near-black, wide display type, team colors carry the color */
+:root,
+:root:not([data-theme="light"]),
+:root[data-theme="dark"]{
+  --f-display:"Archivo",sans-serif;
+  --f-ui:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --f-num:"Archivo",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --ink:#F3F3F6; --ink-2:#A6A6B2; --ink-3:#72727E;
+  --ground:#08080A; --surface:#121216; --surface-2:#1A1A20;
+  --line:#26262E; --line-soft:#1E1E25;
+  --steel:#74A8FF; --steel-soft:#39507A;
+  --sodium:#FFC64B; --sodium-bright:#FFD681;
+  --rise:#3ED9A0; --fall:#FF6A56;
+  --spine:#2C2C35;
+  --shadow:none;
+}
+h1,h2,h3,.disp,.lead h3,.scard h4,.card .v,.rk,.tab,.stamp .v{
+  font-stretch:112%; font-weight:800; letter-spacing:-.02em;
+}
+.brand h1{ font-stretch:118%; font-weight:800 }
+.brand h1 em{ color:var(--sodium) }
+.tab{ font-stretch:100%; font-weight:600 }
+.tab[aria-selected="true"]{ background:var(--ink); color:#0A0A0C }
+.mono,.lteam .lsc,.tteam .tsc,td.num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" }
+.rk.top{ color:var(--sodium) }
+
+/* the tiny letterspaced all-caps labels, retired (67 rules) */
+.stamp .k,
+.strow.hdr,
+.tab,
+.fl>span,
+.sendbtn,
+.flagbtn,
+.flagstat span,
+thead th,
+.card .k,
+.panel h2,
+.gauge .lab,
+.mpick .mside label,
+.sb-team .nm,
+.crow2.hdr,
+.cmprow.hdr,
+.sitemapnav h4,
+.matchtop .mt .n,
+.matchtop .mid,
+.livingtag,
+.ck,
+.akick,
+.capbadge,
+.vmeta,
+.dhead h2,
+.kv .k,
+.sect,
+.method h3,
+.dayhead,
+.dlab,
+.dvs span,
+.divhead,
+.rctag,
+.wkb,
+.blend span,
+.svcb th,
+.olg h4,
+.phead .h,
+.pname .badge,
+.dlink,
+.htitle .hc,
+.htitle .hco-tag,
+.breg h5,
+.kick,
+.story .ssrc,
+.tmeta,
+.phasehead,
+.rbcol .cnt,
+.marquee-no.riv,
+.board3 .k,
+.tierbadge,
+.rivtag,
+.whyrow .wk,
+.minisb .mt .n,
+.tagline,
+.qcell .lab,
+.halves .k,
+.porow.hdr,
+.cutline,
+.brhead,
+.champbox .k2,
+.champbox .v2,
+.oddrow.hdr,
+.wknav button,
+.oosdate,
+details.foldout>summary,
+.oosrow.hdr,
+.talrow .tscore .lab{ text-transform:none; letter-spacing:0 }
+
+/* one radius, no drop shadows, hairline borders (40 rules) */
+.fl input,.fl select,.fl textarea,
+.seg,
+input[type="search"],
+.tablewrap,
+.card,
+.panel,
+.seat,
+.verdictbar,
+.wpbar,
+select,
+.dclose,
+.combine.none,
+.vthumb,
+.ourstory,
+.rc,
+.wkb,
+.utchip,
+.storyteam,
+.qform,
+.olg,
+.pfilters select,
+.phead,
+.dlink,
+.beebig,
+.recg .rcard,
+.breg,
+.hero,
+.lead,
+.tcard,
+.rbcol,
+.told,
+.ctable,
+.brwrap,
+.game2,
+.slatebar,
+.wknav,
+.wknav button,
+details.foldout,
+.pl,
+.xp{ box-shadow:none; border-color:var(--line-soft); border-radius:var(--r-sm) }
+
+/* ---- structure ---- */
+/* ============================================================
+   Beehive Index — v2 structure layer
+   Shared across all palette variants. Everything here is about
+   getting the site off the "bordered card on gray" pattern and
+   onto list-and-divider surfaces that read like a sports app.
+   ============================================================ */
+
+:root{ --r:12px; --r-sm:8px; --pad:16px; }
+
+body{ font-size:15.5px; letter-spacing:-0.005em; }
+
+/* ---------- score ticker: flush strip, team color does the work ---------- */
+.tickwrap{ background:var(--surface); border-bottom:1px solid var(--line); padding:0 }
+.tickrail{ gap:0; padding:0 40px }
+.tcard{
+  flex-basis:230px; background:transparent; border:0; border-right:1px solid var(--line-soft);
+  border-radius:0; transition:background .12s;
+}
+.tcard:hover{ background:var(--surface-2); transform:none; border-color:var(--line-soft) }
+.tbars{ height:3px }
+.tbody{ padding:10px 14px 11px }
+.tmeta{ text-transform:none; letter-spacing:0; font-size:11.5px; font-weight:500 }
+.tteam .tab{ letter-spacing:-.01em; font-size:14px }
+.tteam .tsc{ font-size:15px; font-weight:700 }
+.tfoot{ border-top:0; padding-top:2px; font-size:11px; opacity:.85 }
+.tarrow{ width:40px }
+@media(max-width:640px){ .tickrail{ padding:0 } .tcard{ flex-basis:76vw } }
+
+/* ---------- masthead: compact app bar, not a newspaper flag ---------- */
+header.mast{ border-bottom:1px solid var(--line) }
+.mast-in{ padding:14px 0 13px; align-items:center }
+.brand h1{ font-size:clamp(24px,3.4vw,31px); letter-spacing:-.02em; line-height:1 }
+.brand p{ font-size:12.5px; max-width:60ch; margin-top:5px; color:var(--ink-3) }
+.brand p:not(.social){ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden }
+.brand p.social a{ border-radius:999px; padding:4px 11px 4px 8px }
+.stamp{ gap:18px }
+.stamp .k{ text-transform:none; letter-spacing:0; font-size:11px; font-weight:500 }
+.stamp .v{ font-size:19px }
+.stamp .upd{ border-left:1px solid var(--line-soft) }
+.stamp .upd .v{ font-size:13px }
+
+/* ---------- nav: segmented pills, sticky, blurred ---------- */
+nav.tabs{
+  background:color-mix(in srgb, var(--surface) 86%, transparent);
+  backdrop-filter:saturate(1.4) blur(10px); border-bottom:1px solid var(--line);
+}
+.tabs-in{ gap:4px; padding:9px 0 }
+.tab{
+  border-bottom:0; border-radius:999px; text-transform:none; letter-spacing:-.005em;
+  font-size:14px; font-weight:600; padding:8px 14px; color:var(--ink-3);
+}
+.tab:hover{ background:var(--surface-2); color:var(--ink) }
+.tab[aria-selected="true"]{
+  background:var(--ink); color:var(--surface); border-bottom-color:transparent;
+}
+.subs{ background:transparent; border-bottom:1px solid var(--line-soft) }
+.subtab{ font-size:13px }
+
+/* ---------- surfaces: kill the boxed-card grid ---------- */
+.panel,.hero,.card,.tablewrap,.lead,.scards{
+  box-shadow:none; border-color:var(--line-soft);
+}
+.panel,.hero{ border:0; border-radius:var(--r); background:var(--surface); padding:20px 22px }
+.panel h2,.hero h2{ text-transform:none; letter-spacing:-.02em; font-size:21px; font-weight:700 }
+.panel .lede{ font-size:13.5px }
+
+.card{ border:0; border-radius:var(--r); background:var(--surface); padding:16px 18px }
+.card .k{ text-transform:none; letter-spacing:0; font-size:12px; font-weight:500 }
+.card .v{ font-size:32px; letter-spacing:-.02em }
+
+/* front page: lead story loses the box and the left bar */
+.frontgrid{ gap:22px }
+@media(min-width:981px){ .frontgrid{ grid-template-columns:minmax(0,1fr) 342px } }
+.fmain,.frail{ gap:18px }
+.lead{
+  background:var(--surface); border:0; border-left:0; border-radius:var(--r);
+  padding:20px 22px; position:relative; overflow:hidden;
+}
+.lead::before{
+  content:""; position:absolute; left:0; right:0; top:0; height:3px; background:var(--sodium);
+}
+.lead:hover{ background:var(--surface-2) }
+.lead h3{ font-size:30px; line-height:1.1; letter-spacing:-.025em; font-weight:700 }
+.lead .lteam{ border-bottom-color:var(--line-soft) }
+.lteam .lsc{ font-size:20px; font-weight:700 }
+
+/* eyebrow labels: a colored word, not a filled pill on every block */
+.kick{
+  background:transparent; color:var(--sodium); padding:0; border-radius:0;
+  text-transform:none; letter-spacing:0; font-size:12.5px; font-weight:700;
+  margin-right:9px;
+}
+.kick.riv{ background:transparent; color:var(--fall) }
+.kick::after{ content:""; display:inline-block; width:4px; height:4px; border-radius:50%;
+  background:currentColor; vertical-align:middle; margin-left:9px; opacity:.5 }
+
+/* slate cards → flush tiles */
+.scards{ background:transparent; border:0; gap:14px; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)) }
+.scard{ background:var(--surface); border-radius:var(--r); padding:15px 16px }
+.scard:hover{ background:var(--surface-2) }
+.scard h4{ font-size:16px; letter-spacing:-.015em }
+.scard p{ font-size:12px }
+
+/* story river */
+.river{ border-top:0; gap:1px; background:var(--line-soft) }
+.story{ border:0; padding:14px 16px }
+.story:hover{ background:var(--surface-2) }
+
+/* ---------- tables: app rows, not a spreadsheet frame ---------- */
+.tablewrap{ border:0; border-radius:var(--r); background:var(--surface) }
+thead th{
+  text-transform:none; letter-spacing:0; font-size:12px; font-weight:600; color:var(--ink-3);
+  border-bottom:1px solid var(--line); padding:11px 12px;
+}
+td{ padding:11px 12px }
+tbody tr{ border-bottom:1px solid var(--line-soft) }
+tbody tr:last-child{ border-bottom:0 }
+.rk{ font-size:16px; font-weight:700; color:var(--ink-3) }
+.tm{ font-size:15px }
+.chip{ border-radius:999px; letter-spacing:0; font-size:11px; padding:2px 8px }
+
+/* ---------- buttons ---------- */
+.fullpage,.readbtn,.flagbtn{ border-radius:999px; letter-spacing:0; font-weight:600 }
+.seg{ border-radius:999px; border-color:var(--line) }
+.seg button{ letter-spacing:0; font-size:13px; font-weight:600; padding:8px 15px }
+input[type="search"]{ border-radius:999px; padding:9px 15px }
+
+/* ---------- small caps cleanup elsewhere ---------- */
+.vmeta,.strow.hdr,.srcchip,.vdur,.capbadge{ text-transform:none; letter-spacing:0 }
+.vmeta{ font-size:11.5px; font-weight:500 }
+.vthumb{ border:0; border-radius:var(--r-sm) }
+.storyp .spb small{ letter-spacing:0; text-transform:none }
+
+/* ---------- our own reporting: same treatment as the lead ---------- */
+.ourstory{
+  border:0; border-radius:var(--r); padding:18px 20px; position:relative; overflow:hidden;
+  background:var(--surface);
+}
+.ourstory::before{ content:""; position:absolute; left:0; right:0; top:0; height:3px; background:var(--sodium) }
+.ourstory:hover{ background:var(--surface-2) }
+.ourstory h3{ font-size:26px; line-height:1.15; letter-spacing:-.02em; font-weight:700; margin:10px 0 7px }
+.kick.own,.kick.riv{ background:transparent }
+.kick.own{ color:var(--sodium) }
+.akick{ font-size:12.5px; font-weight:700; color:var(--sodium); margin-bottom:6px }
+
+/* awards / honors grid */
+.awards{ background:transparent; border:0; gap:14px; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)) }
+.award{ border-radius:var(--r); padding:15px 16px }
+.aname{ font-size:18px; letter-spacing:-.015em }
+
+/* callout bars keep their accent but sit on a rounded surface */
+.statsnote,.flag,.hgap,.verdict{ border-radius:0 var(--r-sm) var(--r-sm) 0 }
+
+/* ---------- rail modules ---------- */
+.frail .panel{ padding:16px 18px }
+.frail .panel h2{ font-size:17px }
+
+/* ---------- mobile: bigger targets, edge-to-edge ---------- */
+@media(max-width:640px){
+  .wrap{ padding:0 14px }
+  .mast-in{ padding:12px 0; gap:12px }
+  .brand h1{ font-size:26px }
+  .stamp{ width:100%; gap:16px; align-items:flex-start }
+  .stamp div{ text-align:left }
+  .stamp .v{ font-size:17px }
+  .stamp .upd{ border-left:0; padding-left:0; margin-left:auto; text-align:right }
+  .stamp .upd div{ text-align:right }
+  .stamp .sub2{ display:none }
+  .brand p:not(.social){ -webkit-line-clamp:2 }
+  .tab{ font-size:14.5px; padding:9px 14px }
+  .panel,.hero,.lead,.scard{ padding:16px 15px }
+  .lead h3{ font-size:23px }
+  td,thead th{ padding:12px 10px }
+}
+
+/* ---- new modules ---- */
+/* ============================================================
+   Broadcast hero + On X rail
+   ============================================================ */
+
+.bhero{ --c1:#243; --c2:#432; margin:0 0 18px }
+.bhero-art{
+  position:relative; border-radius:var(--r); overflow:hidden; isolation:isolate;
+  min-height:340px; display:flex; flex-direction:column; justify-content:flex-end;
+  background:
+    radial-gradient(120% 140% at 8% 0%, color-mix(in srgb,var(--c1) 78%, transparent) 0%, transparent 62%),
+    radial-gradient(120% 140% at 100% 20%, color-mix(in srgb,var(--c2) 70%, transparent) 0%, transparent 60%),
+    linear-gradient(180deg, #171720 0%, #0C0C10 100%);
+}
+/* where a real video still goes; the gradient is the fallback for games with no film */
+.bhero-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5; z-index:0 }
+.bhero-wash{
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(180deg, rgba(6,6,9,.15) 0%, rgba(6,6,9,.55) 55%, rgba(6,6,9,.92) 100%);
+}
+.bhero-ghost{
+  position:absolute; z-index:0; width:420px; height:420px; object-fit:contain;
+  opacity:.16; filter:saturate(1.15) blur(.4px);
+}
+.bhero-ghost.g1{ left:-130px; top:-120px; transform:rotate(-10deg) }
+.bhero-ghost.g2{ right:-120px; top:-40px; transform:rotate(10deg); opacity:.2 }
+
+.bhero-copy{ position:relative; z-index:2; padding:26px 26px 0 }
+.bhero-tag{
+  display:inline-block; font-size:12.5px; font-weight:700; color:var(--sodium);
+  margin-bottom:10px;
+}
+.bhero-copy h2{
+  font-size:clamp(30px,4.2vw,46px); line-height:1.02; letter-spacing:-.03em;
+  color:#fff; margin:0 0 8px; max-width:18ch;
+}
+.bhero-when{ font-size:13.5px; color:rgba(255,255,255,.72) }
+
+.bhero-strip{
+  position:relative; z-index:2; margin-top:22px;
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  padding:14px 26px; background:rgba(8,8,11,.55);
+  border-top:1px solid rgba(255,255,255,.10);
+  backdrop-filter:blur(6px);
+}
+.bhs{ display:flex; align-items:center; gap:10px }
+.bhs img{ width:34px; height:34px; object-fit:contain }
+.bhs-n{ font-family:var(--f-display); font-size:17px; font-weight:700; color:#fff; letter-spacing:-.01em }
+.bhs-r{ font-family:var(--f-num); font-size:12.5px; color:rgba(255,255,255,.6) }
+.bhs-at{ font-size:12.5px; color:rgba(255,255,255,.45) }
+.bhs-line{ margin-left:auto; font-family:var(--f-num); font-size:12.5px; color:rgba(255,255,255,.72) }
+
+@media(max-width:640px){
+  .bhero-art{ min-height:280px }
+  .bhero-copy{ padding:18px 16px 0 }
+  .bhero-copy h2{ font-size:27px; max-width:none }
+  .bhero-strip{ padding:12px 16px; gap:12px }
+  .bhs-line{ margin-left:0; flex-basis:100% }
+  .bhero-ghost{ width:210px; height:210px }
+}
+
+/* ---------- On X rail ---------- */
+.xpanel h2{ display:flex; align-items:center; gap:8px }
+.xpanel .lede{ margin-bottom:10px; font-size:12.5px }
+.xfollow{ color:var(--steel); text-decoration:none; font-weight:600 }
+.xfeed{ display:flex; flex-direction:column }
+.xpost{
+  display:block; text-decoration:none; color:inherit; padding:11px 0;
+  border-top:1px solid var(--line-soft);
+}
+.xpost:first-child{ border-top:0 }
+.xpost:hover .xp-t{ color:var(--ink) }
+.xp-top{ display:flex; align-items:center; gap:7px; font-size:12px }
+.xp-av{
+  width:20px; height:20px; border-radius:50%; background:var(--surface-2);
+  color:var(--ink-2); display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700; flex:none;
+}
+.xp-n{ font-weight:600; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis }
+.xp-h{ color:var(--ink-3); white-space:nowrap }
+.xp-w{ color:var(--ink-3); margin-left:auto; font-family:var(--f-num); font-size:11px }
+.xp-t{ margin:6px 0 0; font-size:13px; line-height:1.45; color:var(--ink-2) }
+
+/* ---------- Watch strip sitting right under the hero ---------- */
+.fmain .panel .vrail{ margin-top:10px }
+
+/* ---------- "Just posted" — newest Hudl reels ---------- */
+.freshrail{ grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:14px }
+.vcard.fresh{ display:flex; flex-direction:column }
+.vcard.fresh .vthumb{ margin-bottom:8px }
+.fr-when{ font-size:11.5px; font-weight:600; color:var(--sodium); margin-bottom:2px }
+.fr-n{ font-size:14.5px; font-weight:700; line-height:1.2; letter-spacing:-.01em }
+.fr-m{ font-size:11.5px; color:var(--ink-3); margin-top:2px }
+.fr-t{ font-size:12px; color:var(--ink-2); margin-top:5px;
+  display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden }
+.vcard.fresh:hover .fr-n{ color:var(--sodium) }
+
+.xp-tag{ font-size:10px; font-weight:700; padding:1px 6px; border-radius:999px; flex:none }
+.xp-tag.offer{ background:color-mix(in srgb,var(--sodium) 20%,transparent); color:var(--sodium) }
+.xp-tag.commit{ background:color-mix(in srgb,var(--rise) 20%,transparent); color:var(--rise) }
+.xp-tag.film{ background:color-mix(in srgb,var(--steel) 22%,transparent); color:var(--steel) }
+.xp-h{ overflow:hidden; text-overflow:ellipsis }
+
+/* score in the hero strip, for a finished lead */
+.bhs-sc{ font-family:var(--f-display); font-stretch:112%; font-weight:800; font-size:22px;
+  color:#fff; letter-spacing:-.02em; margin-left:2px }
+.bhs.lost .bhs-n,.bhs.lost .bhs-sc{ color:rgba(255,255,255,.55); font-weight:600 }
+.bhs-at:empty{ display:none }
+.bhero-strip .good{ color:var(--rise) }
+.bhero-strip .bad{ color:var(--fall) }
+.bhero{ cursor:pointer }
+.bhero:hover .bhero-wash{ background:linear-gradient(180deg,rgba(6,6,9,.10) 0%,rgba(6,6,9,.50) 55%,rgba(6,6,9,.90) 100%) }
+.fr-n{ cursor:pointer }
+/* ===== end v2 broadcast theme ===== */
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -1557,9 +1989,9 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
 
     <div class="panel" style="margin-bottom:16px">
       <h2>Where it actually stands</h2>
-      <h3 style="font-family:Oswald,sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 6px">Nationally</h3>
+      <h3 style="font-family:var(--f-display);font-size:15px;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 6px">Nationally</h3>
       <p class="lede">Girls&rsquo; flag football entered this fall as a <strong>sanctioned high school sport in 17 states</strong>. The NFHS &mdash; the body that writes the rulebook for high school sports in this country &mdash; is now <strong>writing official playing rules for it</strong>, which is the step that turns an emerging activity into a real sport with a real season. Pennsylvania sanctioned it with backing from the Eagles and the Steelers. It makes its <strong>Olympic debut in Los Angeles in 2028</strong>.</p>
-      <h3 style="font-family:Oswald,sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 6px">In Utah</h3>
+      <h3 style="font-family:var(--f-display);font-size:15px;text-transform:uppercase;letter-spacing:.06em;margin:18px 0 6px">In Utah</h3>
       <p class="lede">The petition reports hundreds of athletes already competing at the club level across the Wasatch Front, organized by the <strong>Utah High School Girls Football Association</strong> and supported by developmental grants from the <strong>Las Vegas Raiders</strong>. That is a league in everything but name &mdash; what is missing is the sanction.</p>
       <p class="notbet">The national numbers above are independently checked. The Utah club-level figures are as the petition states them, and are marked that way for the same reason every number on this site carries its source.</p>
     </div>
@@ -4659,6 +5091,104 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
               return off === 0 ? m : m.toLowerCase();
             });
   }
+
+  /* ================= v2 front page ================= */
+
+  /* A Hudl reel id is a Mongo ObjectId: the first 4 bytes are the Unix
+     creation time. So every reel already carries the moment it was cut, with
+     no extra request and nothing to store. Verified across all 5,754 reels in
+     the index — none decodes earlier than its own season. */
+  function reelCutAt(url) {
+    var m = /\/video\/3\/\d+\/([0-9a-f]{24})/.exec(url || "");
+    return m ? parseInt(m[1].slice(0, 8), 16) : 0;
+  }
+
+  function agoLabel(ts) {
+    var s = Date.now() / 1000 - ts;
+    if (s < 3600) return Math.max(1, Math.round(s / 60)) + "m ago";
+    if (s < 86400) return Math.round(s / 3600) + "h ago";
+    var d = Math.round(s / 86400);
+    if (d < 14) return d + (d === 1 ? " day ago" : " days ago");
+    return Math.round(d / 7) + " weeks ago";
+  }
+
+  /* Newest reels, one per player so a single prolific kid cannot take the
+     rail, and capped per school for the same reason. */
+  function freshReels(limit, school) {
+    var out = [], seen = {}, perSchool = {};
+    (DATA.pindex || []).forEach(function (p) {
+      if (school && p.school !== school) return;
+      (p.reels || []).forEach(function (r) {
+        var ts = reelCutAt(r.u);
+        if (!ts) return;
+        out.push({ ts: ts, name: p.name, school: p.school, pos: p.pos || "",
+                   t: r.t || "", u: r.u, thumb: r.thumb, d: r.d || "" });
+      });
+    });
+    out.sort(function (a, b) { return b.ts - a.ts; });
+    return out.filter(function (r) {
+      var k = r.name + "|" + r.school;
+      if (seen[k]) return false;
+      perSchool[r.school] = (perSchool[r.school] || 0) + 1;
+      if (!school && perSchool[r.school] > 3) return false;
+      seen[k] = 1;
+      return true;
+    }).slice(0, limit || 12);
+  }
+
+  function freshBlock(limit, school) {
+    var list = freshReels(limit, school);
+    if (!list.length) return "";
+    return '<div class="panel freshpanel"><h2>Just posted' +
+      (school ? " &mdash; " + esc(school) : "") + "</h2>" +
+      '<p class="lede">The newest highlight reels cut by ' +
+      (school ? "players on this roster" : "Utah players") +
+      ", newest first. Every one opens on Hudl, where the view goes to the kid who cut it.</p>" +
+      '<div class="vrail tight freshrail">' +
+      list.map(function (r) {
+        return '<a class="vcard fresh" href="' + esc(r.u) + '" target="_blank" rel="noopener">' +
+          '<span class="vthumb">' +
+          (r.thumb ? '<img src="' + esc(r.thumb) + '" alt="" loading="lazy">' : "") +
+          (r.d ? '<span class="vdur">' + esc(r.d) + "</span>" : "") +
+          '<span class="vplay"></span></span>' +
+          '<span class="fr-when">' + agoLabel(r.ts) + "</span>" +
+          '<span class="fr-n" data-p="' + esc(r.name + "|" + r.school) + '">' + esc(r.name) + "</span>" +
+          '<span class="fr-m">' + esc(r.school) + (r.pos ? " &middot; " + esc(r.pos) : "") + "</span>" +
+          '<span class="fr-t">' + esc(r.t) + "</span></a>";
+      }).join("") + "</div></div>";
+  }
+
+  /* Beehive Buzz. DATA.buzz is a flat list of posts:
+       { n: display name, h: "@handle", s: "School · POS" (players only),
+         k: "program"|"offer"|"commit"|"film"|"index"|"", w: age label,
+         t: text, u: permalink, school: school (for the program-page filter) }
+     Absent until the harvest is wired in, and this renders nothing without it
+     rather than showing an empty shell. */
+  function buzzBlock(school, limit) {
+    var posts = (DATA.buzz || []).filter(function (p) {
+      return !school || p.school === school;
+    }).slice(0, limit || 6);
+    if (!posts.length) return "";
+    return '<div class="panel rpanel xpanel"><h2>' +
+      (school ? esc(school) + " Buzz" : "Beehive Buzz") + "</h2>" +
+      '<p class="lede">' +
+      (school
+        ? "The program, its coaches and its players. Handles the players put on their own profiles; football posts only."
+        : "What Utah football is saying right now &mdash; programs, coaches, media and the players themselves.") +
+      ' <a class="xfollow" href="https://x.com/BeehiveIndex" target="_blank" rel="noopener">Follow @BeehiveIndex</a></p>' +
+      '<div class="xfeed">' +
+      posts.map(function (o) {
+        var href = o.u || ("https://x.com/" + String(o.h || "").replace(/^@/, ""));
+        return '<a class="xpost" href="' + esc(href) + '" target="_blank" rel="noopener">' +
+          '<div class="xp-top"><span class="xp-av">' + esc(String(o.n || "?").slice(0, 1)) + "</span>" +
+          '<span class="xp-n">' + esc(o.n || "") + "</span>" +
+          '<span class="xp-h">' + esc(o.s || o.h || "") + "</span>" +
+          (o.k ? '<span class="xp-tag ' + esc(o.k) + '">' + esc(o.k) + "</span>" : "") +
+          '<span class="xp-w">' + esc(o.w || "") + "</span></div>" +
+          '<p class="xp-t">' + esc(o.t || "") + "</p></a>";
+      }).join("") + "</div></div>";
+  }
+
   function drawHome() {
     var feed = DATA.news_feed || [];
     var rc = DATA.record || {};
@@ -4722,6 +5252,60 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
         esc(lead.fav) + " " + (lead.pk ? "pick'em" : "by " + lead.line) +
         ", total " + lead.total_line + ". Click for the full matchup.</p>" +
         teamPages(lead) + "</div>";
+    }
+
+
+    /* ---- the hero. Same game as the lead, given the room it deserves.
+       Team colors come straight off the program records, and the crests do
+       the work of a photograph for games with no film. ---- */
+    var heroHtml = "";
+    if (lead && (leadKind === "final" || leadKind === "next")) {
+      var ha = byName[lead.away] || {}, hh = byName[lead.home] || {};
+      var isFinal = leadKind === "final";
+      var hf = lead.final || {};
+      var head = isFinal
+        ? esc(hf.winner || lead.home) + " " + Math.max(hf.away_score, hf.home_score) +
+          ", " + esc(hf.winner === lead.home ? lead.away : lead.home) + " " +
+          Math.min(hf.away_score, hf.home_score)
+        : esc(lead.away) + " at " + esc(lead.home);
+      var when = isFinal ? "Week " + NW : (DAYNAME[lead.date] || mdy(lead.date));
+      var line = isFinal
+        ? "We had " + esc(hf.fav) + " " + (hf.line ? "&minus;" + hf.line : "pick'em") +
+          '. <span class="' + (hf.right ? "good" : "bad") + '">' +
+          (hf.right ? "The pick was right." : "The pick missed.") + "</span>"
+        : "We make it " + esc(lead.fav) + " " +
+          (lead.pk ? "pick'em" : "by " + lead.line) + ", total " + lead.total_line + ".";
+
+      function heroSide(name, score, lost) {
+        var t = byName[name] || {};
+        return '<div class="bhs' + (lost ? " lost" : "") + '">' + logo(name, "md") +
+          '<span class="bhs-n"' + (t.school ? ' data-t="' + esc(name) + '"' : "") + ">" +
+          esc(name) + "</span>" +
+          (t.w != null ? '<span class="bhs-r">' + t.w + "&ndash;" + t.l + "</span>" : "") +
+          (score == null ? "" : '<span class="bhs-sc">' + score + "</span>") + "</div>";
+      }
+
+      heroHtml =
+        '<section class="bhero" data-game="' + esc(lead.id) + '" style="--c1:' +
+        esc(ha.c1 || "#1b1b22") + ";--c2:" + esc(hh.c1 || "#1b1b22") + '">' +
+        '<div class="bhero-art">' +
+        '<div class="bhero-wash"></div>' +
+        (LOGOS[lead.away] ? '<img class="bhero-ghost g1" src="/logo-' + esc(LOGOS[lead.away]) + '.webp" alt="">' : "") +
+        (LOGOS[lead.home] ? '<img class="bhero-ghost g2" src="/logo-' + esc(LOGOS[lead.home]) + '.webp" alt="">' : "") +
+        '<div class="bhero-copy">' +
+        '<span class="bhero-tag">' +
+        (isFinal ? "Final &middot; Week " + NW : "Game of the week &middot; Week " + NW) +
+        (lead.rivalry ? " &middot; " + esc(lead.rivalry.name || "Rivalry") : "") + "</span>" +
+        "<h2>" + head + "</h2>" +
+        '<div class="bhero-when">' + when + "</div></div>" +
+        '<div class="bhero-strip">' +
+        heroSide(lead.away, isFinal ? hf.away_score : null,
+                 isFinal && hf.home_score > hf.away_score) +
+        '<span class="bhs-at">' + (isFinal ? "" : "at") + "</span>" +
+        heroSide(lead.home, isFinal ? hf.home_score : null,
+                 isFinal && hf.away_score > hf.home_score) +
+        '<div class="bhs-line">' + line + "</div>" +
+        "</div></div></section>";
     }
 
     /* ---- three supporting cards under the lead ---- */
@@ -4850,10 +5434,12 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
     document.getElementById("v-home").innerHTML =
       '<div class="frontgrid">' +
       '<div class="fmain">' +
+      heroHtml +
       artHtml +
-      leadHtml +
+      (heroHtml ? "" : leadHtml) +
       (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "") +
       vidHtml +
+      freshBlock(12) +
       '<div class="panel"><h2>Around Utah</h2>' +
       '<p class="lede">Reported by people who were there. Links go to the original story &mdash; ' +
       "this page does not reproduce anyone else&rsquo;s writing.</p>" +
@@ -4861,6 +5447,7 @@ footer{border-top:1px solid var(--line);padding:18px 0 40px;color:var(--ink-3);f
       "</div>" +
 
       '<aside class="frail">' +
+      buzzBlock(null, 6) +
       '<div class="panel rpanel"><h2>Top 10</h2>' +
       '<p class="lede">Through Week ' + W + ". Opponent-adjusted and blowout-capped.</p>" +
       railTop +
