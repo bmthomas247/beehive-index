@@ -1968,6 +1968,172 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .bhero:hover .bhero-wash{ background:linear-gradient(180deg,rgba(6,6,9,.10) 0%,rgba(6,6,9,.50) 55%,rgba(6,6,9,.90) 100%) }
 .fr-n{ cursor:pointer }
 /* ===== end v2 broadcast theme ===== */
+
+/* ================= RECRUITING HELP =================
+   Sep 2026 rebuild. Brandon: "more graphics and less words." The tab used to be
+   nine panels of prose; it is now a drive chart, a levels ladder, a core-course
+   strip, a price row, a step list, an icon grid, a money bar and four period
+   cards. Long detail survives inside .rfold summaries rather than in the lede. */
+.rsec > .lede{ max-width:66ch }
+.rsec .rcards{ grid-template-columns:repeat(auto-fit,minmax(268px,1fr)); margin-top:12px }
+.rhero .lede{ font-size:15.5px }
+
+/* ---- turf tokens: a field graphic has to survive both themes ---- */
+.fieldwrap{ --turf:#E7EDE3; --turf-ez:#DCE6D6; --turf-line:#C2D0BA;
+  margin:14px 0 4px; overflow:hidden; border-radius:var(--r) }
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .fieldwrap{ --turf:#111815; --turf-ez:#16211B; --turf-line:#28352E }
+}
+:root[data-theme="dark"] .fieldwrap{ --turf:#111815; --turf-ez:#16211B; --turf-line:#28352E }
+.field{ display:block; width:100%; height:auto }
+.field-v{ display:none }
+.field .farr{ fill:none; stroke:var(--sodium); stroke-width:3; stroke-linecap:round;
+  stroke-linejoin:round; opacity:.85 }
+.field .fyd{ font-family:var(--f-display); font-size:19px; font-weight:700;
+  fill:var(--turf-line); letter-spacing:.06em }
+.field .fez{ font-family:var(--f-display); font-size:21px; font-weight:800;
+  fill:var(--sodium); letter-spacing:.1em }
+.field .fpath{ fill:none; stroke:var(--sodium); stroke-width:2.4; stroke-dasharray:9 8;
+  stroke-linecap:round; opacity:.7 }
+.field .fstop circle{ fill:var(--surface); stroke:var(--sodium); stroke-width:3 }
+.field .fstop text{ font-family:var(--f-display); font-size:27px; font-weight:800;
+  fill:var(--ink); font-stretch:112% }
+
+/* ---- the four stop cards under the field ---- */
+.dstops{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:1px;
+  background:var(--line-soft); border-top:1px solid var(--line-soft); margin-top:14px }
+.dstop{ background:var(--surface); padding:13px 15px 14px }
+.dhd{ display:flex; align-items:center; gap:10px }
+.dnum{ flex:0 0 34px; width:34px; height:34px; border-radius:50%; border:2px solid var(--sodium);
+  display:flex; align-items:center; justify-content:center; font-family:var(--f-display);
+  font-size:15px; font-weight:800; color:var(--ink) }
+.dhd b{ display:block; font-family:var(--f-display); font-size:15px; font-weight:700; line-height:1.15 }
+.dhd em{ display:block; font-style:normal; font-size:12px; color:var(--sodium); margin-top:1px }
+.dlist{ margin:10px 0 0; padding:0; list-style:none }
+.dlist li{ position:relative; padding-left:15px; font-size:13px; line-height:1.5;
+  color:var(--ink-2); margin-bottom:5px }
+.dlist li:last-child{ margin-bottom:0 }
+.dlist li::before{ content:""; position:absolute; left:0; top:8px; width:6px; height:6px;
+  border-radius:50%; background:var(--sodium); opacity:.75 }
+
+/* ---- levels ladder ---- */
+.lvls{ display:grid; gap:1px; background:var(--line-soft); border-top:1px solid var(--line-soft);
+  border-bottom:1px solid var(--line-soft); margin-top:12px }
+.rlvl{ display:grid; grid-template-columns:96px minmax(0,1fr); gap:0; background:var(--surface) }
+.lvk{ display:flex; align-items:flex-start; justify-content:center; padding:15px 8px;
+  font-family:var(--f-display); font-size:16px; font-weight:800; letter-spacing:.02em;
+  color:#fff; background:var(--lc); font-stretch:110% }
+.lvb{ padding:13px 16px 14px; min-width:0 }
+.lvh{ display:flex; align-items:baseline; flex-wrap:wrap; gap:8px }
+.lvh b{ font-family:var(--f-display); font-size:15px; font-weight:700 }
+.rlvtag{ font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--lc);
+  border:1px solid var(--lc); border-radius:2px; padding:1px 6px; white-space:nowrap }
+.lvb > p{ margin:6px 0 0; font-size:13.5px; line-height:1.6; color:var(--ink-2) }
+.lvb .rfold{ margin:10px 0 0 }
+.lvb .utchips{ margin-top:10px; padding-top:10px }
+
+/* ---- academics ---- */
+.gpar{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line-soft);
+  border:1px solid var(--line-soft); margin:12px 0 14px }
+.gpab{ background:var(--surface); padding:13px 16px; display:flex; align-items:flex-end;
+  flex-wrap:wrap; gap:18px }
+.gpal{ flex:1 0 100%; font-family:var(--f-display); font-size:12px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink-3) }
+.gpav b{ display:block; font-family:var(--f-display); font-size:34px; font-weight:800;
+  line-height:1; color:var(--sodium); font-variant-numeric:tabular-nums }
+.gpav em{ display:block; font-style:normal; font-size:11.5px; color:var(--ink-3); margin-top:3px }
+
+.cores{ border:1px solid var(--line-soft); padding:13px 16px 14px; margin-bottom:14px }
+.cores .ch{ font-family:var(--f-display); font-size:13px; font-weight:700; margin-bottom:10px }
+.cbxs{ display:flex; flex-wrap:wrap; gap:5px }
+.cbx{ display:block; width:26px; height:26px; border-radius:3px }
+.clgs{ display:flex; flex-wrap:wrap; gap:5px 16px; margin-top:11px }
+.clg{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--ink-2) }
+.clg i{ width:10px; height:10px; border-radius:2px; flex:0 0 10px }
+
+.ckpt{ display:grid; grid-template-columns:minmax(0,1fr) auto; gap:18px; align-items:center;
+  border:1px solid var(--line-soft); border-left:3px solid var(--sodium);
+  padding:13px 16px; margin-bottom:14px }
+.ckl b{ display:block; font-family:var(--f-display); font-size:15px; font-weight:700 }
+.ckl p{ margin:5px 0 0; font-size:13px; line-height:1.55; color:var(--ink-2) }
+.ckboxes{ display:grid; grid-template-columns:repeat(8,12px); gap:4px }
+.ckx{ display:block; width:12px; height:12px; border-radius:2px; border:1px solid var(--line);
+  background:transparent }
+.ckx.on{ background:var(--sodium); border-color:var(--sodium) }
+
+/* ---- eligibility centre pricing ---- */
+.costs{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1px;
+  background:var(--line-soft); border:1px solid var(--line-soft); margin:12px 0 14px }
+.cost{ background:var(--surface); padding:14px 16px }
+.rcv{ font-family:var(--f-display); font-size:30px; font-weight:800; line-height:1; color:var(--sodium) }
+.rck{ font-size:13px; font-weight:600; margin-top:7px; line-height:1.3 }
+.cw{ font-size:11.5px; color:var(--ink-3); margin-top:3px; line-height:1.4 }
+
+/* ---- numbered steps ---- */
+.steps{ display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:1px;
+  background:var(--line-soft); border:1px solid var(--line-soft); margin:12px 0 4px }
+.step{ background:var(--surface); padding:14px 16px; display:flex; gap:12px }
+.sn{ flex:0 0 30px; width:30px; height:30px; border-radius:50%; background:var(--ink);
+  color:var(--surface); display:flex; align-items:center; justify-content:center;
+  font-family:var(--f-display); font-size:14px; font-weight:800 }
+.step b{ display:block; font-family:var(--f-display); font-size:14px; font-weight:700; line-height:1.2 }
+.step em{ display:block; font-style:normal; font-size:12.5px; color:var(--ink-2);
+  margin-top:4px; line-height:1.5 }
+
+/* ---- icon cards ---- */
+.icards{ display:grid; grid-template-columns:repeat(auto-fit,minmax(255px,1fr)); gap:1px;
+  background:var(--line-soft); border:1px solid var(--line-soft); margin-top:12px }
+.icard{ background:var(--surface); padding:14px 16px; display:flex; gap:12px }
+.ric{ flex:0 0 22px; width:22px; height:22px; color:var(--sodium); margin-top:1px }
+.icard b{ display:block; font-family:var(--f-display); font-size:14px; font-weight:700; line-height:1.25 }
+.icard p{ margin:5px 0 0; font-size:12.5px; line-height:1.55; color:var(--ink-2) }
+
+/* ---- the four pots ---- */
+.pots{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1px;
+  background:var(--line-soft); border:1px solid var(--line-soft); margin:12px 0 14px }
+.pot{ background:var(--surface); display:flex; flex-direction:column }
+.poth{ display:flex; align-items:center; gap:9px; background:var(--pc); color:#fff;
+  padding:9px 16px; font-family:var(--f-display); font-size:13px; font-weight:700;
+  letter-spacing:.07em; text-transform:uppercase }
+.potn{ width:20px; height:20px; border-radius:50%; border:1.5px solid rgba(255,255,255,.6);
+  display:flex; align-items:center; justify-content:center; font-size:11px; letter-spacing:0 }
+.pot p{ margin:0; padding:12px 16px 14px; font-size:12.5px; line-height:1.55; color:var(--ink-2) }
+
+/* ---- recruiting calendar periods ---- */
+.prds{ display:grid; grid-template-columns:repeat(auto-fit,minmax(215px,1fr)); gap:1px;
+  background:var(--line-soft); border:1px solid var(--line-soft); margin:12px 0 4px }
+.prd{ background:var(--surface); padding:13px 16px; border-left:3px solid var(--pc) }
+.prdh{ display:flex; align-items:center; justify-content:space-between; gap:10px }
+.prdh b{ font-family:var(--f-display); font-size:15px; font-weight:700 }
+.pdots{ display:flex; gap:3px }
+.pd{ width:8px; height:8px; border-radius:50%; border:1px solid var(--line); display:block }
+.pd.on{ background:var(--pc); border-color:var(--pc) }
+.prd p{ margin:6px 0 0; font-size:12.5px; line-height:1.55; color:var(--ink-2) }
+
+/* ---- questionnaire tiles, with the college crest back on them ---- */
+.qforms{ grid-template-columns:repeat(auto-fill,minmax(212px,1fr)) }
+.qform{ display:flex; align-items:center; gap:10px }
+.qform .crest{ flex:0 0 30px; width:30px; height:30px; object-fit:contain }
+.qftx{ min-width:0 }
+
+/* ---- video slot that has nothing in it yet ---- */
+.vsoon{ display:flex; align-items:center; gap:10px; margin-top:12px; padding:12px 14px;
+  border:1px dashed var(--line); border-radius:var(--r); color:var(--ink-3); font-size:12.5px }
+.vsoon .ric{ color:var(--ink-3) }
+
+@media (max-width:640px){
+  .field .fyd{ font-size:26px }
+  .field .fez{ font-size:22px; letter-spacing:.1em }
+  .field .fstop text{ font-size:34px }
+  .rlvl{ grid-template-columns:1fr }
+  .lvk{ justify-content:flex-start; padding:8px 16px }
+  .gpar{ grid-template-columns:1fr }
+  .ckpt{ grid-template-columns:1fr; gap:12px }
+  .ckboxes{ grid-template-columns:repeat(16,1fr) }
+  .cbx{ width:22px; height:22px }
+  .field-h{ display:none }
+  .field-v{ display:block }
+}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -2154,7 +2320,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           <tr><td>X, Instagram and Facebook &mdash; public accounts</td><td>Commitment and offer announcements, camp and combine results, and a player&rsquo;s own X handle when he or his program publishes it. Read one post at a time, never scraped in bulk, and never from a private account. Handles are never guessed</td><td><span class="tierbadge t-self">Self-reported</span></td></tr>
           <tr><td>School and program social accounts</td><td>Scores, honors and roster news a program posts about itself</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>MaxPreps</td><td>National team ratings, used to pin out-of-state opponents to a scale Utah does not control. Player statistics from MaxPreps are not in yet</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
-          <tr><td>ESPN</td><td>College team logos on the Getting Recruited page</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
+          <tr><td>ESPN and the colleges&rsquo; own athletics sites</td><td>College team logos on the Recruiting Help page</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>The Rush</td><td>Utah high school sports video coverage &mdash; highlights, interviews and weekly features. Linked where a player appears in one</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>KSL Sports</td><td>High school news coverage. Linked from a player&rsquo;s page when an article names him</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>NFHS Network</td><td>Where a Utah game is being streamed or was broadcast</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
@@ -6418,7 +6584,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         ["coach", "Coaches Stats"], ["crank", "Coaches Rankings"],
         ["caro", "Carousel"], ["seat", "Hot Seat"],
         ["xfer", "Transfers"], ["realign", "Realignment"]] },
-    { id: "recruit101", label: "Get Seen", views: [["recruit101", "Get Seen"]] },
+    { id: "recruit101", label: "Recruiting Help", views: [["recruit101", "Recruiting Help"]] },
     { id: "send", label: "Send Info", views: [["send", "Send Info"]] },
     { id: "about", label: "About", views: [
         ["sources", "Sources & Trust"], ["method", "Method"]] },
@@ -6497,16 +6663,42 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     var R = DATA.recruiting || {};
     var el = document.getElementById("v-recruit101");
     if (!el || !R.sections) return;
-    // Brandon: show Utah's own programs under the level they play at. A kid
-    // reading "Division II" should be able to see immediately that no Utah
-    // school is there, which is the actual information.
+
+    /* Brandon, Sep 2026: more pictures, fewer words. Every section below is a
+       graphic first and a paragraph second, and anything that used to be a wall
+       of text is now either a diagram or folded away behind a summary. The long
+       detail is still here -- it is just not the first thing a sixteen-year-old
+       has to read. */
+    var ICON = {
+      film: '<rect x="3" y="4" width="18" height="16" rx="1.5"/><path d="M7 4v16M17 4v16M3 12h18"/>',
+      mail: '<rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/>',
+      at: '<circle cx="12" cy="12" r="4"/><path d="M16 8v5.5a2.5 2.5 0 0 0 5 0V12a9 9 0 1 0-3.6 7.2"/>',
+      warn: '<path d="M12 3 2.5 20h19z"/><path d="M12 10v4.5M12 17.2v.4"/>',
+      sport: '<circle cx="12" cy="12" r="9"/><path d="M12 3c-3.1 2.9-4.7 5.9-4.7 9s1.6 6.1 4.7 9M12 3c3.1 2.9 4.7 5.9 4.7 9s-1.6 6.1-4.7 9M3.4 9.3h17.2M3.4 14.7h17.2"/>',
+      money: '<rect x="2.5" y="6" width="19" height="12" rx="1.5"/><circle cx="12" cy="12" r="2.8"/><path d="M5.5 9v6M18.5 9v6"/>',
+      letter: '<path d="M4.5 3h9l5.5 5.5V21h-14.5z"/><path d="M13.5 3v5.5h5.5M8 13.5h7M8 17h5"/>',
+      ball: '<ellipse cx="12" cy="12" rx="9.2" ry="5.6" transform="rotate(-32 12 12)"/><path d="M8.2 15.8 15.8 8.2M10.2 11.6l2.2 2.2M12.4 9.4l2.2 2.2"/>',
+      cap: '<path d="M2.5 9 12 5l9.5 4-9.5 4z"/><path d="M6.5 11v5c0 1.2 2.5 2.5 5.5 2.5s5.5-1.3 5.5-2.5v-5"/>',
+      clip: '<rect x="5" y="4" width="14" height="17" rx="1.5"/><path d="M9 4V2.8h6V4M8.5 10h7M8.5 14h7M8.5 18h4"/>',
+      target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
+      link: '<path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.4 1.4"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3A4 4 0 0 0 11 18.7l1.4-1.4"/>'
+    };
+    function ic(n) {
+      return '<svg class="ric" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+        'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+        (ICON[n] || ICON.ball) + "</svg>";
+    }
+    function fold(h, body) {
+      return '<details class="foldout rfold"><summary>' + esc(h) + "</summary>" +
+        '<div class="foldbody"><p>' + body + "</p></div></details>";
+    }
+
+    /* ---------- Utah programs under a level ---------- */
     function utBlock(x) {
       if (!x) return "";
       if (x.utnone) return '<div class="utnone">' + esc(x.utnone) + "</div>";
       if (!x.ut || !x.ut.length) return "";
       return '<div class="utchips">' + x.ut.map(function (u) {
-        // A program a kid has never heard of should be one click away, so a
-        // chip carrying a site becomes a link rather than a label.
         var open = u.u ? '<a class="utchip" href="' + esc(u.u) + '" target="_blank" rel="noopener"'
                        : '<div class="utchip"';
         return open + ' style="--uc:' + esc(u.c) + '">' +
@@ -6516,48 +6708,237 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           (u.u ? "</a>" : "</div>");
       }).join("") + "</div>";
     }
+
+    /* ---------- the drive chart: four years drawn as one field ----------
+       The words live in the cards underneath, so the picture only has to carry
+       the grade numbers and the yard markers. That keeps it readable when the
+       whole 960-unit field is squeezed onto a phone. */
+    var AT = [0.11, 0.35, 0.59, 0.83], YARDS = [10, 20, 30, 40, 50, 40, 30, 20, 10];
+
+    /* wide screens: the drive runs left to right */
+    function fieldH(stops) {
+      var x0 = 24, ezw = 150, fx1 = 936 - ezw;
+      var top = 34, bot = 178, span = fx1 - x0, seg = span / 10, cy = (top + bot) / 2;
+      var o = [], i, x;
+      o.push('<rect x="' + x0 + '" y="' + top + '" width="' + span + '" height="' + (bot - top) + '" fill="var(--turf)"/>');
+      o.push('<rect x="' + fx1 + '" y="' + top + '" width="' + ezw + '" height="' + (bot - top) + '" fill="var(--turf-ez)"/>');
+      for (i = 0; i <= 10; i++) {
+        x = x0 + seg * i;
+        o.push('<line x1="' + x.toFixed(1) + '" y1="' + top + '" x2="' + x.toFixed(1) + '" y2="' + bot +
+          '" stroke="var(--turf-line)" stroke-width="' + (i % 5 === 0 ? 2 : 1) + '"/>');
+      }
+      o.push('<line x1="' + fx1 + '" y1="' + top + '" x2="' + fx1 + '" y2="' + bot + '" stroke="var(--sodium)" stroke-width="2.5" opacity=".55"/>');
+      for (i = 0; i < YARDS.length; i++) {
+        o.push('<text class="fyd" x="' + (x0 + seg * (i + 1)).toFixed(1) + '" y="' + (bot - 10) +
+          '" text-anchor="middle">' + YARDS[i] + "</text>");
+      }
+      o.push('<text class="fez" x="' + (fx1 + ezw / 2) + '" y="' + (cy - 9) + '" text-anchor="middle">SIGNING</text>');
+      o.push('<text class="fez" x="' + (fx1 + ezw / 2) + '" y="' + (cy + 21) + '" text-anchor="middle">DAY</text>');
+      o.push('<path class="fpath" d="M' + (x0 + 8) + " " + (bot - 12) + " Q" + (x0 + span * 0.52) + " " +
+        (cy + 46) + " " + (fx1 - 8) + " " + (top + 20) + '"/>');
+      o.push('<path class="farr" d="M' + (fx1 - 26) + " " + (top + 30) + "L" + (fx1 - 4) + " " + (top + 16) +
+        "L" + (fx1 - 20) + " " + (top + 6) + '"/>');
+      stops.forEach(function (s, k) {
+        var cx = x0 + span * AT[k];
+        o.push('<g class="fstop"><circle cx="' + cx.toFixed(1) + '" cy="' + cy + '" r="28"/>' +
+          '<text x="' + cx.toFixed(1) + '" y="' + cy + '" text-anchor="middle" dominant-baseline="central">' +
+          esc(s.g) + "</text></g>");
+      });
+      return '<svg class="field field-h" viewBox="0 0 960 210" preserveAspectRatio="xMidYMid meet" ' +
+        'role="img" aria-label="The four years drawn as a drive down a football field, ninth grade at your own goal line and signing day in the end zone">' +
+        o.join("") + "</svg>";
+    }
+
+    /* phones: the same drive, stood up, so it is not a 5px-tall strip */
+    function fieldV(stops) {
+      var y0 = 596, ezh = 80, fy1 = 34 + ezh;
+      var lx = 26, rx = 334, span = y0 - fy1, seg = span / 10, cx = (lx + rx) / 2;
+      var o = [], i, y;
+      o.push('<rect x="' + lx + '" y="' + fy1 + '" width="' + (rx - lx) + '" height="' + span + '" fill="var(--turf)"/>');
+      o.push('<rect x="' + lx + '" y="34" width="' + (rx - lx) + '" height="' + ezh + '" fill="var(--turf-ez)"/>');
+      for (i = 0; i <= 10; i++) {
+        y = fy1 + seg * i;
+        o.push('<line x1="' + lx + '" y1="' + y.toFixed(1) + '" x2="' + rx + '" y2="' + y.toFixed(1) +
+          '" stroke="var(--turf-line)" stroke-width="' + (i % 5 === 0 ? 2 : 1) + '"/>');
+      }
+      o.push('<line x1="' + lx + '" y1="' + fy1 + '" x2="' + rx + '" y2="' + fy1 + '" stroke="var(--sodium)" stroke-width="2.5" opacity=".55"/>');
+      for (i = 0; i < YARDS.length; i++) {
+        o.push('<text class="fyd" x="' + (lx + 22) + '" y="' + (y0 - seg * (i + 1) + 25).toFixed(1) +
+          '" text-anchor="middle">' + YARDS[i] + "</text>");
+      }
+      o.push('<text class="fez" x="' + cx + '" y="' + (34 + ezh / 2 + 8) + '" text-anchor="middle">SIGNING DAY</text>');
+      o.push('<path class="fpath" d="M' + (lx + 20) + " " + (y0 - 8) + " Q" + (cx + 74) + " " +
+        (fy1 + span * 0.45) + " " + cx + " " + (fy1 + 16) + '"/>');
+      o.push('<path class="farr" d="M' + (cx - 19) + " " + (fy1 + 44) + "L" + cx + " " + (fy1 + 10) +
+        "L" + (cx + 19) + " " + (fy1 + 44) + '"/>');
+      stops.forEach(function (s, k) {
+        var yy = y0 - span * AT[k];
+        o.push('<g class="fstop"><circle cx="' + (cx + 26) + '" cy="' + yy.toFixed(1) + '" r="34"/>' +
+          '<text x="' + (cx + 26) + '" y="' + yy.toFixed(1) + '" text-anchor="middle" dominant-baseline="central">' +
+          esc(s.g) + "</text></g>");
+      });
+      return '<svg class="field field-v" viewBox="0 0 360 620" preserveAspectRatio="xMidYMid meet" ' +
+        'role="img" aria-hidden="true">' + o.join("") + "</svg>";
+    }
+    function driveField(stops) {
+      return '<div class="fieldwrap">' + fieldH(stops) + fieldV(stops) + "</div>";
+    }
+    function driveSection(sec) {
+      return driveField(sec.stops) +
+        '<div class="dstops">' + sec.stops.map(function (s) {
+          return '<div class="dstop"><div class="dhd"><span class="dnum">' + esc(s.g) + "</span>" +
+            "<div><b>" + esc(s.y) + "</b><em>" + esc(s.hd) + "</em></div></div>" +
+            '<ul class="dlist">' + s.items.map(function (t) {
+              return "<li>" + t + "</li>";
+            }).join("") + "</ul></div>";
+        }).join("") + "</div>";
+    }
+
+    /* ---------- the levels ladder ---------- */
+    function levelsSection(sec) {
+      return '<div class="lvls">' + sec.levels.map(function (L) {
+        return '<div class="rlvl" style="--lc:' + esc(L.c) + '">' +
+          '<div class="lvk">' + esc(L.k) + "</div>" +
+          '<div class="lvb"><div class="lvh"><b>' + esc(L.n) + "</b>" +
+          '<span class="rlvtag">' + esc(L.tag) + "</span></div>" +
+          "<p>" + L.p + "</p>" +
+          (L.more ? fold("More on this level", L.more) : "") +
+          utBlock(L) + "</div></div>";
+      }).join("") + "</div>";
+    }
+
+    /* ---------- academics: the numbers as a scoreboard, the 16 core
+       courses as 16 boxes rather than a paragraph of subjects ---------- */
+    function gpaSection(sec) {
+      var out = '<div class="gpar">' + sec.req.map(function (r) {
+        return '<div class="gpab"><span class="gpal">' + esc(r.d) + "</span>" +
+          '<div class="gpav"><b>' + esc(r.gpa) + "</b><em>core GPA</em></div>" +
+          '<div class="gpav"><b>' + esc(r.cores) + "</b><em>core courses</em></div></div>";
+      }).join("") + "</div>";
+      if (sec.cores) {
+        var boxes = [], legend = [];
+        sec.cores.rows.forEach(function (r, i) {
+          legend.push('<span class="clg"><i style="background:' + esc(r[2]) + '"></i>' + esc(r[0]) +
+            " &middot; " + esc(r[1]) + "</span>");
+          for (var b = 0; b < r[3]; b++) {
+            boxes.push('<i class="cbx" style="background:' + esc(r[2]) + '" title="' + esc(r[0]) + '"></i>');
+          }
+        });
+        out += '<div class="cores"><div class="ch">' + esc(sec.cores.h) + "</div>" +
+          '<div class="cbxs">' + boxes.join("") + "</div>" +
+          '<div class="clgs">' + legend.join("") + "</div></div>";
+      }
+      if (sec.check) {
+        var done = [];
+        for (var d = 0; d < sec.check.total; d++) {
+          done.push('<i class="ckx' + (d < sec.check.done ? " on" : "") + '"></i>');
+        }
+        out += '<div class="ckpt"><div class="ckl"><b>' + esc(sec.check.h) + "</b>" +
+          "<p>" + sec.check.p + "</p></div>" +
+          '<div class="ckboxes">' + done.join("") + "</div></div>";
+      }
+      if (sec.chips) {
+        out += '<div class="rcards">' + sec.chips.map(function (c) {
+          return '<div class="rcard"><h4>' + esc(c[0]) + "</h4><p>" + c[1] + "</p></div>";
+        }).join("") + "</div>";
+      }
+      return out;
+    }
+
+    /* ---------- eligibility centre pricing ---------- */
+    function costSection(sec) {
+      return '<div class="costs">' + sec.costs.map(function (c) {
+        return '<div class="cost"><div class="rcv">' + esc(c.v) + "</div>" +
+          '<div class="rck">' + esc(c.k) + "</div>" +
+          '<div class="cw">' + esc(c.w) + "</div></div>";
+      }).join("") + "</div>";
+    }
+
+    /* ---------- numbered steps (Hudl) ---------- */
+    function stepsSection(sec) {
+      return '<div class="steps">' + sec.steps.map(function (s, i) {
+        return '<div class="step"><span class="sn">' + (i + 1) + "</span>" +
+          "<div><b>" + esc(s.n) + "</b><em>" + esc(s.t) + "</em></div></div>";
+      }).join("") + "</div>";
+    }
+
+    /* ---------- icon cards ---------- */
+    function icardsSection(sec) {
+      return '<div class="icards">' + sec.cards.map(function (c) {
+        return '<div class="icard">' + ic(c.i) + "<div><b>" + esc(c.h) + "</b><p>" + c.p + "</p></div></div>";
+      }).join("") + "</div>";
+    }
+
+    /* ---------- the four pots of money ---------- */
+    function potsSection(sec) {
+      return '<div class="pots">' + sec.pots.map(function (p, i) {
+        return '<div class="pot" style="--pc:' + esc(p.c) + '"><div class="poth">' +
+          '<span class="potn">' + (i + 1) + "</span>" + esc(p.k) + "</div>" +
+          "<p>" + p.p + "</p></div>";
+      }).join("") + "</div>" +
+      (sec.cards ? '<div class="rcards">' + sec.cards.map(function (c) {
+        return '<div class="rcard"><h4>' + esc(c[0]) + "</h4><p>" + c[1] + "</p></div>";
+      }).join("") + "</div>" : "");
+    }
+
+    /* ---------- recruiting calendar periods ---------- */
+    function periodsSection(sec) {
+      return '<div class="prds">' + sec.periods.map(function (p) {
+        var dots = "";
+        for (var i = 4; i > 0; i--) dots += '<i class="pd' + (i <= p.lv ? " on" : "") + '"></i>';
+        return '<div class="prd" style="--pc:' + esc(p.c) + '">' +
+          '<div class="prdh"><b>' + esc(p.k) + '</b><span class="pdots">' + dots + "</span></div>" +
+          "<p>" + esc(p.p) + "</p></div>";
+      }).join("") + "</div>" +
+      (sec.note ? '<p class="notbet">' + esc(sec.note) + "</p>" : "");
+    }
+
     function cards(list) {
       return '<div class="rcards">' + list.map(function (c) {
         return '<div class="rcard"><h4>' + esc(c[0]) + "</h4><p>" + c[1] + "</p>" +
           utBlock(c[2]) + "</div>";
       }).join("") + "</div>";
     }
+    function videos(sec) {
+      if (!sec.videos || !sec.videos.length) {
+        return sec.videos_soon ? '<div class="vsoon">' + ic("film") + "<span>" + esc(sec.videos_soon) + "</span></div>" : "";
+      }
+      return (sec.videos_note ? '<p class="lede" style="margin-top:12px">' + esc(sec.videos_note) + "</p>" : "") +
+        '<div class="vrail tight">' + sec.videos.map(function (v) {
+          return '<div class="vcard" data-story="' + esc(v.u) + '">' +
+            '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
+            '<i class="vplay" aria-hidden="true"></i></span>' +
+            '<span class="vmeta">' + esc(v.src) + "</span>" +
+            '<span class="vt">' + esc(v.t) + "</span></div>";
+        }).join("") + "</div>";
+    }
+
+    var BODY = {
+      drive: driveSection, levels: levelsSection, gpa: gpaSection, cost: costSection,
+      steps: stepsSection, icards: icardsSection, pots: potsSection, periods: periodsSection
+    };
+
     el.innerHTML =
-      '<div class="panel" style="margin-bottom:16px"><h2>' + esc(R.title) + "</h2>" +
+      '<div class="panel rhero"><h2>' + esc(R.title) + "</h2>" +
       '<p class="lede">' + esc(R.dek) + "</p>" +
-      '<p class="lede">' + esc(R.intro) + "</p>" +
       '<p class="notbet">' + esc(R.note) + "</p></div>" +
       R.sections.map(function (sec) {
-        return '<div class="panel" style="margin-bottom:14px"><h2>' + esc(sec.h) + "</h2>" +
+        var fn = BODY[sec.kind];
+        return '<div class="panel rsec" style="margin-bottom:14px"><h2>' + esc(sec.h) + "</h2>" +
           (sec.p ? '<p class="lede">' + esc(sec.p) + "</p>" : "") +
-          (sec.cards ? cards(sec.cards) : "") +
-          // Brandon: combine. A video that explains this section belongs inside
-          // it, not in a Watch panel at the bottom of the page.
-          ((sec.videos && sec.videos.length)
-            ? (sec.videos_note ? '<p class="lede" style="margin-top:12px">' + esc(sec.videos_note) + "</p>" : "") +
-              '<div class="vrail tight">' + sec.videos.map(function (v) {
-                return '<div class="vcard" data-story="' + esc(v.u) + '">' +
-                  '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
-                  '<i class="vplay" aria-hidden="true"></i></span>' +
-                  '<span class="vmeta">' + esc(v.src) + "</span>" +
-                  '<span class="vt">' + esc(v.t) + "</span></div>";
-              }).join("") + "</div>"
-            : "") +
-          (sec.rows
-            ? '<div class="rtimeline">' + sec.rows.map(function (r) {
-                return '<div class="rtl"><div class="rtly">' + esc(r[0]) + "</div>" +
-                  "<div>" + esc(r[1]) + "</div></div>";
-              }).join("") + "</div>"
-            : "") + "</div>";
+          (fn ? fn(sec) : (sec.cards ? cards(sec.cards) : "")) +
+          videos(sec) +
+          "</div>";
       }).join("") +
       ((R.forms && R.forms.links)
         ? '<div class="panel" style="margin-bottom:14px"><h2>' + esc(R.forms.h) + "</h2>" +
           '<p class="lede">' + esc(R.forms.p) + "</p>" +
           '<div class="qforms">' + R.forms.links.map(function (f) {
             return '<a class="qform" href="' + esc(f.u) + '" target="_blank" rel="noopener noreferrer">' +
-              "<b>" + esc(f.n) + "</b><em>" + esc(f.note) + "</em></a>";
+              (f.l ? '<img class="crest" src="logo-college-' + esc(f.l) + '.webp" alt="" loading="lazy">' : "") +
+              '<span class="qftx"><b>' + esc(f.n) + "</b><em>" + esc(f.note) + "</em></span></a>";
           }).join("") + "</div>" +
-          '<p class="notbet">' + R.forms.note + "</p></div>"
+          (R.forms.warn ? fold("Three links worth knowing about", R.forms.warn) : "") + "</div>"
         : "") +
       '<div class="panel" style="margin-bottom:14px"><h2>Go to the source</h2>' +
       '<p class="lede">Rules change. These are the association&rsquo;s own pages, not ours.</p>' +
@@ -6569,7 +6950,6 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<p class="lede">' + esc(R.close) + "</p>" +
       '<a href="#" class="fullpage" data-go="send">Go to the form &rarr;</a></div>';
   }
-
   function drawTicker() {
     var TK = DATA.ticker || [];
     var wrap = document.getElementById("tickwrap");
