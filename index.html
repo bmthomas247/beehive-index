@@ -4678,6 +4678,88 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   // in Utah." A 2A list answers "who is the best in a league that actually
   // plays each other," which is the list a 2A kid and his coach care about.
   var leadCls = "", leadReg = "";
+
+  /* ---- the deeper pool behind a division or region cut ----------------
+     DATA.leaders is Deseret's statewide top 15. Filtering 15 rows down to 1A
+     leaves a kid staring at an empty card, which is the opposite of what this
+     page is for. Every team also carries `now`: that program's own 2026 season
+     leaders, one per category, from the same Deseret per-school pages the
+     statewide board is built from. Verified before wiring it up -- the two
+     agree on all 115 rows where they overlap, and no school-best outranks the
+     statewide #15 without already being on it, so nothing here contradicts the
+     published board.
+
+     `teams[].stars` is NOT this. It is career totals wearing the same shape --
+     4,061 passing yards in a four-game season -- and it is deliberately unused. */
+  var NOWCAT = {
+    PASS: [["pass_yds", "yds"], ["pass_td", "td"]],
+    RUSH: [["rush_yds", "yds"], ["rush_td", "td"]],
+    REC:  [["rec_yds", "yds"], ["rec_td", "td"], ["rec_catch", "rec"]],
+    DEF:  [["tackles", "tkl"], ["sacks", "sacks"], ["ints", "int"]]
+  };
+  // Categories with no per-school feed: a cut there still only narrows the top
+  // 15, and the card has to say so instead of implying a division ranking.
+  var POOLED = { pass_yds: 1, pass_td: 1, rush_yds: 1, rush_td: 1, rec_yds: 1,
+                 rec_td: 1, rec_catch: 1, tackles: 1, sacks: 1, ints: 1 };
+
+  function nowNums(line) {
+    var o = {};
+    String(line || "").split(",").forEach(function (part) {
+      part = part.trim();
+      if (!part) return;
+      var first = part.split(/\s+/)[0];
+      var m0 = /^(\d+)[-\/](\d+)$/.exec(first);
+      if (m0) {
+        o.cmp = +m0[1]; o.att = +m0[2];
+        part = part.slice(first.length).trim();
+        if (!part) return;
+      }
+      var m = /(-?\d+)/.exec(part);
+      if (!m) return;
+      var n = +m[1], low = part.toLowerCase();
+      if (low.indexOf("yds") >= 0) o.yds = n;
+      else if (low.indexOf("td") >= 0) o.td = n;
+      else if (low.indexOf("car") >= 0) o.car = n;
+      else if (low.indexOf("rec") >= 0) o.rec = n;
+      else if (low.indexOf("tkl") >= 0) o.tkl = n;
+      else if (low.indexOf("sack") >= 0) o.sacks = n;
+      else if (low.indexOf("int") >= 0) o.int = n;
+    });
+    return o;
+  }
+
+  var LEADPOOL = (function () {
+    var pool = {}, seen = {};
+    LEADORDER.forEach(function (k) {
+      pool[k] = ((LEAD[k] || {}).players || []).slice();
+      pool[k].forEach(function (p) { seen[k + "|" + p.name + "|" + p.school] = 1; });
+    });
+    T.forEach(function (t) {
+      (t.now || []).forEach(function (x) {
+        var maps = NOWCAT[x.cat];
+        if (!maps) return;
+        var o = nowNums(x.line);
+        maps.forEach(function (mm) {
+          var cat = mm[0], fld = mm[1];
+          if (!pool[cat] || o[fld] === undefined) return;
+          if (seen[cat + "|" + x.name + "|" + t.school]) return;
+          seen[cat + "|" + x.name + "|" + t.school] = 1;
+          var extra = {};
+          Object.keys(o).forEach(function (kk) { if (kk !== fld) extra[kk] = o[kk]; });
+          pool[cat].push({
+            name: x.name, school: t.school, cls: t.cls, reg: t.region,
+            yr: x.yr, pos: x.pos, v: o[fld], gp: t.games,
+            pg: t.games ? Math.round(o[fld] / t.games * 10) / 10 : null,
+            extra: extra
+          });
+        });
+      });
+    });
+    Object.keys(pool).forEach(function (k) {
+      pool[k].sort(function (a, b) { return b.v - a.v; });
+    });
+    return pool;
+  })();
   function leadOpts() {
     var cls = {}, reg = {};
     LEADORDER.forEach(function (k) {
@@ -4694,31 +4776,38 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   function leadCard(key) {
     var c = LEAD[key];
     if (!c || !c.players || !c.players.length) return "";
-    var list = c.players.filter(function (p) {
+    // Statewide stays exactly the published board. A cut re-ranks from the
+    // deeper pool so a division board is a real ranking, not a leftover.
+    var cutOn = !!(leadCls || leadReg);
+    var deep = cutOn && POOLED[key] && LEADPOOL[key];
+    var list = (deep ? LEADPOOL[key] : c.players).filter(function (p) {
       return (!leadCls || p.cls === leadCls) && (!leadReg || p.reg === leadReg);
     });
     if (!list.length) {
-      // The old copy here said "a reporting gap, not an empty division", which
-      // is the one thing it must never say: for a small division it is neither.
-      // The players exist and have numbers -- they are outside the statewide
-      // list this page is sent, which is a limit of the board, not of the kids.
       var cutname = esc(leadReg || leadCls);
       return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
-        '<div class="cnt">none of the state top ' + c.players.length + "</div>" +
+        '<div class="cnt">' + (!cutname ? "nobody yet"
+          : deep ? "nothing filed in " + cutname
+                 : "none of the state top " + c.players.length) + "</div>" +
         "<p style='margin:8px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.5'>" +
-        (cutname
-          ? "No " + cutname + " player sits inside Utah's top " + c.players.length +
-            " here. That is <strong>not</strong> the same as nobody producing &mdash; this is the " +
-            "statewide board narrowed, not a " + cutname + " ranking of its own. A real " + cutname +
-            " board needs deeper data than the page carries today, and it is coming."
-          : "Nobody has a number entered in this category yet. That one is a reporting gap.") +
+        (!cutname
+          ? "Nobody has a number entered in this category yet."
+          : deep
+            ? "No " + cutname + " program has filed a number in this category. That is a reporting " +
+              "gap at the schools, not an empty division &mdash; if your numbers belong here, the " +
+              "Send Info tab is how they get on."
+            : "This board has no per-school feed yet, so a cut can only narrow Utah's top " +
+              c.players.length + " and no " + cutname + " player is in it. Not a statement about " +
+              cutname + " &mdash; a limit of what gets published.") +
         "</p></div>";
     }
     return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
-      // Under a cut this is "4 of the state top 15", not "top 4 in 5A" -- the
-      // second reads as a 5A ranking and this list cannot be one.
-      '<div class="cnt">' + (leadCls || leadReg
-        ? list.length + " of the state top " + c.players.length + " &middot; " + esc(leadReg || leadCls)
+      // A pooled cut IS a real ranking and says so. An unpooled one is still
+      // just the state board narrowed, and must not pretend otherwise.
+      '<div class="cnt">' + (cutOn
+        ? (deep
+            ? "top " + Math.min(10, list.length) + " in " + esc(leadReg || leadCls)
+            : list.length + " of the state top " + c.players.length + " &middot; " + esc(leadReg || leadCls))
         : "top " + Math.min(10, list.length) + " in the state") + "</div>" +
       list.slice(0, 10).map(function (p, i) {
         // an empty key lets a category supply a whole phrase instead of "3 td"
@@ -4818,14 +4907,14 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     if (cut) {
       var cutname = esc(leadReg || leadCls);
       cut.innerHTML = leadCls || leadReg
-        ? "Showing the <strong>" + cutname + "</strong> players who appear on Utah's statewide boards. " +
-          "<strong>This narrows the state list; it does not re-rank inside " + cutname + ".</strong> " +
-          "A smaller division can come back short here, or empty, and still be full of production &mdash; " +
-          "those players sit outside the statewide list this page is sent. A true " + cutname +
-          " board is a data change rather than a filter, and it is on the way. " +
-          "Where a line board appears below it is the exception: those carry all 106 programs, so their cut is a real " +
-          cutname + " ranking."
-        : "Every classification and region mixed together, so a 1A running back appears next to a 6A one. <strong>Nobody is filtered out for playing at a small school.</strong> The cuts above narrow these boards to a division or a region &mdash; for now they narrow, they do not yet re-rank inside it.";
+        ? "<strong>" + cutname + " only</strong>, re-ranked &mdash; the state board plus the season leader every " +
+          cutname + " program has filed, so this is a " + cutname + " ranking rather than the statewide list with " +
+          "the other divisions taken out. " +
+          "One caveat worth knowing: Utah publishes one leader per category per school, so a second big producer at " +
+          "the same school shows up here only if he is in the state's top 15. Send his numbers in and that fixes itself. " +
+          "Defensive touchdowns, field goals and extra points have no per-school feed at all &mdash; those three cards " +
+          "still narrow the state board, and they say so."
+        : "Every classification and region mixed together, so a 1A running back appears next to a 6A one. <strong>Nobody is filtered out for playing at a small school.</strong> Pick a division or a region above and these boards re-rank inside it.";
     }
   }
   var _lo = leadOpts();
