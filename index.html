@@ -768,6 +768,10 @@ a.rrow{text-decoration:none;color:inherit}
 .rc:hover{background:var(--surface-2)}
 .rc.riv{border-left:3px solid var(--fall)}
 .rc.marq{border-left:3px solid var(--sodium)}
+/* Not played yet. Dashed edge and no pointer, so nobody clicks looking for a
+   box score that cannot exist. */
+.rc.sched{cursor:default;border-style:dashed}
+.rc.sched:hover{background:var(--surface)}
 .rctags{margin-bottom:1px}
 .rcteams{display:grid;gap:3px}
 .rcteam{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:7px;
@@ -4251,12 +4255,16 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     var P = A.picks || {};
     var g = P.game || A.game;
     if (g) {
+      // rivalry arrives as the rivalry object on a recap row and as a plain
+      // string on the older computed awards. Both, or neither.
+      var gr = g.rivalry && (g.rivalry.name || (typeof g.rivalry === "string" ? g.rivalry : ""));
+      var gkey = g.key || (g.date + "|" + g.away + "|" + g.home);
       out.push(card("Game of the week",
         esc(g.winner) + " " + Math.max(g.away_score, g.home_score) + ", " +
         esc(g.winner === g.home ? g.away : g.home) + " " + Math.min(g.away_score, g.home_score),
-        (g.rivalry ? esc(g.rivalry) + " &middot; " : "") + "decided by " + g.margin,
-        "The closest game between the two best teams that played.", g.winner,
-        ' data-recap="' + esc(g.key) + '" style="cursor:pointer"'));
+        (gr ? esc(gr) + " &middot; " : "") + "decided by " + g.margin,
+        "", g.winner,
+        ' data-recap="' + esc(gkey) + '" style="cursor:pointer"'));
     }
     function pcard(kick, p, note) {
       if (!p) return "";
@@ -4307,9 +4315,105 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     if (w && RCWEEKS.indexOf(w) < 0) RCWEEKS.push(w);
   });
   RCWEEKS.sort(function (a, b) { return b - a; });
+
+  /* Brandon: the week in progress belongs on the scoreboard too. Until this,
+     the Scores tab jumped straight from last Saturday's finals to nothing, and
+     anybody arriving on a Thursday to see who plays Friday found the previous
+     week's results and no sign that a week was underway. The slate for the
+     current week now shows here with the scores blank, which is what a
+     scoreboard looks like before kickoff. */
+  var SCHEDWK = +DATA.next_week || 0;
+  var UPCOMING = (DATA.preds || []).filter(function (p) {
+    return (+p.wk || 0) === SCHEDWK && p.final == null;
+  }).map(function (p) {
+    return {
+      wk: +p.wk, date: p.date, away: p.away, home: p.home,
+      away_cls: p.away_cls, home_cls: p.home_cls,
+      away_score: "–", home_score: "–",
+      winner: null, sched: true, top5: p.top5, top5_rank: p.top5_rank,
+      fav: p.fav, line: p.line, toss: p.toss, pk: p.pk
+    };
+  });
+  if (UPCOMING.length && RCWEEKS.indexOf(SCHEDWK) < 0) RCWEEKS.unshift(SCHEDWK);
   var rcWeek = RCWEEKS.length ? RCWEEKS[0] : (+DATA.week || 0);
 
+  function weekButtons() {
+    return '<div class="wkpick">' + RCWEEKS.map(function (w) {
+      return '<button class="wkb' + (w === rcWeek ? " on" : "") + '" data-wk="' + w + '">' +
+        "Week " + w + (w === SCHEDWK && UPCOMING.length ? " · now" : "") + "</button>";
+    }).join("") + "</div>";
+  }
+
+  /* A game that has not been played yet. Same shape as a result card so the
+     scoreboard does not change character halfway down, but with a dash where
+     the score goes and the projected line where the summary goes. No winner is
+     bolded, because nobody has won. */
+  function schedCard(r) {
+    function side(team, score) {
+      return '<div class="rcteam">' + logo(team, "sm") +
+        '<span class="tn">' + esc(team) + "</span>" +
+        '<span class="ts" style="color:var(--ink-3)">' + score + "</span></div>";
+    }
+    var tags = r.top5
+      ? '<span class="rctag riv">Top 5 game' + (r.top5_rank ? " · No. " + r.top5_rank : "") + "</span>"
+      : "";
+    var lede = r.toss || r.pk
+      ? "Too close to call."
+      : esc(r.fav) + " by " + Math.abs(+r.line || 0);
+    return '<div class="rc sched">' +
+      (tags ? '<div class="rctags">' + tags + "</div>" : "") +
+      '<div class="rcteams">' + side(r.away, r.away_score) + side(r.home, r.home_score) + "</div>" +
+      '<div class="rcnote">' + lede + "</div>" +
+      '<div class="rcfoot">' + mdy(r.date) + " · " +
+      esc(r.away_cls) + " at " + esc(r.home_cls) + "</div></div>";
+  }
+
+  /* The picks page builds the same labels, but it does it further down the
+     file and this runs on load, so it gets its own. */
+  function dayLabel(d) {
+    var q = String(d).split("-");
+    var dd = new Date(+q[0], +q[1] - 1, +q[2]);
+    if (isNaN(dd.getTime())) return mdy(d);
+    return ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][dd.getDay()] +
+      ", " + mdy(d);
+  }
+
+  function drawSchedule() {
+    var games = UPCOMING.slice().sort(function (a, b) {
+      return a.date < b.date ? -1 : a.date > b.date ? 1 : (a.home < b.home ? -1 : 1);
+    });
+    var days = [];
+    games.forEach(function (g) { if (days.indexOf(g.date) < 0) days.push(g.date); });
+    var close = games.filter(function (g) { return g.toss || g.pk || Math.abs(+g.line || 0) <= 3; }).length;
+    var top5n = games.filter(function (g) { return g.top5; }).length;
+
+    // No awards block here on purpose: the week has not been played, so the
+    // only honors that exist belong to a different week than the one the
+    // picker says you are looking at. They are on that week's pane.
+    document.getElementById("v-recap").innerHTML =
+      '<div class="panel" style="margin-bottom:16px"><h2>Week ' + rcWeek + " — this week’s games</h2>" +
+      weekButtons() +
+      '<p class="lede">' + games.length + " games on the Week " + rcWeek +
+      " slate. Nothing is final yet — scores fill in here as they come. " +
+      (close ? "<strong>" + close + "</strong> of them project inside a field goal. " : "") +
+      "The number under each game is what the model makes it, not a result.</p></div>" +
+      days.map(function (d) {
+        var on = games.filter(function (g) { return g.date === d; });
+        return '<div class="divsec"><h3 class="divhead">' + esc(dayLabel(d)) +
+          "<span>" + on.length + " game" + (on.length === 1 ? "" : "s") + "</span></h3>" +
+          '<div class="rcgrid">' + on.map(schedCard).join("") + "</div></div>";
+      }).join("") +
+      '<div class="grid cards" style="margin-top:22px">' +
+      ['<div class="card"><div class="k">Games</div><div class="v mono">' + games.length + '</div><div class="sub">scheduled in Week ' + rcWeek + '</div></div>',
+       '<div class="card"><div class="k">Inside a field goal</div><div class="v mono">' + close + '</div><div class="sub">projected within 3</div></div>',
+       '<div class="card"><div class="k">Ranked matchups</div><div class="v mono">' + top5n + '</div><div class="sub">both teams ranked</div></div>',
+       '<div class="card"><div class="k">Final scores</div><div class="v mono">0</div><div class="sub">none of these are played</div></div>'
+      ].join("") + "</div>";
+  }
+
   function drawRecap() {
+    var sched = rcWeek === SCHEDWK && UPCOMING.length > 0;
+    if (sched) return drawSchedule();
     var games = RECAP.filter(function (r) { return (+r.wk || 0) === rcWeek; });
     var riv = games.filter(function (r) { return r.rivalry; }).length;
     var one = games.filter(function (r) { return r.oneposs; }).length;
@@ -4320,9 +4424,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     document.getElementById("v-recap").innerHTML =
       awardsBlock(rcWeek) +
       '<div class="panel" style="margin-bottom:16px"><h2>Week ' + rcWeek + ' summary</h2>' +
-      '<div class="wkpick">' + RCWEEKS.map(function (w) {
-        return '<button class="wkb' + (w === rcWeek ? " on" : "") + '" data-wk="' + w + '">Week ' + w + "</button>";
-      }).join("") + "</div>" +
+      weekButtons() +
       '<p class="lede">' + games.length + ' games, closest first, rivalries at the top. ' +
       (riv ? "<strong>" + riv + " rivalr" + (riv === 1 ? "y" : "ies") + "</strong> were played. " : "") +
       one + ' were inside one possession, ' + blow + ' were decided by four touchdowns or more. ' +
@@ -4517,14 +4619,22 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           // sentence, from the same reasoning already built for the drawer --
           // so nothing new is asserted, it is just no longer a click away.
           //
-          // Skip "The ratings gap": it restates the margin and the percentage
-          // that are already sitting two inches to the right of it. What earns
-          // the space is the line that adds something the row does not show --
-          // which side of the ball is actually doing the separating.
+          // Prefer a reason that says something the row does not already show
+          // -- which side of the ball separates them. Most weeks the model has
+          // only "the ratings gap", and dropping it left four of five games
+          // with no line at all, which is worse. So it is kept and TRIMMED:
+          // the trailing "and an 81% chance X wins" is sitting two inches to
+          // the right in bigger type. What survives is the part that is not on
+          // the row -- how a 16.4-point rating gap becomes a 14-point line
+          // once home field is taken out.
           var ws = p.why || [];
           var w = null;
           for (var wi = 0; wi < ws.length; wi++) {
             if ((ws[wi].k || "").toLowerCase() !== "the ratings gap") { w = ws[wi]; break; }
+          }
+          if (!w && ws.length) {
+            w = { k: ws[0].k,
+                  v: String(ws[0].v || "").replace(/,?\s*and an? \d+% chance[^.]*\./i, ".") };
           }
           return '<div class="marquee-wrap"><div class="marquee-no">' + (i + 1) + "</div>" +
             predRow(p) +
