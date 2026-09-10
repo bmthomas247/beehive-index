@@ -4516,7 +4516,16 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           // The numbers say what the model thinks. This says why, in a
           // sentence, from the same reasoning already built for the drawer --
           // so nothing new is asserted, it is just no longer a click away.
-          var w = (p.why || [])[0];
+          //
+          // Skip "The ratings gap": it restates the margin and the percentage
+          // that are already sitting two inches to the right of it. What earns
+          // the space is the line that adds something the row does not show --
+          // which side of the ball is actually doing the separating.
+          var ws = p.why || [];
+          var w = null;
+          for (var wi = 0; wi < ws.length; wi++) {
+            if ((ws[wi].k || "").toLowerCase() !== "the ratings gap") { w = ws[wi]; break; }
+          }
           return '<div class="marquee-wrap"><div class="marquee-no">' + (i + 1) + "</div>" +
             predRow(p) +
             (w ? '<div class="predwhy">' + esc(w.v) + "</div>" : "") + "</div>";
