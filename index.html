@@ -1197,10 +1197,15 @@ a.utchip:hover b{text-decoration:underline}
 @media(max-width:560px){.marquee-wrap{grid-template-columns:36px 1fr}.marquee-no{font-size:17px}}
 .pred{display:grid;grid-template-columns:1fr 152px 96px;gap:14px;align-items:center;background:var(--surface);padding:10px 13px;cursor:pointer}
 .board{display:flex;flex-direction:column;gap:2px}
-.side{display:grid;grid-template-columns:1fr 34px;gap:8px;align-items:baseline}
-.side .t{font-size:14px;font-weight:500}
-.side .t b{font-weight:600}
-.side .t em{font-style:normal;color:var(--ink-3);font-size:11.5px;margin-left:5px}
+.side{display:grid;grid-template-columns:1fr 34px;gap:8px;align-items:center}
+/* The crest sits beside the name, as it does on every other board on the
+   site. The name is the part allowed to truncate; the crest and the class /
+   record / rating line both hold their width. */
+.side .t{font-size:14px;font-weight:500;display:flex;align-items:center;gap:7px;min-width:0}
+.side .t .crest,.side .t .swatch{flex:0 0 auto}
+.side .t b{font-weight:600;flex:0 1 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.side .t em{font-style:normal;color:var(--ink-3);font-size:11.5px;margin-left:0;flex:0 0 auto;white-space:nowrap}
+@media(max-width:560px){.side .t{flex-wrap:wrap;gap:5px}.side .t em{flex-basis:100%;margin-left:29px}}
 .side .p{font-family:var(--f-num);font-size:16px;font-weight:600;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-3)}
 .side.win .t b{font-weight:700}
 .side.win .p{color:var(--ink)}
@@ -1224,6 +1229,17 @@ a.utchip:hover b{text-decoration:underline}
 /* National opponents have long names; let the line shrink rather than wrap into three rows */
 .odds .ln.long{font-size:12.5px}
 .odds .ou{font-size:12px;color:var(--ink-2)}
+/* the record, stated before any prediction is made */
+.recstrip{display:flex;flex-wrap:wrap;gap:10px 26px;align-items:baseline;margin:2px 0 12px;padding:11px 14px;border:1px solid var(--line-soft);border-radius:8px;background:var(--surface-2,transparent)}
+.recstrip .rsmain b{font-family:var(--f-num);font-size:26px;font-weight:700;line-height:1;margin-right:9px}
+.recstrip .rsmain span,.recstrip .rsmiss span{font-size:12.5px;color:var(--ink-2)}
+.recstrip .rsmiss{min-width:0}
+.recstrip .rsmiss b{display:block;font-family:var(--f-display);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:2px}
+.upsetline{margin:0 0 4px}
+.upsetline.none{color:var(--ink-3)}
+/* the sentence under a marquee pick */
+.predwhy{grid-column:2;margin:0 13px 11px 13px;padding-left:11px;border-left:2px solid var(--line-soft);font-size:12.5px;line-height:1.55;color:var(--ink-2)}
+@media(max-width:560px){.predwhy{margin:0 10px 10px 10px}.recstrip .rsmain b{font-size:22px}}
 .odds .ml{font-size:11.5px;color:var(--ink-3)}
 .odds .ml b{font-weight:600;color:var(--ink-2)}
 /* The pick card is three columns of fixed-ish width; at phone width they add
@@ -4393,7 +4409,11 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   }
 
   function side(team, pts, isWin, cls, rec, rtg, ranked) {
-    return '<div class="side' + (isWin ? " win" : "") + '"><div class="t"><b>' + esc(team) + "</b>" +
+    // "at Copper Hills" is how the home side is labelled, so the prefix comes
+    // off before the crest lookup or the school never matches.
+    var school = String(team).replace(/^at /, "");
+    return '<div class="side' + (isWin ? " win" : "") + '"><div class="t">' +
+      logo(school, "sm") + "<b>" + esc(team) + "</b>" +
       (ranked ? "<em>" + cls + " · " + rec + " · " + sgn(rtg) + "</em>" : "<em>out of state</em>") + "</div>" +
       '<div class="p">' + pts + "</div></div>";
   }
@@ -4410,7 +4430,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       "</div>" +
       '<div class="odds"><div class="fin">FINAL</div>' +
       '<div class="ou">we had ' + esc(f.fav) + " \u2212" + f.line + "</div>" +
-      '<div class="ou">O/U ' + f.total_line + " &middot; went " + (f.over ? "over" : "under") + "</div></div>" +
+      "</div>" +
       '<div class="probwrap"><span class="grade ' + (f.right ? "hit" : "miss") + '">' +
       (f.right ? "PICK GOOD" : "PICK MISSED") + "</span></div></div>";
   }
@@ -4426,7 +4446,6 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       "</div>" +
       '<div class="odds"><div class="ln' + (p.fav.length > 14 ? " long" : "") + '">' +
       esc(p.fav) + " " + (p.pk ? "PK" : "−" + p.line) + "</div>" +
-      '<div class="ou">O/U ' + p.total_line + "</div>" +
       '<div class="ml">' + (p.toss ? "coin flip" : p.wp >= 75 ? "clear favorite" : "close game") + "</div></div>" +
       '<div class="probwrap"><div class="prob' + (p.toss ? " toss" : "") + '"><i style="width:' +
       p.wp + '%"></i></div><div class="probn">' + p.wp + "%</div></div></div>";
@@ -4438,14 +4457,52 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     '<div class="panel finenote" style="margin-top:18px"><h2>How the numbers are built</h2>' +
     '<p class="lede">The line is <strong>rating difference plus 2.6 for home field</strong>. The projected score splits that margin around an expected total built from how much scoring each team\'s games have actually produced, shrunk toward the league average of ' +
     'what each offense actually produces against what that defense actually gives up — so treat the margin as the real prediction and the score as its plausible shape, not a forecast of the exact number.</p>' +
-    '<p class="lede">Reading the numbers. The line is the projected margin, written the familiar way: <span class="mono">Tooele −1.5</span> means Tooele is favored by a point and a half. <span class="mono">O/U</span> is the projected combined score. The bar underneath is the model\'s confidence — how often this matchup goes the favorite\'s way if you played it out. Half-points everywhere, because a whole number can land exactly on the margin.</p>' +
+    '<p class="lede">Reading the numbers. The line is the projected margin, written the familiar way: <span class="mono">Tooele −1.5</span> means Tooele is favored by a point and a half. The bar underneath is the model\'s confidence — how often this matchup goes the favorite\'s way if you played it out. Half-points everywhere, because a whole number can land exactly on the margin.</p>' +
     '<p class="lede">Coin flips (inside three points) are marked in amber; upset watch — where the model favors the team with the worse record — is marked in blue. Two weeks of data with the preseason prior still carrying about half the weight: a starting point, not a verdict.</p>' +
     '<p class="lede">Click any game for the full card: why the model landed there, a short preview, and the two teams side by side. Rivalry games are marked in red.</p>' +
     '<p class="notbet">A line and a total are borrowed terms, not a betting product. <strong>There are no odds on this page and there will not be</strong> — nobody should be wagering on teenagers. A margin and a combined score are kept because they say "how big a favorite" and "how much scoring" more precisely than words do.</p>' +
     '</div>';
 
+  // The model's record, at the top, before a single prediction. A page that
+  // makes calls has to show how the last ones went or it is just assertion --
+  // and the record is the reason to come back on a Friday, so it does not sit
+  // at the bottom under everything else.
+  function recStrip() {
+    var R = DATA.record || {};
+    if (!R.n) return "";
+    var wrong = R.n - R.right, pct = Math.round(R.right / R.n * 100);
+    var m = R.biggest_miss;
+    return '<div class="recstrip">' +
+      '<div class="rsmain"><b>' + R.right + "&ndash;" + wrong + "</b>" +
+        "<span>picking winners &middot; " + pct + "% of " + R.n + " graded</span></div>" +
+      (m ? '<div class="rsmiss"><b>Worst call</b><span>' +
+            esc(m.away) + " " + m.away_score + "&ndash;" + m.home_score + " at " + esc(m.home) +
+            " &mdash; we had " + esc(m.fav) + " &minus;" + m.line +
+            ", off by " + Math.round(m.off_by) + "</span></div>" : "") +
+      "</div>";
+  }
+
+  // An upset pick is the only genuinely interesting thing a model says. If it
+  // agrees with the seedings everywhere it is telling you nothing you did not
+  // already know, and saying so plainly is better than hiding it.
+  function upsetLine() {
+    var ups = PW.filter(function (p) { return p.upset; });
+    if (!ups.length) {
+      return '<p class="lede upsetline none">The model takes the favourite in every game this week. ' +
+        'No upset calls &mdash; which is itself worth knowing.</p>';
+    }
+    return '<p class="lede upsetline"><strong>The model likes the underdog in ' +
+      (ups.length === 1 ? "one game" : ups.length + " games") + ' this week.</strong> ' +
+      ups.map(function (p) {
+        return esc(p.fav) + " at " + esc(p.fav === p.home ? p.away : p.home) +
+               " (" + p.wp + "%)";
+      }).join(" &middot; ") +
+      '. Those are the calls to hold us to.</p>';
+  }
+
   document.getElementById("v-pred").innerHTML =
     '<div class="panel" style="margin-bottom:16px"><h2>Week ' + pdWeek + ' picks</h2>' +
+    recStrip() + upsetLine() +
     (PDWEEKS.length > 1
       ? '<div class="wkpick">' + PDWEEKS.map(function (w) {
           return '<button class="wkb' + (w === pdWeek ? " on" : "") + '" data-pw="' + w + '">Week ' + w + "</button>";
@@ -4456,7 +4513,13 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       ? '<div class="panel" style="margin-bottom:20px"><h2>The five games to watch</h2>' +
         '<p class="lede">Ranked by how good both teams are <em>and</em> how close the model thinks it will be. The weaker side counts for more than the stronger one, so a great team beating up on a bad one does not make this list — two good teams within a score of each other does. Rivalry games get a bump, because they fill a stadium whatever the ratings say.</p>' +
         '<div class="pgrid">' + top5.map(function (p, i) {
-          return '<div class="marquee-wrap"><div class="marquee-no">' + (i + 1) + "</div>" + predRow(p) + "</div>";
+          // The numbers say what the model thinks. This says why, in a
+          // sentence, from the same reasoning already built for the drawer --
+          // so nothing new is asserted, it is just no longer a click away.
+          var w = (p.why || [])[0];
+          return '<div class="marquee-wrap"><div class="marquee-no">' + (i + 1) + "</div>" +
+            predRow(p) +
+            (w ? '<div class="predwhy">' + esc(w.v) + "</div>" : "") + "</div>";
         }).join("") + "</div></div>"
       : "") +
     (rivWeek.length
@@ -4664,9 +4727,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<div class="minisb" style="margin-top:12px">' +
       '<div class="mt"><div class="n">' + esc(p.away) + '</div><div class="s">' + p.away_rec +
         (p.away_ranked ? " · " + sgn(p.away_rating) : " · out of state") + '</div><div class="p">' + p.away_pts + "</div></div>" +
-      '<div class="mm">' + (p.pk ? "PK" : "−" + p.line) + "<small>" + esc(p.fav.split(" ")[0].toUpperCase()) + "</small>" +
-        '<div style="font-family:IBM Plex Mono;font-size:11px;font-weight:400;margin-top:5px;opacity:.75">O/U ' +
-        p.total_line + "</div></div>" +
+      '<div class="mm">' + (p.pk ? "PK" : "−" + p.line) + "<small>" + esc(p.fav.split(" ")[0].toUpperCase()) + "</small></div>" +
       '<div class="mt r"><div class="n">' + esc(p.home) + '</div><div class="s">' + p.home_rec +
         (p.home_ranked ? " · " + sgn(p.home_rating) : " · out of state") + '</div><div class="p">' + p.home_pts + "</div></div></div>" +
       '<div class="verdictbar" style="border-top:0"><div class="wpbar"><i style="width:' +
@@ -5728,7 +5789,6 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           '<div class="scrests">' + logo(p.away, "sm") + logo(p.home, "sm") + "</div>" +
           "<h4>" + esc(p.away) + " at " + esc(p.home) + "</h4>" +
           "<p>" + esc(p.fav) + " " + (p.pk ? "pick'em" : "&minus;" + p.line) +
-          " &middot; O/U " + p.total_line +
           (p.rivalry ? ' &middot; <span style="color:var(--fall)">' +
             esc(p.rivalry.name || "rivalry") + "</span>" : "") + "</p>" +
           teamPages(p) + "</div>");
@@ -5742,12 +5802,23 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
             '<div class="ssrc">' + srcChip(n.src) + "<span>" + esc(n.src) +
             (n.d ? " &middot; " + esc(n.d) : "") + "</span></div>" +
             "<h4>" + esc(titleCase(n.t)) + "</h4>" +
-            (who.length
-              ? '<div class="swho">' + (n.schools || []).slice(0, 3).map(function (sc) {
-                  return logo(sc, "sm");
-                }).join("") + "<span>" + esc(who.slice(0, 3).join(", ")) +
-                (who.length > 3 ? " +" + (who.length - 3) : "") + "</span></div>"
-              : "") + "</div>";
+            // Crests whenever we know WHO the story is about -- a matched
+            // player or just the programmes named in the headline. Before,
+            // a story with no player match showed no mark at all, which is
+            // most of the coverage: previews, "how to watch", roundups.
+            (function () {
+              var scs = (n.schools || []).slice(0, 3);
+              var more = (n.schools || []).length - scs.length;
+              if (!scs.length && !who.length) return "";
+              var label = who.length
+                ? esc(who.slice(0, 3).join(", ")) +
+                  (who.length > 3 ? " +" + (who.length - 3) : "")
+                : scs.map(esc).join(" &middot; ") +
+                  (more > 0 ? " +" + more : "");
+              return '<div class="swho">' +
+                scs.map(function (sc) { return logo(sc, "sm"); }).join("") +
+                "<span>" + label + "</span></div>";
+            })() + "</div>";
         }).join("")
       : '<p class="lede">No headlines harvested yet this week.</p>';
 
@@ -7153,7 +7224,6 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       } else {
         var bits = [];
         if (g.fav) bits.push(esc(g.fav) + " " + (g.line ? "&minus;" + g.line : "PK"));
-        if (g.ou != null) bits.push("O/U " + g.ou);
         foot = bits.join(" &middot; ") || "&nbsp;";
       }
       var aLost = fin && g.h_s > g.a_s, hLost = fin && g.a_s > g.h_s;
