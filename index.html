@@ -4698,14 +4698,28 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       return (!leadCls || p.cls === leadCls) && (!leadReg || p.reg === leadReg);
     });
     if (!list.length) {
+      // The old copy here said "a reporting gap, not an empty division", which
+      // is the one thing it must never say: for a small division it is neither.
+      // The players exist and have numbers -- they are outside the statewide
+      // list this page is sent, which is a limit of the board, not of the kids.
+      var cutname = esc(leadReg || leadCls);
       return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
-        '<div class="cnt">nobody yet</div>' +
+        '<div class="cnt">none of the state top ' + c.players.length + "</div>" +
         "<p style='margin:8px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.5'>" +
-        "No qualifying player in this cut has a number entered. That is a reporting gap, not an empty division.</p></div>";
+        (cutname
+          ? "No " + cutname + " player sits inside Utah's top " + c.players.length +
+            " here. That is <strong>not</strong> the same as nobody producing &mdash; this is the " +
+            "statewide board narrowed, not a " + cutname + " ranking of its own. A real " + cutname +
+            " board needs deeper data than the page carries today, and it is coming."
+          : "Nobody has a number entered in this category yet. That one is a reporting gap.") +
+        "</p></div>";
     }
     return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
-      '<div class="cnt">top ' + Math.min(10, list.length) +
-      (leadCls || leadReg ? " in " + esc(leadReg || leadCls) : " in the state") + "</div>" +
+      // Under a cut this is "4 of the state top 15", not "top 4 in 5A" -- the
+      // second reads as a 5A ranking and this list cannot be one.
+      '<div class="cnt">' + (leadCls || leadReg
+        ? list.length + " of the state top " + c.players.length + " &middot; " + esc(leadReg || leadCls)
+        : "top " + Math.min(10, list.length) + " in the state") + "</div>" +
       list.slice(0, 10).map(function (p, i) {
         // an empty key lets a category supply a whole phrase instead of "3 td"
         var ex = Object.keys(p.extra || {}).map(function (k) {
@@ -4802,10 +4816,16 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     }).join("");
     var cut = document.getElementById("leadcut");
     if (cut) {
+      var cutname = esc(leadReg || leadCls);
       cut.innerHTML = leadCls || leadReg
-        ? "Showing <strong>" + esc(leadReg || leadCls) + "</strong> only. " +
-          "A division or region board is a different question from the state board, and usually the more useful one: it ranks a player against the teams he actually lines up against."
-        : "Every classification and region mixed together, so a 1A running back appears next to a 6A one. <strong>Nobody is filtered out for playing at a small school.</strong> Use the cuts above to rank inside a division or a region instead.";
+        ? "Showing the <strong>" + cutname + "</strong> players who appear on Utah's statewide boards. " +
+          "<strong>This narrows the state list; it does not re-rank inside " + cutname + ".</strong> " +
+          "A smaller division can come back short here, or empty, and still be full of production &mdash; " +
+          "those players sit outside the statewide list this page is sent. A true " + cutname +
+          " board is a data change rather than a filter, and it is on the way. " +
+          "Where a line board appears below it is the exception: those carry all 106 programs, so their cut is a real " +
+          cutname + " ranking."
+        : "Every classification and region mixed together, so a 1A running back appears next to a 6A one. <strong>Nobody is filtered out for playing at a small school.</strong> The cuts above narrow these boards to a division or a region &mdash; for now they narrow, they do not yet re-rank inside it.";
     }
   }
   var _lo = leadOpts();
