@@ -429,6 +429,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .crest{display:block;object-fit:contain;flex:none;background:transparent}
 .crest.c-sm{width:22px;height:22px}
 .crest.c-md{width:30px;height:30px}
+.crest.c-xs{width:14px;height:14px}
 .crest.c-xl{width:60px;height:60px}
 /* a dark-on-transparent mark disappears on the dark ground; lift it onto a chip */
 @media (prefers-color-scheme: dark){
@@ -441,6 +442,18 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .pname[data-p]{cursor:pointer;border-bottom:1px solid var(--line);}
 .article .pname{color:var(--ink);font-weight:600;border-bottom:1px solid var(--steel-soft)}
 .article .pname:hover{color:var(--sodium);border-bottom-color:var(--sodium)}
+/* A programme named in a piece links to its page, with its crest, the same way
+   a player links to his. The crest is inline-flex so a name never breaks away
+   from the badge in front of it mid-line. */
+.article .tname{cursor:pointer;color:var(--ink);font-weight:600;
+  border-bottom:1px solid var(--steel-soft)}
+.article .tname:hover{color:var(--sodium);border-bottom-color:var(--sodium)}
+.article .tname .crest{flex:0 0 14px}
+.article .tname .swatch{flex:0 0 10px;width:10px;height:10px;border-radius:2px}
+.artcrests{display:inline-flex;align-items:center;gap:6px;margin-right:8px;
+  vertical-align:-6px}
+.artcrests .at{font-family:var(--f-display);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3)}
 .htitle .hwas{font-size:11px;color:var(--ink-3);font-style:italic}
 .htitle>span:nth-child(2){display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
 .htitle .crest{align-self:center}
@@ -1966,7 +1979,10 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .vcard.fresh .vthumb{ margin-bottom:8px }
 .fr-when{ font-size:11.5px; font-weight:600; color:var(--sodium); margin-bottom:2px }
 .fr-n{ font-size:14.5px; font-weight:700; line-height:1.2; letter-spacing:-.01em }
-.fr-m{ font-size:11.5px; color:var(--ink-3); margin-top:2px }
+.fr-m{ font-size:11.5px; color:var(--ink-3); margin-top:2px;
+  display:flex; align-items:center; gap:4px }
+.fr-m .crest{ flex:0 0 14px }
+.fr-m .swatch{ flex:0 0 10px; width:10px; height:10px; border-radius:2px }
 .fr-t{ font-size:12px; color:var(--ink-2); margin-top:5px;
   display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden }
 .vcard.fresh:hover .fr-n{ color:var(--sodium) }
@@ -2391,8 +2407,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       <h3>If a coach wants to add something</h3>
       <p>Coach- and player-supplied information is welcome and it is labeled as such: a charted kicking percentage, a camp result, a standout game, an offer nobody published, a transfer, a GPA a player wants shown. Utah publishes no per-game player box scores, no sacks allowed, no kicking attempts and no punting statistics at all &mdash; so for those, what a program sends is the only data that will ever exist.</p>
       <h3>Contact</h3>
-      <p class="lede" style="margin-top:4px"><strong>[ CONTACT EMAIL &mdash; fill this in before launch ]</strong></p>
-      <p>One address for all of it &mdash; corrections, removals, a stat we missed, a camp result, an offer nobody published, or a coach who wants his program&rsquo;s numbers fixed. A real person reads it.</p>
+      <p class="lede" style="margin-top:4px"><a href="#" data-go="send" class="golink"><strong>Use the Send Info form &rarr;</strong></a></p>
+      <p>One door for all of it &mdash; corrections, removals, a stat we missed, a camp result, an offer nobody published, or a coach who wants his program&rsquo;s numbers fixed. It reaches the same person an email would, and it asks for the few things needed to act on it, so nothing has to go back and forth twice. A real person reads every one.</p>
     </div>
 
     <div class="panel method">
@@ -3897,6 +3913,51 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
         .replace(/(^|[\s(])\*([^*]+?)\*(?=[\s.,;:)!?]|$)/g, "$1<em>$2</em>");
     }
+
+    /* Every person and programme named in the piece becomes a link.
+       ONE pass, not one pass per name. Replacing names one at a time rescans
+       the markup it just inserted, so a later school name matches inside an
+       earlier one's data-t="..." attribute and injects a tag into the middle
+       of it. A single alternation with a replace function cannot do that,
+       because nothing it writes is ever looked at again.
+       Longest first, so "Cedar Valley" is claimed before "Cedar". */
+    function linkEntities(html, named, teams) {
+      var map = {}, keys = [];
+      (teams || []).forEach(function (s) {
+        if (!s || map[s] || !byName[s]) return;
+        // No crest inline. A school is named six or seven times in a game's
+        // two paragraphs, and a badge on every one of them turns running text
+        // into a sticker album. The pair of crests on the heading marks the
+        // game; in the prose a school is simply a link.
+        map[s] = '<span class="tname" data-t="' + esc(s) + '" style="cursor:pointer">' +
+                 esc(s) + "</span>";
+        keys.push(s);
+      });
+      (named || []).forEach(function (pair) {
+        var n = pair[0], attr = pAttr(n, pair[1]);
+        if (!n || map[n] || !attr) return;
+        map[n] = '<span class="pname"' + attr + ">" + esc(n) + "</span>";
+        keys.push(n);
+      });
+      if (!keys.length) return html;
+      keys.sort(function (a, b) { return b.length - a.length; });
+      var rx = new RegExp("\\b(" + keys.map(function (k) {
+        return esc(k).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }).join("|") + ")\\b", "g");
+      return html.replace(rx, function (m) { return map[m] || m; });
+    }
+
+    /* The two crests for a game, keyed off the "**1. Away at Home**" heading
+       the piece already writes. The article carries the pairs in order, so
+       nothing here has to parse English to find out who is playing. */
+    function gameCrests(html, games) {
+      var m = /^<strong>(\d+)\./.exec(html);
+      if (!m || !games) return html;
+      var g = games[+m[1] - 1];
+      if (!g) return html;
+      return '<span class="artcrests">' + logo(g[0], "sm") +
+        '<span class="at">at</span>' + logo(g[1], "sm") + "</span>" + html;
+    }
     document.getElementById("drawer-in").innerHTML =
       '<button class="dclose" id="dclose">Close ✕</button>' +
       '<div class="dhead"><div class="storysrc"><span class="kick own">' +
@@ -3905,7 +3966,10 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<p class="dek">' + esc(a.dek) + "</p></div>" +
       '<div class="article longform">' +
       (a.lede ? "<p class=\"lede1\">" + md(a.lede) + "</p>" : "") +
-      (a.body || []).map(function (p) { return "<p>" + md(p) + "</p>"; }).join("") +
+      (a.body || []).map(function (p) {
+        return "<p>" + gameCrests(
+          linkEntities(md(p), a.named, a.teams), a.games) + "</p>";
+      }).join("") +
       "</div>" +
       // A living story: the dates people need, what is still unanswered, and a
       // log of what changed since it went up.
@@ -5739,7 +5803,11 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           '<span class="vplay"></span></span>' +
           '<span class="fr-when">' + agoLabel(r.ts) + "</span>" +
           '<span class="fr-n" data-p="' + esc(r.name + "|" + r.school) + '">' + esc(r.name) + "</span>" +
-          '<span class="fr-m">' + esc(r.school) + (r.pos ? " &middot; " + esc(r.pos) : "") + "</span>" +
+          // The crest does the work the school name was doing alone: you read
+          // a rail of twelve of these by scanning, and a logo lands faster
+          // than a word.
+          '<span class="fr-m">' + logo(r.school, "xs") + esc(r.school) +
+          (r.pos ? " &middot; " + esc(r.pos) : "") + "</span>" +
           '<span class="fr-t">' + esc(r.t) + "</span></a>";
       }).join("") + "</div></div>";
   }
