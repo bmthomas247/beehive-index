@@ -3045,6 +3045,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       "<i>Carries faced</i> <b>" + d.car_faced + "</b>"
     ];
     var passLines = d.pass_grade === null ? ["<i>No defensive box score on this schedule yet.</i>"] : [
+      "<i>Pass yards allowed a game</i> <b>" + (d.pass_allow_pg || 0).toFixed(0) + "</b>",
       "<i>Sacks</i> <b>" + d.sacks.toFixed(1) + "</b>",
       "<i>Per game</i> <b>" + d.sacks_pg.toFixed(2) + "</b>",
       "<i>Lines faced give up</i> <b>" + d.lines_faced.toFixed(2) + " sacks/g</b>",
@@ -3058,11 +3059,11 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       "</span></div>" +
       '<div class="olwrap">' +
       grp("run", "Run defense", d.run_grade, runLines) +
-      grp("pass", "Pass rush", d.pass_grade, passLines) +
+      grp("pass", "Pass defense", d.pass_grade, passLines) +
       "</div>" +
       "<p style='margin:8px 0 0;font-size:12px;color:var(--ink-3);line-height:1.55'>" +
       "<strong>Run defense</strong> is yards per carry and rushing yards allowed, priced against the offenses this front actually faced. " +
-      "<strong>Pass rush</strong> is sacks, priced against the lines it rushed &mdash; four sacks against a line nobody else touches is a different night than four against a line everybody gets to. " +
+      "<strong>Pass defense</strong> is passing yards allowed, priced against the offenses that threw them, plus sacks priced against the lines this front rushed &mdash; four sacks against a line nobody else touches is a different night than four against a line everybody gets to. " +
       (d.pass_grade === null ? "" :
         "This front has <strong>" + d.sacks.toFixed(1) + "</strong> sacks over " + d.games_charted +
         " charted game" + (d.games_charted === 1 ? "" : "s") + " against lines that give up " +
@@ -5078,7 +5079,11 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   function dlCard() {
     var list = Object.keys(DL).map(function (k) { return DL[k]; })
       .filter(function (r) {
-        return (!leadCls || r.cls === leadCls) &&
+        // One charted game is not a defensive record. A front that had faced
+        // fifteen carries used to lead this board; it belongs on its own
+        // program page until there is a second night to put beside the first.
+        return (r.games_yds || 0) >= 2 &&
+               (!leadCls || r.cls === leadCls) &&
                (!leadReg || (byName[r.school] || {}).region === leadReg);
       })
       .sort(function (a, b) { return b.grade - a.grade; });
