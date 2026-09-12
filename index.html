@@ -4485,35 +4485,58 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   }
 
   function drawSchedule() {
+    // Brandon, Sep 11: "we still want to include games that have been scored in
+    // this area even though it is new."
+    //
+    // He is right and the first version had it wrong. A Week 5 game played on
+    // Thursday moved straight out of the slate and into the results pile, so
+    // the pane labelled "this week" showed 52 scheduled games and hid the three
+    // that had actually been played. The week in progress is exactly the view
+    // where a finished game matters most -- it is the only reason anyone opens
+    // a scoreboard on a Friday night.
+    //
+    // So the current week shows BOTH, in one list, day by day: finals first
+    // because they are the news, then what is still to come.
+    var played = RECAP.filter(function (r) { return (+r.wk || 0) === SCHEDWK; });
     var games = UPCOMING.slice().sort(function (a, b) {
       return a.date < b.date ? -1 : a.date > b.date ? 1 : (a.home < b.home ? -1 : 1);
     });
     var days = [];
-    games.forEach(function (g) { if (days.indexOf(g.date) < 0) days.push(g.date); });
+    played.concat(games).forEach(function (g) {
+      if (days.indexOf(g.date) < 0) days.push(g.date);
+    });
+    days.sort();
     var close = games.filter(function (g) { return g.toss || g.pk || Math.abs(+g.line || 0) <= 3; }).length;
     var top5n = games.filter(function (g) { return g.top5; }).length;
+    var total = played.length + games.length;
 
-    // No awards block here on purpose: the week has not been played, so the
-    // only honors that exist belong to a different week than the one the
-    // picker says you are looking at. They are on that week's pane.
     document.getElementById("v-recap").innerHTML =
-      '<div class="panel" style="margin-bottom:16px"><h2>Week ' + rcWeek + " — this week’s games</h2>" +
+      '<div class="panel" style="margin-bottom:16px"><h2>Week ' + rcWeek + " \u2014 this week\u2019s games</h2>" +
       weekButtons() +
-      '<p class="lede">' + games.length + " games on the Week " + rcWeek +
-      " slate. Nothing is final yet — scores fill in here as they come. " +
-      (close ? "<strong>" + close + "</strong> of them project inside a field goal. " : "") +
-      "The number under each game is what the model makes it, not a result.</p></div>" +
+      '<p class="lede">' + total + " games in Week " + rcWeek + ". " +
+      (played.length
+        ? "<strong>" + played.length + "</strong> final, " + games.length + " still to play. "
+        : "Nothing is final yet \u2014 scores fill in here as they come. ") +
+      (close ? "<strong>" + close + "</strong> of the rest project inside a field goal. " : "") +
+      "The number under an unplayed game is what the model makes it, not a result.</p></div>" +
       days.map(function (d) {
+        var fin = played.filter(function (g) { return g.date === d; })
+          .sort(function (a, b) { return a.margin - b.margin; });
         var on = games.filter(function (g) { return g.date === d; });
+        var n = fin.length + on.length;
         return '<div class="divsec"><h3 class="divhead">' + esc(dayLabel(d)) +
-          "<span>" + on.length + " game" + (on.length === 1 ? "" : "s") + "</span></h3>" +
-          '<div class="rcgrid">' + on.map(schedCard).join("") + "</div></div>";
+          "<span>" + n + " game" + (n === 1 ? "" : "s") +
+          (fin.length && on.length ? " \u00b7 " + fin.length + " final" : "") +
+          "</span></h3>" +
+          '<div class="rcgrid">' +
+          fin.map(recapCard).join("") + on.map(schedCard).join("") +
+          "</div></div>";
       }).join("") +
       '<div class="grid cards" style="margin-top:22px">' +
-      ['<div class="card"><div class="k">Games</div><div class="v mono">' + games.length + '</div><div class="sub">scheduled in Week ' + rcWeek + '</div></div>',
-       '<div class="card"><div class="k">Inside a field goal</div><div class="v mono">' + close + '</div><div class="sub">projected within 3</div></div>',
-       '<div class="card"><div class="k">Ranked matchups</div><div class="v mono">' + top5n + '</div><div class="sub">both teams ranked</div></div>',
-       '<div class="card"><div class="k">Final scores</div><div class="v mono">0</div><div class="sub">none of these are played</div></div>'
+      ['<div class="card"><div class="k">Games</div><div class="v mono">' + total + '</div><div class="sub">in Week ' + rcWeek + '</div></div>',
+       '<div class="card"><div class="k">Final</div><div class="v mono">' + played.length + '</div><div class="sub">already played</div></div>',
+       '<div class="card"><div class="k">Inside a field goal</div><div class="v mono">' + close + '</div><div class="sub">of the games still to come</div></div>',
+       '<div class="card"><div class="k">Ranked matchups</div><div class="v mono">' + top5n + '</div><div class="sub">both teams ranked</div></div>'
       ].join("") + "</div>";
   }
 
