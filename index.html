@@ -1198,11 +1198,60 @@ a.utchip:hover b{text-decoration:underline}
 .rbcol{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);padding:13px 15px}
 .rbcol h4{margin:0 0 3px;font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacing:.01em}
 .rbcol .cnt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
-.rbp{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-top:1px solid var(--line-soft);font-size:13.5px}
+/* Brandon, Sep 14: the commit board should carry the high school marks next to
+   the college ones. A crest is how somebody spots his own program in a list of
+   twenty colleges, which is the whole reason he is on this page.
+   The row was a two-column flex -- name left, everything else right and
+   nowrap -- and adding a 22px crest to it started eating the names ("Jacks…",
+   "Monson …"). Same three-column grid the leaders boards use instead: crest,
+   name over his line, grade. The name gets a whole row to itself now, which is
+   more room than it had before the crest existed. */
+.rbp{display:grid;grid-template-columns:22px 1fr auto;gap:9px;align-items:center;
+  padding:6px 0;border-top:1px solid var(--line-soft);font-size:13.5px}
 .rbp:first-of-type{border-top:0}
-.rbp b{font-weight:600}
-.rbp span{color:var(--ink-3);font-size:12px;text-align:right;white-space:nowrap}
-.rbp i{font-style:normal;font-family:var(--f-num);font-size:12px;color:var(--ink-2);font-weight:600}
+.rbn{min-width:0}
+.rbn b{font-weight:600;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rbn small{display:block;color:var(--ink-3);font-size:11.5px;margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rbq{font-family:var(--f-num);font-size:13px;color:var(--ink-2);font-weight:600;
+  white-space:nowrap;justify-self:end}
+.rbq.unr{font-size:11px;font-family:var(--f-ui);color:var(--ink-3);font-weight:400}
+.rbcol h4{display:flex;align-items:center;gap:8px}
+.cmark{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
+  border-radius:2px;flex:none;font-family:var(--f-display);font-size:8.5px;font-weight:600;
+  letter-spacing:.02em;color:#fff;line-height:1;overflow:hidden}
+.cmark img{width:24px;height:24px;object-fit:contain;display:block}
+:root:not([data-theme="light"]) .cmark img{background:rgba(255,255,255,.94);border-radius:3px;padding:1px}
+:root[data-theme="dark"] .cmark img{background:rgba(255,255,255,.94);border-radius:3px;padding:1px}
+
+/* ---------- rumor mill ---------- */
+.rmgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}
+.rmrow{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--sodium);
+  box-shadow:var(--shadow);padding:11px 13px}
+.rmrow.s-decommit,.rmrow.s-transfer{border-left-color:var(--fall)}
+.rmrow.s-offer,.rmrow.s-decision{border-left-color:var(--rise)}
+.rmhd{display:flex;align-items:center;gap:7px;margin-bottom:7px;flex-wrap:wrap}
+.rmhd .st{font-family:var(--f-display);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+  padding:2px 6px;border-radius:2px;background:var(--surface-2);color:var(--ink-2);flex:none}
+.rmhd time{margin-left:auto;font-family:var(--f-num);font-size:11px;color:var(--ink-3);flex:none}
+.rmwho{display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;min-width:0}
+.rmwho small{display:block;font-weight:400;font-size:11.5px;color:var(--ink-3)}
+.rmhead{font-size:14px;line-height:1.4;margin:7px 0 0}
+.rmdtl{font-size:12.5px;color:var(--ink-2);line-height:1.5;margin:5px 0 0}
+.rmsrc{margin-top:9px;padding-top:7px;border-top:1px solid var(--line-soft);
+  font-size:11.5px;color:var(--ink-3)}
+.rmsrc a{color:var(--sodium)}
+.rmempty{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--line);
+  padding:14px 16px;font-size:13px;line-height:1.65;color:var(--ink-2)}
+.rmempty a{color:var(--sodium)}
+.rmwatch{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
+.rmw{background:var(--surface);display:grid;grid-template-columns:22px 1fr auto;gap:10px;
+  align-items:center;padding:9px 12px}
+.rmwn{font-size:13.5px;min-width:0}
+.rmwn b{font-weight:600}
+.rmwn small{display:block;font-size:11.5px;color:var(--ink-3);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rmwv{font-family:var(--f-num);font-size:13px;color:var(--sodium);font-weight:600;white-space:nowrap}
 
 .pgrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .statsnote{margin-top:12px;padding:11px 14px;border-left:3px solid var(--sodium);background:color-mix(in srgb,var(--sodium) 7%,var(--surface));font-size:12.5px;color:var(--ink-2);line-height:1.55}
@@ -5048,11 +5097,127 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   var COMMITTED = DATA.committed || [], OPENB = DATA.open_board || [], COLLEGES = DATA.colleges || [];
   var CLSNAME = { "2027": "Seniors", "2028": "Juniors", "2029": "Sophomores" };
   function yr(c) { return c === "2027" ? "Sr" : c === "2028" ? "Jr" : c === "2029" ? "So" : c; }
+  /* College marks.
+     We hold real files for the programs in and around Utah -- the ones on the
+     "where you can play" board -- and for nobody else, because nobody else
+     gave us one. Rather than leave three quarters of the cards bare or borrow
+     a mark we were not given, every other program gets a monogram in its own
+     colours. Colours identify a school; they are not its logo. */
+  var CLOGO = {
+    "Utah": "utah", "BYU": "byu", "Utah State": "utah-state", "Utah Tech": "utah-tech",
+    "Southern Utah": "southern-utah", "Weber State": "weber-state",
+    "Snow College": "snow-college", "Boise State": "boise-state",
+    "Idaho State": "idaho-state", "Nevada": "nevada", "Montana": "montana",
+    "Montana State": "montana-state", "College of Idaho": "college-of-idaho",
+    "Colorado Mesa": "colorado-mesa", "Western Colorado": "western-colorado"
+  };
+  var CMONO = {
+    "Michigan": ["MICH", "#00274C"], "Arizona": ["ARIZ", "#AB0520"],
+    "Arizona State": ["ASU", "#8C1D40"], "Oklahoma": ["OU", "#841617"],
+    "Oklahoma State": ["OKST", "#FF7300"], "Oregon": ["ORE", "#154733"],
+    "Oregon State": ["ORST", "#DC4405"], "Colorado": ["COLO", "#1A1A1A"],
+    "Colorado State": ["CSU", "#1E4D2B"], "Fresno State": ["FRES", "#DB0032"],
+    "Iowa State": ["ISU", "#C8102E"], "Nebraska": ["NEB", "#D00000"],
+    "Penn State": ["PSU", "#041E42"], "San Diego State": ["SDSU", "#A6192E"],
+    "San Jose State": ["SJSU", "#0055A8"], "Washington": ["UW", "#4B2E83"],
+    "Washington State": ["WSU", "#981E32"], "West Virginia": ["WVU", "#002855"],
+    "UC Davis": ["UCD", "#022851"], "UNLV": ["UNLV", "#CF0A2C"],
+    "Wyoming": ["WYO", "#492F24"], "Stanford": ["STAN", "#8C1515"],
+    "Ohio State": ["OSU", "#BB0000"], "Notre Dame": ["ND", "#0C2340"],
+    "Texas": ["TEX", "#BF5700"], "USC": ["USC", "#990000"],
+    "Tennessee": ["TENN", "#FF8200"], "Wisconsin": ["WIS", "#C5050C"],
+    "Minnesota": ["MINN", "#7A0019"], "North Carolina": ["UNC", "#4B9CD3"],
+    "Miami": ["MIA", "#F47321"], "Purdue": ["PUR", "#9D9795"],
+    "Idaho": ["IDA", "#F1B300"], "Northern Arizona": ["NAU", "#003466"],
+    "Sacramento State": ["SAC", "#043927"], "Portland State": ["PSU-O", "#154734"],
+    "Eastern Washington": ["EWU", "#A10022"], "Northern Colorado": ["UNC-C", "#013C65"],
+    "Cal Poly": ["CP", "#154734"], "Southern Illinois": ["SIU", "#660000"]
+  };
+  function initials(n) {
+    var w = String(n || "").replace(/[^A-Za-z ]/g, "").split(/\s+/).filter(Boolean);
+    if (!w.length) return "?";
+    if (w.length === 1) return w[0].slice(0, 4).toUpperCase();
+    return w.map(function (x) { return x[0]; }).join("").slice(0, 4).toUpperCase();
+  }
+  function collegeMark(name) {
+    if (CLOGO[name]) {
+      return '<span class="cmark"><img src="logo-college-' + CLOGO[name] +
+        '.webp" alt="" loading="lazy"></span>';
+    }
+    var m = CMONO[name] || [initials(name), "#6C7883"];
+    return '<span class="cmark" style="background:' + esc(m[1]) + '">' + esc(m[0]) + "</span>";
+  }
+
+  /* A commit row carries the player's own high school crest and opens his
+     profile. Brandon, Sep 14: "the commits page should have the high school
+     logos along with the college logos." */
   function rbLine(p) {
-    return '<div class="rbp"><b>' + esc(p.name) +
+    return '<div class="rbp"' + pAttr(p.name, p.school) + ">" +
+      logo(p.school, "sm") +
+      '<div class="rbn"><b>' + esc(p.name) +
       (p.juco ? ' <span class="tagline inf">JUCO</span>' : "") + "</b>" +
-      "<span><i>" + (p.q == null ? "unrated" : p.q) + "</i> · " + esc(p.pos || "") + " · " +
-      esc(p.school) + " " + yr(p.cls) + "</span></div>";
+      "<small>" + [p.pos, p.school, yr(p.cls)].filter(Boolean).map(esc).join(" · ") +
+      "</small></div>" +
+      '<div class="rbq' + (p.q == null ? " unr" : "") + '">' +
+      (p.q == null ? "unrated" : p.q) + "</div></div>";
+  }
+
+  /* ---- the rumor mill ----
+     The rule this board runs on lives in rumor_mill.py, and it is short: a row
+     with no source in it never reaches this file at all. It is held on the
+     build machine. Everything rendered here can say who reported it, because
+     everything on it is about a high school kid. */
+  function rmCard(r) {
+    var meta = [r.pos, r.school, yr(r.cls), (r.q == null ? "" : r.q)]
+      .filter(Boolean).map(esc).join(" · ");
+    return '<div class="rmrow s-' + esc(r.status) + '">' +
+      '<div class="rmhd"><span class="st">' + esc(r.stlabel) + "</span>" +
+      (r.committed ? '<span class="tagline rep" style="margin-left:0">committed ' +
+        esc(r.committed) + "</span>" : "") +
+      "<time>" + esc(mdy(r.d)) + "</time></div>" +
+      '<div class="rmwho"' + (r.linked ? pAttr(r.name, r.school) : "") + ">" +
+      logo(r.school, "sm") + "<span>" + esc(r.name) +
+      "<small>" + meta + "</small></span></div>" +
+      '<p class="rmhead">' + esc(r.head) + "</p>" +
+      (r.detail ? '<p class="rmdtl">' + esc(r.detail) + "</p>" : "") +
+      '<div class="rmsrc">Reported by ' +
+      (r.u ? '<a href="' + esc(r.u) + '" target="_blank" rel="noopener noreferrer">' +
+             esc(r.src) + "</a>" : "<strong>" + esc(r.src) + "</strong>") +
+      "</div></div>";
+  }
+  function rumorMill() {
+    var RM = DATA.rumor_mill || [], RW = DATA.rumor_watch || [];
+    var out = '<h3 class="divhead" style="margin-top:28px">Rumor mill<span>' +
+      (RM.length ? RM.length + (RM.length === 1 ? " item" : " items") + " · last 45 days"
+                 : "nothing attributable this week") + "</span></h3>" +
+      '<p class="notbet" style="margin:0 0 12px">Every line on this board names who ' +
+      'reported it, and that is not a style choice. These are high school kids. ' +
+      'Things we have heard but cannot attribute stay off the board until somebody ' +
+      'will put their name to them &mdash; so a quiet week here means a quiet week, ' +
+      'not that we are holding back. Items clear themselves after 45 days rather ' +
+      'than sitting under a player&rsquo;s name unresolved.</p>';
+    out += RM.length
+      ? '<div class="rmgrid">' + RM.map(rmCard).join("") + "</div>"
+      : '<div class="rmempty"><strong>Nothing sourced on the board right now.</strong><br>' +
+        'Heard something &mdash; an offer that just came in, a visit set, a decision ' +
+        'coming before the playoffs? <a href="#" data-go="send">Send it in</a>. ' +
+        'Tell us who said it and it can run here.</div>';
+    if (RW.length) {
+      out += '<h4 class="divhead" style="margin-top:20px;font-size:15px">Who the offers ' +
+        'are chasing<span>uncommitted, by published offer count</span></h4>' +
+        '<p class="lede" style="margin-bottom:10px">Not rumor &mdash; these are the offer ' +
+        'lists the recruiting services publish, for players with no commitment on file. ' +
+        'It is the closest thing to a fact about who is being pursued right now.</p>' +
+        '<div class="rmwatch">' + RW.map(function (p) {
+          return '<div class="rmw"' + pAttr(p.name, p.school) + ">" + logo(p.school, "sm") +
+            '<div class="rmwn"><b>' + esc(p.name) + "</b> " +
+            '<small>' + [p.pos, p.school, yr(p.cls)].filter(Boolean).map(esc).join(" · ") +
+            (p.offers && p.offers.length ? " &middot; " + p.offers.map(esc).join(", ") : "") +
+            "</small></div>" +
+            '<div class="rmwv">' + p.n + " offers</div></div>";
+        }).join("") + "</div>";
+    }
+    return out;
   }
   var PIPE = DATA.pipeline || { utah: [], region: [] };
   var LVNAME = { FBS: "FBS", FCS: "FCS", D2: "Division II", D3: "Division III", NAIA: "NAIA", JUCO: "JUCO" };
@@ -5081,12 +5246,15 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     })() +
     '<h3 class="divhead">Committed<span>' + COMMITTED.length + ' players · ' + COLLEGES.length + ' colleges</span></h3>' +
     '<div class="rbgrid" style="margin-bottom:22px">' + COLLEGES.map(function (c) {
-      return '<div class="rbcol"><h4>' + esc(c.college) +
-        (c.utah ? ' <span class="tagline rep" style="vertical-align:middle">Utah</span>' : "") + "</h4>" +
+      return '<div class="rbcol"><h4>' + collegeMark(c.college) +
+        "<span>" + esc(c.college) +
+        (c.utah ? ' <span class="tagline rep" style="vertical-align:middle">Utah</span>' : "") +
+        "</span></h4>" +
         '<div class="cnt">' + esc(c.level || "") + (c.conf ? " · " + esc(c.conf) : "") + " · " +
         c.n + (c.n === 1 ? " commit" : " commits") + "</div>" +
         c.players.map(function (pl) { return rbLine(pl); }).join("") + "</div>";
     }).join("") + "</div>" +
+    rumorMill() +
     ["2027", "2028", "2029"].map(function (cl) {
       var list = OPENB.filter(function (pl) { return pl.cls === cl; });
       if (!list.length) return "";
