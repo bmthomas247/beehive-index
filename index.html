@@ -431,11 +431,31 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .crest.c-md{width:30px;height:30px}
 .crest.c-xs{width:14px;height:14px}
 .crest.c-xl{width:60px;height:60px}
-/* a dark-on-transparent mark disappears on the dark ground; lift it onto a chip */
+/* Brandon, Sep 14: "can we get rid of the white in all the logos backgrounds?
+   it looks funky". It was two separate things wearing the same face.
+
+   140 of the 170 crest FILES had white baked in behind the mark -- most of the
+   set is properly transparent, but the ones collected as flat RGB carried a
+   white rectangle. Those are knocked out now; see logos_alpha.py.
+
+   This rule was the other half, and it was ours. A dark-on-transparent mark
+   does vanish on a dark page, so every crest got lifted onto a white chip --
+   which fixed maybe twenty of them and put a white sticker round the other
+   hundred and fifty. A glow that follows the mark's own alpha separates it
+   from the ground without a box, and needs no judgement about which crests
+   deserve one. (I tried that judgement first. It kept mis-sorting Corner
+   Canyon, whose vanishing part is one line of black type -- 14% of the pixels
+   and all of the identification.) */
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]) .crest{background:rgba(255,255,255,.94);border-radius:3px;padding:1px}
+  :root:not([data-theme="light"]) .crest{
+    filter:drop-shadow(0 0 1.1px rgba(255,255,255,.72))
+           drop-shadow(0 0 2.6px rgba(255,255,255,.30));
+  }
 }
-:root[data-theme="dark"] .crest{background:rgba(255,255,255,.94);border-radius:3px;padding:1px}
+:root[data-theme="dark"] .crest{
+  filter:drop-shadow(0 0 1.1px rgba(255,255,255,.72))
+         drop-shadow(0 0 2.6px rgba(255,255,255,.30));
+}
 .dhead.withcrest{display:grid;grid-template-columns:60px minmax(0,1fr);gap:14px;align-items:center}
 .dhead.withcrest>div{min-width:0}
 
@@ -1221,8 +1241,13 @@ a.utchip:hover b{text-decoration:underline}
   border-radius:2px;flex:none;font-family:var(--f-display);font-size:8.5px;font-weight:600;
   letter-spacing:.02em;color:#fff;line-height:1;overflow:hidden}
 .cmark img{width:24px;height:24px;object-fit:contain;display:block}
-:root:not([data-theme="light"]) .cmark img{background:rgba(255,255,255,.94);border-radius:3px;padding:1px}
-:root[data-theme="dark"] .cmark img{background:rgba(255,255,255,.94);border-radius:3px;padding:1px}
+/* same treatment as the school crests -- glow, not a white plate */
+:root:not([data-theme="light"]) .cmark img{
+  filter:drop-shadow(0 0 1.1px rgba(255,255,255,.72)) drop-shadow(0 0 2.6px rgba(255,255,255,.30));
+}
+:root[data-theme="dark"] .cmark img{
+  filter:drop-shadow(0 0 1.1px rgba(255,255,255,.72)) drop-shadow(0 0 2.6px rgba(255,255,255,.30));
+}
 
 /* ---------- rumor mill ---------- */
 .rmgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}
@@ -1941,29 +1966,79 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
    Broadcast hero + On X rail
    ============================================================ */
 
+/* Brandon, Sep 14: "i just want a better poster created by you for that
+   headline area."
+
+   The old one was two radial colour blobs with both crests blown up to 420px
+   and shoved off opposite corners at 16% opacity. It read as a smudge: you
+   could not tell whose marks they were, and the two colours muddied into each
+   other in the middle where the headline sat.
+
+   This is a matchup title card instead. One hard diagonal between the two
+   programmes' colours -- a seam, not a blend -- each crest sitting whole and
+   legible on its own side, a faint yard-line field under everything, and the
+   type on a dark plate along the bottom where it always has contrast. It is
+   built entirely from what we already hold: two hex colours and two crests. */
 .bhero{ --c1:#243; --c2:#432; margin:0 0 18px }
 .bhero-art{
   position:relative; border-radius:var(--r); overflow:hidden; isolation:isolate;
-  min-height:340px; display:flex; flex-direction:column; justify-content:flex-end;
+  min-height:404px; display:flex; flex-direction:column; justify-content:flex-end;
+  background:linear-gradient(180deg,#12131a 0%,#080A0E 100%);
+}
+/* the seam. Away colour top-left, home colour bottom-right, one clean edge. */
+.bhero-split{
+  position:absolute; inset:0; z-index:0;
   background:
-    radial-gradient(120% 140% at 8% 0%, color-mix(in srgb,var(--c1) 78%, transparent) 0%, transparent 62%),
-    radial-gradient(120% 140% at 100% 20%, color-mix(in srgb,var(--c2) 70%, transparent) 0%, transparent 60%),
-    linear-gradient(180deg, #171720 0%, #0C0C10 100%);
+    linear-gradient(104deg,
+      color-mix(in srgb,var(--c1) 92%, #0b0d12) 0%,
+      color-mix(in srgb,var(--c1) 78%, #0b0d12) 38%,
+      rgba(255,255,255,.14) 49.4%, rgba(255,255,255,.14) 50.6%,
+      color-mix(in srgb,var(--c2) 78%, #0b0d12) 62%,
+      color-mix(in srgb,var(--c2) 92%, #0b0d12) 100%);
+}
+/* a field under the colour: five-yard lines, falling away toward the top */
+.bhero-field{
+  position:absolute; inset:0; z-index:0; opacity:.30;
+  background:
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,.22) 0 2px, transparent 2px 72px),
+    linear-gradient(180deg, rgba(0,0,0,.55) 0%, transparent 46%);
+  -webkit-mask-image:linear-gradient(180deg, transparent 0%, #000 42%, #000 100%);
+          mask-image:linear-gradient(180deg, transparent 0%, #000 42%, #000 100%);
+}
+/* a low sweep of light off the top-left, so the card is not flat */
+.bhero-sheen{
+  position:absolute; inset:0; z-index:0;
+  background:radial-gradient(90% 70% at 18% -10%, rgba(255,255,255,.20) 0%, transparent 60%);
+}
+/* The crests, whole and readable, one to a side. Big enough to be identified
+   from across a room, quiet enough to sit behind a headline. */
+/* The crests get the top band to themselves and the headline starts below
+   them. The first pass floated both at 190px with the copy at the old padding
+   and "Lone Peak at Corner Canyon" ran straight through the Lone Peak mark. */
+.bhero-mark{
+  position:absolute; z-index:1; width:158px; height:158px; object-fit:contain;
+  top:20px; opacity:.94;
+  filter:drop-shadow(0 10px 26px rgba(0,0,0,.55));
+}
+.bhero-mark.m1{ left:30px }
+.bhero-mark.m2{ right:30px }
+.bhero-vs{
+  position:absolute; z-index:1; top:84px; left:50%; transform:translateX(-50%);
+  font-family:var(--f-display); font-size:26px; font-weight:700; letter-spacing:.2em;
+  color:rgba(255,255,255,.85); text-shadow:0 2px 16px rgba(0,0,0,.85);
 }
 /* where a real video still goes; the gradient is the fallback for games with no film */
 .bhero-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.5; z-index:0 }
+/* Transparent across the crest band, then hard down to near-black under the
+   type. The seam and the marks stay visible; the headline always has contrast. */
 .bhero-wash{
   position:absolute; inset:0; z-index:1;
-  background:linear-gradient(180deg, rgba(6,6,9,.15) 0%, rgba(6,6,9,.55) 55%, rgba(6,6,9,.92) 100%);
+  background:linear-gradient(180deg, rgba(6,6,9,.04) 0%, rgba(6,6,9,.10) 34%,
+             rgba(6,6,9,.72) 54%, rgba(6,6,9,.94) 76%, rgba(6,6,9,.97) 100%);
 }
-.bhero-ghost{
-  position:absolute; z-index:0; width:420px; height:420px; object-fit:contain;
-  opacity:.16; filter:saturate(1.15) blur(.4px);
-}
-.bhero-ghost.g1{ left:-130px; top:-120px; transform:rotate(-10deg) }
-.bhero-ghost.g2{ right:-120px; top:-40px; transform:rotate(10deg); opacity:.2 }
 
-.bhero-copy{ position:relative; z-index:2; padding:26px 26px 0 }
+.bhero-copy{ position:relative; z-index:2; padding:196px 26px 0 }
 .bhero-tag{
   display:inline-block; font-size:12.5px; font-weight:700; color:var(--sodium);
   margin-bottom:10px;
@@ -1989,12 +2064,20 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .bhs-line{ margin-left:auto; font-family:var(--f-num); font-size:12.5px; color:rgba(255,255,255,.72) }
 
 @media(max-width:640px){
-  .bhero-art{ min-height:280px }
+  .bhero-art{ min-height:300px }
   .bhero-copy{ padding:18px 16px 0 }
   .bhero-copy h2{ font-size:27px; max-width:none }
   .bhero-strip{ padding:12px 16px; gap:12px }
   .bhs-line{ margin-left:0; flex-basis:100% }
-  .bhero-ghost{ width:210px; height:210px }
+  /* The crests shrink and tuck toward the top corners on a phone rather than
+     scaling with the card -- at 400px wide, two 190px marks and a headline are
+     fighting over the same space and the headline has to win. */
+  .bhero-mark{ width:98px; height:98px; top:14px; opacity:.88 }
+  .bhero-mark.m1{ left:12px }
+  .bhero-mark.m2{ right:12px }
+  .bhero-vs{ top:48px; font-size:18px }
+  .bhero-copy{ padding-top:126px }
+  .bhero-field{ background-size:auto, auto; opacity:.24 }
 }
 
 /* ---------- On X rail ---------- */
@@ -6195,9 +6278,13 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         '<section class="bhero" data-game="' + esc(lead.id) + '" style="--c1:' +
         esc(ha.c1 || "#1b1b22") + ";--c2:" + esc(hh.c1 || "#1b1b22") + '">' +
         '<div class="bhero-art">' +
+        '<div class="bhero-split"></div>' +
+        '<div class="bhero-field"></div>' +
+        '<div class="bhero-sheen"></div>' +
+        (LOGOS[lead.away] ? '<img class="bhero-mark m1" src="/logo-' + esc(LOGOS[lead.away]) + '.webp" alt="">' : "") +
+        (LOGOS[lead.home] ? '<img class="bhero-mark m2" src="/logo-' + esc(LOGOS[lead.home]) + '.webp" alt="">' : "") +
+        '<div class="bhero-vs">' + (isFinal ? "FINAL" : "AT") + "</div>" +
         '<div class="bhero-wash"></div>' +
-        (LOGOS[lead.away] ? '<img class="bhero-ghost g1" src="/logo-' + esc(LOGOS[lead.away]) + '.webp" alt="">' : "") +
-        (LOGOS[lead.home] ? '<img class="bhero-ghost g2" src="/logo-' + esc(LOGOS[lead.home]) + '.webp" alt="">' : "") +
         '<div class="bhero-copy">' +
         '<span class="bhero-tag">' +
         (isFinal ? "Final &middot; Week " + NW : "Game of the week &middot; Week " + NW) +
