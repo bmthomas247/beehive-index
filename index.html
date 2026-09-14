@@ -760,11 +760,16 @@ a.rrow{text-decoration:none;color:inherit}
 @media(max-width:600px){.lvrow{grid-template-columns:52px 1fr;gap:8px}.lvn{grid-column:2;text-align:left}}
 
 /* ---------- realignment ---------- */
-.tl{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-bottom:20px}
-.tlrow{display:grid;grid-template-columns:132px 1fr;gap:14px;background:var(--surface);padding:9px 13px;align-items:baseline}
+/* NOT .tl -- that class is the Recruiting Help timeline, declared 250 lines
+   up with a two-column grid-template that leaks through here and pairs the
+   rows up two to a line. Two different timelines, two different names. */
+.rtl{display:grid;grid-template-columns:1fr;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);margin-bottom:20px}
+.rtlrow{display:grid;grid-template-columns:132px minmax(0,1fr);gap:14px;
+  background:var(--surface);padding:9px 13px;align-items:baseline}
 .tlrow.now{background:color-mix(in srgb,var(--sodium) 7%,var(--surface))}
-.tld{font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.02em}
-.tlw{font-size:13.5px;color:var(--ink-2)}
+.rtld{font-family:var(--f-display);font-size:12px;font-weight:600;letter-spacing:.02em}
+.rtlw{font-size:13.5px;color:var(--ink-2)}
 .rag{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:760px){.rag{grid-template-columns:1fr}}
 .racol h4{margin:0 0 3px;font-family:var(--f-display);font-size:15px;font-weight:600}
@@ -1248,6 +1253,61 @@ a.utchip:hover b{text-decoration:underline}
 :root[data-theme="dark"] .cmark img{
   filter:drop-shadow(0 0 1.1px rgba(255,255,255,.72)) drop-shadow(0 0 2.6px rgba(255,255,255,.30));
 }
+
+/* ---------- standings ---------- */
+.stblock{margin-bottom:16px}
+.sthead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  font-family:var(--f-display);font-size:15px;font-weight:600;
+  padding:0 0 6px;border-bottom:2px solid var(--ink);margin-bottom:0}
+.sthead em{font-style:normal;font-family:var(--f-ui);font-size:11.5px;
+  font-weight:400;color:var(--ink-3);text-align:right}
+.sttable td,.sttable th{padding:9px 10px}
+.sttable .num.up{color:var(--rise)}
+.sttable .num.dn{color:var(--fall)}
+.sttable tbody tr:hover{background:var(--surface-2)}
+@media(max-width:640px){
+  /* PF and PA are the first things a phone can live without -- the difference
+     carries the same information in one column. */
+  .sttable th:nth-child(5),.sttable td:nth-child(5),
+  .sttable th:nth-child(6),.sttable td:nth-child(6),
+  .sttable th:nth-child(9),.sttable td:nth-child(9){display:none}
+  .sthead{flex-direction:column;gap:2px}
+  .sthead em{text-align:left}
+}
+
+/* ---------- realignment projection ---------- */
+.rjgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.rjrow{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
+  border-left:3px solid var(--line);padding:11px 13px;cursor:pointer}
+.rjrow.up{border-left-color:var(--rise)}
+.rjrow.down{border-left-color:var(--fall)}
+.rjtop{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.rjtop b{font-size:14.5px;font-weight:600;flex:1;min-width:0;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rjmove{font-family:var(--f-display);font-size:12px;letter-spacing:.06em;
+  padding:3px 8px;border-radius:2px;background:var(--surface-2);color:var(--ink-2);
+  white-space:nowrap;flex:none}
+.rjrow.up .rjmove{background:color-mix(in srgb,var(--rise) 16%,transparent);color:var(--rise)}
+.rjrow.down .rjmove{background:color-mix(in srgb,var(--fall) 16%,transparent);color:var(--fall)}
+.rjwhy{font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.rjmeta{margin-top:7px;padding-top:6px;border-top:1px solid var(--line-soft);
+  display:flex;gap:10px;font-size:11.5px;color:var(--ink-3)}
+.rjmeta .z{font-family:var(--f-num);margin-left:auto}
+.rjconf{font-family:var(--f-display);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3)}
+.rnote{background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--sodium);padding:11px 13px;margin-bottom:8px}
+.rnote .rnh{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.rnote .kind{font-family:var(--f-display);font-size:9.5px;letter-spacing:.1em;
+  text-transform:uppercase;padding:2px 6px;border-radius:2px;
+  background:var(--surface-2);color:var(--ink-2)}
+.rnote time{margin-left:auto;font-family:var(--f-num);font-size:11px;color:var(--ink-3)}
+.rnote p{margin:5px 0 0;font-size:13px;line-height:1.5}
+.rnote .rnsrc{margin-top:7px;font-size:11.5px;color:var(--ink-3)}
+.rnote .rnsrc a{color:var(--sodium)}
+.rempty{background:var(--surface);border:1px solid var(--line);
+  border-left:3px solid var(--line);padding:14px 16px;font-size:13px;
+  line-height:1.65;color:var(--ink-2)}
 
 /* ---------- rumor mill ---------- */
 .rmgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}
@@ -2396,6 +2456,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   </section>
 
   <section id="v-prank" hidden></section>
+  <section id="v-stand" hidden></section>
   <section id="v-recap" hidden></section>
   <section id="v-pred" hidden></section>
   <section id="v-cmp" hidden></section>
@@ -6865,6 +6926,88 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   }
   drawPRank();
 
+  /* ---- STANDINGS -------------------------------------------------------
+     Brandon, Sep 14, with a link to UHSAA's own page: standings by division
+     and by region.
+
+     Region record leads, because region finish is what seeds the playoffs --
+     a team can be 5-0 overall and 1-0 in region in September and those are
+     different facts. Overall sits beside it rather than above it. */
+  var STAND = DATA.standings || {};
+  var stCls = "";      // "" = every classification
+  function stRow(r, started) {
+    return '<tr data-t="' + esc(r.school) + '" style="cursor:pointer">' +
+      '<td class="rk mono' + (r.pos <= 2 ? " top" : "") + '">' +
+      (r.tied ? '<span class="tie">T-</span>' : "") + r.pos + "</td>" +
+      // The region name under every row of a region table says nothing. The
+      // statewide rank does: it is how a 2-3 team in a hard region can still be
+      // the 14th best program in Utah.
+      '<td class="tm">' + logo(r.school, "sm") + "<div>" + esc(r.school) +
+      "<small>" + (r.rank ? "#" + r.rank + " statewide" : "") + "</small></div></td>" +
+      '<td class="num mono">' + (started ? r.rw + "&ndash;" + r.rl
+                                         : '<span class="none">&mdash;</span>') + "</td>" +
+      '<td class="num mono">' + r.w + "&ndash;" + r.l + "</td>" +
+      '<td class="num mono">' + r.pf + "</td>" +
+      '<td class="num mono">' + r.pa + "</td>" +
+      '<td class="num mono ' + (r.diff > 0 ? "up" : r.diff < 0 ? "dn" : "") + '">' +
+      (r.diff > 0 ? "+" : "") + r.diff + "</td>" +
+      '<td class="num mono">' + esc(r.streak || "&mdash;") + "</td>" +
+      '<td class="mono" style="letter-spacing:.06em">' + esc(r.last5 || "") + "</td></tr>";
+  }
+  function drawStand() {
+    var order = ["6A", "5A", "4A", "3A", "2A", "1A"];
+    var shown = order.filter(function (c) { return STAND[c] && (!stCls || c === stCls); });
+    var body = shown.map(function (c) {
+      var regions = STAND[c];
+      return '<h3 class="divhead" style="margin-top:22px">' + c +
+        "<span>" + Object.keys(regions).length + " regions</span></h3>" +
+        Object.keys(regions).map(function (reg) {
+          var rows = regions[reg];
+          var started = rows.length && rows[0].started;
+          return '<div class="stblock"><div class="sthead">' + esc(reg) +
+            "<em>" + (started ? "region play under way"
+                              : "region play has not started &mdash; ordered by overall record") +
+            "</em></div>" +
+            '<div class="tablewrap"><table class="sttable"><thead><tr>' +
+            "<th>#</th><th>Team</th><th class=\"num\">Region</th>" +
+            "<th class=\"num\">Overall</th><th class=\"num\">PF</th><th class=\"num\">PA</th>" +
+            "<th class=\"num\">Diff</th><th class=\"num\">Streak</th><th>Last 5</th>" +
+            "</tr></thead><tbody>" +
+            rows.map(function (r) { return stRow(r, started); }).join("") +
+            "</tbody></table></div></div>";
+        }).join("");
+    }).join("");
+
+    document.getElementById("v-stand").innerHTML =
+      '<div class="panel" style="margin-bottom:14px"><h2>Standings</h2>' +
+      '<p class="lede">Every classification, every region, built from the game file ' +
+      'rather than copied from anywhere &mdash; so it is the same 298 results the ' +
+      'rankings and the program pages are built from, and it moves the night a game ' +
+      'is played.</p>' +
+      '<p class="notbet"><strong>Region record leads, because region finish is what ' +
+      'seeds the playoffs.</strong> A team can be 5&ndash;0 overall and 1&ndash;0 in ' +
+      'region in September; those are different facts and both are here. Level teams ' +
+      'are separated by head to head first &mdash; the one tiebreaker that is never a ' +
+      'judgement call &mdash; then by region point difference. Where two teams are ' +
+      'level and have not played each other, the rows are marked <span class="tie">' +
+      'T-</span> rather than quietly ordered. UHSAA\'s own chain runs on into common ' +
+      'opponents and a coin toss, and neither of those belongs in an automated table ' +
+      'in September.</p></div>' +
+      '<div class="controls"><div class="seg" id="stseg">' +
+      ['<button data-c="" aria-pressed="' + (!stCls) + '">All</button>'].concat(
+        order.filter(function (c) { return STAND[c]; }).map(function (c) {
+          return '<button data-c="' + c + '" aria-pressed="' + (stCls === c) + '">' + c + "</button>";
+        })).join("") + "</div></div>" +
+      (body || '<p class="lede">No standings yet this season.</p>');
+
+    var seg = document.getElementById("stseg");
+    if (seg) seg.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      stCls = b.dataset.c; drawStand();
+    });
+  }
+  drawStand();
+
   var pShown = 60, pSort = "bee", pDir = 1;      // pDir 1 = best first
   var PCOLS = [["bee", "Ledger"], ["grade", "Scouting"], ["prod", "Prod"]];
   function pVal(p, k) {
@@ -7020,39 +7163,124 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   });
 
   /* ================= REALIGNMENT ================= */
-  var RA = DATA.realign || [], RAD = DATA.realign_dates || [];
-  var raUp = RA.filter(function (x) { return x.direction === "up"; });
-  var raDn = RA.filter(function (x) { return x.direction === "down"; });
-  function raRow(x) {
-    return '<div class="rarow" data-t="' + esc(x.school) + '">' +
-      '<div><div class="raname">' + esc(x.school) +
-      ' <span class="ramove">' + esc(x.cls) + " → " + esc(x.to) + "</span></div>" +
-      '<div class="rameta">' + [
-        "#" + x.class_rank + " in " + x.cls,
-        (x.wp3 !== null && x.wp3 !== undefined ? Math.round(x.wp3 * 100) + "% over three years" : ""),
-        "2025 " + esc(x.h25) + (x.po25 ? ", " + esc(x.po25) : "")
-      ].filter(Boolean).join(" · ") + "</div></div>" +
-      '<div class="raz ' + (x.direction === "up" ? "up" : "dn") + '">' + sgn(x.z, 2) + "</div></div>";
+  var RAD = DATA.realign_dates || [];
+  /* ---- REALIGNMENT -----------------------------------------------------
+     Brandon, Sep 14: its own tab, and "predict who goes where based on the new
+     information we find out each week."
+
+     The honest shape of this page is set by what we can actually see. UHSAA's
+     Composite Realignment Index has three inputs -- enrolment, socioeconomic
+     status and competitive performance -- and we can measure one. So the
+     projection is labelled a performance projection in the first paragraph
+     rather than the footnotes, and the notebook below it is where the other
+     two get filled in by hand, dated and sourced, as the cycle runs. */
+  var RJ = DATA.realign || [], RN = DATA.realign_notes || [];
+  var rjFilter = "move";
+  var KINDNAME = { enrollment: "Enrollment", appeal: "Appeal", region: "Region",
+                   newschool: "New school", rule: "Rule", note: "Note" };
+  function rjCard(r) {
+    var moved = r.direction !== "hold";
+    return '<div class="rjrow ' + esc(r.direction) + '" data-t="' + esc(r.school) + '">' +
+      '<div class="rjtop">' + logo(r.school, "sm") + "<b>" + esc(r.school) + "</b>" +
+      '<span class="rjmove">' + (moved ? esc(r.cls) + " &rarr; " + esc(r.to)
+                                       : "stays " + esc(r.cls)) + "</span></div>" +
+      '<div class="rjwhy">' + esc(r.why || "") + "</div>" +
+      '<div class="rjmeta"><span class="rjconf">' + esc(r.confidence) + "</span>" +
+      "<span>" + esc(r.region || "") + "</span>" +
+      '<span class="z">' + (r.z > 0 ? "+" : "") + r.z.toFixed(2) + "&sigma;</span></div></div>";
   }
-  document.getElementById("v-realign").innerHTML =
-    '<div class="panel" style="margin-bottom:14px"><h2>Possible realignment</h2>' +
-    '<p class="lede">UHSAA has approved a new <strong>Composite Realignment Index</strong> for the 2027&ndash;29 cycle. Classification will no longer be set by enrollment alone: the CRI combines <strong>enrollment</strong>, <strong>socioeconomic status</strong> and <strong>competitive performance</strong>, and football is aligned separately from every other sport. It is the biggest procedural change to Utah realignment in years, and it applies to all 162 member schools.</p>' +
-    '<p class="notbet">Read what follows as one third of the answer, not the answer. Of the three CRI factors this page can measure exactly one &mdash; competitive performance. There is no enrollment figure here and no socioeconomic data, and guessing at either would be worse than admitting the gap. The list below is therefore <em>not</em> a prediction of who moves. It is the narrower, honest question: which programs are winning at a level that does not match the classification they are currently in. The Board also keeps final say over geography and appeals, which no index can anticipate.</p></div>' +
-    '<h3 class="divhead">The calendar<span>placement starts in November, final in December, played in 2027</span></h3>' +
-    '<div class="tl">' + RAD.map(function (d) {
-      return '<div class="tlrow"><div class="tld">' + esc(d[0]) + '</div><div class="tlw">' + esc(d[1]) + "</div></div>";
-    }).join("") + "</div>" +
-    '<h3 class="divhead">Out of step with their classification<span>' + RA.length +
-    ' programs, by three-year results and current rating</span></h3>' +
-    '<p class="lede" style="margin-bottom:10px">Each program is scored on three seasons of record, how deep it went in the 2025 playoffs, and where the model rates it now &mdash; then compared to the middle of its own classification. The number on the right is how many standard deviations it sits from that middle. Anything past 1.15 in either direction is listed. <strong>Ridgeline is the clearest case in the state</strong>: 14&ndash;0 and a 4A title, roughly 90% over three years, nearly three deviations clear of the 4A median.</p>' +
-    '<div class="rag">' +
-    '<div class="rbcol"><h4>Winning above their class</h4>' +
-    '<div class="cnt">' + raUp.length + " program" + (raUp.length === 1 ? "" : "s") + " · a case to move up</div>" +
-    raUp.map(raRow).join("") + "</div>" +
-    '<div class="rbcol"><h4>Struggling below their class</h4>' +
-    '<div class="cnt">' + raDn.length + " program" + (raDn.length === 1 ? "" : "s") + " · a case to move down</div>" +
-    raDn.map(raRow).join("") + "</div></div>" +
-    '<p class="lede" style="margin-top:14px">A program appearing here is not being criticised. Moving down is how a school with 40 players stops playing schools with 90, and moving up is what happens to a program that has outgrown its bracket &mdash; both are the system working. The CRI exists because enrollment alone was producing neither.</p>';
+  function drawRealign() {
+    var up = RJ.filter(function (r) { return r.direction === "up"; });
+    var dn = RJ.filter(function (r) { return r.direction === "down"; });
+    var hold = RJ.filter(function (r) { return r.direction === "hold"; });
+    var watch = hold.filter(function (r) { return r.confidence === "watch"; });
+    var show = rjFilter === "up" ? up : rjFilter === "down" ? dn
+             : rjFilter === "watch" ? watch : up.concat(dn);
+
+    document.getElementById("v-realign").innerHTML =
+      '<div class="panel" style="margin-bottom:14px"><h2>Realignment</h2>' +
+      '<p class="lede">UHSAA has approved a <strong>Composite Realignment Index</strong> ' +
+      'for the 2027&ndash;29 cycle. Classification is no longer enrollment alone: the CRI ' +
+      'combines <strong>enrollment</strong>, <strong>socioeconomic status</strong> and ' +
+      '<strong>competitive performance</strong>, and football is aligned separately from ' +
+      'every other sport. It is the biggest procedural change to Utah realignment in years ' +
+      'and it applies to all 162 member schools.</p>' +
+      '<p class="notbet"><strong>This page can measure one of those three.</strong> There is ' +
+      'no enrollment figure in our data and no socioeconomic data, and guessing at either ' +
+      'would be worse than saying so. What follows is a <em>performance</em> projection: ' +
+      'which programs are winning, or losing, at a level that does not match the ' +
+      'classification they are in. It moves every time a game is played. The board also ' +
+      'keeps the final say over geography and appeals, which no index anticipates.</p>' +
+      '<p class="notbet">The gap gets closed by hand. Anything we learn &mdash; a published ' +
+      'enrollment number, an appeal, a region proposal &mdash; goes in the notebook at the ' +
+      'bottom of this page as we learn it, and an enrollment figure there feeds straight ' +
+      'into the projection above it.</p></div>' +
+
+      '<div class="grid cards" style="margin-bottom:16px">' +
+      [["Projected up", up.length, "on performance"],
+       ["Projected down", dn.length, "on performance"],
+       ["Worth watching", watch.length, "close to the line"],
+       ["Settled", hold.length - watch.length, "where they belong"]].map(function (c) {
+        return '<div class="card"><div class="k">' + c[0] + '</div><div class="v mono">' +
+          c[1] + '</div><div class="sub">' + c[2] + "</div></div>";
+      }).join("") + "</div>" +
+
+      '<h3 class="divhead">The calendar<span>placement in November, final in December, played in 2027</span></h3>' +
+      '<div class="rtl">' + RAD.map(function (d) {
+        return '<div class="rtlrow"><div class="rtld">' + esc(d[0]) +
+          '</div><div class="rtlw">' + esc(d[1]) + "</div></div>";
+      }).join("") + "</div>" +
+
+      '<h3 class="divhead" style="margin-top:26px">Where each program is heading' +
+      '<span>' + show.length + ' shown &middot; click any card for the full team</span></h3>' +
+      '<div class="controls"><div class="seg" id="rjseg">' +
+      [["move", "Moving"], ["up", "Up"], ["down", "Down"], ["watch", "Watching"]]
+        .map(function (o) {
+          return '<button data-f="' + o[0] + '" aria-pressed="' + (rjFilter === o[0]) +
+            '">' + o[1] + "</button>"; }).join("") + "</div></div>" +
+      (show.length
+        ? '<div class="rjgrid">' + show.map(rjCard).join("") + "</div>"
+        : '<p class="lede">Nobody in this cut.</p>') +
+      '<p class="lede" style="margin-top:14px">A program appearing here is not being ' +
+      'criticised. Moving down is how a school with 40 players stops playing schools with ' +
+      '90, and moving up is what happens to a program that has outgrown its bracket. Both ' +
+      'are the system working &mdash; the CRI exists because enrollment alone was ' +
+      'producing neither.</p>' +
+
+      '<h3 class="divhead" style="margin-top:30px">The notebook' +
+      '<span>' + RN.length + (RN.length === 1 ? " entry" : " entries") +
+      ' &middot; what we have learned this cycle</span></h3>' +
+      (RN.length
+        ? RN.map(function (n) {
+            return '<div class="rnote">' +
+              '<div class="rnh"><span class="kind">' +
+              esc(KINDNAME[n.kind] || n.kind) + "</span>" +
+              (n.school ? logo(n.school, "sm") + "<b>" + esc(n.school) + "</b>" : "") +
+              (n.enrollment ? '<span class="rjmove">' + n.enrollment.toLocaleString() +
+                              " students</span>" : "") +
+              "<time>" + esc(n.d ? mdy(n.d) : "") + "</time></div>" +
+              "<p>" + esc(n.head) + "</p>" +
+              (n.detail ? '<p style="color:var(--ink-3);font-size:12.5px">' +
+                          esc(n.detail) + "</p>" : "") +
+              '<div class="rnsrc">Reported by ' +
+              (n.u ? '<a href="' + esc(n.u) + '" target="_blank" rel="noopener noreferrer">' +
+                     esc(n.src) + "</a>" : "<strong>" + esc(n.src) + "</strong>") +
+              "</div></div>";
+          }).join("")
+        : '<div class="rempty"><strong>Nothing on file yet &mdash; placement starts ' +
+          'November 19.</strong><br>Every enrollment figure, appeal and region proposal ' +
+          'lands here as it is published, with who reported it. An enrollment number in ' +
+          'the notebook feeds the projection above, which is how this page gets less ' +
+          'speculative every week between now and December. Heard something? ' +
+          '<a href="#" data-go="send">Send it in</a>.</div>');
+
+    var seg = document.getElementById("rjseg");
+    if (seg) seg.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      rjFilter = b.dataset.f; drawRealign();
+    });
+  }
+  drawRealign();
 
   /* ================= MATCHUP ================= */
   var SIM = DATA.sim, names = T.map(function (t) { return t.school; }).sort();
@@ -7464,6 +7692,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     { id: "home", label: "Home", views: [["home", "Home"]] },
     { id: "recap", label: "Scores", views: [
         ["recap", "Scores"], ["oos", "Out of State"]] },
+    { id: "stand", label: "Standings", views: [["stand", "Standings"]] },
     { id: "pred", label: "Picks", views: [
         ["pred", "Week " + NW + " Picks"], ["playoffs", "Playoff Predictions"],
         ["oosnext", "Out of State"], ["cmp", "Prediction Calculator"]] },
@@ -7482,11 +7711,14 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         ["breakdown", "All 106"],
         ["coach", "Coaches Stats"], ["crank", "Coaches Rankings"],
         ["caro", "Carousel"], ["seat", "Hot Seat"],
-        ["xfer", "Transfers"], ["realign", "Realignment"]] },
+        ["xfer", "Transfers"]] },
+    // Brandon, Sep 14: "we want a realignment tab as its own, its going to be
+    // a big topic for the next year." It was the seventh sub-tab under
+    // Programs, which is where things go to not be found.
+    { id: "realign", label: "Realignment", views: [["realign", "Realignment"]] },
     { id: "recruit101", label: "Recruiting Help", views: [["recruit101", "Recruiting Help"]] },
-    { id: "send", label: "Send Info", views: [["send", "Send Info"]] },
-    { id: "about", label: "About", views: [
-        ["sources", "Sources & Trust"], ["method", "Method"]] },
+    { id: "send", label: "Send Info", views: [
+        ["send", "Send Info"], ["sources", "Sources & Trust"], ["method", "Method"]] },
     { id: "flag", label: "Flag Football", views: [["flag", "Flag Football"]] }
   ];
   var VIEWS = [];
