@@ -2289,6 +2289,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   <section id="v-rank">
     <div class="controls">
       <div class="seg" id="clsfilter"></div>
+      <select id="regfilter" aria-label="Region"><option value="">All regions</option></select>
       <input type="search" id="q" placeholder="Search school or coach" aria-label="Search school or coach">
       <span class="hint">Click any row for the full card</span>
     </div>
@@ -2311,6 +2312,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     <div class="statsnote" id="statsnote"></div>
   </section>
 
+  <section id="v-prank" hidden></section>
   <section id="v-recap" hidden></section>
   <section id="v-pred" hidden></section>
   <section id="v-cmp" hidden></section>
@@ -2628,9 +2630,27 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       return '<button data-c="' + c + '" aria-pressed="' + (c === "ALL") + '">' + (c === "ALL" ? "All" : c) + "</button>";
     }).join("");
 
+  // A region is the league a team actually plays in, and it is the cut a coach
+  // asks for first. Sorted so Region 2 does not come after Region 10.
+  var REGIONS = Array.from(new Set(T.map(function (t) { return t.region; })
+                                    .filter(Boolean)))
+    .sort(function (a, b) {
+      var na = parseInt(String(a).replace(/\D/g, ""), 10);
+      var nb = parseInt(String(b).replace(/\D/g, ""), 10);
+      return (isNaN(na) || isNaN(nb)) ? String(a).localeCompare(b) : na - nb;
+    });
+  var regFilt = "";
+  document.getElementById("regfilter").innerHTML =
+    '<option value="">All regions</option>' + REGIONS.map(function (r) {
+      return '<option value="' + esc(r) + '">' + esc(r) + "</option>"; }).join("");
+  document.getElementById("regfilter").addEventListener("change", function () {
+    regFilt = this.value; draw();
+  });
+
   function rows() {
     var r = T.filter(function (t) {
       if (filt !== "ALL" && t.cls !== filt) return false;
+      if (regFilt && t.region !== regFilt) return false;
       if (!q) return true;
       return (t.school + " " + t.coach + " " + t.oc + " " + t.dc + " " + t.city + " " + t.region)
         .toLowerCase().indexOf(q) >= 0;
@@ -6607,6 +6627,157 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     var want = POSMATCH[group] || [group];
     return toks.some(function (t) { return want.indexOf(t) >= 0; });
   }
+  /* ---- PLAYER RANKINGS -------------------------------------------------
+     Brandon, Sep 14: a Players board under Rankings, cut by position on top
+     of the division, with regions in the sort as well.
+
+     Position matters more here than anywhere else on the site. A statewide
+     list by Ledger grade is a list of skill players; a corner is never going
+     to out-produce a quarterback and should not be asked to. Cut to DB and
+     the board finally answers the question a defensive back's family came to
+     ask. Region does the same thing for a small school: statewide, a 1A kid
+     is buried under six classifications of 6A roster; inside his own region
+     he is compared with the boys he actually lines up against. */
+  var PRDIVS = ["ALL", "6A", "5A", "4A", "3A", "2A", "1A"];
+  var prDiv = "ALL", prReg = "", prPos = "", prYr = "", prQ = "", prShown = 100;
+  var prSort = "bee", prDir = -1;
+  var PRCOLS = [["bee", "Ledger"], ["prod", "Production"], ["grade", "Scouting"]];
+  function prVal(p, k) {
+    return k === "bee" ? (p.bee10 === null || p.bee10 === undefined ? -1 : p.bee10)
+         : k === "grade" ? (p.grade || 0)
+         : (p.prod_adj || 0);
+  }
+  var PRREGIONS = Array.from(new Set(PIDX.map(function (p) { return p.region; })
+                                       .filter(Boolean)))
+    .sort(function (a, b) {
+      var na = parseInt(String(a).replace(/\D/g, ""), 10);
+      var nb = parseInt(String(b).replace(/\D/g, ""), 10);
+      return (isNaN(na) || isNaN(nb)) ? String(a).localeCompare(b) : na - nb;
+    });
+  function prRows() {
+    var r = PIDX.filter(function (p) {
+      if (p.bee10 === null || p.bee10 === undefined) return false;
+      if (prDiv !== "ALL" && p.team_cls !== prDiv) return false;
+      if (prReg && p.region !== prReg) return false;
+      if (prYr && p.cls !== prYr) return false;
+      if (!posHit(p.pos, prPos)) return false;
+      if (prQ && (p.name + " " + p.school + " " + (p.pos || ""))
+            .toLowerCase().indexOf(prQ) < 0) return false;
+      return true;
+    });
+    r.sort(function (a, b) {
+      return prDir * (prVal(a, prSort) - prVal(b, prSort)) ||
+             (b.prod_adj || 0) - (a.prod_adj || 0) ||
+             String(a.name).localeCompare(b.name);
+    });
+    return r;
+  }
+  function drawPRank() {
+    var r = prRows();
+    var cut = r.slice(0, prShown);
+    document.getElementById("v-prank").innerHTML =
+      '<div class="panel" style="margin-bottom:14px"><h2>Player rankings</h2>' +
+      '<p class="lede">Every player with a 2026 number, ranked on the Ledger 10 &mdash; ' +
+      'half what he has done on the field, opponent-adjusted and ranked inside his own ' +
+      'position group, half the rest of the athlete. <strong>Cut it by position, by ' +
+      'region and by classification</strong>, because a statewide list of everybody is ' +
+      'a list of quarterbacks and running backs, and that is not the question most ' +
+      'people came here with.</p>' +
+      '<p class="notbet">Rebuilt from the box scores after every night of games, so this ' +
+      'board moves when the statistics move. A player filing no statistics is not ' +
+      'ranked low here &mdash; he is not here, and that is a reporting gap rather than a ' +
+      'verdict on him.</p></div>' +
+      '<div class="controls">' +
+      '<div class="seg" id="prdiv">' + PRDIVS.map(function (c) {
+        return '<button data-c="' + c + '" aria-pressed="' + (c === prDiv) + '">' +
+          (c === "ALL" ? "All" : c) + "</button>"; }).join("") + "</div>" +
+      '<select id="prpos" aria-label="Position">' + POSGROUPS.map(function (g) {
+        return '<option value="' + g[0] + '"' + (g[0] === prPos ? " selected" : "") +
+          ">" + esc(g[1]) + "</option>"; }).join("") + "</select>" +
+      '<select id="prreg" aria-label="Region"><option value="">All regions</option>' +
+      PRREGIONS.map(function (x) {
+        return '<option value="' + esc(x) + '"' + (x === prReg ? " selected" : "") +
+          ">" + esc(x) + "</option>"; }).join("") + "</select>" +
+      '<select id="pryr" aria-label="Class"><option value="">All classes</option>' +
+      [["2027", "Seniors"], ["2028", "Juniors"], ["2029", "Sophomores"],
+       ["2030", "Freshmen"]].map(function (o) {
+        return '<option value="' + o[0] + '"' + (o[0] === prYr ? " selected" : "") +
+          ">" + o[1] + "</option>"; }).join("") + "</select>" +
+      '<input type="search" id="prq" placeholder="Search a player or school" ' +
+      'aria-label="Search players" value="' + esc(prQ) + '">' +
+      '<span class="hint">' + r.length + (r.length === 1 ? " player" : " players") +
+      " in this cut</span></div>" +
+      '<div class="tablewrap"><table><thead><tr>' +
+      '<th>#</th><th>Player</th><th>Pos</th><th>Class</th><th>Region</th>' +
+      PRCOLS.map(function (c) {
+        return '<th class="num" data-prs="' + c[0] + '">' + c[1] +
+          (prSort === c[0] ? ' <span class="caret">' + (prDir > 0 ? "▲" : "▼") +
+           "</span>" : "") + "</th>"; }).join("") +
+      '</tr></thead><tbody>' +
+      (cut.length ? cut.map(function (p, i) {
+        return '<tr' + pAttr(p.name, p.school) + ">" +
+          '<td class="rk mono' + (i < 3 ? " top" : "") + '">' + (i + 1) + "</td>" +
+          '<td class="tm">' + logo(p.school, "sm") + "<div>" + esc(titleCase(p.name)) +
+          "<small>" + esc(p.school) + " · " + esc(p.team_cls || "") + "</small></div></td>" +
+          // a roster that filed no position writes a literal "-", which is not
+          // a position and should read as the blank it is
+          "<td>" + (p.pos && p.pos !== "-" ? esc(p.pos) : "&mdash;") + "</td>" +
+          "<td>" + esc(yr(p.cls) || "—") + "</td>" +
+          "<td>" + esc(p.region || "—") + "</td>" +
+          '<td class="num mono" style="color:var(--sodium);font-weight:600">' +
+          (p.bee10 === null || p.bee10 === undefined ? "—" : p.bee10.toFixed(2)) + "</td>" +
+          '<td class="num mono">' + (p.prod_adj || 0).toFixed(1) +
+          (p.games ? '<small class="raw">' + p.games + " gm</small>" : "") + "</td>" +
+          '<td class="num mono">' + (p.grade ? p.grade : '<span class="none">—</span>') +
+          "</td></tr>";
+      }).join("")
+        : '<tr><td colspan="8" style="padding:18px;color:var(--ink-3)">' +
+          "Nobody matches that cut. A thin board here is usually a reporting gap &mdash; " +
+          "the programs in this slice have not filed statistics yet.</td></tr>") +
+      "</tbody></table></div>" +
+      (r.length > prShown
+        ? '<p class="lede" style="margin-top:10px">Showing the top ' + prShown +
+          " of " + r.length + '. <a href="#" id="prmore">Show more</a></p>'
+        : "");
+
+    var d = document.getElementById("prdiv");
+    if (d) d.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      prDiv = b.dataset.c; prShown = 100; drawPRank();
+    });
+    [["prpos", "prPos"], ["prreg", "prReg"], ["pryr", "prYr"]].forEach(function (x) {
+      var el = document.getElementById(x[0]);
+      if (!el) return;
+      el.addEventListener("change", function () {
+        if (x[1] === "prPos") prPos = this.value;
+        if (x[1] === "prReg") prReg = this.value;
+        if (x[1] === "prYr") prYr = this.value;
+        prShown = 100; drawPRank();
+      });
+    });
+    var q = document.getElementById("prq");
+    if (q) q.addEventListener("input", function () {
+      prQ = this.value.trim().toLowerCase(); prShown = 100;
+      var at = this.selectionStart;
+      drawPRank();
+      var n = document.getElementById("prq");
+      if (n) { n.focus(); n.setSelectionRange(at, at); }
+    });
+    var more = document.getElementById("prmore");
+    if (more) more.addEventListener("click", function (e) {
+      e.preventDefault(); prShown += 100; drawPRank();
+    });
+    document.querySelectorAll("#v-prank th[data-prs]").forEach(function (th) {
+      th.style.cursor = "pointer";
+      th.addEventListener("click", function () {
+        var k = th.dataset.prs;
+        if (k === prSort) prDir *= -1; else { prSort = k; prDir = -1; }
+        drawPRank();
+      });
+    });
+  }
+  drawPRank();
+
   var pShown = 60, pSort = "bee", pDir = 1;      // pDir 1 = best first
   var PCOLS = [["bee", "Ledger"], ["grade", "Scouting"], ["prod", "Prod"]];
   function pVal(p, k) {
@@ -7209,7 +7380,12 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     { id: "pred", label: "Picks", views: [
         ["pred", "Week " + NW + " Picks"], ["playoffs", "Playoff Predictions"],
         ["oosnext", "Out of State"], ["cmp", "Prediction Calculator"]] },
-    { id: "rank", label: "Rankings", views: [["rank", "Rankings"]] },
+    // Brandon, Sep 14: "lets also show under rankings a program and a player
+    // tab so each can be found." Two boards, one heading -- a parent looking
+    // for where his son ranks and a coach looking for where his program ranks
+    // were both being sent to the same table, and only one of them was there.
+    { id: "rank", label: "Rankings", views: [
+        ["rank", "Programs"], ["prank", "Players"]] },
     { id: "leaders", label: "Stats", views: [
         ["stats", "Stats"], ["history", "History"]] },
     { id: "people", label: "Player Search", views: [
