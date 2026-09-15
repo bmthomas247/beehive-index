@@ -41,7 +41,13 @@
   "sameAs":["https://x.com/TheLedgerUT"]}}
 </script>
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230e1116'/%3E%3Cpath d='M16 5l9 5.2v10.4L16 26l-9-5.4V10.2z' fill='none' stroke='%23f2b33d' stroke-width='2.4' stroke-linejoin='round'/%3E%3Cpath d='M11 13h10M11 17h10' stroke='%23f2b33d' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<!-- The mark. The hand-drawn hexagon that used to live here as a data:
+     URI was a placeholder; this is the real logo. PNG rather than the
+     webp used on the page, because a browser tab and an iOS home
+     screen are the two places webp support is still not universal. -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
@@ -1796,6 +1802,15 @@ h1,h2,h3,.disp,.lead h3,.scard h4,.card .v,.rk,.stamp .v{
   font-stretch:112%; font-weight:800; letter-spacing:-.02em;
 }
 .brand h1{ font-stretch:118%; font-weight:800 }
+/* The mark sits beside the name, not above it. The heading is a flex row of
+   exactly TWO items -- the image and a span holding all the text. Without
+   that span, "Utah High School" and <em>Football</em> become separate flex
+   items and the gap below opens up in the middle of the title. */
+.brand h1{ display:flex; align-items:center; gap:12px }
+.blogo{ width:clamp(38px,5.2vw,50px); height:auto; flex:none }
+/* The logo is cut out of its dark square, so the football's own body is what
+   carries the shape on a light background and the white outline is what
+   carries it on a dark one. Nothing to swap per theme. */
 .brand h1 em{ color:var(--sodium) }
 .tab{ font-stretch:100%; font-weight:600 }
 .tab[aria-selected="true"]{ background:var(--ink); color:var(--surface) }
@@ -2460,7 +2475,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 <header class="mast">
   <div class="wrap mast-in">
     <div class="brand">
-      <h1>Utah High School <em>Football</em></h1>
+      <h1><img class="blogo" src="logo-uhsfb.webp" width="42" height="42"
+               alt="" decoding="async"><span>Utah High School <em>Football</em></span></h1>
       <p><strong>Utah high school football.</strong> Every 11-man program on one scale and every player on those rosters &mdash; not just the ones somebody already noticed. Results-driven, opponent-adjusted, blowout-capped.</p>
       <!-- Somewhere to follow the thing. Deliberately not an email address:
            the contact route is the Send Info form, so that a coach sending a
@@ -2817,6 +2833,23 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
   function sgn(n, d) { d = d === undefined ? 1 : d; return (n > 0 ? "+" : n < 0 ? "−" : "") + Math.abs(n).toFixed(d); }
+  /* A region belongs to a classification, and half of them say so already.
+     1A, 2A and 3A name theirs "1A North", "2A Independent". 4A, 5A and 6A
+     number theirs statewide -- "Region 9" -- so on its own the label does not
+     say which division it is, and next to "2A South" it reads like a
+     different kind of thing.
+
+     Brandon, Sep 15: "lets put the divions in front of the region kinda like
+     1a and 2a do but we dont need to repeat it like 1a and 2a would."
+
+     So: print the class in front, exactly once. "Region 9" becomes
+     "4A Region 9"; "1A North" is left alone rather than becoming
+     "1A 1A North". */
+  function regLbl(cls, reg) {
+    if (!reg) return cls || "";
+    if (!cls) return reg;
+    return reg.indexOf(cls) === 0 ? reg : cls + " " + reg;
+  }
   function cls(n) { return n > 0 ? "pos" : n < 0 ? "neg" : ""; }
 
   var TONE = { "6A": 100, "5A": 82, "4A": 64, "3A": 50, "2A": 38, "1A": 28 };
@@ -3245,7 +3278,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<div class="dhead withcrest">' + logo(t.school, "xl") +
       '<div><h2>' + esc(t.school) + "</h2>" +
       '<div class="meta">' + esc(t.city) + " · " +
-      (t.region && t.region.indexOf(t.cls) === 0 ? esc(t.region) : t.cls + " " + esc(t.region)) +
+      esc(regLbl(t.cls, t.region)) +
       (t.mascot ? " " + esc(t.mascot) : "") + " · " + t.w + "–" + t.l + "</div></div></div>" +
       fullPageLink(t.school) +
       '<div class="kv">' + kv.map(function (p) {
@@ -3812,7 +3845,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       "</h3>" +
       '<div class="dsub">' + (line || "—") + "</div>" +
       '<div class="dsub"><span data-t="' + esc(p.school) + '" style="cursor:pointer;text-decoration:underline">' +
-      esc(p.school) + "</span> · " + esc(p.team_cls) + (p.region ? " · " + esc(p.region) : "") +
+      esc(p.school) + "</span> · " + esc(regLbl(p.team_cls, p.region)) +
       (t ? " · team rated " + sgn(t.rating) + ", #" + t.rank + " statewide" : "") + "</div>" +
       (p.twitter || p.hudl
         ? '<div class="dlinks">' +
@@ -4078,7 +4111,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       return '<option value="">' + (st.div ? "All " + st.div + " regions" : "All regions") + "</option>" +
         list.map(function (r) {
           return '<option value="' + esc(r.k) + '"' + (r.k === st.reg ? " selected" : "") + ">" +
-            esc(st.div ? r.reg : r.cls + " · " + r.reg) + "</option>";
+            esc(st.div ? r.reg : regLbl(r.cls, r.reg)) + "</option>";
         }).join("");
     }
     function paint() {
@@ -5351,7 +5384,19 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 
   var COMMITTED = DATA.committed || [], OPENB = DATA.open_board || [], COLLEGES = DATA.colleges || [];
   var CLSNAME = { "2027": "Seniors", "2028": "Juniors", "2029": "Sophomores" };
-  function yr(c) { return c === "2027" ? "Sr" : c === "2028" ? "Jr" : c === "2029" ? "So" : c; }
+  /* Class year to school year. This was a ladder of three hard-coded strings
+     and it stopped at 2029, so every freshman on the site -- 613 of them --
+     had a bare "2030" printed in the Class column while everyone around him
+     read "Sr". Royce Sargent at Logan is one: 5-9, 162, class of 2030.
+     The python side already knew (build_data.YRMAP); this did not.
+     One constant now, so next season is one edit instead of four. */
+  var SRCLASS = 2027;                 // graduates at the end of THIS season
+  function yr(c) {
+    var n = parseInt(c, 10);
+    if (!n) return c;
+    var d = n - SRCLASS;              // 0 Sr, 1 Jr, 2 So, 3 Fr
+    return ["Sr", "Jr", "So", "Fr"][d] || (d < 0 ? "Grad" : c);
+  }
   /* College marks.
      We hold real files for the programs in and around Utah -- the ones on the
      "where you can play" board -- and for nobody else, because nobody else
@@ -7144,7 +7189,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           // a position and should read as the blank it is
           "<td>" + (p.pos && p.pos !== "-" ? esc(p.pos) : "&mdash;") + "</td>" +
           "<td>" + esc(yr(p.cls) || "—") + "</td>" +
-          "<td>" + esc(p.region || "—") + "</td>" +
+          "<td>" + esc(regLbl(p.team_cls, p.region) || "—") + "</td>" +
           '<td class="num mono" style="color:var(--sodium);font-weight:600">' +
           (p.pav === null || p.pav === undefined ? "—" : sgn(p.pav)) + "</td>" +
           '<td class="num mono">' +
