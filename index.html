@@ -1808,6 +1808,9 @@ h1,h2,h3,.disp,.lead h3,.scard h4,.card .v,.rk,.stamp .v{
    items and the gap below opens up in the middle of the title. */
 .brand h1{ display:flex; align-items:center; gap:12px }
 .blogo{ width:clamp(38px,5.2vw,50px); height:auto; flex:none }
+/* The mascot is support, not the headline. Same line, well behind it. */
+.bh-mas{ font-weight:500; font-size:.58em; opacity:.6; letter-spacing:.005em;
+  white-space:nowrap }
 /* The logo is cut out of its dark square, so the football's own body is what
    carries the shape on a light background and the white outline is what
    carries it on a dark one. Nothing to swap per theme. */
@@ -2845,6 +2848,20 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
      So: print the class in front, exactly once. "Region 9" becomes
      "4A Region 9"; "1A North" is left alone rather than becoming
      "1A 1A North". */
+  /* School plus mascot, the mascot set behind the name. Brandon, Sep 15:
+     "i would like to include the mascots, Corner Canyon Chargers vs Lone Peak
+     whatever". All 106 programmes carry one and none is blank -- the field was
+     simply never used here.
+
+     Smaller and dimmer on purpose: the school name is what a reader scans for,
+     and "Juan Diego Catholic Soaring Eagle at American Leadership Academy
+     Eagles" at headline weight wraps to three lines. */
+  function withMascot(name) {
+    var t = (typeof byName !== "undefined" && byName[name]) || {};
+    return esc(name) + (t.mascot
+      ? ' <span class="bh-mas">' + esc(t.mascot) + "</span>" : "");
+  }
+
   function regLbl(cls, reg) {
     if (!reg) return cls || "";
     if (!cls) return reg;
@@ -6599,7 +6616,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         '<div class="leadhead">' + chip("Game of the week &middot; Week " + NW) +
         (lead.rivalry ? chip(esc(lead.rivalry.name || "Rivalry"), "riv") : "") +
         (lead.toss ? chip("Toss-up") : "") + "</div>" +
-        "<h3>" + esc(lead.away) + " at " + esc(lead.home) + "</h3>" +
+        "<h3>" + withMascot(lead.away) + " at " + withMascot(lead.home) + "</h3>" +
         '<div class="leadteams">' + teamLine(lead.away) + teamLine(lead.home) + "</div>" +
         '<p class="leadsub">' + (DAYNAME[lead.date] || mdy(lead.date)) + ". We make it " +
         esc(lead.fav) + " " + (lead.pk ? "pick'em" : "by " + lead.line) +
@@ -6620,7 +6637,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         ? esc(hf.winner || lead.home) + " " + Math.max(hf.away_score, hf.home_score) +
           ", " + esc(hf.winner === lead.home ? lead.away : lead.home) + " " +
           Math.min(hf.away_score, hf.home_score)
-        : esc(lead.away) + " at " + esc(lead.home);
+        : withMascot(lead.away) + " at " + withMascot(lead.home);
       var when = isFinal ? "Week " + NW : (DAYNAME[lead.date] || mdy(lead.date));
       var line = isFinal
         ? "We had " + esc(hf.fav) + " " + (hf.line ? "&minus;" + hf.line : "pick'em") +
@@ -6629,6 +6646,15 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         : "We make it " + esc(lead.fav) + " " +
           (lead.pk ? "pick'em" : "by " + lead.line) + ", total " + lead.total_line + ".";
 
+      /* Brandon, Sep 15: "i would like to include the mascots, Corner Canyon
+         Chargers vs Lone Peak whatever". All 106 programmes carry one and none
+         is blank, so this needs no data work -- it was simply never used here.
+
+         The mascot rides BEHIND the school name, smaller and dimmer, because
+         the school is what a reader is scanning for and "Juan Diego Catholic
+         Soaring Eagle at American Leadership Academy Eagles" set at headline
+         weight would wrap to three lines. Upcoming games only: a final reads
+         "Corner Canyon 35, Lone Peak 21" and a score line has no room for it. */
       function heroSide(name, score, lost) {
         var t = byName[name] || {};
         return '<div class="bhs' + (lost ? " lost" : "") + '">' + logo(name, "md") +
