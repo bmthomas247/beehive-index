@@ -761,7 +761,8 @@ a.rrow{text-decoration:none;color:inherit}
 
 /* ---------- pipeline (where you can actually play) ---------- */
 .lvgrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-bottom:8px}
-.lvrow{display:grid;grid-template-columns:64px 1fr 90px;gap:12px;background:var(--surface);padding:9px 13px;align-items:baseline}
+.lvrow{display:grid;grid-template-columns:64px 34px 1fr 90px;gap:12px;background:var(--surface);padding:9px 13px;align-items:center}
+@media(max-width:520px){ .lvrow{grid-template-columns:52px 28px 1fr;gap:9px} .lvrow .lvn{grid-column:2/-1} }
 .lvtag{font-family:var(--f-display);font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--sodium)}
 .lvname{font-size:14px;font-weight:600}
 .lvname small{display:block;font-weight:400;font-size:11.5px;color:var(--ink-3);margin-top:1px}
@@ -890,7 +891,54 @@ a.utchip:hover b{text-decoration:underline}
 .svcb td.n{font-variant-numeric:tabular-nums}
 .svcb td.dim{color:var(--ink-3)}
 
-/* ---------- Ledger 10 points budget ---------- */
+/* ---------- who is getting offers ---------- */
+.obgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px}
+.obrow{background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r);
+  padding:11px 13px 12px;cursor:pointer}
+.obrow:hover{border-color:var(--line);background:var(--surface-2)}
+.obwho{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.obwho>div{min-width:0;flex:1}
+.obwho b{font-size:14.5px;font-weight:600;display:block;line-height:1.2}
+.obwho small{display:block;font-size:11.5px;color:var(--ink-3);margin-top:1px}
+.obcommit{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-display);
+  font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--rise);
+  border:1px solid var(--rise);border-radius:3px;padding:2px 7px 2px 3px;white-space:nowrap}
+.obmarks{display:flex;flex-wrap:wrap;align-items:center;gap:5px;margin-top:10px}
+.obm{display:inline-flex}
+.obmore{font-size:11.5px;color:var(--ink-3);margin-left:3px}
+.obnone{margin-top:9px;font-size:12px;color:var(--ink-3)}
+@media(max-width:520px){ .obgrid{grid-template-columns:1fr} }
+
+/* ---------- realignment: the size line on a projection card ---------- */
+.rjsize{display:grid;grid-template-columns:44px auto 1fr;gap:8px;align-items:baseline;
+  margin:7px 0 2px;padding:7px 9px;border-radius:4px;background:var(--surface-2,rgba(128,128,128,.07))}
+.rjsize .lab{font-size:10px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+.rjsize b{font-size:13px;white-space:nowrap}
+.rjsize .det{font-size:11.5px;color:var(--ink-3);line-height:1.4}
+.rjsize.agree{outline:1px solid var(--sodium);outline-offset:-1px}
+.rjsize.none b{color:var(--ink-3);font-weight:400}
+.rjagree{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--sodium);
+  border:1px solid var(--sodium);border-radius:3px;padding:1px 5px;margin-left:6px}
+/* NOT .tablewrap: that one is built for the big boards and carries
+   min-height:420px, while `table` carries min-width:1080px. A six-row table in
+   them renders as a mostly empty slab.
+   And NOT .cutline either -- that class already exists on this page as the
+   playoff cut-line divider, a dark flex bar, and a table wearing it came out
+   black with its header and its rows at opposite ends of the row. Second time
+   a class collision has done this (see .rtl and the realignment timeline), so:
+   new block, new prefix. */
+.enrwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);box-shadow:var(--shadow)}
+table.enrtab{min-width:430px;width:100%}
+table.enrtab td,table.enrtab th{padding:9px 13px}
+table.enrtab thead th{position:static;cursor:default;border-bottom:1px solid var(--ink)}
+table.enrtab thead th:hover{color:var(--ink-3)}
+table.enrtab tbody tr{cursor:default}
+table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
+@media (max-width:560px){ .rjsize{grid-template-columns:44px 1fr}
+  .rjsize .det{grid-column:1/-1} }
+
+/* ---------- Ledger and Resume blocks ---------- */
 .bbudget{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:9px}
 .brow{display:grid;grid-template-columns:1fr 90px 74px;gap:10px;align-items:center;
   background:var(--surface);padding:7px 10px}
@@ -903,7 +951,7 @@ a.utchip:hover b{text-decoration:underline}
 .brow:not(.has) .bpts{color:var(--ink-3);font-weight:400}
 .bpts em{font-style:normal;font-size:10.5px;color:var(--ink-3);margin-left:3px}
 
-/* ---------- Ledger 10 requirement gates (retired) ---------- */
+/* ---------- requirement gates (retired) ---------- */
 .gates{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:9px}
 .grow{display:grid;grid-template-columns:22px 1fr auto;gap:9px;align-items:center;
   background:var(--surface);padding:7px 10px}
@@ -1258,7 +1306,12 @@ a.utchip:hover b{text-decoration:underline}
 .cmark{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;
   border-radius:2px;flex:none;font-family:var(--f-display);font-size:8.5px;font-weight:600;
   letter-spacing:.02em;color:#fff;line-height:1;overflow:hidden}
-.cmark img{width:24px;height:24px;object-fit:contain;display:block}
+.cmark{position:relative}
+.cmark img{width:24px;height:24px;object-fit:contain;display:block;
+  position:absolute;inset:0;background:transparent;border-radius:2px}
+.cmark img.ok{background:var(--surface)}
+.cmark.big{width:34px;height:34px;font-size:10.5px}
+.cmark.big img{width:34px;height:34px}
 /* same treatment as the school crests -- glow, not a white plate */
 :root:not([data-theme="light"]) .cmark img{
   filter:drop-shadow(0 0 1.1px rgba(255,255,255,.72)) drop-shadow(0 0 2.6px rgba(255,255,255,.30));
@@ -1504,7 +1557,9 @@ a.utchip:hover b{text-decoration:underline}
 .ctable th{position:static;border-bottom:1px solid var(--line);cursor:default}
 .ctable td.num{white-space:nowrap}
 .ctable th:hover{color:var(--ink-3)}
-.cteam{font-weight:600;font-size:14px}
+.cteam{display:flex;align-items:center;gap:9px}
+.cteam>div{min-width:0}
+.cteam>div{font-weight:600;font-size:14px}
 .cteam small{display:block;font-weight:400;font-size:11px;color:var(--ink-3)}
 .chc{font-weight:600;font-size:14px}
 .chist{font-size:11.5px;color:var(--ink-3);margin-top:2px;line-height:1.4}
@@ -2561,7 +2616,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 
       <div class="tier"><span class="tierbadge t-ours">Ours</span>
         <div><b>We calculated it.</b>
-        <p>Team ratings, projected records, production grades, the Ledger 10, the O-line rating. These are opinions produced by a published method, not facts. The <strong>Method</strong> tab shows the math, including the parts that are weak. Every one of them is built only out of the three buckets above.</p></div></div>
+        <p>Team ratings, projected records, the Ledger, the O-line rating. These are opinions produced by a published method, not facts. The <strong>Method</strong> tab shows the math, including the parts that are weak. Every one of them is built only out of the three buckets above.</p></div></div>
     </div>
 
     <div class="panel" style="margin-bottom:16px">
@@ -3468,35 +3523,58 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           "<strong>an empty list here is a gap in what we have been told, never a statement about him</strong>.</p>" + visitRows(p));
   }
 
-  // The two numbers the grade explainer quotes about the state as a whole.
+  // The two numbers the Ledger explainer quotes about the state as a whole.
   // These were hardcoded and had already drifted; derived now so they cannot.
-  var _bees = (DATA.pindex || []).map(function (x) { return x.bee10; })
+  var _pavs = (DATA.pindex || []).map(function (x) { return x.pav; })
                 .filter(function (v) { return v !== null && v !== undefined; })
                 .sort(function (a, b) { return a - b; });
-  var BEE_MED = _bees.length ? _bees[Math.floor(_bees.length / 2)].toFixed(1) : "1.3";
-  var BEE_TOP = _bees.length ? _bees[_bees.length - 1].toFixed(1) : "7.6";
+  var PAV_MED = _pavs.length ? _pavs[Math.floor(_pavs.length / 2)].toFixed(0) : "4";
+  var PAV_TOP = _pavs.length ? _pavs[_pavs.length - 1].toFixed(0) : "209";
 
   function beeBlock(p) {
-    // Brandon: "the Ledger score can just be shown out of 10 — no need to say
-    // categories or how to score more."
+    // THE LEDGER, as of Sep 14 2026. Brandon: "lets make the player rankings
+    // more football production based."
     //
-    // Right call. The ledger told anybody reading it exactly which lines were
-    // cheapest to farm, and a recruiting grade that publishes its own recipe
-    // invites being gamed. What a college coach needs from this number is the
-    // number and enough calibration to know what it means, which is the state
-    // median and the top of the state. The rest lives in the project notes.
-    return '<div class="sect">Ledger grade</div>' +
-      '<div class="beebig"><b>' + p.bee10.toFixed(2) +
-      '<span>/ 10</span></b>' +
-      '<span class="beectx">State median <span class="mono">' + BEE_MED +
-      '</span> &middot; best in Utah <span class="mono">' + BEE_TOP + "</span></span></div>";
-    // A hand-set floor is NOT shown, and nothing about it reaches this file:
-    // playerindex.py strips it before the record is written, so the published
-    // grade is just a grade. Brandon's call, and the right one -- a kid reading
-    // his own page should not find out a coach thought his number was too low,
-    // and a rival coach should not be able to tell which grades were argued up.
-    // The reasoning lives in bee_floor.csv and the build log, where we can see
-    // it and nobody else can.
+    // It used to be a 0-10 score whose football half stopped at 5.0, the other
+    // five points coming from honours, a second sport and a GPA. Six players in
+    // ten had none of those, so nothing they did on a field could lift them
+    // into the top half of their own rating, and the board routinely put a
+    // player above somebody with three times his production.
+    //
+    // Now it is one thing: what he produced above a replacement-level player at
+    // his position, opponent-adjusted, corrected for his school's book, and
+    // regressed one game toward his position group so a single enormous night
+    // cannot carry a season. The honours did not disappear -- they are their
+    // own line, below, where they can be read for what they are.
+    var q = p.pav_parts || {};
+    return '<div class="sect">Ledger</div>' +
+      '<div class="beebig"><b>' + sgn(p.pav) +
+      '<span>this season</span></b>' +
+      '<span class="beectx"><span class="mono">' + sgn(p.pav_pg, 1) +
+      '</span> a game &middot; state median <span class="mono">' + PAV_MED +
+      '</span> &middot; best in Utah <span class="mono">' + PAV_TOP +
+      "</span></span></div>" +
+      "<p class='cnote'>Production above what a replacement-level " +
+      (q.group ? esc(q.group) : "player") + " produces, over " +
+      (q.games || p.games || 0) + (q.games === 1 ? " game" : " games") +
+      ". Adjusted for the opponent he faced" +
+      (q.book && Math.abs(q.book - 1) > 0.04
+        ? " and for his school's stat-keeping, which credits " +
+          (q.book > 1 ? "more" : "fewer") + " tackles than the football warrants"
+        : "") +
+      ", and pulled one game toward his position group so that a season is " +
+      "judged on a season.</p>" +
+      (p.resume
+        ? "<div class='sect'>R&eacute;sum&eacute;</div>" +
+          '<div class="beebig"><b>' + p.resume.toFixed(1) +
+          '<span>/ 5</span></b><span class="beectx">' +
+          (p.resume_why && p.resume_why.length ? esc(p.resume_why.join(" &middot; "))
+                                               : "honours on file") +
+          "</span></div>" +
+          "<p class='cnote'>Honours, a second sport, grades and a captaincy. " +
+          "Kept separate from the football number on purpose &mdash; they answer " +
+          "a different question, and adding them together only made both mean less.</p>"
+        : "");
   }
 
   // Each service published its own number. A recruiter wants to see them side
@@ -3792,7 +3870,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
             : "")
         : "") +
       (isLineman(p.pos) ? olBlock(p.school, true) : "") +
-      (p.bee10 !== null && p.bee10 !== undefined ? beeBlock(p) : "") +
+      (p.pav !== null && p.pav !== undefined ? beeBlock(p) : "") +
       '<div class="sect">Recruiting</div>' +
       (p.grade ? svcBoard(p)
         : "<p style='margin:0;font-size:13.5px;color:var(--ink-2)'>No recruiting service has graded him. That is a statement about who has been watching, not about how he plays &mdash; the season numbers below are the evidence that exists.</p>") +
@@ -3809,7 +3887,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           "<strong>Utah records no fumble statistics at all</strong> &mdash; not forced, not recovered &mdash; and no " +
           "published feed anywhere carries them. Plays like this exist only because somebody was at the game, " +
           "and every one names who saw it. " +
-          "<strong>They nudge his Ledger grade and nothing else.</strong> The nudge is small and capped, and no " +
+          "<strong>They nudge his Ledger and nothing else.</strong> The nudge is small and capped, and no " +
           "eyewitness report moves a team rating, a ranking or a prediction &mdash; those are built only from " +
           "final scores and published statistics.</p>"
         : "") +
@@ -3862,7 +3940,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         ? '<div class="sect">2024 season &mdash; full year</div><div class="games">' + stat24Rows + "</div>" +
           "<p style='margin:6px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>" +
           "<strong>A third varsity season on the sheet.</strong> Producing once can be a matchup; producing three years running is a player. " +
-          "That history is its own line in the Ledger grade above.</p>"
+          "It is not in his Ledger, which is this season only &mdash; it is here because it is worth knowing.</p>"
         : "") +
       (function (news) { return news.length
         ? '<div class="sect">In the news</div><div class="games">' +
@@ -5286,7 +5364,55 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     "Snow College": "snow-college", "Boise State": "boise-state",
     "Idaho State": "idaho-state", "Nevada": "nevada", "Montana": "montana",
     "Montana State": "montana-state", "College of Idaho": "college-of-idaho",
-    "Colorado Mesa": "colorado-mesa", "Western Colorado": "western-colorado"
+    "Colorado Mesa": "colorado-mesa", "Western Colorado": "western-colorado",
+    "Montana Tech": "montana-tech",
+    "Dodge City Community College": "dodge-city",
+    "Carroll College": "carroll", "Knox College": "knox",
+    "Rocky Mountain College": "rocky-mountain"
+  };
+  /* ESPN's team id, which is the key to their logo CDN. 101 programmes, every
+     one that a Utah player has a commit or an offer from plus every programme
+     named on the Recruiting Help page. Pulled from ESPN's own teams API rather
+     than typed.
+
+     Brandon, Sep 15: "college logos are going to be big for kids to see."
+
+     WHY HOTLINKED AND NOT HOSTED. Fifteen college marks live in publish_repo
+     as webp, next to the 180 school crests, and that is the better pattern --
+     but the build machine cannot reach any image host, so there is no way to
+     fetch another hundred of them. These load from ESPN in the reader's own
+     browser, which works, costs us nothing, and never goes stale.
+
+     It is a dependency, so it fails safe: a mark that does not load falls back
+     to the monogram below, in the programme's real colours, rather than to a
+     broken-image icon. Nothing on this page depends on ESPN being up. */
+  var CESPN = {
+    "Adams State":"2001", "Air Force":"2005", "Alabama":"333", "Arizona":"12",
+    "Arizona Christian":"108358", "Arizona State":"9", "Arkansas":"8", "Army":"349",
+    "Auburn":"2", "BYU":"252", "Baylor":"239", "Black Hills State":"2069",
+    "Boise State":"68", "Brown":"225", "CSU Pueblo":"2570", "Cal Poly":"13",
+    "California":"25", "Chadron State":"2123", "Cincinnati":"2132", "College of Idaho":"108382",
+    "Colorado":"38", "Colorado Mesa":"11", "Colorado School of Mines":"2146", "Colorado State":"36",
+    "Dartmouth":"159", "Delaware State":"2169", "Duke":"150", "Eastern Oregon":"2202",
+    "Eastern Washington":"331", "FIU":"2229", "Florida":"57", "Fort Lewis":"2237",
+    "Fresno State":"278", "Georgia":"61", "Georgia State":"2247", "Hawaii":"62",
+    "Houston":"248", "Idaho":"70", "Idaho State":"304", "Illinois":"356",
+    "Iowa State":"66", "Maryland":"120", "Miami":"2390", "Michigan":"130",
+    "Michigan State":"127", "Minnesota":"135", "Montana":"149", "Montana State":"147",
+    "Montana Western":"2701", "Navy":"2426", "Nebraska":"158", "Nevada":"2440",
+    "New Mexico":"167", "New Mexico Highlands":"2424", "North Carolina":"153", "Northern Arizona":"2464",
+    "Northern Colorado":"2458", "Notre Dame":"87", "Ohio State":"194", "Oklahoma":"201",
+    "Oklahoma State":"197", "Ole Miss":"145", "Oregon":"2483", "Oregon State":"204",
+    "Penn State":"213", "Pennsylvania":"219", "Portland State":"2502", "Purdue":"2509",
+    "Rutgers":"164", "SMU":"2567", "Sacramento State":"16", "San Diego State":"21",
+    "San Jose State":"23", "South Carolina":"2579", "South Dakota Mines":"613", "Southern Illinois":"79",
+    "Southern Oregon":"2584", "Southern Utah":"253", "Stanford":"24", "Syracuse":"183",
+    "Tennessee":"2633", "Texas":"251", "Texas A&M":"245", "UAB":"5",
+    "UC Davis":"302", "UCLA":"26", "UConn":"41", "UNLV":"2439",
+    "USC":"30", "Utah":"254", "Utah State":"328", "Utah Tech":"3101",
+    "Virginia Tech":"259", "Washington":"264", "Washington State":"265", "Weber State":"2692",
+    "West Virginia":"277", "Western Colorado":"2714", "Wisconsin":"275", "Wyoming":"2751",
+    "Yale":"43"
   };
   var CMONO = {
     "Michigan": ["MICH", "#00274C"], "Arizona": ["ARIZ", "#AB0520"],
@@ -5316,13 +5442,30 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     if (w.length === 1) return w[0].slice(0, 4).toUpperCase();
     return w.map(function (x) { return x[0]; }).join("").slice(0, 4).toUpperCase();
   }
-  function collegeMark(name) {
+  function collegeMark(name, big) {
+    var cls = "cmark" + (big ? " big" : "");
+    // Ours first -- a file we host cannot break.
     if (CLOGO[name]) {
-      return '<span class="cmark"><img src="logo-college-' + CLOGO[name] +
-        '.webp" alt="" loading="lazy"></span>';
+      return '<span class="' + cls + '"><img src="logo-college-' + CLOGO[name] +
+        '.webp" alt="' + esc(name) + '" loading="lazy"></span>';
     }
     var m = CMONO[name] || [initials(name), "#6C7883"];
-    return '<span class="cmark" style="background:' + esc(m[1]) + '">' + esc(m[0]) + "</span>";
+    if (CESPN[name]) {
+      // The monogram is rendered UNDERNEATH and the image on top of it, so a
+      // logo that fails to load leaves the programme's colours showing rather
+      // than a broken-image icon. onerror removes the img and the fallback is
+      // already there.
+      return '<span class="' + cls + '" style="background:' + esc(m[1]) + '">' +
+        esc(m[0]) +
+        '<img src="https://a.espncdn.com/i/teamlogos/ncaa/500/' + esc(CESPN[name]) +
+        '.png" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" ' +
+        // no-referrer so a hotlink check can never see where the request came
+        // from; .ok is added only once the image has actually decoded, so a
+        // pending or blocked logo shows the programme's colours rather than an
+        // empty plate.
+        'onload="this.classList.add(\'ok\')" onerror="this.remove()"></span>';
+    }
+    return '<span class="' + cls + '" style="background:' + esc(m[1]) + '">' + esc(m[0]) + "</span>";
   }
 
   /* A commit row carries the player's own high school crest and opens his
@@ -5337,6 +5480,78 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       "</small></div>" +
       '<div class="rbq' + (p.q == null ? " unr" : "") + '">' +
       (p.q == null ? "unrated" : p.q) + "</div></div>";
+  }
+
+  /* ---- who is getting offers, by school ----
+     Brandon, Sep 15: "this section should include a drop down of the schools to
+     show all the college logos they are getting offers from. then they can
+     click into the player profile for more. and include all players with
+     offers if we can."
+
+     So: every player on file with an offer, not only the committed ones, with
+     the college marks laid out so a kid can see them. The dropdown is a school
+     filter because that is how people arrive here -- somebody wants to know
+     who at THEIR school is being recruited. */
+  var obSchool = "";
+  function offerBoard() {
+    // NOT PIDX -- that is declared 1,400 lines below this, and a var read
+    // before its declaration is `undefined` rather than an error, so using it
+    // here took the whole app down with "cannot read properties of undefined".
+    var all = (DATA.pindex || []).filter(function (p) {
+      return (p.offers && p.offers.length) || p.commit;
+    }).sort(function (a, b) {
+      // committed first, then by how many programmes are actually on him
+      return (b.commit ? 1 : 0) - (a.commit ? 1 : 0) ||
+             (b.offer_n || (b.offers || []).length) - (a.offer_n || (a.offers || []).length) ||
+             String(a.name).localeCompare(b.name);
+    });
+    if (!all.length) return "";
+    var schools = Array.from(new Set(all.map(function (p) { return p.school; }))).sort();
+    return '<div id="obwrap">' + obInner(all, schools) + "</div>";
+  }
+
+  function obInner(all, schools) {
+    var show = obSchool ? all.filter(function (p) { return p.school === obSchool; }) : all;
+    return '<h3 class="divhead" style="margin-top:30px">Who is getting offers' +
+      "<span>" + all.length + " players at " + schools.length +
+      " schools &middot; click a player for his full profile</span></h3>" +
+      '<div class="controls"><select id="obsel" aria-label="School">' +
+      '<option value="">All ' + schools.length + ' schools</option>' +
+      schools.map(function (sc) {
+        var n = all.filter(function (p) { return p.school === sc; }).length;
+        return '<option value="' + esc(sc) + '"' + (obSchool === sc ? " selected" : "") +
+          ">" + esc(sc) + " (" + n + ")</option>";
+      }).join("") + "</select>" +
+      '<span class="hint">' + show.length +
+      (show.length === 1 ? " player" : " players") + " in this cut</span></div>" +
+      '<div class="obgrid">' + show.map(obCard).join("") + "</div>" +
+      "<p class='lede' style='margin-top:12px'>Offers are fed by hand from a player's own " +
+      "announcement or his coach &mdash; nobody publishes a statewide offer table. " +
+      "<strong>A short list here is a gap in what we have been told, never a statement " +
+      "about the player.</strong> Where a recruiting service carries a bigger number than " +
+      "the marks shown, the card says so.</p>";
+  }
+
+  function obCard(p) {
+    var off = p.offers || [];
+    var more = (p.offer_n || 0) - off.length;
+    return '<div class="obrow"' + pAttr(p.name, p.school) + ">" +
+      '<div class="obwho">' + logo(p.school, "sm") +
+      "<div><b>" + esc(titleCase(p.name)) + "</b><small>" +
+      [p.pos, p.school, yr(p.cls)].filter(Boolean).map(esc).join(" &middot; ") +
+      "</small></div>" +
+      (p.commit
+        ? '<span class="obcommit">' + collegeMark(p.commit) + esc(p.commit) + "</span>"
+        : "") + "</div>" +
+      (off.length
+        ? '<div class="obmarks">' + off.map(function (o) {
+            return '<span class="obm" title="' + esc(o) + '">' + collegeMark(o, true) + "</span>";
+          }).join("") +
+          (more > 0 ? '<span class="obmore">+' + more + " more on the services</span>" : "") +
+          "</div>"
+        : '<div class="obnone">' + (p.commit ? "Committed; no offer list on file."
+                                             : "No offer list on file yet.") + "</div>") +
+      "</div>";
   }
 
   /* ---- the rumor mill ----
@@ -5399,7 +5614,11 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   var PIPE = DATA.pipeline || { utah: [], region: [] };
   var LVNAME = { FBS: "FBS", FCS: "FCS", D2: "Division II", D3: "Division III", NAIA: "NAIA", JUCO: "JUCO" };
   function pipeRow(x) {
+    // Brandon, Sep 15: "include logos here too". This is the page a kid reads
+    // when he is working out where he could actually play, so the programmes
+    // should look like programmes rather than a list of names.
     return '<div class="lvrow"><div class="lvtag">' + esc(LVNAME[x.level] || x.level) + "</div>" +
+      collegeMark(x.program) +
       '<div><div class="lvname">' + esc(x.program) +
       "<small>" + esc(x.city) + (x.conf ? " · " + esc(x.conf) : "") + "</small></div>" +
       (x.note ? '<div class="lvnote">' + esc(x.note) + "</div>" : "") + "</div>" +
@@ -5431,6 +5650,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         c.n + (c.n === 1 ? " commit" : " commits") + "</div>" +
         c.players.map(function (pl) { return rbLine(pl); }).join("") + "</div>";
     }).join("") + "</div>" +
+    offerBoard() +
     rumorMill() +
     ["2027", "2028", "2029"].map(function (cl) {
       var list = OPENB.filter(function (pl) { return pl.cls === cl; });
@@ -5448,6 +5668,31 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     '<p class="lede" style="margin-bottom:10px">There is <strong>no Division II, Division III or NAIA football anywhere in Utah</strong>, and no junior-college football in Arizona, Idaho, Nevada, Colorado, Wyoming or Montana — those programs were all cut. So the map out of state is narrower than most people assume, and worth knowing before you plan around a school that no longer fields a team. Colorado Mesa is the nearest Division II football, about four hours from Salt Lake. The Frontier Conference is the NAIA league that takes Utah kids.</p>' +
     '<div class="lvgrid">' + PIPE.region.map(pipeRow).join("") + "</div>" +
     '<p class="lede" style="margin-top:12px">One more thing worth saying out loud: <strong>California community colleges award no athletic scholarships at all.</strong> They play real football, but they are not the NJCAA and the money is not the same. Families mix these up constantly.</p>';
+
+  /* The school filter re-renders only its own block. The recruiting tab is a
+     single innerHTML assignment, so rebuilding the whole thing to change one
+     dropdown would scroll the reader back to the top of the page. */
+  function obAll() {
+    return (DATA.pindex || []).filter(function (p) {
+      return (p.offers && p.offers.length) || p.commit;
+    }).sort(function (a, b) {
+      return (b.commit ? 1 : 0) - (a.commit ? 1 : 0) ||
+             (b.offer_n || (b.offers || []).length) - (a.offer_n || (a.offers || []).length) ||
+             String(a.name).localeCompare(b.name);
+    });
+  }
+  function bindOfferBoard() {
+    var sel = document.getElementById("obsel");
+    if (!sel) return;
+    sel.addEventListener("change", function () {
+      obSchool = sel.value;
+      var all = obAll();
+      var schools = Array.from(new Set(all.map(function (p) { return p.school; }))).sort();
+      var w = document.getElementById("obwrap");
+      if (w) { w.innerHTML = obInner(all, schools); bindOfferBoard(); }
+    });
+  }
+  bindOfferBoard();
 
   /* ---- state statistical leaders ---- */
   var LEAD = DATA.leaders || {}, SILENT = DATA.stats_silent || [];
@@ -6678,7 +6923,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           if (t.prior_stops) hist.push("Before: " + t.prior_stops);
           else if (t.cbg) hist.push(t.cbg);
           return '<tr data-t="' + esc(t.school) + '">' +
-            '<td class="cteam">' + esc(t.school) + "<small>" + t.cls + " · #" + t.rank + " · " + t.w + "–" + t.l + "</small></td>" +
+            '<td class="cteam">' + logo(t.school, "sm") + "<div>" + esc(t.school) +
+            "<small>" + t.cls + " · #" + t.rank + " · " + t.w + "–" + t.l + "</small></div></td>" +
             '<td><div class="chc">' + esc(t.coach) + "</div>" +
             (hist.length ? '<div class="chist">' + esc(hist[0].length > 84 ? hist[0].slice(0, 82) + "…" : hist[0]) + "</div>" : "") + "</td>" +
             '<td class="num mono">' + t.car_w + "–" + t.car_l + "</td>" +
@@ -6793,7 +7039,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
      of the division, with regions in the sort as well.
 
      Position matters more here than anywhere else on the site. A statewide
-     list by Ledger grade is a list of skill players; a corner is never going
+     list by Ledger is a list of skill players; a corner is never going
      to out-produce a quarterback and should not be asked to. Cut to DB and
      the board finally answers the question a defensive back's family came to
      ask. Region does the same thing for a small school: statewide, a 1A kid
@@ -6802,9 +7048,22 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   var PRDIVS = ["ALL", "6A", "5A", "4A", "3A", "2A", "1A"];
   var prDiv = "ALL", prReg = "", prPos = "", prYr = "", prQ = "", prShown = 100;
   var prSort = "bee", prDir = -1;
-  var PRCOLS = [["bee", "Ledger"], ["prod", "Production"], ["grade", "Scouting"]];
+  // Five numbers, and they are deliberately separate rather than blended.
+  //   Ledger    season production above a replacement player at his position
+  //   Per gm    the same thing as a rate, for a player who has missed games
+  //   Prod      the raw adjusted total, so the Ledger can be checked against it
+  //   Resume    honours, a second sport, grades -- its own question
+  //   Scouting  what the recruiting services say, which is not our number
+  var PRCOLS = [["bee", "Ledger"], ["pergame", "Per gm"], ["prod", "Prod"],
+                ["resume", "R\u00e9sum\u00e9"], ["grade", "Scouting"]];
   function prVal(p, k) {
-    return k === "bee" ? (p.bee10 === null || p.bee10 === undefined ? -1 : p.bee10)
+    // Every column in PRCOLS needs a branch here. A key with no branch falls
+    // through to prod_adj and the header looks like it sorts while doing
+    // nothing -- which is exactly how "Per gm" and "Resume" shipped broken for
+    // ten minutes on Sep 14.
+    return k === "bee" ? (p.pav === null || p.pav === undefined ? -1e9 : p.pav)
+         : k === "pergame" ? (p.pav_pg === null || p.pav_pg === undefined ? -1e9 : p.pav_pg)
+         : k === "resume" ? (p.resume || 0)
          : k === "grade" ? (p.grade || 0)
          : (p.prod_adj || 0);
   }
@@ -6817,7 +7076,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     });
   function prRows() {
     var r = PIDX.filter(function (p) {
-      if (p.bee10 === null || p.bee10 === undefined) return false;
+      if (p.pav === null || p.pav === undefined) return false;
       if (prDiv !== "ALL" && p.team_cls !== prDiv) return false;
       if (prReg && p.region !== prReg) return false;
       if (prYr && p.cls !== prYr) return false;
@@ -6838,9 +7097,10 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     var cut = r.slice(0, prShown);
     document.getElementById("v-prank").innerHTML =
       '<div class="panel" style="margin-bottom:14px"><h2>Player rankings</h2>' +
-      '<p class="lede">Every player with a 2026 number, ranked on the Ledger 10 &mdash; ' +
-      'half what he has done on the field, opponent-adjusted and ranked inside his own ' +
-      'position group, half the rest of the athlete. <strong>Cut it by position, by ' +
+      '<p class="lede">Every player with a 2026 number, ranked on <strong>football ' +
+      'production</strong> &mdash; what he has produced above a replacement-level player ' +
+      'at his own position, priced against the opponents he actually faced. Honours and ' +
+      'grades are a separate column, not part of it. <strong>Cut it by position, by ' +
       'region and by classification</strong>, because a statewide list of everybody is ' +
       'a list of quarterbacks and running backs, and that is not the question most ' +
       'people came here with.</p>' +
@@ -6886,13 +7146,17 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           "<td>" + esc(yr(p.cls) || "—") + "</td>" +
           "<td>" + esc(p.region || "—") + "</td>" +
           '<td class="num mono" style="color:var(--sodium);font-weight:600">' +
-          (p.bee10 === null || p.bee10 === undefined ? "—" : p.bee10.toFixed(2)) + "</td>" +
-          '<td class="num mono">' + (p.prod_adj || 0).toFixed(1) +
+          (p.pav === null || p.pav === undefined ? "—" : sgn(p.pav)) + "</td>" +
+          '<td class="num mono">' +
+          (p.pav_pg === null || p.pav_pg === undefined ? "—" : sgn(p.pav_pg, 1)) +
           (p.games ? '<small class="raw">' + p.games + " gm</small>" : "") + "</td>" +
+          '<td class="num mono">' + (p.prod_adj || 0).toFixed(1) + "</td>" +
+          '<td class="num mono">' +
+          (p.resume ? p.resume.toFixed(1) : '<span class="none">—</span>') + "</td>" +
           '<td class="num mono">' + (p.grade ? p.grade : '<span class="none">—</span>') +
           "</td></tr>";
       }).join("")
-        : '<tr><td colspan="8" style="padding:18px;color:var(--ink-3)">' +
+        : '<tr><td colspan="10" style="padding:18px;color:var(--ink-3)">' +
           "Nobody matches that cut. A thin board here is usually a reporting gap &mdash; " +
           "the programs in this slice have not filed statistics yet.</td></tr>") +
       "</tbody></table></div>" +
@@ -7022,9 +7286,14 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   drawStand();
 
   var pShown = 60, pSort = "bee", pDir = 1;      // pDir 1 = best first
+  // Three here, not the board's five. This grid is already at five tracks and
+  // drops to three on a phone; the full split lives on the rankings board.
   var PCOLS = [["bee", "Ledger"], ["grade", "Scouting"], ["prod", "Prod"]];
   function pVal(p, k) {
-    return k === "bee" ? (p.bee10 || 0) : k === "grade" ? (p.grade || 0) : (p.prod_adj || 0);
+    return k === "bee" ? (p.pav === null || p.pav === undefined ? -1e9 : p.pav)
+         : k === "pergame" ? (p.pav_pg === null || p.pav_pg === undefined ? -1e9 : p.pav_pg)
+         : k === "resume" ? (p.resume || 0)
+         : k === "grade" ? (p.grade || 0) : (p.prod_adj || 0);
   }
   function drawPHead() {
     document.getElementById("phead").innerHTML =
@@ -7060,7 +7329,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       // thousand blanks. Players with nothing in that column always sort last.
       if (!x !== !y) return x ? -1 : 1;
       if (y - x) return pDir * (y - x);
-      return (b.bee10 || 0) - (a.bee10 || 0) || (b.prod_adj || 0) - (a.prod_adj || 0);
+      return (b.pav || 0) - (a.pav || 0) || (b.prod_adj || 0) - (a.prod_adj || 0);
     });
     drawPHead();
     document.getElementById("pcount").textContent =
@@ -7083,8 +7352,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
             (p.sports && p.sports.length ? "also " + p.sports.join(", ").toLowerCase() : "")]
             .filter(Boolean).join(" · ") + "</div>" +
         (st ? '<div class="pstat">' + esc(st) + "</div>" : "") + "</div>" +
-        '<div class="pgrade">' + (p.bee10 !== null && p.bee10 !== undefined
-            ? '<span style="color:var(--sodium)">' + p.bee10.toFixed(1) + "</span><small>of 10</small>"
+        '<div class="pgrade">' + (p.pav !== null && p.pav !== undefined
+            ? '<span style="color:var(--sodium)">' + sgn(p.pav, 0) + "</span><small>Ledger</small>"
             : '<span class="pnone">—</span>') + "</div>" +
         '<div class="pgrade">' + (p.grade
             ? p.grade + '<small>' + (p.services || []).map(function (s) { return SVCNAME[s] || s; }).join(" · ") + "</small>"
@@ -7111,10 +7380,15 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     PIDX.length.toLocaleString() + '</strong> of them, not just the ones a service noticed. <strong>' +
     PIDX.filter(function (p) { return p.has_stats && !p.grade; }).length.toLocaleString() +
     ' are producing this season with no recruiting grade anywhere.</strong> Filter to <em>Producing, unranked</em> to see only them, and click any column heading to sort.</p>' +
-    '<details class="foldout"><summary>How the Ledger grade works</summary><div class="foldbody">' +
-    '<p>It is the middle number: what the services say about a player and what he has actually done, on one scale.</p>' +
-    '<p>Raw production is not comparable across the state &mdash; a back running at 1A defenses will out-produce a back running at 6A defenses, and the raw number cannot tell which is better. So production is re-priced against the teams a player <em>actually played</em>: offense against the defensive ratings he faced, defense against the offenses that faced him. Classification is never used directly, because a strong 3A schedule beats a weak 6A one and should count that way. Then it is ranked inside his own position group, so a corner is not asked to out-produce a quarterback.</p>' +
-    '<p>It is then scored on the <strong>Ledger 10</strong>: a ten-point budget split down the middle. Half is football. The other half is the rest of the athlete, on purpose &mdash; <strong>state honors, a second sport and grades are worth real points here</strong>, not decoration. Nothing is capped and nothing is forbidden; every category is something a player can go earn. The state median is <span class="mono">1.2</span> and the best player in Utah is still under <span class="mono">5</span>, so a ten stays a long way off.</p>' +
+    '<details class="foldout"><summary>How the Ledger works</summary><div class="foldbody">' +
+    '<p>One question, answered in football: <strong>how much did he produce above a replacement-level player at his position?</strong> Not a percentile, not a blend. The number is in production points, so the distance between first and tenth is visible in the number itself.</p>' +
+    '<p><strong>Four steps.</strong> Every play he is credited with is worth what it is worth &mdash; a touchdown six, a rushing yard a tenth, a sack four. That total is then:</p>' +
+    '<p>&mdash; <strong>priced against the opponent.</strong> A back running at 1A defenses will out-produce a back running at 6A defenses, and the raw number cannot tell which is better. Each night is re-priced against the team he faced, so a 1A season is scaled around &times;0.83 and a 6A season around &times;1.13.</p>' +
+    '<p>&mdash; <strong>corrected for who keeps the book.</strong> Tackles are typed in by a person in a press box, not read off a scoreboard, and across the state schools credit anywhere from 0.65 to 1.88 tackles per opposing play. A defense does not choose how many snaps it faces, so each school\'s defensive numbers are divided by its own rate &mdash; the same thing baseball does with a ballpark.</p>' +
+    '<p>&mdash; <strong>pulled one game toward his position group.</strong> Split a season into odd and even games and a player\'s halves agree closely enough to trust five games, but not one. So one game of his group\'s average is added to everyone\'s ledger before the rate is taken. It costs a five-game starter almost nothing and it stops a boy with one enormous night from leading the state.</p>' +
+    '<p>&mdash; <strong>measured against replacement.</strong> The bar is what a player who dresses and plays, but is not one of the ones the offense runs through, produces per game. Everything above it is the Ledger.</p>' +
+    '<p><strong>What is deliberately not in it:</strong> honours, a second sport, a GPA, a captaincy. Those are real and they are on every card &mdash; as a R&eacute;sum&eacute; score of their own. Adding them to a production number made both mean less, and it put players above others with three times their football.</p>' +
+    '<p><strong>What it cannot see:</strong> offensive line play, and anything that does not reach a box score. A great pull, a picked-up blitz, a corner nobody throws at. A low Ledger on a lineman is a gap in the measurement, not a verdict on the player.</p>' +
     '</div></details>' +
     '<details class="foldout"><summary>On GPA and X handles</summary><div class="foldbody">' +
     '<p><strong>GPA.</strong> Grades belong on a recruiting page &mdash; plenty of rosters get built off a transcript rather than a forty time. But there is no way to fill this in for every player, so it is <strong>not a column and not a sort</strong>: a half-empty ranking would say more about who sent us a number than about who has the grades. It shows on a player\'s own profile when he or his coach supplies one. Hudl holds GPAs but serves them only to a viewer with a coaching relationship to that player, which is a sensible guard on a minor\'s school record and not one to work around.</p>' +
@@ -7152,7 +7426,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<option value="committed">Committed</option>' +
       '<option value="film">Has film</option>' +
       '<option value="social">Has an X handle</option></select>' +
-    '<select id="pfsort" aria-label="Sort"><option value="bee">Sort by Ledger grade</option>' +
+    '<select id="pfsort" aria-label="Sort"><option value="bee">Sort by Ledger</option>' +
       '<option value="grade">Sort by scouting grade</option>' +
       '<option value="prod">Sort by production</option></select>' +
     '<span class="pcount" id="pcount"></span></div></div>' +
@@ -7188,15 +7462,34 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
      rather than the footnotes, and the notebook below it is where the other
      two get filled in by hand, dated and sourced, as the cycle runs. */
   var RJ = DATA.realign || [], RN = DATA.realign_notes || [];
+  var RCUT = DATA.realign_cuts || {};
+  function rjn(v) { return v === null || v === undefined ? "\u2014" : v.toLocaleString(); }
   var rjFilter = "move";
   var KINDNAME = { enrollment: "Enrollment", appeal: "Appeal", region: "Region",
                    newschool: "New school", rule: "Rule", note: "Note" };
   function rjCard(r) {
     var moved = r.direction !== "hold";
-    return '<div class="rjrow ' + esc(r.direction) + '" data-t="' + esc(r.school) + '">' +
+    var sd = r.size_direction;
+    // The two signals are shown as two lines, never as one blended verdict.
+    // Enrollment is what UHSAA starts from; results are what the CRI adds.
+    var sizeLine = r.size_cls
+      ? '<div class="rjsize' + (r.agree ? " agree" : "") + '">' +
+        '<span class="lab">Size</span>' +
+        '<b>' + (sd === "hold" ? "stays " + esc(r.cls)
+                               : esc(r.cls) + " &rarr; " + esc(r.size_cls)) + "</b>" +
+        '<span class="det">' + rjn(r.enrol_proj) + " juniors &amp; seniors projected for Oct 2026" +
+        (r.enrol_trend ? " &middot; " + (r.enrol_trend > 0 ? "+" : "") + r.enrol_trend +
+                         " on the cycle" : "") +
+        " &middot; #" + r.size_rank + " statewide</span></div>"
+      : '<div class="rjsize none"><span class="lab">Size</span><b>not on file</b>' +
+        '<span class="det">private school &mdash; UHSAA collects this figure directly</span></div>';
+    return '<div class="rjrow ' + esc(r.direction) + (r.agree ? " agree" : "") +
+      '" data-t="' + esc(r.school) + '">' +
       '<div class="rjtop">' + logo(r.school, "sm") + "<b>" + esc(r.school) + "</b>" +
+      (r.agree ? '<span class="rjagree">both agree</span>' : "") +
       '<span class="rjmove">' + (moved ? esc(r.cls) + " &rarr; " + esc(r.to)
                                        : "stays " + esc(r.cls)) + "</span></div>" +
+      sizeLine +
       '<div class="rjwhy">' + esc(r.why || "") + "</div>" +
       '<div class="rjmeta"><span class="rjconf">' + esc(r.confidence) + "</span>" +
       "<span>" + esc(r.region || "") + "</span>" +
@@ -7207,8 +7500,13 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     var dn = RJ.filter(function (r) { return r.direction === "down"; });
     var hold = RJ.filter(function (r) { return r.direction === "hold"; });
     var watch = hold.filter(function (r) { return r.confidence === "watch"; });
+    var sup = RJ.filter(function (r) { return r.size_direction === "up"; });
+    var sdn = RJ.filter(function (r) { return r.size_direction === "down"; });
+    var agree = RJ.filter(function (r) { return r.agree; });
     var show = rjFilter === "up" ? up : rjFilter === "down" ? dn
-             : rjFilter === "watch" ? watch : up.concat(dn);
+             : rjFilter === "watch" ? watch
+             : rjFilter === "size" ? sup.concat(sdn)
+             : rjFilter === "agree" ? agree : up.concat(dn);
 
     document.getElementById("v-realign").innerHTML =
       '<div class="panel" style="margin-bottom:14px"><h2>Realignment</h2>' +
@@ -7218,27 +7516,61 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<strong>competitive performance</strong>, and football is aligned separately from ' +
       'every other sport. It is the biggest procedural change to Utah realignment in years ' +
       'and it applies to all 162 member schools.</p>' +
-      '<p class="notbet"><strong>This page can measure one of those three.</strong> There is ' +
-      'no enrollment figure in our data and no socioeconomic data, and guessing at either ' +
-      'would be worse than saying so. What follows is a <em>performance</em> projection: ' +
-      'which programs are winning, or losing, at a level that does not match the ' +
-      'classification they are in. It moves every time a game is played. The board also ' +
-      'keeps the final say over geography and appeals, which no index anticipates.</p>' +
-      '<p class="notbet">The gap gets closed by hand. Anything we learn &mdash; a published ' +
-      'enrollment number, an appeal, a region proposal &mdash; goes in the notebook at the ' +
-      'bottom of this page as we learn it, and an enrollment figure there feeds straight ' +
-      'into the projection above it.</p></div>' +
+      '<p class="notbet"><strong>This page now measures two of those three, and keeps them ' +
+      'apart.</strong> <strong>Size</strong> comes from the Utah State Board of Education&rsquo;s ' +
+      'October 1 head count &mdash; grades 11 and 12, which is what UHSAA counts. ' +
+      '<strong>Results</strong> are three seasons of record against the middle of a ' +
+      'program&rsquo;s own classification. They are not added together: UHSAA has not ' +
+      'published how it weights them, so a single blended number here would be a number we ' +
+      'invented. Socioeconomic status we still cannot see.</p>' +
+      '<p class="notbet"><strong>The size projection is not a trend line.</strong> The juniors ' +
+      'and seniors UHSAA counts on October 1, 2026 are the sophomores and juniors sitting in ' +
+      'these buildings right now &mdash; the same kids, one year older. That makes the ' +
+      'enrollment half of the next alignment close to knowable a year early. What it cannot ' +
+      'know: a school that <em>petitions up</em>, which is why Corner Canyon plays 6A on a 5A ' +
+      'enrollment, and the board&rsquo;s final say over geography and appeals.</p>' +
+      '<p class="notbet">Anything else we learn &mdash; an appeal, a region proposal, a district ' +
+      'enrollment release &mdash; goes in the notebook at the bottom of this page as we learn ' +
+      'it, with who said it.</p></div>' +
 
       '<div class="grid cards" style="margin-bottom:16px">' +
-      [["Projected up", up.length, "on performance"],
-       ["Projected down", dn.length, "on performance"],
-       ["Worth watching", watch.length, "close to the line"],
+      [["Out of step on size", sup.length + sdn.length,
+        sup.length + " up, " + sdn.length + " down"],
+       ["Out of step on results", up.length + dn.length,
+        up.length + " up, " + dn.length + " down"],
+       ["Both agree", agree.length, "size and results together"],
        ["Settled", hold.length - watch.length, "where they belong"]].map(function (c) {
         return '<div class="card"><div class="k">' + c[0] + '</div><div class="v mono">' +
           c[1] + '</div><div class="sub">' + c[2] + "</div></div>";
       }).join("") + "</div>" +
 
-      '<h3 class="divhead">The calendar<span>placement in November, final in December, played in 2027</span></h3>' +
+      (Object.keys(RCUT).length
+        ? '<h3 class="divhead">Where the lines fall<span>projected October 2026 count, ' +
+          'grades 11 and 12 &middot; the smallest program in each class</span></h3>' +
+          '<div class="enrwrap"><table class="enrtab"><thead><tr>' +
+          '<th>Class</th><th class="num">Programs</th>' +
+          '<th class="num">Smallest projected</th><th>Who sits on the line</th>' +
+          '</tr></thead><tbody>' +
+          ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) {
+            return RCUT[c] !== undefined;
+          }).map(function (c) {
+            var inC = RJ.filter(function (r) { return r.size_cls === c; });
+            var last = inC.reduce(function (a, b) {
+              return (a && a.size_rank > b.size_rank) ? a : b; }, null);
+            return "<tr><td><b>" + c + "</b></td>" +
+              '<td class="num mono">' + inC.length + "</td>" +
+              '<td class="num mono">' + rjn(RCUT[c]) + "</td>" +
+              "<td>" + (last ? logo(last.school, "sm") + esc(last.school) +
+                               ' <small style="color:var(--ink-3)">now ' +
+                               esc(last.cls) + "</small>" : "&mdash;") + "</td></tr>";
+          }).join("") + "</tbody></table></div>" +
+          "<p class='notbet'>These are <em>our</em> lines, not UHSAA&rsquo;s. They come from " +
+          "sorting every program by its projected count and cutting it into classes the " +
+          "size football uses today. UHSAA publishes its own at first consideration on " +
+          "November 19, and its class sizes may not match these.</p>"
+        : "") +
+
+      '<h3 class="divhead" style="margin-top:26px">The calendar<span>placement in November, final in December, played in 2027</span></h3>' +
       '<div class="rtl">' + RAD.map(function (d) {
         return '<div class="rtlrow"><div class="rtld">' + esc(d[0]) +
           '</div><div class="rtlw">' + esc(d[1]) + "</div></div>";
@@ -7247,7 +7579,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<h3 class="divhead" style="margin-top:26px">Where each program is heading' +
       '<span>' + show.length + ' shown &middot; click any card for the full team</span></h3>' +
       '<div class="controls"><div class="seg" id="rjseg">' +
-      [["move", "Moving"], ["up", "Up"], ["down", "Down"], ["watch", "Watching"]]
+      [["move", "Results"], ["size", "Size"], ["agree", "Both agree"],
+       ["up", "Up"], ["down", "Down"], ["watch", "Watching"]]
         .map(function (o) {
           return '<button data-f="' + o[0] + '" aria-pressed="' + (rjFilter === o[0]) +
             '">' + o[1] + "</button>"; }).join("") + "</div></div>" +
@@ -8362,8 +8695,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         esc(p.pos || ""),
         p.commit ? esc(p.commit) + " commit" : ""
       ].filter(Boolean).join(" · ");
-      var right = (p.bee10 !== null && p.bee10 !== undefined)
-        ? '<span style="color:var(--sodium)">' + p.bee10.toFixed(1) + "</span><small>of 10</small>"
+      var right = (p.pav !== null && p.pav !== undefined)
+        ? '<span style="color:var(--sodium)">' + sgn(p.pav, 0) + "</span><small>Ledger</small>"
         : (p.grade ? p.grade + "<small>scouting</small>" : '<span style="color:var(--ink-3)">—</span>');
       return '<div class="gs-row" role="option" data-p="' + esc(p.name) +
         '" data-ps="' + esc(p.school) + '">' +
@@ -8398,7 +8731,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 
       var tm = rank(TEAMIDX, qn, function (r) { return r.t.rating; });
       var pl = rank(PLAYIDX, qn, function (r) {
-        return (r.p.bee10 || 0) * 10 + (r.p.grade || 0) / 100;
+        return (r.p.pav || 0) + (r.p.grade || 0) / 100;
       });
 
       var html = "";
