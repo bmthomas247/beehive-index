@@ -2165,7 +2165,16 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .bhero-mark{
   position:absolute; z-index:1; width:158px; height:158px; object-fit:contain;
   top:20px; opacity:.94;
-  filter:drop-shadow(0 10px 26px rgba(0,0,0,.55));
+  /* Knocking the white boxes out of the crests fixed the stickers and broke
+     the dark ones: Corner Canyon's arc type is near-black, and on this hero's
+     dark gradient it had been readable ONLY because of the white plate behind
+     it. The old drop-shadow here is dark on dark and does nothing for that.
+     Two tight white shadows follow the crest's own alpha channel, so a dark
+     mark separates from a dark ground without a box round it, and a light
+     mark is unaffected. Same reasoning as the dark-mode crest glow. */
+  filter:drop-shadow(0 0 1.5px rgba(255,255,255,.62))
+         drop-shadow(0 0 5px rgba(255,255,255,.34))
+         drop-shadow(0 10px 26px rgba(0,0,0,.55));
 }
 .bhero-mark.m1{ left:30px }
 .bhero-mark.m2{ right:30px }
