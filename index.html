@@ -828,7 +828,12 @@ a.rrow{text-decoration:none;color:inherit}
 .rc.marq{border-left:3px solid var(--sodium)}
 /* Not played yet. Dashed edge and no pointer, so nobody clicks looking for a
    box score that cannot exist. */
-.rc.sched{cursor:default;border-style:dashed}
+.rc.sched{cursor:pointer;border-style:dashed}
+.rc.sched:hover{border-color:var(--line);border-style:solid;background:var(--surface-2)}
+.rc.sched:hover .rcprev{opacity:1}
+/* The affordance. A dashed card with no score on it does not read as
+   something you can open, so it says so -- quietly until you hover. */
+.rcprev{float:right;font-weight:600;color:var(--sodium);opacity:.55;transition:opacity .12s}
 .rc.sched:hover{background:var(--surface)}
 .rctags{margin-bottom:1px}
 .rcteams{display:grid;gap:3px}
@@ -4800,7 +4805,12 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       away_cls: p.away_cls, home_cls: p.home_cls,
       away_score: "–", home_score: "–",
       winner: null, sched: true, top5: p.top5, top5_rank: p.top5_rank,
-      fav: p.fav, line: p.line, toss: p.toss, pk: p.pk
+      fav: p.fav, line: p.line, toss: p.toss, pk: p.pk,
+      // The preview drawer is keyed on this. It was being dropped here, which
+      // is the only reason a scheduled card was not clickable: openGame() and
+      // everything it draws already existed and byGame is built from the same
+      // DATA.preds these rows come from.
+      id: p.id
     };
   });
   if (UPCOMING.length && RCWEEKS.indexOf(SCHEDWK) < 0) RCWEEKS.unshift(SCHEDWK);
@@ -4829,12 +4839,18 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     var lede = r.toss || r.pk
       ? "Too close to call."
       : esc(r.fav) + " by " + Math.abs(+r.line || 0);
-    return '<div class="rc sched">' +
+    /* Brandon, Sep 16: "i want to be able to click into these and them give
+       us a preview on each game." The preview itself is openGame() -- the
+       metric-by-metric comparison, the projected score, the win-probability
+       bar and the head-to-head. It has been there all along; the scheduled
+       cards just never carried the id that opens it. */
+    return '<div class="rc sched" data-game="' + esc(r.id || "") + '">' +
       (tags ? '<div class="rctags">' + tags + "</div>" : "") +
       '<div class="rcteams">' + side(r.away, r.away_score) + side(r.home, r.home_score) + "</div>" +
       '<div class="rcnote">' + lede + "</div>" +
       '<div class="rcfoot">' + mdy(r.date) + " · " +
-      esc(r.away_cls) + " at " + esc(r.home_cls) + "</div></div>";
+      esc(r.away_cls) + " at " + esc(r.home_cls) +
+      '<span class="rcprev">Preview &rarr;</span></div></div>';
   }
 
   /* The picks page builds the same labels, but it does it further down the
