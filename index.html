@@ -7189,17 +7189,19 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   //   Prod      the raw adjusted total, so the Ledger can be checked against it
   //   Resume    honours, a second sport, grades -- its own question
   //   Scouting  what the recruiting services say, which is not our number
-  var PRCOLS = [["bee", "Ledger"], ["pergame", "Per gm"], ["prod", "Prod"],
-                ["resume", "R\u00e9sum\u00e9"], ["grade", "Scouting"]];
+  var PRCOLS = [["bee", "Ledger"], ["prod", "Prod"], ["srec", "School record"]];
+  // Oct 8 2026 (Brandon): Per gm, Resume and Scouting came off this board;
+  // the team's record and the player's commitment went on. Per gm, Resume and
+  // Scouting are all still on the player card.
+  function teamRec(p) { var t = byName[p.school]; return t ? t : null; }
   function prVal(p, k) {
     // Every column in PRCOLS needs a branch here. A key with no branch falls
     // through to prod_adj and the header looks like it sorts while doing
     // nothing -- which is exactly how "Per gm" and "Resume" shipped broken for
     // ten minutes on Sep 14.
     return k === "bee" ? (p.pav === null || p.pav === undefined ? -1e9 : p.pav)
-         : k === "pergame" ? (p.pav_pg === null || p.pav_pg === undefined ? -1e9 : p.pav_pg)
-         : k === "resume" ? (p.resume || 0)
-         : k === "grade" ? (p.grade || 0)
+         : k === "srec" ? (function () { var t = teamRec(p);
+             return t && (t.w + t.l) ? t.w / (t.w + t.l) + t.w / 1000 : -1; })()
          : (p.prod_adj || 0);
   }
   var PRREGIONS = Array.from(new Set(PIDX.map(function (p) { return p.region; })
@@ -7269,7 +7271,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         return '<th class="num" data-prs="' + c[0] + '">' + c[1] +
           (prSort === c[0] ? ' <span class="caret">' + (prDir > 0 ? "▲" : "▼") +
            "</span>" : "") + "</th>"; }).join("") +
-      '</tr></thead><tbody>' +
+      '<th>Committed</th></tr></thead><tbody>' +
       (cut.length ? cut.map(function (p, i) {
         return '<tr' + pAttr(p.name, p.school) + ">" +
           '<td class="rk mono' + (i < 3 ? " top" : "") + '">' + (i + 1) + "</td>" +
@@ -7282,16 +7284,13 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           "<td>" + esc(regLbl(p.team_cls, p.region) || "—") + "</td>" +
           '<td class="num mono" style="color:var(--sodium);font-weight:600">' +
           (p.pav === null || p.pav === undefined ? "—" : sgn(p.pav)) + "</td>" +
-          '<td class="num mono">' +
-          (p.pav_pg === null || p.pav_pg === undefined ? "—" : sgn(p.pav_pg, 1)) +
-          (p.games ? '<small class="raw">' + p.games + " gm</small>" : "") + "</td>" +
           '<td class="num mono">' + (p.prod_adj || 0).toFixed(1) + "</td>" +
-          '<td class="num mono">' +
-          (p.resume ? p.resume.toFixed(1) : '<span class="none">—</span>') + "</td>" +
-          '<td class="num mono">' + (p.grade ? p.grade : '<span class="none">—</span>') +
-          "</td></tr>";
+          '<td class="num mono">' + (function () { var t = teamRec(p);
+            return t ? t.w + "\u2013" + t.l : '<span class="none">—</span>'; })() + "</td>" +
+          "<td>" + (p.commit ? '<b style="color:var(--sodium)">' + esc(p.commit) + "</b>"
+            : '<span class="none">—</span>') + "</td></tr>";
       }).join("")
-        : '<tr><td colspan="10" style="padding:18px;color:var(--ink-3)">' +
+        : '<tr><td colspan="9" style="padding:18px;color:var(--ink-3)">' +
           "Nobody matches that cut. A thin board here is usually a reporting gap &mdash; " +
           "the programs in this slice have not filed statistics yet.</td></tr>") +
       "</tbody></table></div>" +
