@@ -7193,12 +7193,23 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   // Oct 8 2026 (Brandon): Per gm, Resume and Scouting came off this board;
   // the team's record and the player's commitment went on. Per gm, Resume and
   // Scouting are all still on the player card.
+  // Offensive linemen have their own board: pick "Offensive line" and the
+  // columns switch to the OL score and what it is built from (olboard.py).
+  var OLCOLS = [["ol", "OL score"], ["pk", "Pancakes"], ["urun", "Run block"],
+                ["upass", "Pass pro"], ["srec", "School record"]];
+  function olMode() { return prPos === "OL"; }
+  function curCols() { return olMode() ? OLCOLS : PRCOLS; }
+  function olv(p, k) { var o = p.ol; return o && o[k] !== null && o[k] !== undefined ? o[k] : null; }
   function teamRec(p) { var t = byName[p.school]; return t ? t : null; }
   function prVal(p, k) {
     // Every column in PRCOLS needs a branch here. A key with no branch falls
     // through to prod_adj and the header looks like it sorts while doing
     // nothing -- which is exactly how "Per gm" and "Resume" shipped broken for
     // ten minutes on Sep 14.
+    if (k === "ol") return olv(p, "score") === null ? -1e9 : olv(p, "score");
+    if (k === "pk") return olv(p, "pk_pg") === null ? -1 : olv(p, "pk_pg");
+    if (k === "urun") return olv(p, "unit_run") === null ? -1 : olv(p, "unit_run");
+    if (k === "upass") return olv(p, "unit_pass") === null ? -1 : olv(p, "unit_pass");
     return k === "bee" ? (p.pav === null || p.pav === undefined ? -1e9 : p.pav)
          : k === "srec" ? (function () { var t = teamRec(p);
              return t && (t.w + t.l) ? t.w / (t.w + t.l) + t.w / 1000 : -1; })()
@@ -7213,7 +7224,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     });
   function prRows() {
     var r = PIDX.filter(function (p) {
-      if (p.pav === null || p.pav === undefined) return false;
+      if (olMode() ? olv(p, "score") === null : (p.pav === null || p.pav === undefined)) return false;
       if (prDiv !== "ALL" && p.team_cls !== prDiv) return false;
       if (prReg && p.region !== prReg) return false;
       if (prYr && p.cls !== prYr) return false;
@@ -7230,6 +7241,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     return r;
   }
   function drawPRank() {
+    if (!curCols().some(function (c) { return c[0] === prSort; })) { prSort = curCols()[0][0]; prDir = -1; }
     var r = prRows();
     var cut = r.slice(0, prShown);
     document.getElementById("v-prank").innerHTML =
@@ -7246,7 +7258,12 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<p class="notbet">Rebuilt from the box scores after every night of games, so this ' +
       'board moves when the statistics move. A player filing no statistics is not ' +
       'ranked low here &mdash; he is not here, and that is a reporting gap rather than a ' +
-      'verdict on him.</p></div>' +
+      'verdict on him.</p>' + (olMode() ?
+        '<p class="lede" style="margin-top:10px"><strong>Offensive line.</strong> A lineman has almost nothing in a box score, so his score is built from what we can source: ' +
+        '<strong>pancakes</strong> a game (30%) where his school records them, his line\'s <strong>run blocking</strong> (yards per rush play, priced against the defenses faced, 15%) and ' +
+        '<strong>pass protection</strong> (sacks allowed, priced against the pass rushes faced, 15%), games he appears in the box score (10%), recruiting (15%), size (10%) and honors (5%). ' +
+        'Where a part does not exist for him &mdash; most schools do not record pancakes yet &mdash; it is left out and the rest reweighted, never counted as a zero. ' +
+        'Starts and snaps are not published anywhere we read. Two linemen on the same line share its run and pass numbers.</p>' : "") + '</div>' +
       '<div class="controls">' +
       '<div class="seg" id="prdiv">' + PRDIVS.map(function (c) {
         return '<button data-c="' + c + '" aria-pressed="' + (c === prDiv) + '">' +
@@ -7269,7 +7286,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       " in this cut</span></div>" +
       '<div class="tablewrap"><table><thead><tr>' +
       '<th>#</th><th>Player</th><th>Pos</th><th>Class</th><th>Region</th>' +
-      PRCOLS.map(function (c) {
+      curCols().map(function (c) {
         return '<th class="num" data-prs="' + c[0] + '">' + c[1] +
           (prSort === c[0] ? ' <span class="caret">' + (prDir > 0 ? "▲" : "▼") +
            "</span>" : "") + "</th>"; }).join("") +
@@ -7284,9 +7301,17 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           "<td>" + (p.pos && p.pos !== "-" ? esc(p.pos) : "&mdash;") + "</td>" +
           "<td>" + esc(yr(p.cls) || "—") + "</td>" +
           "<td>" + esc(regLbl(p.team_cls, p.region) || "—") + "</td>" +
-          '<td class="num mono" style="color:var(--sodium);font-weight:600">' +
-          (p.pav === null || p.pav === undefined ? "—" : sgn(p.pav)) + "</td>" +
-          '<td class="num mono">' + (p.prod_adj || 0).toFixed(1) + "</td>" +
+          (olMode()
+            ? '<td class="num mono" style="color:var(--sodium);font-weight:600">' + olv(p, "score").toFixed(1) + "</td>" +
+              '<td class="num mono">' + (olv(p, "pk") === null ? '<span class="none">—</span>'
+                : olv(p, "pk") + '<small class="raw">' + olv(p, "pk_pg").toFixed(1) + "/gm</small>") + "</td>" +
+              '<td class="num mono">' + (olv(p, "unit_run") === null ? "—" : olv(p, "unit_run").toFixed(0)) +
+                (olv(p, "ypc_adj") !== null ? '<small class="raw">' + olv(p, "ypc_adj").toFixed(1) + " ypc</small>" : "") + "</td>" +
+              '<td class="num mono">' + (olv(p, "unit_pass") === null ? "—" : olv(p, "unit_pass").toFixed(0)) +
+                (olv(p, "sacks_pg") !== null ? '<small class="raw">' + olv(p, "sacks_pg").toFixed(1) + " sk/gm</small>" : "") + "</td>"
+            : '<td class="num mono" style="color:var(--sodium);font-weight:600">' +
+              (p.pav === null || p.pav === undefined ? "—" : sgn(p.pav)) + "</td>" +
+              '<td class="num mono">' + (p.prod_adj || 0).toFixed(1) + "</td>") +
           '<td class="num mono">' + (function () { var t = teamRec(p);
             return t ? t.w + "\u2013" + t.l : '<span class="none">—</span>'; })() + "</td>" +
           "<td>" + (p.commit ? '<b style="color:var(--sodium)">' + esc(p.commit) + "</b>"
