@@ -6062,9 +6062,9 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     ].join("") + "</div>" +
     '<div class="panel" style="margin-bottom:16px"><h2>The cut line</h2>' +
     '<p class="lede">UHSAA capped the 2026 playoffs at <strong>16 teams per classification</strong> and seeds them by RPI. For 6A, 3A, 2A and 1A nothing changes — those classes have 17, 13, 10 and 9 programs. For <strong>5A and 4A it is a real cut</strong>: both used to take 24 seeds with byes for the top eight, so ' + missing5 + " and " + missing4 + ' teams now miss entirely.</p>' +
-    '<p class="lede">Read the RPI column with suspicion right now. RPI is three-quarters opponents\' records, and after two games almost nobody has a meaningful record — a third of 5A sits on exactly .500. As it stands, RPI has 2–0 Viewmont <em>outside</em> the cut and 0–1 Kearns inside it. That is not a flaw in RPI so much as a fact about August. The seeding below is ordered by <strong>power rating</strong>, which is opponent-adjusted and far steadier this early, with each team\'s current RPI seed shown alongside so you can see where the two disagree. By late October they converge; today they do not.</p></div>' +
+    '<p class="lede" data-v="cxf-v2">Ordered by <strong>RPI</strong>, the number UHSAA seeds with: 45% win percentage, 45% opponents\' win percentage, 10% their opponents\', score ignored. We recompute it from every final in the game file after each update. UHSAA also adjusts for wins across classifications and does not publish exactly how, so a team can sit a spot off the official list. The percentage under each team is its chance of finishing inside the cut, from playing out the rest of the season 10,000 times; that projection is refreshed every Saturday at noon. RATING DISAGREES marks a team whose power rating puts it six or more places away from where RPI has it.</p></div>' +
     '<div class="panel" style="margin-bottom:16px"><h2>Projected bracket</h2>' +
-    '<p class="lede">The 16-team bracket as it would be seeded today, with the higher seed hosting through the semifinals and the final treated as neutral. Highlighted teams are the chalk path — the favourite advancing every round. The percentages underneath come from running the whole bracket <strong>' +
+    '<p class="lede">The bracket as RPI is projected to seed it once the regular season is played out, refreshed every Saturday at noon. The higher seed hosts through the quarterfinals; semifinals and final are neutral. Highlighted teams are the chalk path — the favourite advancing every round. The percentages underneath come from running the whole bracket <strong>' +
     (SIMS ? SIMS.toLocaleString() : "20,000") + ' times</strong> and counting how often each team gets there, which is a fairer picture than chalk: a 63% favourite still loses a third of the time.</p>' +
     '<div class="controls" style="margin-bottom:0"><div class="seg" id="brseg">' +
     cut.map(function (c) { return '<button data-c="' + c + '" aria-pressed="' + (c === "5A") + '">' + c + "</button>"; }).join("") +
@@ -6072,28 +6072,29 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     '<div id="brbox" style="margin-bottom:26px"></div>' +
     cut.map(function (c) {
       var grp = T.filter(function (t) { return t.cls === c; })
-                 .sort(function (a, b) { return a.class_rank - b.class_rank; });
+                 .sort(function (a, b) { return (a.rpi_seed || 99) - (b.rpi_seed || 99); });
       if (!grp.length) return "";
       var n = CSIZE[c] || grp.length, everyone = n <= SPOTS;
       return '<h3 class="divhead">Class ' + c + "<span>" + n + " programs · " +
         (everyone ? "all qualify" : SPOTS + " qualify, " + (n - SPOTS) + " miss") + "</span></h3>" +
         '<div class="carogrid" style="margin-bottom:20px">' +
         '<div class="porow hdr"><div>Seed</div><div>Team</div><div style="text-align:right">Rating</div>' +
-        '<div style="text-align:right">Record</div><div style="text-align:right">RPI seed</div></div>' +
+        '<div style="text-align:right">Record</div><div style="text-align:right">RPI</div></div>' +
         grp.map(function (t, i) {
           var line = (!everyone && i === SPOTS)
             ? '<div class="cutline"><span>Cut line — ' + SPOTS + " qualify</span><span>" +
               (n - SPOTS) + " teams below this line miss the playoffs</span></div>" : "";
-          var diverge = Math.abs((t.rpi_seed || 0) - (i + 1)) >= 6;
+          var diverge = Math.abs((t.class_rank || 0) - (i + 1)) >= 6;
           return line + '<div class="porow' + (!everyone && i >= SPOTS ? " out" : "") + '">' +
             '<div class="sd">' + (i + 1) + "</div>" +
             '<div class="tmn" data-t="' + esc(t.school) + '">' + esc(t.school) +
-            (diverge ? '<span class="diverge">RPI DISAGREES</span>' : "") +
-            "<small>#" + t.rank + " statewide · " + esc(t.region) + "</small></div>" +
+            (diverge ? '<span class="diverge">RATING DISAGREES</span>' : "") +
+            "<small>#" + t.rank + " statewide · " + esc(t.region) +
+            (t.playoff_pct !== null && t.playoff_pct !== undefined ? " · " + Math.round(t.playoff_pct) + "% to make it" : "") +
+            "</small></div>" +
             '<div class="n ' + cls(t.rating) + '">' + sgn(t.rating) + "</div>" +
             '<div class="n">' + t.w + "–" + t.l + "</div>" +
-            '<div class="n" style="color:var(--ink-3)">#' + (t.rpi_seed || "—") +
-            " <span style=\'font-size:11px\'>" + (t.rpi || 0).toFixed(3) + "</span></div></div>";
+            '<div class="n" style="color:var(--ink-3)">' + (t.rpi || 0).toFixed(3) + "</div></div>";
         }).join("") + "</div>";
     }).join("");
 
@@ -6943,7 +6944,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   var crMin = CR.length ? CR[CR.length - 1].score : 0;
   document.getElementById("cview-rank").innerHTML =
     '<div class="panel" style="margin-bottom:14px"><h2>Coaches rankings</h2>' +
-    '<p class="lede">Every head coach in the state, best first. Win percentage on its own would put a 2&ndash;0 first-year coach above a man who has won 200 games, so the record is pulled toward .500 by 24 pseudo-games &mdash; a long career moves the number, a two-game sample barely does. Then the things a percentage cannot see get added: <strong>state titles</strong>, how deep the program went last November, <strong>longevity</strong>, and whether this year\'s team is beating the projection its own roster and history earned it.</p>' +
+    '<p class="lede">Every head coach in the state, best first, from his own record: career win percentage (pulled toward .500 so a short career cannot top the list) 30%, <strong>playoff success</strong> 20% &mdash; how deep his teams went from 2022 to 2025 and every playoff win &mdash; this season 15%, his last three seasons at the school 15%, <strong>state titles</strong> 10%, and his team\'s chance of making this year\'s playoffs 10%. Seasons at a school before he was hired are not his and do not count.</p>' +
     '<p class="lede">This measures results, not coaching. It cannot see a man who took over a program with 22 players and got it to competitive, and it rewards the classifications and communities where winning is easier. Read it as a record of what has happened, not a verdict on who is good at the job.</p></div>' +
     '<div class="crgrid">' + CR.map(function (c) {
       var w = crMax > crMin ? Math.round(((c.score - crMin) / (crMax - crMin)) * 100) : 50;
@@ -7091,10 +7092,10 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     "quarterfinal": "quarters", "lost R2": "2nd round", "lost R1": "1st round", "missed playoffs": "no playoffs" })[k] || k; }
   function cxhRec(s, w, l) {
     var h = (DATA.coach_hist || {})[s];
-    if (h && h.hired >= 2023) { w = h.school_w; l = h.school_l; }
+    if (h) { w = h.school_w; l = h.school_l; }
     var p = (w + l) ? (w / (w + l) * 100).toFixed(0) + "%" : "";
     return w + "\u2013" + l + " at " + esc(s) + (p ? " (" + p + ")" : "") +
-      (h && h.hired < 2023 ? ' <span style="color:var(--ink-3)">· full tenure since ' + h.hired + "</span>" : "");
+      (h && h.hired < 2023 ? ' <span style="color:var(--ink-3)">· since 2023, hired ' + h.hired + "</span>" : "");
   }
   function cxhStrip(s) {
     var h = (DATA.coach_hist || {})[s]; if (!h || !h.seasons.length) return "";
@@ -7110,13 +7111,13 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       h.high.map(function (t) { return '<div class="cxh-hi">\u25B2 ' + esc(t) + "</div>"; }).join("") +
       h.low.map(function (t) { return '<div class="cxh-lo">\u25BC ' + esc(t) + "</div>"; }).join("") + "</div>";
   }
-  function band(h) { return h.heat >= 34 ? "hot" : h.heat >= 20 ? "warm" : "watch"; }
-  function bandLabel(h) { return h.heat >= 34 ? "Hot" : h.heat >= 20 ? "Warm" : "Watch"; }
+  function band(h) { return h.heat >= 60 ? "hot" : h.heat >= 45 ? "warm" : "watch"; }
+  function bandLabel(h) { return h.heat >= 60 ? "Hot" : h.heat >= 45 ? "Warm" : "Watch"; }
   document.getElementById("cview-seat").innerHTML =
     '<div class="panel" style="margin-bottom:14px"><h2>Coaches on the hot seat</h2>' +
-    '<p class="lede">Head coaches in year three or later whose record at the school sits under .400. Heat rises with how far under, how long the leash has already run, a winless start, missing last year\'s playoffs, and underperforming the program\'s own projected talent. This reads records and results only — it knows nothing about administrations, contracts, enrollment, or what a building actually thinks of its coach. Several of these men are rebuilding programs that were losing long before they arrived. Two bands: coaches in year three or later under .400, and separately, a <strong>light</strong> band for coaches going into year two who still have not won. <strong>A first-year coach is not on this list at all</strong> — nobody deserves a hot seat in August of his first fall. He only appears if it gets to week 8 and he is still winless.</p></div>' +
+    '<p class="lede">Built only from each coach\'s record at his current school, and only the seasons since he was hired. Heat goes up with losing this season, losing over the last three seasons, a losing career, a team getting worse, and a low chance of making this year\'s playoffs. <strong>Playoff wins cut it hard</strong>: a deep run takes most of it away and any state title takes off more. Second-year coaches carry 30% less, and a first-year coach is never on this list. Updated every Saturday at noon. It reads results only &mdash; it knows nothing about administrations, contracts, enrollment, or what a building thinks of its coach, and several of these men are rebuilding programs that were losing long before they arrived.</p></div>' +
     '<h3 class="divhead">Year three and beyond<span>' + HOT.filter(function (h) { return h.stage !== "early"; }).length +
-    ' coaches under .400 at their school</span></h3>' +
+    ' coaches, year three or later</span></h3>' +
     '<div class="heat">' + HOT.filter(function (h) { return h.stage !== "early"; }).map(function (h) {
       var why = ["year " + h.yrs + " at " + (h.pct * 100).toFixed(1) + "% (" + h.w + "–" + h.l + ")"];
       if (h.cur.split("-")[0] === "0") why.push("0-fer start");
@@ -7134,8 +7135,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     }).join("") + "</div>" +
     '<h3 class="divhead" style="margin-top:26px">Early pressure<span>' +
     HOT.filter(function (h) { return h.stage === "early"; }).length +
-    ' second-year coaches still looking for a first win</span></h3>' +
-    '<p class="lede" style="margin-bottom:10px">A different and much softer thing. A coach going into year two who has still never won is under real pressure, but it is not the same as year five at .200 — most of them inherited a program that was already losing. Scored below the band above on purpose, and capped there. First-year coaches are deliberately excluded until week 8; two games is not a body of work, and a man should get a season before anyone puts him on a list.</p>' +
+    ' second-year coaches</span></h3>' +
+    '<p class="lede" style="margin-bottom:10px">Year two. Same formula with 30% taken off, because most of these men inherited a program that was already losing.</p>' +
     '<div class="heat">' + HOT.filter(function (h) { return h.stage === "early"; }).map(function (h) {
       return '<div class="seat watch" data-t="' + esc(h.school) + '" style="cursor:pointer">' +
         '<div class="gauge"><div class="n mono" style="color:var(--steel)">' + h.heat.toFixed(0) +
