@@ -2481,6 +2481,15 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .vfm{ font-size:11.5px; color:var(--ink-3); margin-top:4px }
 .vfp{ margin:9px 0 0; font-size:13px; line-height:1.6; color:var(--ink-2); max-width:62ch }
 @media (max-width:640px){ .vfeat{ grid-template-columns:1fr; gap:12px } }
+
+.cxh-strip{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:6px}
+.cxh-y{font-size:11.5px;padding:2px 7px;border-radius:999px;background:var(--paper-2,rgba(0,0,0,.05));color:var(--ink-2,inherit);white-space:nowrap}
+.cxh-y b{font-weight:600;margin-right:3px}
+.cxh-po{color:var(--ink-3);margin-left:3px}
+.cxh-hl{margin-top:6px;font-size:12px;line-height:1.45}
+.cxh-hi{color:var(--grow,#2e7d4f)}
+.cxh-lo{color:var(--fall,#b3402f)}
+.cxh-cap{font-size:11px;color:var(--ink-3);margin-top:4px}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -6947,7 +6956,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         " · " + c.yrs + (c.yrs === 1 ? " yr" : " yrs") +
         (c.titles > 0 ? ' · <b style="color:var(--sodium)">' + c.titles + " title" + (c.titles > 1 ? "s" : "") + "</b>" : "") +
         " · 2025 " + esc(c.h25) + (c.po25 ? ", " + esc(c.po25) : "") +
-        "</div>" + (c.stops ? '<div class="crstop">Previously: ' + esc(c.stops) + "</div>" : "") + "</div>" +
+        "</div>" + cxhStrip(c.school) + cxhHL(c.school) +
+        (c.stops ? '<div class="crstop">Previously: ' + esc(c.stops) + "</div>" : "") + "</div>" +
         '<div class="crbar"><i style="width:' + w + '%"></i></div>' +
         '<div class="crsc mono">' + c.score.toFixed(1) + "</div></div>";
     }).join("") + "</div>";
@@ -7073,6 +7083,33 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     }).join("") + "</div>";
 
   /* ================= HOT SEAT ================= */
+  /* Record at THIS school under this coach, season by season, plus the best
+     and worst moments of the last three seasons. Brandon, Oct 8 2026. Built
+     by coach_history.py from Deseret game logs; only seasons since his hire
+     count. */
+  function cxpo(k) { return ({ "state champion": "state champs", "runner-up": "runner-up", "semifinal": "semis",
+    "quarterfinal": "quarters", "lost R2": "2nd round", "lost R1": "1st round", "missed playoffs": "no playoffs" })[k] || k; }
+  function cxhRec(s, w, l) {
+    var h = (DATA.coach_hist || {})[s];
+    if (h && h.hired >= 2023) { w = h.school_w; l = h.school_l; }
+    var p = (w + l) ? (w / (w + l) * 100).toFixed(0) + "%" : "";
+    return w + "\u2013" + l + " at " + esc(s) + (p ? " (" + p + ")" : "") +
+      (h && h.hired < 2023 ? ' <span style="color:var(--ink-3)">· full tenure since ' + h.hired + "</span>" : "");
+  }
+  function cxhStrip(s) {
+    var h = (DATA.coach_hist || {})[s]; if (!h || !h.seasons.length) return "";
+    return '<div class="cxh-strip">' + h.seasons.map(function (x) {
+      return '<span class="cxh-y"><b>' + x.y + "</b>" + esc(x.rec).replace("-", "\u2013") +
+        (x.po ? '<span class="cxh-po">' + esc(cxpo(x.po)) + "</span>" : (x.now ? '<span class="cxh-po">so far</span>' : "")) +
+        "</span>";
+    }).join("") + "</div>";
+  }
+  function cxhHL(s) {
+    var h = (DATA.coach_hist || {})[s]; if (!h || (!h.high.length && !h.low.length)) return "";
+    return '<div class="cxh-hl">' +
+      h.high.map(function (t) { return '<div class="cxh-hi">\u25B2 ' + esc(t) + "</div>"; }).join("") +
+      h.low.map(function (t) { return '<div class="cxh-lo">\u25BC ' + esc(t) + "</div>"; }).join("") + "</div>";
+  }
   function band(h) { return h.heat >= 34 ? "hot" : h.heat >= 20 ? "warm" : "watch"; }
   function bandLabel(h) { return h.heat >= 34 ? "Hot" : h.heat >= 20 ? "Warm" : "Watch"; }
   document.getElementById("cview-seat").innerHTML =
@@ -7091,9 +7128,9 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         '</div><div class="lab">' + bandLabel(h) + "</div></div>" +
         '<div><div class="who">' + esc(h.coach) + ' <span style="color:var(--ink-3);font-weight:400">· ' +
         esc(h.school) + " " + h.cls + "</span></div>" +
-        '<div class="det">' + why.join(" · ") + "</div>" +
-        '<div class="why">2025: ' + h.h25 + " · 2023: " + h.h23 + " · currently " + h.cur +
-        " · rated #" + h.rank + " statewide</div></div></div>";
+        '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
+        cxhStrip(h.school) + cxhHL(h.school) +
+        '<div class="why">rated #' + h.rank + " statewide</div></div></div>";
     }).join("") + "</div>" +
     '<h3 class="divhead" style="margin-top:26px">Early pressure<span>' +
     HOT.filter(function (h) { return h.stage === "early"; }).length +
@@ -7105,8 +7142,9 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         '</div><div class="lab">Early</div></div>' +
         '<div><div class="who">' + esc(h.coach) + ' <span style="color:var(--ink-3);font-weight:400">· ' +
         esc(h.school) + " " + h.cls + "</span></div>" +
-        '<div class="det">year ' + h.yrs + " at the school, " + h.w + "–" + h.l + " there</div>" +
-        '<div class="why">2025: ' + h.h25 + " · currently " + h.cur + " · rated #" + h.rank + " statewide</div></div></div>";
+        '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
+        cxhStrip(h.school) + cxhHL(h.school) +
+        '<div class="why">rated #' + h.rank + " statewide</div></div></div>";
     }).join("") + "</div>";
 
   /* ================= PLAYERS ================= */
