@@ -1318,6 +1318,26 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
   border-radius:2px;flex:none;font-family:var(--f-display);font-size:8.5px;font-weight:600;
   letter-spacing:.02em;color:#fff;line-height:1;overflow:hidden}
 .cmark{position:relative}
+/* college pipeline (Oct 10 2026) */
+.cp-sum{font-size:13px;color:var(--muted);margin:4px 0 12px}
+.cp-tbl td,.cp-tbl th{vertical-align:middle}
+.cp-yrs{display:inline-flex;align-items:flex-end;gap:2px;height:26px}
+.cp-yrs i{display:block;width:7px;background:var(--steel);border-radius:1px 1px 0 0;min-height:1px;opacity:.85}
+.cp-yrs i.z{background:var(--line);opacity:1}
+.cp-dest{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.cp-dest span.n{font-size:12px;color:var(--muted);margin-left:2px}
+.cp-dest .d{display:inline-flex;align-items:center}
+.cp-more{background:none;border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-size:12px;cursor:pointer;color:var(--ink)}
+.cp-detail td{background:var(--surface-2);padding:8px 12px}
+.cp-pl{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px 14px;font-size:13px}
+.cp-pl div{display:flex;gap:6px;align-items:center}
+.cp-pl small{color:var(--muted)}
+.cp-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin-top:8px}
+.cp-col{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:13px}
+.cp-col b{font-size:14px}
+.cp-col small{display:block;color:var(--muted);margin-top:3px;line-height:1.35}
+@media(max-width:720px){.cp-hide{display:none}}
+
 .cmark img{width:24px;height:24px;object-fit:contain;display:block;
   position:absolute;inset:0;background:transparent;border-radius:2px}
 .cmark img.ok{background:var(--surface)}
@@ -2578,6 +2598,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   <section id="v-stats" hidden></section>
   <section id="v-players" hidden></section>
   <section id="v-coach" hidden></section>
+  <section id="v-cpipe" hidden></section>
   <section id="v-crank" hidden></section>
   <section id="v-caro" hidden></section>
   <section id="v-seat" hidden></section>
@@ -6975,6 +6996,137 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         '<div class="crsc mono">' + c.score.toFixed(1) + "</div></div>";
     }).join("") + "</div>";
 
+  /* ---- COLLEGE PIPELINE (Brandon, Oct 10 2026) --------------------------------
+     Which schools send players to college, and where. Every Utah commitment on the
+     247Sports commit board since the 2016 class; counted here so the filters work. */
+  (function () {
+    var CP = DATA.cpipe || { rows: [], levels: {}, years: [] };
+    var el = document.getElementById("v-cpipe");
+    if (!el) return;
+    var YRS = CP.years || [];
+    var TB = {}; T.forEach(function (t) { TB[t.school] = t; });
+    var st = { cls: "ALL", reg: "", yr: "all", lv: "", q: "", open: {} };
+    var last = YRS.length ? YRS[YRS.length - 1] : 0;
+    var yrOpts = [["all", "Every class " + (YRS[0] || "") + "–" + last],
+                  ["5", "Last 5 classes"], ["3", "Last 3 classes"]].concat(
+      YRS.slice().reverse().map(function (y) { return [String(y), "Class of " + y]; }));
+    var LV = { "": "All levels", FBS: "FBS", FCS: "FCS", OTHER: "D2, NAIA, JUCO" };
+    el.innerHTML =
+      '<div class="panel" style="margin-bottom:14px"><h2>College pipeline</h2>' +
+      '<p class="lede">Which Utah high schools send the most players on to college football, and where they go. Every commitment on the <a href="https://247sports.com/season/' + last + '-football/commits/?RecruitState=UT" target="_blank" rel="noopener">247Sports Utah commit board</a> from the class of ' + (YRS[0] || "") + ' on, matched to the school he played for. A player who changed his mind counts once, at the school he finally picked.</p>' +
+      '<p class="lede">What it misses: 247 tracks scholarship-level recruiting well and the smaller levels poorly, so Division II, NAIA, junior college and walk-ons are badly undercounted here. A school with a short list may have sent plenty of kids on to play. The current class is still filling in. Levels are each college’s NCAA division today.</p></div>' +
+      '<div class="controls"><div class="seg" id="cpcls">' +
+        ["ALL"].concat(DIVS).map(function (d) {
+          return '<button data-c="' + d + '" aria-pressed="' + (d === "ALL") + '">' + (d === "ALL" ? "All" : d) + "</button>"; }).join("") +
+      '</div><select id="cpreg" aria-label="Region"><option value="">All regions</option>' +
+        REGIONS.map(function (r) { return '<option value="' + esc(r) + '">' + esc(r) + "</option>"; }).join("") + "</select>" +
+      '<select id="cpyr" aria-label="Classes">' + yrOpts.map(function (o) {
+          return '<option value="' + o[0] + '">' + esc(o[1]) + "</option>"; }).join("") + "</select>" +
+      '<select id="cplv" aria-label="Level">' + Object.keys(LV).map(function (k) {
+          return '<option value="' + k + '">' + LV[k] + "</option>"; }).join("") + "</select>" +
+      '<input type="search" id="cpq" placeholder="Search school, college or player" aria-label="Search school, college or player"></div>' +
+      '<div class="cp-sum" id="cpsum"></div>' +
+      '<div class="tablewrap"><table class="cp-tbl"><thead><tr><th>#</th><th>School</th>' +
+      '<th class="num">College players</th><th class="num">FBS</th><th class="num cp-hide">4★+</th>' +
+      '<th class="cp-hide">By class</th><th>Where they go</th><th></th></tr></thead><tbody id="cpbody"></tbody></table></div>' +
+      '<div class="panel" style="margin-top:16px"><h2>Where they go</h2><p class="lede">The colleges taking the most players from the schools in this view, and who feeds them.</p><div class="cp-cols" id="cpcol"></div></div>';
+
+    function lvOf(c) { return (CP.levels || {})[c] || ""; }
+    function pick() {
+      var yset = null;
+      if (st.yr === "5" || st.yr === "3") yset = YRS.slice(-parseInt(st.yr, 10));
+      else if (st.yr !== "all") yset = [parseInt(st.yr, 10)];
+      var q = st.q;
+      return CP.rows.filter(function (r) {
+        var t = TB[r[2]] || {};
+        if (st.cls !== "ALL" && t.cls !== st.cls) return false;
+        if (st.reg && t.region !== st.reg) return false;
+        if (yset && yset.indexOf(r[0]) < 0) return false;
+        var lv = lvOf(r[4]);
+        if (st.lv === "FBS" || st.lv === "FCS") { if (lv !== st.lv) return false; }
+        else if (st.lv === "OTHER" && (lv === "FBS" || lv === "FCS")) return false;
+        if (q && (r[1] + " " + r[2] + " " + r[4]).toLowerCase().indexOf(q) < 0) return false;
+        return true;
+      });
+    }
+    function stars(n) { return n > 0 ? '<small style="color:var(--sodium)">' + new Array(n + 1).join("★") + "</small>" : ""; }
+    function draw() {
+      var R = pick(), by = {}, col = {};
+      R.forEach(function (r) {
+        (by[r[2]] = by[r[2]] || []).push(r);
+        (col[r[4]] = col[r[4]] || []).push(r);
+      });
+      var schools = Object.keys(by).map(function (s) {
+        var L = by[s];
+        return { s: s, L: L, n: L.length,
+                 fbs: L.filter(function (r) { return lvOf(r[4]) === "FBS"; }).length,
+                 top: L.filter(function (r) { return r[5] >= 4; }).length };
+      }).sort(function (a, b) { return b.n - a.n || b.fbs - a.fbs || b.top - a.top || a.s.localeCompare(b.s); });
+      document.getElementById("cpsum").textContent = R.length + " college commitments from " + schools.length +
+        " schools to " + Object.keys(col).length + " colleges";
+      var mx = 1, ys = (st.yr === "all" || st.yr === "5" || st.yr === "3") ?
+        (st.yr === "all" ? YRS : YRS.slice(-parseInt(st.yr, 10))) : [parseInt(st.yr, 10)];
+      schools.forEach(function (o) { ys.forEach(function (y) {
+        var k = o.L.filter(function (r) { return r[0] === y; }).length; if (k > mx) mx = k; }); });
+      var rank = 0, prev = null;
+      document.getElementById("cpbody").innerHTML = schools.length ? schools.map(function (o, i) {
+        if (o.n !== prev) { rank = i + 1; prev = o.n; }
+        var t = TB[o.s] || {}, dc = {};
+        o.L.forEach(function (r) { dc[r[4]] = (dc[r[4]] || 0) + 1; });
+        var dest = Object.keys(dc).sort(function (a, b) { return dc[b] - dc[a] || a.localeCompare(b); });
+        var bars = ys.map(function (y) {
+          var k = o.L.filter(function (r) { return r[0] === y; }).length;
+          return '<i class="' + (k ? "" : "z") + '" style="height:' + (k ? Math.max(3, Math.round(26 * k / mx)) : 2) +
+            'px" title="Class of ' + y + ": " + k + '"></i>'; }).join("");
+        var openRow = st.open[o.s];
+        var row = "<tr><td class=\"mono\">" + rank + "</td>" +
+          '<td><a href="#" data-t="' + esc(o.s) + '" style="display:flex;gap:8px;align-items:center;color:inherit;text-decoration:none">' +
+          logo(o.s) + "<span><b>" + esc(o.s) + "</b><small style=\"display:block;color:var(--muted)\">" +
+          esc((t.cls || "") + (t.region ? " · " + t.region : "")) + "</small></span></a></td>" +
+          '<td class="num mono"><b>' + o.n + "</b></td><td class=\"num mono\">" + o.fbs + "</td>" +
+          '<td class="num mono cp-hide">' + o.top + "</td>" +
+          '<td class="cp-hide"><span class="cp-yrs">' + bars + "</span></td>" +
+          '<td><div class="cp-dest">' + dest.slice(0, 5).map(function (c) {
+            return '<span class="d" title="' + esc(c) + '">' + collegeMark(c) + '<span class="n">' + dc[c] + "</span></span>"; }).join("") +
+          (dest.length > 5 ? '<span class="n">+' + (dest.length - 5) + "</span>" : "") + "</div></td>" +
+          '<td><button class="cp-more" data-cps="' + esc(o.s) + '">' + (openRow ? "Hide" : "Players") + "</button></td></tr>";
+        if (openRow) {
+          row += '<tr class="cp-detail"><td colspan="8"><div class="cp-pl">' + o.L.slice().sort(function (a, b) {
+            return b[0] - a[0] || a[4].localeCompare(b[4]); }).map(function (r) {
+              return "<div>" + collegeMark(r[4]) + "<span>" +
+                (r[6] ? '<a href="' + esc(r[6]) + '" target="_blank" rel="noopener">' + esc(r[1]) + "</a>" : esc(r[1])) +
+                " " + stars(r[5]) + "<small> · " + r[0] + (r[3] ? " · " + esc(r[3]) : "") + " · " + esc(r[4]) +
+                (lvOf(r[4]) ? " (" + lvOf(r[4]) + ")" : "") + "</small></span></div>"; }).join("") + "</div></td></tr>";
+        }
+        return row;
+      }).join("") : '<tr><td colspan="8" style="color:var(--muted);padding:14px">No commitments on file for this view.</td></tr>';
+      var cols = Object.keys(col).sort(function (a, b) { return col[b].length - col[a].length || a.localeCompare(b); });
+      document.getElementById("cpcol").innerHTML = cols.slice(0, 24).map(function (c) {
+        var f = {}; col[c].forEach(function (r) { f[r[2]] = (f[r[2]] || 0) + 1; });
+        var fs = Object.keys(f).sort(function (a, b) { return f[b] - f[a] || a.localeCompare(b); });
+        return '<div class="cp-col"><div style="display:flex;gap:8px;align-items:center">' + collegeMark(c) +
+          "<b>" + esc(c) + "</b><span class=\"mono\" style=\"margin-left:auto\">" + col[c].length + "</span></div>" +
+          "<small>" + esc(lvOf(c) || "level not on file") + " · " + fs.slice(0, 4).map(function (s) {
+            return esc(s) + " " + f[s]; }).join(", ") + (fs.length > 4 ? ", +" + (fs.length - 4) + " more" : "") + "</small></div>";
+      }).join("") + (cols.length > 24 ? '<div class="cp-col"><small>+' + (cols.length - 24) + " more colleges with fewer players</small></div>" : "");
+    }
+    document.getElementById("cpcls").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-c]"); if (!b) return;
+      st.cls = b.dataset.c;
+      [].forEach.call(this.querySelectorAll("button"), function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      draw();
+    });
+    document.getElementById("cpreg").addEventListener("change", function () { st.reg = this.value; draw(); });
+    document.getElementById("cpyr").addEventListener("change", function () { st.yr = this.value; draw(); });
+    document.getElementById("cplv").addEventListener("change", function () { st.lv = this.value; draw(); });
+    document.getElementById("cpq").addEventListener("input", function () { st.q = this.value.trim().toLowerCase(); draw(); });
+    document.getElementById("cpbody").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-cps]"); if (!b) return;
+      st.open[b.dataset.cps] = !st.open[b.dataset.cps]; draw();
+    });
+    draw();
+  })();
+
   /* ---- coaches rankings filters (Brandon, Oct 10: same filters as Programs) ---- */
   (function () {
     var cc = "ALL", cr = "", cq = "";
@@ -8253,7 +8405,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         ["recruit", "Commitments"]] },
     { id: "programs", label: "Programs", views: [
         ["breakdown", "All 106"],
-        ["coach", "Coaches Stats"],
+        ["coach", "Coaches Stats"], ["cpipe", "College Pipeline"],
         ["caro", "Carousel"], ["seat", "Hot Seat"],
         ["xfer", "Transfers"]] },
     // Brandon, Sep 14: "we want a realignment tab as its own, its going to be
