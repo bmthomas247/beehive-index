@@ -6946,9 +6946,21 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     '<div class="panel" style="margin-bottom:14px"><h2>Coaches rankings</h2>' +
     '<p class="lede">Every head coach in the state, best first, from his own record: career win percentage (pulled toward .500 so a short career cannot top the list) 30%, <strong>playoff success</strong> 20% &mdash; how deep his teams went from 2022 to 2025 and every playoff win &mdash; this season 15%, his last three seasons at the school 15%, <strong>state titles</strong> 10%, and his team\'s chance of making this year\'s playoffs 10% &mdash; left out entirely in 1A, 2A and 3A, where every team makes the playoffs and getting in proves nothing. Seasons at a school before he was hired are not his and do not count.</p>' +
     '<p class="lede">This measures results, not coaching. It cannot see a man who took over a program with 22 players and got it to competitive, and it rewards the classifications and communities where winning is easier. Read it as a record of what has happened, not a verdict on who is good at the job.</p></div>' +
+    '<div class="controls"><div class="seg" id="crcls">' +
+      ["ALL"].concat(DIVS).map(function (d) {
+        return '<button data-c="' + d + '" aria-pressed="' + (d === "ALL") + '">' + (d === "ALL" ? "All" : d) + "</button>";
+      }).join("") + "</div>" +
+      '<select id="crreg" aria-label="Region"><option value="">All regions</option>' +
+      REGIONS.map(function (r) { return '<option value="' + esc(r) + '">' + esc(r) + "</option>"; }).join("") +
+      "</select>" +
+      '<input type="search" id="crq" placeholder="Search school or coach" aria-label="Search school or coach">' +
+      '<span class="hint" id="crhint">Click any row for the full card</span></div>' +
     '<div class="crgrid">' + CR.map(function (c) {
       var w = crMax > crMin ? Math.round(((c.score - crMin) / (crMax - crMin)) * 100) : 50;
-      return '<div class="crrow" data-t="' + esc(c.school) + '">' +
+      var _tm = T.filter(function (t) { return t.school === c.school; })[0] || {};
+      return '<div class="crrow" data-t="' + esc(c.school) + '" data-cls="' + esc(c.cls) +
+        '" data-reg="' + esc(_tm.region || "") + '" data-q="' +
+        esc((c.coach + " " + c.school + " " + (_tm.city || "") + " " + (c.stops || "")).toLowerCase()) + '">' +
         '<div class="crno mono' + (c.crank <= 10 ? " top" : "") + '">' + c.crank + "</div>" +
         '<div><div class="crname">' + esc(c.coach) +
         '<span class="crteam" > · ' + esc(c.school) + " " + esc(c.cls) + "</span></div>" +
@@ -6962,6 +6974,31 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         '<div class="crbar"><i style="width:' + w + '%"></i></div>' +
         '<div class="crsc mono">' + c.score.toFixed(1) + "</div></div>";
     }).join("") + "</div>";
+
+  /* ---- coaches rankings filters (Brandon, Oct 10: same filters as Programs) ---- */
+  (function () {
+    var cc = "ALL", cr = "", cq = "";
+    function apply() {
+      var shown = 0;
+      [].forEach.call(document.querySelectorAll("#cview-rank .crrow"), function (el) {
+        var ok = (cc === "ALL" || el.dataset.cls === cc) && (!cr || el.dataset.reg === cr) &&
+                 (!cq || el.dataset.q.indexOf(cq) >= 0);
+        el.style.display = ok ? "" : "none"; if (ok) shown++;
+      });
+      document.getElementById("crhint").textContent = shown === CR.length ?
+        "Click any row for the full card" : shown + " of " + CR.length + " coaches · # is statewide";
+    }
+    document.getElementById("crcls").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-c]"); if (!b) return;
+      cc = b.dataset.c;
+      [].forEach.call(this.querySelectorAll("button"), function (x) {
+        x.setAttribute("aria-pressed", String(x === b)); });
+      apply();
+    });
+    document.getElementById("crreg").addEventListener("change", function () { cr = this.value; apply(); });
+    document.getElementById("crq").addEventListener("input", function () {
+      cq = this.value.trim().toLowerCase(); apply(); });
+  })();
 
   /* ---- coaches view switcher ---- */
   document.getElementById("cviewseg").addEventListener("click", function (e) {
@@ -8208,7 +8245,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     // for where his son ranks and a coach looking for where his program ranks
     // were both being sent to the same table, and only one of them was there.
     { id: "rank", label: "Rankings", views: [
-        ["rank", "Programs"], ["prank", "Players"]] },
+        ["rank", "Programs"], ["prank", "Players"], ["crank", "Coaches"]] },
     { id: "leaders", label: "Stats", views: [
         ["stats", "Stats"], ["history", "History"]] },
     { id: "people", label: "Player Search", views: [
@@ -8216,7 +8253,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         ["recruit", "Commitments"]] },
     { id: "programs", label: "Programs", views: [
         ["breakdown", "All 106"],
-        ["coach", "Coaches Stats"], ["crank", "Coaches Rankings"],
+        ["coach", "Coaches Stats"],
         ["caro", "Carousel"], ["seat", "Hot Seat"],
         ["xfer", "Transfers"]] },
     // Brandon, Sep 14: "we want a realignment tab as its own, its going to be
