@@ -1318,6 +1318,64 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
   border-radius:2px;flex:none;font-family:var(--f-display);font-size:8.5px;font-weight:600;
   letter-spacing:.02em;color:#fff;line-height:1;overflow:hidden}
 .cmark{position:relative}
+/* ===== playoff machine (Oct 11 2026) ===== */
+.pm{background:#0d1117;color:#e6e8eb;border-radius:12px;padding:14px;margin-top:4px;
+  background-image:radial-gradient(ellipse at 50% 0%,#1d2a3d 0%,#0d1117 65%)}
+.pm a{color:#9ec5ff}
+.pm-hd{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.pm-logo{font-weight:800;letter-spacing:.06em;font-size:18px;padding:6px 12px;border:1px solid #2c3a4f;border-radius:6px;
+  background:linear-gradient(#1b2433,#121822)}
+.pm-logo b{color:var(--sodium,#d6a531)}
+.pm-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.pm-tabs button{background:#1a2230;color:#aab3bf;border:1px solid #2a3647;border-radius:6px 6px 0 0;padding:6px 11px;font-size:12px;cursor:pointer}
+.pm-tabs button[aria-pressed="true"]{background:#e6e8eb;color:#0d1117;font-weight:700}
+.pm-cls button{border-radius:999px}
+.pm-act{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.pm-act button{background:#1a2230;color:#e6e8eb;border:1px solid #33435a;border-radius:6px;padding:6px 10px;font-size:12px;cursor:pointer}
+.pm-act button:hover{border-color:#6c86a8}
+.pm-games{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:6px;background:#121822;border:1px solid #232f40;border-radius:0 8px 8px 8px;padding:8px}
+.pm-g{background:linear-gradient(#202a39,#161d29);border:1px solid #2c394c;border-radius:6px;padding:5px 6px;font-size:12px}
+.pm-g .row{display:grid;grid-template-columns:1fr 18px 1fr;align-items:center;gap:2px}
+.pm-g .tm{display:flex;align-items:center;gap:5px;padding:4px;border-radius:4px;border:1px solid transparent;min-width:0}
+.pm-g .tm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pm-g .tm.h{justify-content:flex-end;text-align:right}
+.pm-g .tm.pick{cursor:pointer}
+.pm-g .tm.pick:hover{border-color:#4b6283}
+.pm-g .tm.win{background:#2f6f3e;border-color:#3f9152;color:#fff;font-weight:700}
+.pm-g .tm.lose{opacity:.38}
+.pm-g .at{text-align:center;color:#6f7c8d;font-size:10px}
+.pm-g .st{text-align:center;font-size:9px;letter-spacing:.08em;color:#7e8a99;margin-top:2px}
+.pm-g .st.you{color:#ffd166}
+.pm-g.fin .tm.win{background:#2b3442;border-color:#3b495c}
+.pm-empty{color:#7e8a99;padding:10px;font-size:13px}
+.pm-br{margin:16px 0 6px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:center;min-height:420px}
+.pm-col{display:flex;flex-direction:column;justify-content:space-around;height:100%;gap:6px}
+.pm-m{background:#161d29;border:1px solid #2c394c;border-radius:6px;overflow:hidden}
+.pm-s{display:flex;align-items:center;gap:5px;padding:4px 6px;font-size:11.5px;cursor:pointer;min-height:24px}
+.pm-s+.pm-s{border-top:1px solid #253144}
+.pm-s i.sd{font-style:normal;color:#7e8a99;width:16px;text-align:right;font-size:10px}
+.pm-s span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pm-s.w{background:#2f6f3e;color:#fff;font-weight:700}
+.pm-s.l{opacity:.45}
+.pm-s.bye{color:#5d6876;cursor:default;font-style:italic}
+.pm-s.tbd{color:#5d6876;cursor:default}
+.pm-mid{text-align:center}
+.pm-mid svg{width:74px;height:110px;display:block;margin:0 auto 6px}
+.pm-mid .cap{font-size:10px;letter-spacing:.14em;color:#aab3bf}
+.pm-mid .ch{font-size:16px;font-weight:800;margin-top:6px;color:#ffd166;min-height:22px}
+.pm-rh{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;font-size:10px;letter-spacing:.1em;color:#7e8a99;text-align:center;margin-top:14px}
+.pm-st{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px;margin-top:14px}
+.pm-reg{background:#f4f5f7;color:#1b2230;border-radius:6px;overflow:hidden}
+.pm-reg h4{margin:0;background:#26303f;color:#fff;font-size:12px;padding:6px 8px;letter-spacing:.04em}
+.pm-reg table{width:100%!important;min-width:0!important;border-collapse:collapse;font-size:12px}
+.pm-reg th{font-size:10px;color:#6b7686;text-align:left;padding:4px 8px;font-weight:600}
+.pm-reg td{padding:4px 8px;border-top:1px solid #e3e6ea}
+.pm-reg td.pmn,.pm-reg th.pmn{text-align:right}
+.pm-reg tr.in td{font-weight:700}
+.pm-reg tr.out td{color:#8b95a3}
+.pm-note{font-size:12px;color:#9aa5b3;margin-top:10px;line-height:1.5}
+@media(max-width:820px){.pm-br{grid-template-columns:1fr;min-height:0}.pm-rh{display:none}.pm-col{height:auto}.pm-mid{order:-1}}
+
 .osrc{font-style:normal;font-size:9px;font-weight:700;letter-spacing:.03em;margin-left:5px;padding:1px 4px;border-radius:3px;vertical-align:1px}
 .osrc.s247{background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line)}
 .osrc.sx{background:#111;color:#fff}
@@ -2612,6 +2670,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   <section id="v-caro" hidden></section>
   <section id="v-seat" hidden></section>
   <section id="v-xfer" hidden></section>
+  <section id="v-pmach" hidden></section>
   <section id="v-realign" hidden></section>
 
 
@@ -7015,6 +7074,166 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         '<div class="crsc mono">' + c.score.toFixed(1) + "</div></div>";
     }).join("") + "</div>";
 
+  /* ---- PLAYOFF MACHINE (Brandon, Oct 11 2026) --------------------------------
+     Pick the rest of the season; RPI, the field, seeds and bracket recompute the
+     way playoffs.py does it (UHSAA: 0.45 WP + 0.45 OWP + 0.10 OOWP, top 16 per
+     classification, 1v16 ... 2v15). Out-of-state and non-11-man opponents count
+     .500, as in our projection. Nothing here is saved anywhere but this page. */
+  (function () {
+    var PM = DATA.pmach || { games: [], teams: {} };
+    var el = document.getElementById("v-pmach");
+    if (!el || !PM.games.length) return;
+    var TM = PM.teams, G = PM.games, SPOTS = 16;
+    var R1 = [[1, 16], [8, 9], [5, 12], [4, 13], [6, 11], [3, 14], [7, 10], [2, 15]];
+    var weeks = Array.from(new Set(G.map(function (g) { return g[0]; }))).filter(Boolean).sort(function (a, b) { return a - b; });
+    var firstOpen = weeks.filter(function (w) { return G.some(function (g) { return g[0] === w && !g[6]; }); })[0] || weeks[weeks.length - 1];
+    var st = { cls: "6A", wk: firstOpen, picks: {}, bp: {} };
+    function inCls(t) { return TM[t] && TM[t][0] === st.cls; }
+    function phi(x) { var t = 1 / (1 + 0.2316419 * Math.abs(x)), d = 0.3989423 * Math.exp(-x * x / 2);
+      var p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274)))); return x > 0 ? 1 - p : p; }
+    function rateOf(t) { return TM[t] ? TM[t][3] : ((PM.oos || {})[t] || 0); }
+    function short(t) { return TM[t] && TM[t][2] ? TM[t][2] : t; }
+    // hash: #pm=<idx><a|h>,...
+    try { var hm = (location.hash.match(/pm=([0-9a-z,]+)/) || [])[1];
+      if (hm) hm.split(",").forEach(function (x) { var m = x.match(/^([0-9a-z]+)([ah])$/); if (m) st.picks[parseInt(m[1], 36)] = m[2]; }); } catch (e) {}
+    function results() {
+      var out = [];
+      G.forEach(function (g, i) {
+        var a = g[2], h = g[3];
+        if (g[6]) {
+          if (g[7]) { out.push(g[7] === a ? [a, h] : [h, a]); return; }
+          var as = parseFloat(g[4]), hs = parseFloat(g[5]);
+          if (hs > as) out.push([h, a]); else if (as > hs) out.push([a, h]);
+        } else if (st.picks[i]) out.push(st.picks[i] === "h" ? [h, a] : [a, h]);
+      });
+      return out;
+    }
+    function rpi(res) {
+      var w = {}, l = {}, opp = {};
+      res.forEach(function (r) { var a = r[0], b = r[1];
+        w[a] = (w[a] || 0) + 1; l[b] = (l[b] || 0) + 1;
+        (opp[a] = opp[a] || []).push([b, 1]); (opp[b] = opp[b] || []).push([a, 0]); });
+      function wpEx(t, ex) {
+        if (!TM[t]) return 0.5;
+        var ww = (w[t] || 0), ll = (l[t] || 0);
+        (opp[t] || []).forEach(function (o) { if (o[0] === ex) { if (o[1]) ww--; else ll--; } });
+        return ww + ll ? ww / (ww + ll) : 0.5;
+      }
+      var owp = {}, out = {};
+      Object.keys(TM).forEach(function (t) { var os = opp[t] || [];
+        owp[t] = os.length ? os.reduce(function (s, o) { return s + wpEx(o[0], t); }, 0) / os.length : 0.5; });
+      Object.keys(TM).forEach(function (t) { var n = (w[t] || 0) + (l[t] || 0), os = opp[t] || [];
+        var wp = n ? (w[t] || 0) / n : 0.5;
+        var oo = os.length ? os.reduce(function (s, o) { return s + (owp[o[0]] === undefined ? 0.5 : owp[o[0]]); }, 0) / os.length : 0.5;
+        out[t] = { rpi: 0.45 * wp + 0.45 * owp[t] + 0.10 * oo, w: w[t] || 0, l: l[t] || 0 }; });
+      return out;
+    }
+    var TROPHY = '<svg viewBox="0 0 74 110" aria-hidden="true"><defs><linearGradient id="pmg" x1="0" x2="1"><stop offset="0" stop-color="#8a6a1c"/><stop offset=".5" stop-color="#f3d27a"/><stop offset="1" stop-color="#8a6a1c"/></linearGradient></defs>' +
+      '<path d="M14 6h46v14c0 17-10 30-23 32C24 50 14 37 14 20z" fill="url(#pmg)"/><path d="M14 12H4c0 14 6 22 14 24M60 12h10c0 14-6 22-14 24" fill="none" stroke="#d9b45a" stroke-width="3"/>' +
+      '<rect x="32" y="52" width="10" height="20" fill="url(#pmg)"/><path d="M22 72h30l4 12H18z" fill="url(#pmg)"/><rect x="12" y="84" width="50" height="16" rx="2" fill="#2a2f38" stroke="#d9b45a"/>' +
+      '<text x="37" y="95" text-anchor="middle" font-size="7" fill="#f3d27a" font-family="sans-serif" letter-spacing="1">STATE</text></svg>';
+    el.innerHTML = '<div class="pm"><div class="pm-hd"><div class="pm-logo">UTAH <b>PLAYOFF</b> MACHINE</div>' +
+      '<div class="pm-tabs pm-cls" id="pmcls">' + DIVS.map(function (c) { return '<button data-c="' + c + '" aria-pressed="' + (c === st.cls) + '">' + c + "</button>"; }).join("") + "</div>" +
+      '<div class="pm-act"><button id="pmfav">Pick favorites</button><button id="pmclr">Clear my picks</button><button id="pmshare">Copy link</button></div></div>' +
+      '<div class="pm-tabs" id="pmwk"></div><div class="pm-games" id="pmgames"></div>' +
+      '<div class="pm-rh"><div>First round</div><div>Quarterfinals</div><div>Semifinals</div><div>State final</div><div>Semifinals</div><div>Quarterfinals</div><div>First round</div></div>' +
+      '<div class="pm-br" id="pmbr"></div><div class="pm-st" id="pmst"></div>' +
+      '<p class="pm-note">Click a team in any game still to be played to pick it; click again to clear. Then click through the bracket. RPI is UHSAA’s published formula (0.45 own win%, 0.45 opponents’, 0.10 opponents’ opponents’), win-loss only. What we cannot copy, and say so: UHSAA’s classification adjustment to win%, and real records for out-of-state and non-11-man opponents, which count as .500 — so a seed here can differ from the official one by a spot. Top 16 by RPI in each classification make it; in 1A, 2A and 3A everyone does. Finals come from the Deseret News scoreboard. Your picks stay on this page; "Copy link" shares them.</p></div>';
+    function drawWeeks() {
+      document.getElementById("pmwk").innerHTML = weeks.map(function (w) {
+        var n = G.filter(function (g) { return g[0] === w && (inCls(g[2]) || inCls(g[3])); }).length;
+        return n ? '<button data-w="' + w + '" aria-pressed="' + (w === st.wk) + '">Week ' + w + "</button>" : "";
+      }).join("");
+    }
+    function tile(g, i) {
+      var a = g[2], h = g[3], pk = st.picks[i], fin = g[6], wa = false, wh = false;
+      if (fin) { if (g[7]) { wa = g[7] === a; wh = !wa; } else { wa = +g[4] > +g[5]; wh = +g[5] > +g[4]; } }
+      else if (pk) { wa = pk === "a"; wh = pk === "h"; }
+      function side(t, cls, won, sc) {
+        return '<div class="tm ' + cls + (fin ? "" : " pick") + (won ? " win" : (wa || wh) ? " lose" : "") + '" data-i="' + i + '" data-s="' + (cls === "h" ? "h" : "a") + '" title="' + esc(t) + '">' +
+          (cls === "h" ? "<span>" + (sc !== "" ? "<b>" + sc + "</b> " : "") + esc(short(t)) + "</span>" + logo(t) : logo(t) + "<span>" + esc(short(t)) + (sc !== "" ? " <b>" + sc + "</b>" : "") + "</span>") + "</div>";
+      }
+      var p = phi((rateOf(h) - rateOf(a) + PM.hfa) / PM.sd);
+      return '<div class="pm-g' + (fin ? " fin" : "") + '"><div class="row">' + side(a, "a", wa, fin ? g[4] : "") + '<div class="at">@</div>' + side(h, "h", wh, fin ? g[5] : "") + "</div>" +
+        '<div class="st' + (pk && !fin ? " you" : "") + '">' + (fin ? (g[7] ? "FORFEIT" : "FINAL") : pk ? "YOUR PICK" : esc(g[1].slice(5).replace("-", "/")) + " · " + (p >= 0.5 ? esc(short(h)) : esc(short(a))) + " " + Math.round(100 * Math.max(p, 1 - p)) + "%") + "</div></div>";
+    }
+    function drawGames() {
+      var L = []; G.forEach(function (g, i) { if (g[0] === st.wk && (inCls(g[2]) || inCls(g[3]))) L.push(tile(g, i)); });
+      document.getElementById("pmgames").innerHTML = L.join("") || '<div class="pm-empty">No ' + st.cls + " games this week.</div>";
+    }
+    function field(R) {
+      return Object.keys(TM).filter(inCls).sort(function (a, b) { return R[b].rpi - R[a].rpi; });
+    }
+    function drawRest() {
+      var R = rpi(results()), all = field(R), fld = all.slice(0, SPOTS), seedOf = {};
+      fld.forEach(function (t, i) { seedOf[t] = i + 1; });
+      var bp = st.bp[st.cls] = st.bp[st.cls] || {};
+      function slot(sd) { return sd <= fld.length ? fld[sd - 1] : null; }
+      function m(key, A, B) {   // A,B team names or null (bye) or undefined (tbd)
+        var w = bp[key];
+        if (A === null && B) w = B; else if (B === null && A) w = A;
+        if (w && w !== A && w !== B) { delete bp[key]; w = undefined; }
+        return { k: key, a: A, b: B, w: w };
+      }
+      var r1 = R1.map(function (p, i) { return m("r" + i, slot(p[0]), slot(p[1])); });
+      var qf = [0, 1, 2, 3].map(function (i) { return m("q" + i, r1[2 * i].w, r1[2 * i + 1].w); });
+      var sf = [0, 1].map(function (i) { return m("s" + i, qf[2 * i].w, qf[2 * i + 1].w); });
+      var fn = m("f", sf[0].w, sf[1].w);
+      function team(x, mm) {
+        if (x === null) return '<div class="pm-s bye"><i class="sd"></i><span>bye</span></div>';
+        if (!x) return '<div class="pm-s tbd"><i class="sd"></i><span>&nbsp;</span></div>';
+        return '<div class="pm-s' + (mm.w === x ? " w" : mm.w ? " l" : "") + '" data-k="' + mm.k + '" data-t="' + esc(x) + '" data-pm="1"><i class="sd">' + seedOf[x] + "</i>" + logo(x) + "<span>" + esc(x) + "</span></div>";
+      }
+      function box(mm) { return '<div class="pm-m">' + team(mm.a, mm) + team(mm.b, mm) + "</div>"; }
+      function col(list) { return '<div class="pm-col">' + list.map(box).join("") + "</div>"; }
+      document.getElementById("pmbr").innerHTML =
+        col(r1.slice(0, 4)) + col(qf.slice(0, 2)) + col(sf.slice(0, 1)) +
+        '<div class="pm-mid">' + TROPHY + '<div class="cap">' + esc(st.cls) + " STATE CHAMPIONSHIP</div>" + box(fn) +
+        '<div class="ch">' + (fn.w ? esc(fn.w) : "") + "</div></div>" +
+        col(sf.slice(1)) + col(qf.slice(2)) + col(r1.slice(4));
+      // standings by region
+      var regs = {};
+      Object.keys(TM).filter(inCls).forEach(function (t) { (regs[TM[t][1] || "Independent"] = regs[TM[t][1] || "Independent"] || []).push(t); });
+      var rank = {}; all.forEach(function (t, i) { rank[t] = i + 1; });
+      document.getElementById("pmst").innerHTML = Object.keys(regs).sort(function (a, b) {
+          var na = parseInt(a.replace(/\D/g, ""), 10), nb = parseInt(b.replace(/\D/g, ""), 10);
+          return (isNaN(na) || isNaN(nb)) ? a.localeCompare(b) : na - nb; }).map(function (rg) {
+        var L = regs[rg].sort(function (a, b) { return R[b].rpi - R[a].rpi; });
+        return '<div class="pm-reg"><h4>' + esc(rg) + "</h4><table><tr><th>Team</th><th class=\"pmn\">Record</th><th class=\"pmn\">RPI</th><th class=\"pmn\">Seed</th></tr>" +
+          L.map(function (t) { var s = seedOf[t];
+            return '<tr class="' + (s ? "in" : "out") + '"><td>' + esc(t) + '</td><td class="pmn">' + R[t].w + "–" + R[t].l +
+              '</td><td class="pmn">' + R[t].rpi.toFixed(4).slice(1) + '</td><td class="pmn">' + (s ? s : "#" + rank[t]) + "</td></tr>"; }).join("") + "</table></div>";
+      }).join("");
+    }
+    function drawAll() { drawWeeks(); drawGames(); drawRest(); }
+    el.addEventListener("click", function (e) {
+      var c = e.target.closest("#pmcls button[data-c]");
+      if (c) { st.cls = c.dataset.c; [].forEach.call(document.querySelectorAll("#pmcls button"), function (x) { x.setAttribute("aria-pressed", String(x === c)); });
+        if (!G.some(function (g) { return g[0] === st.wk && (inCls(g[2]) || inCls(g[3])); })) st.wk = firstOpen; drawAll(); return; }
+      var w = e.target.closest("#pmwk button[data-w]");
+      if (w) { st.wk = +w.dataset.w; drawAll(); return; }
+      var tm = e.target.closest(".pm-g .tm.pick");
+      if (tm) { var i = +tm.dataset.i, sd = tm.dataset.s;
+        if (st.picks[i] === sd) delete st.picks[i]; else st.picks[i] = sd; drawGames(); drawRest(); return; }
+      var bs = e.target.closest(".pm-s[data-pm]");
+      if (bs) { e.preventDefault(); e.stopPropagation(); var bp = st.bp[st.cls] = st.bp[st.cls] || {};
+        bp[bs.dataset.k] = bp[bs.dataset.k] === bs.dataset.t ? undefined : bs.dataset.t; drawRest(); return; }
+      if (e.target.id === "pmfav") {
+        G.forEach(function (g, i) { if (!g[6] && !st.picks[i] && (inCls(g[2]) || inCls(g[3])))
+          st.picks[i] = phi((rateOf(g[3]) - rateOf(g[2]) + PM.hfa) / PM.sd) >= 0.5 ? "h" : "a"; });
+        drawGames(); drawRest(); return; }
+      if (e.target.id === "pmclr") { G.forEach(function (g, i) { if (inCls(g[2]) || inCls(g[3])) delete st.picks[i]; }); st.bp[st.cls] = {}; drawGames(); drawRest(); return; }
+      if (e.target.id === "pmshare") {
+        var h = Object.keys(st.picks).map(function (i) { return (+i).toString(36) + st.picks[i]; }).join(",");
+        var u = location.href.split("#")[0] + "#pm=" + h;
+        try { navigator.clipboard.writeText(u); e.target.textContent = "Link copied"; } catch (x) { prompt("Copy this link", u); }
+        setTimeout(function () { e.target.textContent = "Copy link"; }, 1800);
+      }
+    }, true);
+    drawAll();
+    if (/pm=/.test(location.hash)) setTimeout(function () { window.goToView && window.goToView("pmach"); }, 0);
+  })();
+
   /* ---- COLLEGE PIPELINE (Brandon, Oct 10 2026) --------------------------------
      Which schools send players to college, and where. Every Utah commitment on the
      247Sports commit board since the 2016 class; counted here so the filters work. */
@@ -8466,6 +8685,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     // Brandon, Sep 14: "we want a realignment tab as its own, its going to be
     // a big topic for the next year." It was the seventh sub-tab under
     // Programs, which is where things go to not be found.
+    { id: "pmach", label: "Playoff Machine", views: [["pmach", "Playoff Machine"]] },
     { id: "realign", label: "Realignment", views: [["realign", "Realignment"]] },
     { id: "recruit101", label: "Recruiting Help", views: [["recruit101", "Recruiting Help"]] },
     { id: "send", label: "Send Info", views: [
