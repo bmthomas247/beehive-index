@@ -8031,6 +8031,14 @@ h3.qhow{ margin:18px 0 8px }
     return (t && t.rpi_official && t.rpi != null) ? Number(t.rpi).toFixed(3).replace(/^0/, "")
                                                   : '<span class="none">&mdash;</span>';
   }
+  // Net head-to-head wins of a over b this season (from teams[].results margins).
+  function stH2H(a, b) {
+    var t = STT[a], n = 0;
+    ((t && t.results) || []).forEach(function (g) {
+      if (g.opp === b && typeof g.margin === "number") n += g.margin > 0 ? 1 : g.margin < 0 ? -1 : 0;
+    });
+    return n;
+  }
   function stDivRow(r) {
     return '<tr data-t="' + esc(r.school) + '" style="cursor:pointer">' +
       '<td class="rk mono' + (r.pos <= 2 ? " top" : "") + '">' +
@@ -8055,24 +8063,45 @@ h3.qhow{ margin:18px 0 8px }
       STAND[c][reg].forEach(function (r) { rows.push(r); });
     });
     var pct = function (r) { return (r.w + r.l) ? r.w / (r.w + r.l) : 0; };
+    var byDiff = function (a, b) {
+      return (b.diff - a.diff) || ((a.rank || 999) - (b.rank || 999));
+    };
     rows.sort(function (a, b) {
-      return (pct(b) - pct(a)) || (b.w - a.w) || (b.diff - a.diff) ||
-             ((a.rank || 999) - (b.rank || 999));
+      return (pct(b) - pct(a)) || (b.w - a.w) || byDiff(a, b);
     });
-    rows = rows.map(function (r, i) {
+    // Same record: head to head first. A team is placed only once no remaining
+    // same-record team beat it; among those, point difference. A cycle
+    // (A beat B beat C beat A) falls back to point difference.
+    var out = [];
+    for (var i = 0; i < rows.length;) {
+      var j = i; while (j < rows.length && rows[j].w === rows[i].w && rows[j].l === rows[i].l) j++;
+      var grp = rows.slice(i, j);
+      while (grp.length) {
+        var free = grp.filter(function (x) {
+          return !grp.some(function (y) { return y !== x && stH2H(y.school, x.school) > 0; });
+        });
+        var pick = (free.length ? free : grp).slice().sort(byDiff)[0];
+        out.push(pick); grp.splice(grp.indexOf(pick), 1);
+      }
+      i = j;
+    }
+    rows = out.map(function (r, i) {
       var o = {}; for (var k in r) o[k] = r[k];
       o.pos = i + 1; return o;
     });
-    // Same W-L = tied. Order inside a tie is point difference; marked, not hidden.
+    // T- only where two adjacent teams share a record and have NOT played each
+    // other -- if they played, the winner is above and the rows are not tied.
     rows.forEach(function (r, i) {
-      var same = function (x) { return x && x.w === r.w && x.l === r.l; };
-      r.tied = same(rows[i - 1]) || same(rows[i + 1]);
-      if (same(rows[i - 1])) r.pos = rows[i - 1].pos;
+      var lvl = function (x) {
+        return x && x.w === r.w && x.l === r.l && stH2H(x.school, r.school) === 0;
+      };
+      r.tied = lvl(rows[i - 1]) || lvl(rows[i + 1]);
+      if (lvl(rows[i - 1])) r.pos = rows[i - 1].pos;
     });
     return '<h3 class="divhead" style="margin-top:22px">' + c +
       "<span>" + rows.length + " teams</span></h3>" +
       '<div class="stblock"><div class="sthead">' + c + " &mdash; whole division" +
-      "<em>ordered by overall win % &middot; ties by point difference &middot; RPI is UHSAA&rsquo;s official number, which seeds the bracket</em></div>" +
+      "<em>ordered by overall win % &middot; same record: head to head, then point difference &middot; T- = same record, haven&rsquo;t played &middot; RPI is UHSAA&rsquo;s official number, which seeds the bracket</em></div>" +
       '<div class="tablewrap"><table class="sttable stdiv"><thead><tr>' +
       "<th>#</th><th>Team</th><th class=\"num\">Overall</th><th class=\"num\">Region</th>" +
       "<th class=\"num\">PF</th><th class=\"num\">PA</th><th class=\"num\">Diff</th>" +
@@ -8411,51 +8440,17 @@ h3.qhow{ margin:18px 0 8px }
       'enrollment release &mdash; goes in the notebook at the bottom of this page as we learn ' +
       'it, with who said it.</p></div>' +
 
-      '<div class="grid cards" style="margin-bottom:16px">' +
-      [["Out of step on size", sup.length + sdn.length,
-        sup.length + " up, " + sdn.length + " down"],
-       ["Out of step on results", up.length + dn.length,
-        up.length + " up, " + dn.length + " down"],
-       ["Both agree", agree.length, "size and results together"],
-       ["Settled", hold.length - watch.length, "where they belong"]].map(function (c) {
-        return '<div class="card"><div class="k">' + c[0] + '</div><div class="v mono">' +
-          c[1] + '</div><div class="sub">' + c[2] + "</div></div>";
-      }).join("") + "</div>" +
-
-      (Object.keys(RCUT).length
-        ? '<h3 class="divhead">Where the lines fall<span>projected October 2026 count, ' +
-          'grades 11 and 12 &middot; the smallest program in each class</span></h3>' +
-          '<div class="enrwrap"><table class="enrtab"><thead><tr>' +
-          '<th>Class</th><th class="num">Programs</th>' +
-          '<th class="num">Smallest projected</th><th>Who sits on the line</th>' +
-          '</tr></thead><tbody>' +
-          ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) {
-            return RCUT[c] !== undefined;
-          }).map(function (c) {
-            var inC = RJ.filter(function (r) { return r.size_cls === c; });
-            var last = inC.reduce(function (a, b) {
-              return (a && a.size_rank > b.size_rank) ? a : b; }, null);
-            return "<tr><td><b>" + c + "</b></td>" +
-              '<td class="num mono">' + inC.length + "</td>" +
-              '<td class="num mono">' + rjn(RCUT[c]) + "</td>" +
-              "<td>" + (last ? logo(last.school, "sm") + esc(last.school) +
-                               ' <small style="color:var(--ink-3)">now ' +
-                               esc(last.cls) + "</small>" : "&mdash;") + "</td></tr>";
-          }).join("") + "</tbody></table></div>" +
-          "<p class='notbet'>These are <em>our</em> lines, not UHSAA&rsquo;s. They come from " +
-          "sorting every program by its projected count and cutting it into classes the " +
-          "size football uses today. UHSAA publishes its own at first consideration on " +
-          "November 19, and its class sizes may not match these.</p>"
-        : "") +
-
       '<h3 class="divhead" style="margin-top:26px">The calendar<span>placement in November, final in December, played in 2027</span></h3>' +
       '<div class="rtl">' + RAD.map(function (d) {
         return '<div class="rtlrow"><div class="rtld">' + esc(d[0]) +
           '</div><div class="rtlw">' + esc(d[1]) + "</div></div>";
       }).join("") + "</div>" +
 
-      '<h3 class="divhead" style="margin-top:26px">Where each program is heading' +
+      '<h3 class="divhead" style="margin-top:26px">Projected: where each program is heading' +
       '<span>' + show.length + ' shown &middot; click any card for the full team</span></h3>' +
+      "<p class='notbet'><strong>These are projections, not UHSAA decisions.</strong> They come from "+
+      "our enrollment and results model. UHSAA sets the real alignment (first consideration "+
+      "November 19, final in December).</p>" +
       '<div class="controls"><div class="seg" id="rjseg">' +
       [["move", "Results"], ["size", "Size"], ["agree", "Both agree"],
        ["up", "Up"], ["down", "Down"], ["watch", "Watching"]]
