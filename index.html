@@ -2459,6 +2459,21 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .uth{ margin-top:10px; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-3) }
 .uth + .utchips{ margin-top:6px; padding-top:0; border-top:0 }
 /* ---- recruiting calendar grid (Oct 11) ---- */
+.ctr{ position:absolute; opacity:0; pointer-events:none }
+.rcaltabs{ display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 2px }
+.rcaltabs label{ cursor:pointer; padding:6px 14px; border:1px solid var(--line); border-radius:999px;
+  font-family:var(--f-display); font-size:12px; font-weight:700; letter-spacing:.05em; color:var(--ink-2); background:var(--surface) }
+.rcaltabs label:hover{ border-color:var(--ink-3) }
+.csubs > .csub{ display:none }
+#rct0:checked ~ .csubs > .csub:nth-child(1), #rct1:checked ~ .csubs > .csub:nth-child(2),
+#rct2:checked ~ .csubs > .csub:nth-child(3), #rct3:checked ~ .csubs > .csub:nth-child(4),
+#rct4:checked ~ .csubs > .csub:nth-child(5){ display:block }
+#rct0:checked ~ .rcaltabs label[for=rct0], #rct1:checked ~ .rcaltabs label[for=rct1],
+#rct2:checked ~ .rcaltabs label[for=rct2], #rct3:checked ~ .rcaltabs label[for=rct3],
+#rct4:checked ~ .rcaltabs label[for=rct4]{ background:var(--ink); color:var(--surface); border-color:var(--ink) }
+.ctr:focus-visible + .ctr, .ctr:focus-visible ~ .rcaltabs{ outline:2px solid var(--sodium); outline-offset:2px }
+h4.rch{ display:flex; align-items:center; gap:10px }
+.rclogo{ width:30px; height:30px; object-fit:contain; flex:0 0 30px }
 .rcal{ margin-top:14px; border:1px solid var(--line-soft); background:var(--surface); padding:14px 16px }
 .rcal h3, h3.qhow{ font-family:var(--f-display); font-size:15px; font-weight:700; margin:0 0 4px }
 h3.qhow{ margin:18px 0 8px }
@@ -9061,9 +9076,12 @@ h3.qhow{ margin:18px 0 8px }
       function pk(s) { var a = s.split("-"); return (+a[0]) * 10000 + (+a[1]) * 100 + (+a[2]); }
       var mk = {};
       (cal.marks || []).forEach(function (m) { mk[pk(m[0])] = m[1]; });
+      var gmk = mk;
       var subs = cal.subs.map(function (s) {
         var rng = s.ranges.map(function (r) { return [pk(r[0]), pk(r[1]), r[2]]; });
-        var months = (cal.months || []).map(function (ym, mi) {
+        mk = gmk;
+        if (s.marks) { mk = {}; s.marks.forEach(function (m) { mk[pk(m[0])] = m[1]; }); }
+        var months = (s.months || cal.months || []).map(function (ym, mi) {
           var y = +ym.slice(0, 4), m = +ym.slice(5, 7) - 1;
           var first = new Date(Date.UTC(y, m, 1)).getUTCDay(), n = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
           var cells = "";
@@ -9078,13 +9096,20 @@ h3.qhow{ margin:18px 0 8px }
             '<div class="rcgrid">' + "SMTWTFS".split("").map(function (w) { return "<b>" + w + "</b>"; }).join("") + cells + "</div></div>";
         }).join("");
         return '<div class="csub"><div class="csh"><b>' + esc(s.k) + "</b>" + (s.note ? "<span>" + esc(s.note) + "</span>" : "") + "</div>" +
-          '<div class="cmons">' + months + "</div></div>";
+          '<div class="cmons">' + months + "</div>" +
+          (s.notes ? '<ul class="cnotes">' + s.notes.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>" : "") +
+          (s.src ? '<p class="csrc">' + s.src + "</p>" : "") + "</div>";
       }).join("");
+      var radios = "", tabs = "";
+      cal.subs.forEach(function (s, i) {
+        radios += '<input type="radio" class="ctr" name="rcaltab" id="rct' + i + '"' + (i === 0 ? " checked" : "") + ">";
+        tabs += '<label for="rct' + i + '">' + esc(s.tab || s.k) + "</label>";
+      });
       var legend = '<div class="clegend">' + (cal.legend || []).map(function (l) {
         return '<span><i style="background:' + esc(l[1]) + '"></i>' + esc(l[0]) + "</span>";
       }).join("") + (cal.marks && cal.marks.length ? '<span><i class="lgm"></i>' + esc(cal.markl || "Key date") + "</span>" : "") + "</div>";
       return '<div class="rcal"><h3>' + esc(cal.h) + "</h3>" + (cal.p ? '<p class="clede">' + cal.p + "</p>" : "") +
-        legend + subs + (cal.notes ? '<ul class="cnotes">' + cal.notes.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>" : "") +
+        legend + radios + '<div class="rcaltabs">' + tabs + "</div>" + '<div class="csubs">' + subs + "</div>" + (cal.notes ? '<ul class="cnotes">' + cal.notes.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>" : "") +
         (cal.src ? '<p class="csrc">' + cal.src + "</p>" : "") + "</div>";
     }
     function datesBlock(list) {
@@ -9109,8 +9134,8 @@ h3.qhow{ margin:18px 0 8px }
 
     function cards(list) {
       return '<div class="rcards">' + list.map(function (c) {
-        return '<div class="rcard"><h4>' + esc(c[0]) + "</h4><p>" + c[1] + "</p>" +
-          utBlock(c[2]) + "</div>";
+        return '<div class="rcard"><h4' + (c[3] ? ' class="rch"><img class="rclogo" src="' + esc(c[3]) + '" alt="" loading="lazy">' : ">") +
+          esc(c[0]) + "</h4><p>" + c[1] + "</p>" + utBlock(c[2]) + "</div>";
       }).join("") + "</div>";
     }
     /* Videos are linked, never embedded -- the creator keeps the view. `rails`
