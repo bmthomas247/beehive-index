@@ -2448,6 +2448,44 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .lvb .utchips{ margin-top:10px; padding-top:10px }
 
 a.costcta{ margin-top:14px }
+/* ---- annotated X profile mock (Oct 11) ---- */
+.xmock{ margin:12px 0 14px; border:1px solid var(--line-soft); background:var(--surface); padding:16px }
+.xmh{ display:flex; align-items:center; gap:10px; margin-bottom:14px }
+.xmh img{ width:40px; height:40px; object-fit:contain }
+.xmh b{ font-family:var(--f-display); font-size:18px; font-weight:800; letter-spacing:.01em; text-transform:uppercase }
+.xmg{ display:grid; grid-template-columns:minmax(0,1fr) minmax(300px,380px) minmax(0,1fr); gap:14px; align-items:center }
+.xmcol{ display:grid; gap:10px }
+.xmc{ display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); padding:10px 12px; background:var(--surface) }
+.xmc b{ display:block; font-family:var(--f-display); font-size:13.5px; font-weight:700 }
+.xmc p{ margin:3px 0 0; font-size:12.5px; line-height:1.5; color:var(--ink-2) }
+.xmn{ display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; flex:0 0 20px; border-radius:50%;
+  background:var(--sodium); color:#111; font-style:normal; font-size:11px; font-weight:800; font-family:var(--f-display) }
+.xmph .xmn{ margin-left:6px; vertical-align:middle; box-shadow:0 0 0 2px #000 }
+.xmph{ background:#000; color:#e7e9ea; border-radius:18px; overflow:hidden; border:1px solid #2f3336; font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif }
+.xmhd{ height:96px; background:linear-gradient(135deg,#1d2a3a,#7a5a12 60%,#c9a227); display:flex; justify-content:flex-end; align-items:flex-start; padding:8px }
+.xmbody{ padding:0 14px 14px }
+.xmtop{ display:flex; justify-content:space-between; align-items:flex-end; margin-top:-34px }
+.xmav{ position:relative; width:72px; height:72px; border-radius:50%; border:4px solid #000; background:linear-gradient(135deg,#7a5a12,#c9a227);
+  display:inline-flex; align-items:center; justify-content:center; font-weight:800; font-size:22px; color:#fff }
+.xmav .xmn{ position:absolute; right:-10px; top:-4px; margin:0 }
+.xmbtns{ display:flex; align-items:center; gap:8px; padding-bottom:4px }
+.xmmsg{ width:34px; height:34px; border:1px solid #536471; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:15px }
+.xmbtns .xmn{ margin-left:-4px }
+.xmfol{ background:#eff3f4; color:#0f1419; border-radius:999px; padding:7px 16px; font-weight:700; font-size:14px }
+.xmname{ margin-top:8px; font-size:19px; font-weight:800; color:#e7e9ea }
+.xmhandle{ font-size:14px; color:#71767b }
+.xmbio{ margin-top:10px; font-size:14px; line-height:1.45; color:#e7e9ea }
+.xmmeta{ display:flex; flex-wrap:wrap; gap:4px 14px; margin-top:10px; font-size:13.5px; color:#71767b }
+.xmlink{ color:#1d9bf0 }
+.xmstat{ margin-top:10px; font-size:13.5px; color:#71767b }
+.xmstat b{ color:#e7e9ea }
+.xmbot{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); gap:14px; margin-top:14px }
+.xmimp{ border:2px solid #B0402F; padding:12px 14px }
+.xmimp b, .xmlist b{ display:block; font-family:var(--f-display); font-size:14px; font-weight:800; text-transform:uppercase; letter-spacing:.03em; margin-bottom:6px }
+.xmimp p{ margin:0; font-size:13px; line-height:1.55; color:var(--ink-2) }
+.xmlist{ border:1px solid var(--line); padding:12px 14px }
+.xmlist ul{ margin:0; padding-left:18px; columns:2; column-gap:22px; font-size:13px; line-height:1.6; color:var(--ink-2) }
+@media (max-width:900px){ .xmg{ grid-template-columns:1fr } .xmph{ max-width:420px; width:100%; margin:0 auto; order:-1 } .xmbot{ grid-template-columns:1fr } .xmlist ul{ columns:1 } }
 /* ---- Hudl help videos fold (Oct 11) ---- */
 .hudlfold{ margin-top:14px }
 .hudlfold > summary{ font-family:var(--f-display); font-weight:700; font-size:14px }
@@ -7650,7 +7688,7 @@ h3.qhow{ margin:18px 0 8px }
   function bandLabel(h) { return h.heat >= 60 ? "Hot" : h.heat >= 45 ? "Warm" : "Watch"; }
   document.getElementById("cview-seat").innerHTML =
     '<div class="panel" style="margin-bottom:14px"><h2>Coaches on the hot seat</h2>' +
-    '<p class="lede">Built only from each coach\'s record at his current school, and only the seasons since he was hired. Heat goes up with losing this season, losing over the last three seasons, a losing career, a team getting worse, a low chance of making this year\'s playoffs (not counted in 1A&ndash;3A, where everyone gets in), and <strong>getting mercy-ruled</strong>: a loss by 35 or more (running clock) counts, a loss by 44 or more (the game is stopped) counts half again, this season weighted ahead of his earlier ones. <strong>Playoff wins cut it hard</strong>: a deep run takes most of it away and any state title takes off more. <strong>Sending kids to college cools it</strong>: every senior who played for him and signed with a college counts, by number not level &mdash; a light cool, up to 8% off at one a season, and it never takes a coach off this list. Second-year coaches carry 30% less, and a first-year coach is never on this list. Updated every Saturday at noon. It reads results only &mdash; it knows nothing about administrations, contracts, enrollment, or what a building thinks of its coach, and several of these men are rebuilding programs that were losing long before they arrived.</p><p class="hsnote" style="margin-top:10px;padding:10px 12px;border-left:3px solid #c9a227;background:rgba(201,162,39,.08);font-size:13px;line-height:1.5"><strong>This is not a judgment of anyone as a coach or a person.</strong> The list is built only from what can be counted &mdash; scores, rankings, playoff results, college recruiting and each coach&rsquo;s own history. It cannot see the things that matter most in a program: whether players&rsquo; GPAs are climbing, whether kids are staying out of trouble, or the culture a coach is building in his locker room. Those don&rsquo;t show up in a box score, and plenty of coaches on this list are winning there.</p></div>' +
+    '<p class="lede">Built only from each coach\'s record at his current school, and only the seasons since he was hired. Heat goes up with losing this season, losing over the last three seasons, a losing career, a team getting worse, a low chance of making this year\'s playoffs (not counted in 1A&ndash;3A, where everyone gets in), and <strong>getting mercy-ruled</strong>: a loss by 35 or more (running clock) counts, a loss by 44 or more (the game is stopped) counts half again, this season weighted ahead of his earlier ones. <strong>Playoff wins cut it hard</strong>: a deep run takes most of it away and any state title takes off more. <strong>Sending kids to college cools it</strong>: every senior who played for him and signed with a college counts, by number not level &mdash; a light cool, up to 8% off at one a season, and it never takes a coach off this list. Second-year coaches carry 30% less, and a first-year coach is never on this list. <strong>The founding coach of a brand-new school</strong> gets more runway: he is not listed in his first two years, carries half the heat in year three and 30% less in year four. Updated every Saturday at noon. It reads results only &mdash; it knows nothing about administrations, contracts, enrollment, or what a building thinks of its coach, and several of these men are rebuilding programs that were losing long before they arrived.</p><p class="hsnote" style="margin-top:10px;padding:10px 12px;border-left:3px solid #c9a227;background:rgba(201,162,39,.08);font-size:13px;line-height:1.5"><strong>This is not a judgment of anyone as a coach or a person.</strong> The list is built only from what can be counted &mdash; scores, rankings, playoff results, college recruiting and each coach&rsquo;s own history. It cannot see the things that matter most in a program: whether players&rsquo; GPAs are climbing, whether kids are staying out of trouble, or the culture a coach is building in his locker room. Those don&rsquo;t show up in a box score, and plenty of coaches on this list are winning there.</p></div>' +
     '<h3 class="divhead">Year three and beyond<span>' + HOT.filter(function (h) { return h.stage !== "early"; }).length +
     ' coaches, year three or later</span></h3>' +
     '<div class="heat">' + HOT.filter(function (h) { return h.stage !== "early"; }).map(function (h) {
@@ -7666,7 +7704,7 @@ h3.qhow{ margin:18px 0 8px }
         esc(h.school) + " " + h.cls + "</span></div>" +
         '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
         cxhStrip(h.school) + cxhHL(h.school) +
-        '<div class="why">rated #' + h.rank + " statewide" + (h.recruits ? " &middot; " + h.recruits + " college commit" + (h.recruits > 1 ? "s" : "") + " under him" : "") + "</div></div></div>";
+        '<div class="why">rated #' + h.rank + " statewide" + (h.founding ? " &middot; founding coach, new school" : "") + (h.recruits ? " &middot; " + h.recruits + " college commit" + (h.recruits > 1 ? "s" : "") + " under him" : "") + "</div></div></div>";
     }).join("") + "</div>" +
     '<h3 class="divhead" style="margin-top:26px">Early pressure<span>' +
     HOT.filter(function (h) { return h.stage === "early"; }).length +
@@ -7680,7 +7718,7 @@ h3.qhow{ margin:18px 0 8px }
         esc(h.school) + " " + h.cls + "</span></div>" +
         '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
         cxhStrip(h.school) + cxhHL(h.school) +
-        '<div class="why">rated #' + h.rank + " statewide" + (h.recruits ? " &middot; " + h.recruits + " college commit" + (h.recruits > 1 ? "s" : "") + " under him" : "") + "</div></div></div>";
+        '<div class="why">rated #' + h.rank + " statewide" + (h.founding ? " &middot; founding coach, new school" : "") + (h.recruits ? " &middot; " + h.recruits + " college commit" + (h.recruits > 1 ? "s" : "") + " under him" : "") + "</div></div></div>";
     }).join("") + "</div>";
 
   /* ================= PLAYERS ================= */
@@ -9046,8 +9084,29 @@ h3.qhow{ margin:18px 0 8px }
         '<div class="vfm">' + esc(f.src) + "</div>" +
         '<p class="vfp">' + esc(f.p) + "</p></div></div>";
     }
+    /* ---------- annotated mock X profile (Oct 11) ---------- */
+    function xmock(m) {
+      if (!m) return "";
+      function mk(n) { return '<i class="xmn">' + n + "</i>"; }
+      function co(c) { return '<div class="xmc"><span class="xmn">' + c.n + "</span><div><b>" + esc(c.h) + "</b><p>" + esc(c.t) + "</p></div></div>"; }
+      var L = m.callouts.filter(function (c) { return c.side === "l"; }), Rr = m.callouts.filter(function (c) { return c.side !== "l"; });
+      var M = {}; m.callouts.forEach(function (c) { M[c.at] = c.n; });
+      var ph = '<div class="xmph"><div class="xmhd">' + (M.header ? mk(M.header) : "") + "</div>" +
+        '<div class="xmbody"><div class="xmtop"><span class="xmav">' + esc(m.initials) + (M.avatar ? mk(M.avatar) : "") + "</span>" +
+        '<span class="xmbtns"><span class="xmmsg" aria-hidden="true">&#9993;</span>' + (M.dm ? mk(M.dm) : "") + '<span class="xmfol">Follow</span></span></div>' +
+        '<div class="xmname">' + esc(m.name) + (M.name ? mk(M.name) : "") + "</div>" +
+        '<div class="xmhandle">' + esc(m.handle) + (M.handle ? mk(M.handle) : "") + "</div>" +
+        '<div class="xmbio">' + esc(m.bio) + (M.bio ? mk(M.bio) : "") + "</div>" +
+        '<div class="xmmeta"><span>&#9906; ' + esc(m.loc) + (M.loc ? mk(M.loc) : "") + '</span><span class="xmlink">&#128279; ' + esc(m.link) + (M.link ? mk(M.link) : "") + "</span></div>" +
+        '<div class="xmstat"><b>' + esc(m.following) + "</b> Following &nbsp; <b>" + esc(m.followers) + "</b> Followers" + (M.follow ? mk(M.follow) : "") + "</div></div></div>";
+      return '<div class="xmock"><div class="xmh"><img src="' + esc(m.logo) + '" alt="" width="40" height="40"><b>' + esc(m.title) + "</b></div>" +
+        '<div class="xmg"><div class="xmcol">' + L.map(co).join("") + "</div>" + ph + '<div class="xmcol">' + Rr.map(co).join("") + "</div></div>" +
+        '<div class="xmbot"><div class="xmimp"><b>' + esc(m.warn.h) + "</b><p>" + esc(m.warn.t) + "</p></div>" +
+        '<div class="xmlist"><b>' + esc(m.list.h) + "</b><ul>" + m.list.items.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div></div></div>";
+    }
+
     function stepsSection(sec) {
-      return feature(sec.feature) +
+      return xmock(sec.mock) + feature(sec.feature) +
         '<div class="steps">' + sec.steps.map(function (s, i) {
         return '<div class="step"><span class="sn">' + (i + 1) + "</span>" +
           "<div><b>" + esc(s.n) + "</b><em>" + esc(s.t) + "</em></div></div>";
