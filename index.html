@@ -2455,6 +2455,7 @@ a.costcta{ margin-top:14px }
 .ytframe iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
 .ytx{ position:absolute; top:-40px; right:0; background:#fff; color:#111; border:0; border-radius:999px; width:32px; height:32px; font-size:15px; font-weight:700; cursor:pointer }
 .ytgo{ display:inline-block; margin-top:10px; color:#fff; font-size:13px; text-decoration:underline }
+.vfabout{ margin:10px 0 14px }
 /* ---- annotated X profile mock (Oct 11) ---- */
 h2.secih{ display:flex; align-items:center; gap:10px }
 .rclogos{ display:inline-flex; gap:6px; flex:0 0 auto }
@@ -9155,7 +9156,11 @@ h3.qhow{ margin:18px 0 8px }
         '<div><span class="vflab">' + esc(f.lab || "Watch this first") + "</span>" +
         '<div class="vfh">' + esc(f.t) + "</div>" +
         '<div class="vfm">' + esc(f.src) + "</div>" +
-        '<p class="vfp">' + esc(f.p) + "</p></div></div>";
+        '<p class="vfp">' + esc(f.p) + "</p></div></div>" +
+        (f.about ? '<details class="foldout rfold vfabout"><summary>' + esc(f.about.h) + "</summary>" +
+          '<div class="foldbody"><p>' + f.about.t + "</p>" +
+          (f.about.link ? '<a class="fullpage" href="' + esc(f.about.link.u) + '" target="_blank" rel="noopener noreferrer">' +
+            esc(f.about.link.t) + " &rarr;</a>" : "") + "</div></details>" : "");
     }
     /* ---------- annotated mock X profile (Oct 11) ---------- */
     function xmock(m) {
