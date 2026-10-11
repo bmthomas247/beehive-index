@@ -1318,6 +1318,9 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
   border-radius:2px;flex:none;font-family:var(--f-display);font-size:8.5px;font-weight:600;
   letter-spacing:.02em;color:#fff;line-height:1;overflow:hidden}
 .cmark{position:relative}
+.osrc{font-style:normal;font-size:9px;font-weight:700;letter-spacing:.03em;margin-left:5px;padding:1px 4px;border-radius:3px;vertical-align:1px}
+.osrc.s247{background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line)}
+.osrc.sx{background:#111;color:#fff}
 /* college pipeline (Oct 10 2026) */
 .cp-sum{font-size:13px;color:var(--muted);margin:4px 0 12px}
 .cp-tbl td,.cp-tbl th{vertical-align:middle}
@@ -1332,6 +1335,12 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
 .cp-pl{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:6px 14px;font-size:13px}
 .cp-pl div{display:flex;gap:6px;align-items:center}
 .cp-pl small{color:var(--muted)}
+.cp-yh{font-weight:700;font-size:13px;margin:10px 0 6px;padding-bottom:3px;border-bottom:1px solid var(--line)}
+.cp-yh:first-child{margin-top:2px}
+.cp-yh span{font-weight:400;color:var(--muted);margin-left:6px}
+.cp-nfl{color:var(--sodium)}
+.cp-nflb{font-size:9px;font-weight:700;padding:2px 4px;border-radius:3px;background:var(--surface);border:1px solid var(--line);color:var(--muted)}
+.cp-nflb.on{background:#013369;color:#fff;border-color:#013369}
 .cp-cols{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px;margin-top:8px}
 .cp-col{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 11px;font-size:13px}
 .cp-col b{font-size:14px}
@@ -3575,7 +3584,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     if (!v.length) return "";
     return '<div class="plist" style="margin-top:8px">' + v.map(function (x) {
       return '<span class="pl"><b>' + esc(x.college) + "</b> <span>" +
-        esc(x.kind || "Visit") + (x.date ? " · " + esc(x.date) : "") + "</span></span>";
+        (x.url ? '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.kind || "Visit") + "</a>" : esc(x.kind || "Visit")) +
+        (x.date ? " · " + esc(x.date) : "") + "</span></span>";
     }).join("") + "</div>" +
       "<p style='margin:6px 0 0;font-size:12px;color:var(--ink-3);line-height:1.55'>" +
       (v.length === 1 ? "One campus visit" : v.length + " campus visits") + " on file &mdash; " +
@@ -3593,7 +3603,16 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         : "") +
       (off.length
         ? '<div class="plist">' + off.map(function (o) {
-            return '<span class="pl commit"><b>' + esc(o) + "</b></span>"; }).join("") + "</div>" +
+            var sr = (p.offer_src || {})[o] || [];
+            var tg = sr.indexOf("247") >= 0 ? '<i class="osrc s247" title="Listed on 247Sports">247</i>' : "";
+            if (sr.indexOf("X") >= 0 && sr.indexOf("247") < 0)
+              tg += '<i class="osrc sx" title="Player-reported on X, not confirmed by a recruiting service">X</i>';
+            return '<span class="pl commit"><b>' + esc(o) + "</b>" + tg + "</span>"; }).join("") + "</div>" +
+          ((p.offers_x || []).filter(function (x) { return ((p.offer_src || {})[x.college] || []).indexOf("247") < 0; }).length ? "<p style='margin:7px 0 0;font-size:12px;color:var(--ink-3);line-height:1.55'>" +
+            "<strong>Player-reported on X</strong> (announced by the player himself, not yet confirmed by a recruiting service): " +
+            p.offers_x.filter(function (x) { return ((p.offer_src || {})[x.college] || []).indexOf("247") < 0; }).map(function (x) {
+              return '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.college) + "</a>" +
+                (x.date ? " " + mdy(x.date) : ""); }).join(", ") + ".</p>" : "") +
           "<p style='margin:7px 0 0;font-size:12px;color:var(--ink-3);line-height:1.55'>" +
           (p.offer_n && p.offer_n > off.length
             ? "<strong>" + p.offer_n + " offers</strong> on file at " + esc(p.offers_source || "the services") +
@@ -7027,11 +7046,22 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<input type="search" id="cpq" placeholder="Search school, college or player" aria-label="Search school, college or player"></div>' +
       '<div class="cp-sum" id="cpsum"></div>' +
       '<div class="tablewrap"><table class="cp-tbl"><thead><tr><th>#</th><th>School</th>' +
-      '<th class="num">College players</th><th class="num">FBS</th><th class="num cp-hide">4★+</th>' +
+      '<th class="num">College players</th><th class="num">FBS</th><th class="num cp-hide">4★+</th><th class="num" title="Players from this school who have played in the NFL (Pro-Football-Reference)">NFL</th>' +
       '<th class="cp-hide">By class</th><th>Where they go</th><th></th></tr></thead><tbody id="cpbody"></tbody></table></div>' +
-      '<div class="panel" style="margin-top:16px"><h2>Where they go</h2><p class="lede">The colleges taking the most players from the schools in this view, and who feeds them.</p><div class="cp-cols" id="cpcol"></div></div>';
+      '<div class="panel" style="margin-top:16px"><h2>Where they go</h2><p class="lede">The colleges taking the most players from the schools in this view, and who feeds them.</p><div class="cp-cols" id="cpcol"></div></div>' +
+      '<div class="panel" style="margin-top:16px"><h2>NFL players by high school</h2><p class="lede">Every player Pro-Football-Reference lists as having played in an NFL game, by the Utah high school he came from. Follows the class, region and search filters above (not the class-year filter). Its high-school records are thinner for older players, so the old-timers are undercounted. <a href="https://www.pro-football-reference.com/schools/high_schools.cgi?hs_state=UT" target="_blank" rel="noopener">Source</a>.</p><div class="cp-cols" id="cpnfl"></div></div>';
 
     function lvOf(c) { return (CP.levels || {})[c] || ""; }
+    var NFL = CP.nfl || [], NFLNOW = new Date().getFullYear();
+    var NFLBY = {}; NFL.forEach(function (r) { (NFLBY[r[0]] = NFLBY[r[0]] || []).push(r); });
+    function nflIn(sc) { return NFLBY[sc] || []; }
+    function nflActive(r) { return r[5] >= NFLNOW; }
+    function nflOk(sc) {
+      var t = TB[sc] || {};
+      if (st.cls !== "ALL" && t.cls !== st.cls) return false;
+      if (st.reg && t.region !== st.reg) return false;
+      return true;
+    }
     function pick() {
       var yset = null;
       if (st.yr === "5" || st.yr === "3") yset = YRS.slice(-parseInt(st.yr, 10));
@@ -7085,21 +7115,30 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           esc((t.cls || "") + (t.region ? " · " + t.region : "")) + "</small></span></a></td>" +
           '<td class="num mono"><b>' + o.n + "</b></td><td class=\"num mono\">" + o.fbs + "</td>" +
           '<td class="num mono cp-hide">' + o.top + "</td>" +
+          '<td class="num mono">' + (nflIn(o.s).length ? '<b class="cp-nfl" title="' + nflIn(o.s).filter(nflActive).length + ' active">' + nflIn(o.s).length + "</b>" : "\u2014") + "</td>" +
           '<td class="cp-hide"><span class="cp-yrs">' + bars + "</span></td>" +
           '<td><div class="cp-dest">' + dest.slice(0, 5).map(function (c) {
             return '<span class="d" title="' + esc(c) + '">' + collegeMark(c) + '<span class="n">' + dc[c] + "</span></span>"; }).join("") +
           (dest.length > 5 ? '<span class="n">+' + (dest.length - 5) + "</span>" : "") + "</div></td>" +
           '<td><button class="cp-more" data-cps="' + esc(o.s) + '">' + (openRow ? "Hide" : "Players") + "</button></td></tr>";
         if (openRow) {
-          row += '<tr class="cp-detail"><td colspan="8"><div class="cp-pl">' + o.L.slice().sort(function (a, b) {
-            return b[0] - a[0] || a[4].localeCompare(b[4]); }).map(function (r) {
+          var _byY = {}; o.L.forEach(function (r) { (_byY[r[0]] = _byY[r[0]] || []).push(r); });
+          var _nf = nflIn(o.s).slice().sort(function (a, b) { return b[5] - a[5] || b[4] - a[4]; });
+          row += '<tr class="cp-detail"><td colspan="9">' + (_nf.length ? '<div class="cp-yh">In the NFL <span>' + _nf.length +
+            " all-time \u00b7 " + _nf.filter(nflActive).length + " active</span></div>" + '<div class="cp-pl">' + _nf.map(function (r) {
+              return "<div><span class=\"cp-nflb" + (nflActive(r) ? " on" : "") + "\">NFL</span><span><a href=\"" + esc(r[6]) + "\" target=\"_blank\" rel=\"noopener\">" + esc(r[1]) + "</a><small>" +
+                (r[2] ? " \u00b7 " + esc(r[2]) : "") + " \u00b7 " + esc(r[3].split(",").join(", ")) + " \u00b7 " + r[4] + (r[5] !== r[4] ? "\u2013" + (nflActive(r) ? "now" : r[5]) : (nflActive(r) ? " (now)" : "")) + "</small></span></div>";
+            }).join("") + "</div>" : "") + Object.keys(_byY).sort(function (a, b) { return b - a; }).map(function (yy) {
+            return '<div class="cp-yh">Class of ' + yy + ' <span>' + _byY[yy].length + (_byY[yy].length === 1 ? " player" : " players") + "</span></div>" +
+            '<div class="cp-pl">' + _byY[yy].slice().sort(function (a, b) {
+            return (lvOf(a[4]) === "FBS" ? 0 : 1) - (lvOf(b[4]) === "FBS" ? 0 : 1) || b[5] - a[5] || a[1].localeCompare(b[1]); }).map(function (r) {
               return "<div>" + collegeMark(r[4]) + "<span>" +
                 (r[6] ? '<a href="' + esc(r[6]) + '" target="_blank" rel="noopener">' + esc(r[1]) + "</a>" : esc(r[1])) +
-                " " + stars(r[5]) + "<small> · " + r[0] + (r[3] ? " · " + esc(r[3]) : "") + " · " + esc(r[4]) +
-                (lvOf(r[4]) ? " (" + lvOf(r[4]) + ")" : "") + "</small></span></div>"; }).join("") + "</div></td></tr>";
+                " " + stars(r[5]) + "<small>" + (r[3] ? " · " + esc(r[3]) : "") + " · " + esc(r[4]) +
+                (lvOf(r[4]) ? " (" + lvOf(r[4]) + ")" : "") + "</small></span></div>"; }).join("") + "</div>"; }).join("") + "</td></tr>";
         }
         return row;
-      }).join("") : '<tr><td colspan="8" style="color:var(--muted);padding:14px">No commitments on file for this view.</td></tr>';
+      }).join("") : '<tr><td colspan="9" style="color:var(--muted);padding:14px">No commitments on file for this view.</td></tr>';
       var cols = Object.keys(col).sort(function (a, b) { return col[b].length - col[a].length || a.localeCompare(b); });
       document.getElementById("cpcol").innerHTML = cols.slice(0, 24).map(function (c) {
         var f = {}; col[c].forEach(function (r) { f[r[2]] = (f[r[2]] || 0) + 1; });
@@ -7109,6 +7148,22 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           "<small>" + esc(lvOf(c) || "level not on file") + " · " + fs.slice(0, 4).map(function (s) {
             return esc(s) + " " + f[s]; }).join(", ") + (fs.length > 4 ? ", +" + (fs.length - 4) + " more" : "") + "</small></div>";
       }).join("") + (cols.length > 24 ? '<div class="cp-col"><small>+' + (cols.length - 24) + " more colleges with fewer players</small></div>" : "");
+      var nq = st.q, ns = Object.keys(NFLBY).filter(function (sc) {
+        if (!nflOk(sc)) return false;
+        return !nq || (sc + " " + NFLBY[sc].map(function (r) { return r[1]; }).join(" ")).toLowerCase().indexOf(nq) >= 0;
+      }).sort(function (a, b) {
+        return NFLBY[b].filter(nflActive).length - NFLBY[a].filter(nflActive).length || NFLBY[b].length - NFLBY[a].length || a.localeCompare(b); });
+      document.getElementById("cpnfl").innerHTML = ns.length ? ns.map(function (sc) {
+        var L = NFLBY[sc].slice().sort(function (a, b) { return b[5] - a[5] || b[4] - a[4]; });
+        var act = L.filter(nflActive);
+        return '<div class="cp-col"><div style="display:flex;gap:8px;align-items:center"><a href="#" data-t="' + esc(sc) + '" style="display:flex;gap:8px;align-items:center;color:inherit;text-decoration:none">' + logo(sc) +
+          "<b>" + esc(sc) + "</b></a><span class=\"mono\" style=\"margin-left:auto\">" + L.length + "</span></div>" +
+          "<small>" + (act.length ? "<b style=\"color:var(--ink)\">Active: " + act.map(function (r) {
+            return '<a href="' + esc(r[6]) + '" target="_blank" rel="noopener">' + esc(r[1]) + "</a> (" + esc(r[3].split(",").pop()) + ")"; }).join(", ") + "</b>" : "No active players") +
+          (L.length > act.length ? " \u00b7 Past: " + L.filter(function (r) { return !nflActive(r); }).slice(0, 5).map(function (r) {
+            return '<a href="' + esc(r[6]) + '" target="_blank" rel="noopener">' + esc(r[1]) + "</a>"; }).join(", ") +
+            (L.length - act.length > 5 ? ", +" + (L.length - act.length - 5) + " more" : "") : "") + "</small></div>";
+      }).join("") : '<div class="cp-col"><small>No NFL players on file for this view.</small></div>';
     }
     document.getElementById("cpcls").addEventListener("click", function (e) {
       var b = e.target.closest("button[data-c]"); if (!b) return;
