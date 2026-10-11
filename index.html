@@ -1439,6 +1439,8 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
   .sthead em{text-align:left}
 }
 
+.stviewseg{margin-bottom:8px}
+.sttable td.tm small .streg{color:var(--ink-3)}
 /* ---------- realignment projection ---------- */
 .rjgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
 .rjrow{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);
@@ -8020,6 +8022,64 @@ h3.qhow{ margin:18px 0 8px }
      different facts. Overall sits beside it rather than above it. */
   var STAND = DATA.standings || {};
   var stCls = "";      // "" = every classification
+  // Oct 11: Brandon -- "standings by division and by region". Division = classification.
+  var STDIVV = "div";  // "div" | "region"
+  var STT = {};
+  (DATA.teams || []).forEach(function (t) { STT[t.school] = t; });
+  function stRpi(s) {
+    var t = STT[s];
+    return (t && t.rpi_official && t.rpi != null) ? Number(t.rpi).toFixed(3).replace(/^0/, "")
+                                                  : '<span class="none">&mdash;</span>';
+  }
+  function stDivRow(r) {
+    return '<tr data-t="' + esc(r.school) + '" style="cursor:pointer">' +
+      '<td class="rk mono' + (r.pos <= 2 ? " top" : "") + '">' +
+      (r.tied ? '<span class="tie">T-</span>' : "") + r.pos + "</td>" +
+      '<td class="tm">' + logo(r.school, "sm") + "<div>" + esc(r.school) +
+      '<small><span class="streg">' + esc(r.region) + "</span>" +
+      (r.rank ? " &middot; #" + r.rank + " statewide" : "") + "</small></div></td>" +
+      '<td class="num mono">' + r.w + "&ndash;" + r.l + "</td>" +
+      '<td class="num mono">' + (r.started ? r.rw + "&ndash;" + r.rl
+                                           : '<span class="none">&mdash;</span>') + "</td>" +
+      '<td class="num mono">' + r.pf + "</td>" +
+      '<td class="num mono">' + r.pa + "</td>" +
+      '<td class="num mono ' + (r.diff > 0 ? "up" : r.diff < 0 ? "dn" : "") + '">' +
+      (r.diff > 0 ? "+" : "") + r.diff + "</td>" +
+      '<td class="num mono">' + stRpi(r.school) + "</td>" +
+      '<td class="num mono">' + esc(r.streak || "&mdash;") + "</td>" +
+      '<td class="mono" style="letter-spacing:.06em">' + esc(r.last5 || "") + "</td></tr>";
+  }
+  function stDivBody(c) {
+    var rows = [];
+    Object.keys(STAND[c]).forEach(function (reg) {
+      STAND[c][reg].forEach(function (r) { rows.push(r); });
+    });
+    var pct = function (r) { return (r.w + r.l) ? r.w / (r.w + r.l) : 0; };
+    rows.sort(function (a, b) {
+      return (pct(b) - pct(a)) || (b.w - a.w) || (b.diff - a.diff) ||
+             ((a.rank || 999) - (b.rank || 999));
+    });
+    rows = rows.map(function (r, i) {
+      var o = {}; for (var k in r) o[k] = r[k];
+      o.pos = i + 1; return o;
+    });
+    // Same W-L = tied. Order inside a tie is point difference; marked, not hidden.
+    rows.forEach(function (r, i) {
+      var same = function (x) { return x && x.w === r.w && x.l === r.l; };
+      r.tied = same(rows[i - 1]) || same(rows[i + 1]);
+      if (same(rows[i - 1])) r.pos = rows[i - 1].pos;
+    });
+    return '<h3 class="divhead" style="margin-top:22px">' + c +
+      "<span>" + rows.length + " teams</span></h3>" +
+      '<div class="stblock"><div class="sthead">' + c + " &mdash; whole division" +
+      "<em>ordered by overall win % &middot; ties by point difference &middot; RPI is UHSAA&rsquo;s official number, which seeds the bracket</em></div>" +
+      '<div class="tablewrap"><table class="sttable stdiv"><thead><tr>' +
+      "<th>#</th><th>Team</th><th class=\"num\">Overall</th><th class=\"num\">Region</th>" +
+      "<th class=\"num\">PF</th><th class=\"num\">PA</th><th class=\"num\">Diff</th>" +
+      "<th class=\"num\">RPI</th><th class=\"num\">Streak</th><th>Last 5</th>" +
+      "</tr></thead><tbody>" + rows.map(stDivRow).join("") +
+      "</tbody></table></div></div>";
+  }
   function stRow(r, started) {
     return '<tr data-t="' + esc(r.school) + '" style="cursor:pointer">' +
       '<td class="rk mono' + (r.pos <= 2 ? " top" : "") + '">' +
@@ -8043,6 +8103,7 @@ h3.qhow{ margin:18px 0 8px }
     var order = ["6A", "5A", "4A", "3A", "2A", "1A"];
     var shown = order.filter(function (c) { return STAND[c] && (!stCls || c === stCls); });
     var body = shown.map(function (c) {
+      if (STDIVV === "div") return stDivBody(c);
       var regions = STAND[c];
       return '<h3 class="divhead" style="margin-top:22px">' + c +
         "<span>" + Object.keys(regions).length + " regions</span></h3>" +
@@ -8078,6 +8139,10 @@ h3.qhow{ margin:18px 0 8px }
       'T-</span> rather than quietly ordered. UHSAA\'s own chain runs on into common ' +
       'opponents and a coin toss, and neither of those belongs in an automated table ' +
       'in September.</p></div>' +
+      '<div class="controls stviewseg"><div class="seg" id="stvseg">' +
+      '<button data-v="div" aria-pressed="' + (STDIVV === "div") + '">By division</button>' +
+      '<button data-v="region" aria-pressed="' + (STDIVV === "region") + '">By region</button>' +
+      "</div></div>" +
       '<div class="controls"><div class="seg" id="stseg">' +
       ['<button data-c="" aria-pressed="' + (!stCls) + '">All</button>'].concat(
         order.filter(function (c) { return STAND[c]; }).map(function (c) {
@@ -8089,6 +8154,11 @@ h3.qhow{ margin:18px 0 8px }
     if (seg) seg.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       stCls = b.dataset.c; drawStand();
+    });
+    var vseg = document.getElementById("stvseg");
+    if (vseg) vseg.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      STDIVV = b.dataset.v; drawStand();
     });
   }
   drawStand();
