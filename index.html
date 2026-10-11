@@ -2448,7 +2448,23 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .lvb .utchips{ margin-top:10px; padding-top:10px }
 
 a.costcta{ margin-top:14px }
+/* ---- YouTube pop-up player (Oct 11) ---- */
+#ytmodal{ position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,.78); display:flex; align-items:center; justify-content:center; padding:16px }
+.ytbox{ position:relative; width:min(960px,100%) }
+.ytframe{ position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:10px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.5) }
+.ytframe iframe{ position:absolute; inset:0; width:100%; height:100%; border:0 }
+.ytx{ position:absolute; top:-40px; right:0; background:#fff; color:#111; border:0; border-radius:999px; width:32px; height:32px; font-size:15px; font-weight:700; cursor:pointer }
+.ytgo{ display:inline-block; margin-top:10px; color:#fff; font-size:13px; text-decoration:underline }
 /* ---- annotated X profile mock (Oct 11) ---- */
+h2.secih{ display:flex; align-items:center; gap:10px }
+.rclogos{ display:inline-flex; gap:6px; flex:0 0 auto }
+.xstop{ display:block; font-size:13px; margin-bottom:6px }
+.xsl{ list-style:none; margin:0; padding:0 }
+.xsl li{ padding:5px 0; border-top:1px solid var(--line-soft); font-size:13px; line-height:1.4 }
+.xsl li a{ font-weight:700 }
+.xsr{ display:block; color:var(--ink-3); font-size:12px }
+.secico{ width:28px; height:28px; border-radius:6px; flex:0 0 28px }
+.xmx{ font-size:18px; color:var(--ink-3); margin:0 -2px }
 .xmock{ margin:12px 0 14px; border:1px solid var(--line-soft); background:var(--surface); padding:16px }
 .xmh{ display:flex; align-items:center; gap:10px; margin-bottom:14px }
 .xmh img{ width:40px; height:40px; object-fit:contain }
@@ -4473,8 +4489,29 @@ h3.qhow{ margin:18px 0 8px }
   var NEWSBY = {};
   (DATA.news_feed || []).forEach(function (n) { NEWSBY[n.u] = n; });
   (DATA.videos || []).forEach(function (v) { if (!NEWSBY[v.u]) NEWSBY[v.u] = v; });
+  function ytId(u) {
+    var m = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/.exec(u || "");
+    return m ? m[1] : "";
+  }
+  function ytModal(url) {
+    var id = ytId(url); if (!id) return false;
+    var old = document.getElementById("ytmodal"); if (old) old.remove();
+    var d = document.createElement("div");
+    d.id = "ytmodal"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true");
+    d.innerHTML = '<div class="ytbox"><button class="ytx" aria-label="Close video">\u2715</button>' +
+      '<div class="ytframe"><iframe src="https://www.youtube-nocookie.com/embed/' + id +
+      '?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>' +
+      '<a class="ytgo" href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">Watch on YouTube \u2197</a></div>';
+    function close() { d.remove(); document.removeEventListener("keydown", onKey); }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    d.addEventListener("click", function (e) { if (e.target === d || e.target.closest(".ytx")) close(); });
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(d);
+    d.querySelector(".ytx").focus();
+    return true;
+  }
   function openStory(url) {
-    var n = NEWSBY[url]; if (!n) { window.open(url, "_blank", "noopener"); return; }
+    var n = NEWSBY[url]; if (!n) { if (!ytModal(url)) window.open(url, "_blank", "noopener"); return; }
     lastFocus = document.activeElement;
     var who = n.who || [];
     document.getElementById("drawer-in").innerHTML =
@@ -9099,7 +9136,8 @@ h3.qhow{ margin:18px 0 8px }
         '<div class="xmbio">' + esc(m.bio) + (M.bio ? mk(M.bio) : "") + "</div>" +
         '<div class="xmmeta"><span>&#9906; ' + esc(m.loc) + (M.loc ? mk(M.loc) : "") + '</span><span class="xmlink">&#128279; ' + esc(m.link) + (M.link ? mk(M.link) : "") + "</span></div>" +
         '<div class="xmstat"><b>' + esc(m.following) + "</b> Following &nbsp; <b>" + esc(m.followers) + "</b> Followers" + (M.follow ? mk(M.follow) : "") + "</div></div></div>";
-      return '<div class="xmock"><div class="xmh"><img src="' + esc(m.logo) + '" alt="" width="40" height="40"><b>' + esc(m.title) + "</b></div>" +
+      return '<div class="xmock"><div class="xmh"><img src="' + esc(m.logo) + '" alt="" width="40" height="40">' +
+        (m.logo2 ? '<span class="xmx">&times;</span><img src="' + esc(m.logo2) + '" alt="X" width="36" height="36">' : "") + "<b>" + esc(m.title) + "</b></div>" +
         '<div class="xmg"><div class="xmcol">' + L.map(co).join("") + "</div>" + ph + '<div class="xmcol">' + Rr.map(co).join("") + "</div></div>" +
         '<div class="xmbot"><div class="xmimp"><b>' + esc(m.warn.h) + "</b><p>" + esc(m.warn.t) + "</p></div>" +
         '<div class="xmlist"><b>' + esc(m.list.h) + "</b><ul>" + m.list.items.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul></div></div></div>";
@@ -9200,7 +9238,9 @@ h3.qhow{ margin:18px 0 8px }
 
     function cards(list) {
       return '<div class="rcards">' + list.map(function (c) {
-        return '<div class="rcard"><h4' + (c[3] ? ' class="rch"><img class="rclogo" src="' + esc(c[3]) + '" alt="" loading="lazy">' : ">") +
+        var lg = c[3] ? [].concat(c[3]) : [];
+        return '<div class="rcard"><h4' + (lg.length ? ' class="rch"><span class="rclogos">' + lg.map(function (u) {
+            return '<img class="rclogo" src="' + esc(u) + '" alt="" loading="lazy">'; }).join("") + "</span>" : ">") +
           esc(c[0]) + "</h4><p>" + c[1] + "</p>" + utBlock(c[2]) + "</div>";
       }).join("") + "</div>";
     }
@@ -9256,7 +9296,7 @@ h3.qhow{ margin:18px 0 8px }
       '<p class="notbet">' + esc(R.note) + "</p></div>" +
       R.sections.map(function (sec) {
         var fn = BODY[sec.kind];
-        return '<div class="panel rsec" style="margin-bottom:14px"><h2>' + esc(sec.h) + "</h2>" +
+        return '<div class="panel rsec" style="margin-bottom:14px"><h2' + (sec.icon ? ' class="secih"><img class="secico" src="' + esc(sec.icon) + '" alt="" width="28" height="28">' : ">") + esc(sec.h) + "</h2>" +
           (sec.p ? '<p class="lede">' + esc(sec.p) + "</p>" : "") +
           (fn ? fn(sec) : (sec.cards ? cards(sec.cards) : "")) +
           videos(sec) +
