@@ -2645,6 +2645,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         <th class="num" data-s="pa">PA<small>total · per game</small></th>
         <th class="num" data-s="ypg">Yds/g</th>
         <th class="num" data-s="sos">SOS</th>
+        <th class="num" data-s="rpi" title="UHSAA's official Rating Percentage Index - what the state seeds the playoffs on">RPI<small>UHSAA · class rank</small></th>
         <th>Head coach</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
@@ -2884,6 +2885,10 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       <h3>Strength of schedule</h3>
       <p>SOS is the average rating of the opponents a team has actually faced. At two games it's a small sample and swings hard &mdash; a team that opened against Corner Canyon and IMG will show an inflated number. It becomes meaningful around Week 5. Note this is <em>schedule faced to date</em>, not full-season projected schedule; that arrives once full schedules are loaded.</p>
 
+      <h3>UHSAA RPI</h3>
+      <p>The state seeds and selects the playoffs on the RPI: 45% your win percentage, 45% your opponents' win percentage, 10% your opponents' opponents'. Score does not count. We show <strong>UHSAA's own published number</strong> (uhsaa.org/football-rpi), pulled every update, in the RPI column and on every team card, so you can see the state's view next to ours.</p>
+      <p>It also feeds the Ledger Rating, lightly: <strong>rating + 6 &times; (RPI &minus; .500) &times; 2</strong>. That is worth about &minus;4 to +4 points against a rating spread of roughly 23, so it nudges the board without driving it. Added Oct 11, 2026; it moved 14 teams, none more than two spots in its class.</p>
+
       <h3>Recency</h3>
       <p>Each week back multiplies a game's weight by 0.88. Week 2 counts fully, Week 1 counts 88%, and by late October an August result is worth about half a November one. Who you are in Week 9 matters more than who you were in Week 1.</p>
 
@@ -3061,6 +3066,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           '<small class="raw">' + t.papg.toFixed(1) + "/gm</small></td>" +
         '<td class="num mono">' + (t.ypg === null ? '<span class="none">—</span>' : t.ypg) + "</td>" +
         '<td class="num mono">' + sgn(t.sos) + "</td>" +
+        '<td class="num mono">' + (t.rpi === null || t.rpi === undefined ? '<span class="none">—</span>' :
+          t.rpi.toFixed(3).replace(/^0/, "") + (t.rpi_seed ? '<small class="raw">#' + t.rpi_seed + " " + esc(t.cls) + "</small>" : "")) + "</td>" +
         "<td>" + esc(t.coach) + '<small style="display:block;font-size:11px;color:var(--ink-3)">' +
         ((t.coach_cur ? t.coach_cur + " this year" : "") + (t.coach_w !== "" && t.coach_w !== undefined ? (t.coach_cur ? " · " : "") + t.coach_w + "–" + t.coach_l + " career, yr " + t.coach_yrs : "")) + "</small></td></tr>";
     }).join("");
@@ -3100,6 +3107,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     var kv = [["Statewide", (t.tied ? "T-" : "#") + t.rank],
               ["In " + t.cls, (t.cls_tied ? "T-" : "#") + t.class_rank],
               ["Rating", sgn(t.rating)], ["SOS", sgn(t.sos)],
+              ["UHSAA RPI", t.rpi === null || t.rpi === undefined ? "—" : t.rpi.toFixed(3).replace(/^0/, "") + (t.rpi_seed ? " (#" + t.rpi_seed + " " + t.cls + ")" : "")],
               ["Roster", t.roster || "—"],
               ["Ret. starters", t.ret_starters || "—"],
               ["Avg line", t.line_wt ? t.line_wt + "#" : "—"],
@@ -6156,11 +6164,11 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
        '</div><div class="sub">of ' + CSIZE["5A"] + " programs</div></div>",
      '<div class="card"><div class="k">Miss out in 4A</div><div class="v mono">' + missing4 +
        '</div><div class="sub">of ' + CSIZE["4A"] + " programs</div></div>",
-     '<div class="card"><div class="k">Everyone qualifies</div><div class="v mono">4</div>' +
-       '<div class="sub">6A, 3A, 2A and 1A are at or under 16</div></div>'
+     '<div class="card"><div class="k">Everyone qualifies</div><div class="v mono">3</div>' +
+       '<div class="sub">3A, 2A and 1A are under 16; 6A has 17, so one misses</div></div>'
     ].join("") + "</div>" +
     '<div class="panel" style="margin-bottom:16px"><h2>The cut line</h2>' +
-    '<p class="lede">UHSAA capped the 2026 playoffs at <strong>16 teams per classification</strong> and seeds them by RPI. For 6A, 3A, 2A and 1A nothing changes — those classes have 17, 13, 10 and 9 programs. For <strong>5A and 4A it is a real cut</strong>: both used to take 24 seeds with byes for the top eight, so ' + missing5 + " and " + missing4 + ' teams now miss entirely.</p>' +
+    '<p class="lede">UHSAA capped the 2026 playoffs at <strong>16 teams per classification</strong> and seeds them by RPI. For 3A, 2A and 1A nothing changes — every eligible program gets in (13, 9 and 9; Layton Christian plays as an independent and is not on UHSAA’s RPI). 6A has 17, so the 17th misses. For <strong>5A and 4A it is a real cut</strong>: both used to take 24 seeds with byes for the top eight, so ' + missing5 + " and " + missing4 + ' teams now miss entirely.</p>' +
     '<p class="lede" data-v="cxf-v2">Ordered by <strong>RPI</strong>, the number UHSAA seeds with: 45% win percentage, 45% opponents\' win percentage, 10% their opponents\', score ignored. We recompute it from every final in the game file after each update. UHSAA also adjusts for wins across classifications and does not publish exactly how, so a team can sit a spot off the official list. The percentage under each team is its chance of finishing inside the cut, from playing out the rest of the season 10,000 times; that projection is refreshed every Saturday at noon. RATING DISAGREES marks a team whose power rating puts it six or more places away from where RPI has it.</p></div>' +
     '<div class="panel" style="margin-bottom:16px"><h2>Projected bracket</h2>' +
     '<p class="lede">The bracket as RPI is projected to seed it once the regular season is played out, refreshed every Saturday at noon. The higher seed hosts through the quarterfinals; semifinals and final are neutral. Highlighted teams are the chalk path — the favourite advancing every round. The percentages underneath come from running the whole bracket <strong>' +
@@ -7096,10 +7104,12 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     // hash: #pm=<idx><a|h>,...
     try { var hm = (location.hash.match(/pm=([0-9a-z,]+)/) || [])[1];
       if (hm) hm.split(",").forEach(function (x) { var m = x.match(/^([0-9a-z]+)([ah])$/); if (m) st.picks[parseInt(m[1], 36)] = m[2]; }); } catch (e) {}
+    var INDEP = PM.indep || [], SHIFT = PM.shift || {};
     function results() {
       var out = [];
       G.forEach(function (g, i) {
         var a = g[2], h = g[3];
+        if (INDEP.indexOf(a) >= 0 || INDEP.indexOf(h) >= 0) return;
         if (g[6]) {
           if (g[7]) { out.push(g[7] === a ? [a, h] : [h, a]); return; }
           var as = parseFloat(g[4]), hs = parseFloat(g[5]);
@@ -7125,7 +7135,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       Object.keys(TM).forEach(function (t) { var n = (w[t] || 0) + (l[t] || 0), os = opp[t] || [];
         var wp = n ? (w[t] || 0) / n : 0.5;
         var oo = os.length ? os.reduce(function (s, o) { return s + (owp[o[0]] === undefined ? 0.5 : owp[o[0]]); }, 0) / os.length : 0.5;
-        out[t] = { rpi: 0.45 * wp + 0.45 * owp[t] + 0.10 * oo, w: w[t] || 0, l: l[t] || 0 }; });
+        out[t] = { rpi: 0.45 * wp + 0.45 * owp[t] + 0.10 * oo + (SHIFT[t] || 0), w: w[t] || 0, l: l[t] || 0 }; });
       return out;
     }
     var TROPHY = '<svg viewBox="0 0 74 110" aria-hidden="true"><defs><linearGradient id="pmg" x1="0" x2="1"><stop offset="0" stop-color="#8a6a1c"/><stop offset=".5" stop-color="#f3d27a"/><stop offset="1" stop-color="#8a6a1c"/></linearGradient></defs>' +
@@ -7138,7 +7148,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       '<div class="pm-tabs" id="pmwk"></div><div class="pm-games" id="pmgames"></div>' +
       '<div class="pm-rh"><div>First round</div><div>Quarterfinals</div><div>Semifinals</div><div>State final</div><div>Semifinals</div><div>Quarterfinals</div><div>First round</div></div>' +
       '<div class="pm-br" id="pmbr"></div><div class="pm-st" id="pmst"></div>' +
-      '<p class="pm-note">Click a team in any game still to be played to pick it; click again to clear. Then click through the bracket. RPI is UHSAA’s published formula (0.45 own win%, 0.45 opponents’, 0.10 opponents’ opponents’), win-loss only. What we cannot copy, and say so: UHSAA’s classification adjustment to win%, and real records for out-of-state and non-11-man opponents, which count as .500 — so a seed here can differ from the official one by a spot. Top 16 by RPI in each classification make it; in 1A, 2A and 3A everyone does. Finals come from the Deseret News scoreboard. Your picks stay on this page; "Copy link" shares them.</p></div>';
+      '<p class="pm-note">Click a team in any game still to be played to pick it; click again to clear. Then click through the bracket. RPI is UHSAA’s published formula (0.45 own win%, 0.45 opponents’, 0.10 opponents’ opponents’), win-loss only. Finished games start from UHSAA’s own published RPI (uhsaa.org/football-rpi), so today’s seeds match the state’s; your picks move it from there. Games against independents (Layton Christian) don’t count, as at UHSAA. Top 16 by RPI in each classification make it; in 1A, 2A and 3A everyone does. Finals come from the Deseret News scoreboard. Your picks stay on this page; "Copy link" shares them.</p></div>';
     function drawWeeks() {
       document.getElementById("pmwk").innerHTML = weeks.map(function (w) {
         var n = G.filter(function (g) { return g[0] === w && (inCls(g[2]) || inCls(g[3])); }).length;
@@ -7162,7 +7172,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       document.getElementById("pmgames").innerHTML = L.join("") || '<div class="pm-empty">No ' + st.cls + " games this week.</div>";
     }
     function field(R) {
-      return Object.keys(TM).filter(inCls).sort(function (a, b) { return R[b].rpi - R[a].rpi; });
+      return Object.keys(TM).filter(function (t) { return inCls(t) && INDEP.indexOf(t) < 0; }).sort(function (a, b) { return R[b].rpi - R[a].rpi; });
     }
     function drawRest() {
       var R = rpi(results()), all = field(R), fld = all.slice(0, SPOTS), seedOf = {};
