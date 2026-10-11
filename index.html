@@ -2447,6 +2447,48 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .lvb .rfold{ margin:10px 0 0 }
 .lvb .utchips{ margin-top:10px; padding-top:10px }
 
+/* ---- levels collapse (Oct 11) ---- */
+.lvd > summary{ list-style:none; cursor:pointer; position:relative; padding-right:30px }
+.lvd > summary::-webkit-details-marker{ display:none }
+.lvd > summary::after{ content:"+"; position:absolute; right:2px; top:-2px; font-size:18px; line-height:1; color:var(--sodium) }
+.lvd[open] > summary::after{ content:"\2212" }
+.lvd > summary:hover b{ text-decoration:underline }
+.lvx > p{ margin:6px 0 0; font-size:13.5px; line-height:1.6; color:var(--ink-2) }
+.lvx .rfold{ margin:10px 0 0 }
+.lvx .utchips{ margin-top:10px; padding-top:10px }
+.uth{ margin-top:10px; font-size:11px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-3) }
+.uth + .utchips{ margin-top:6px; padding-top:0; border-top:0 }
+/* ---- recruiting calendar grid (Oct 11) ---- */
+.rcal{ margin-top:14px; border:1px solid var(--line-soft); background:var(--surface); padding:14px 16px }
+.rcal h3, h3.qhow{ font-family:var(--f-display); font-size:15px; font-weight:700; margin:0 0 4px }
+h3.qhow{ margin:18px 0 8px }
+.clede{ font-size:12.5px; color:var(--ink-3); margin:0 0 8px; line-height:1.55 }
+.clegend{ display:flex; flex-wrap:wrap; gap:12px; margin:6px 0 2px; font-size:11.5px; color:var(--ink-2) }
+.clegend span{ display:inline-flex; align-items:center; gap:5px }
+.clegend i{ width:11px; height:11px; border-radius:2px; display:inline-block }
+.clegend i.lgm{ background:var(--surface); box-shadow:0 0 0 2px var(--ink) }
+.csub{ margin-top:14px }
+.csh{ display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:6px }
+.csh b{ font-family:var(--f-display); font-size:13px; letter-spacing:.06em; text-transform:uppercase }
+.csh span{ font-size:11.5px; color:var(--ink-3) }
+.cmons{ display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px }
+.cmh{ font-family:var(--f-display); font-size:12px; font-weight:700; margin-bottom:4px }
+.rcgrid{ display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:2px }
+.rcgrid b{ font-size:9px; color:var(--ink-3); text-align:center; font-weight:600 }
+.rcgrid i{ font-style:normal; font-size:10px; text-align:center; padding:3px 0; border-radius:2px;
+  color:var(--ink-3); background:var(--line-soft); line-height:1.3 }
+.rcgrid i.cd0{ background:none }
+.rcgrid i[style]{ background:var(--pc); color:#fff; font-weight:600 }
+.rcgrid i.cdm{ box-shadow:inset 0 0 0 2px #fff, 0 0 0 2px var(--ink) }
+.cnotes{ margin:12px 0 0; padding-left:18px; font-size:12.5px; line-height:1.6; color:var(--ink-2) }
+.csrc{ font-size:11.5px; color:var(--ink-3); margin:10px 0 0 }
+.kdates{ margin-top:14px; display:grid; gap:1px; background:var(--line-soft); border:1px solid var(--line-soft) }
+.kdate{ display:grid; grid-template-columns:150px minmax(0,1fr); background:var(--surface) }
+.kdd{ padding:11px 14px; font-family:var(--f-display); font-weight:700; font-size:13px; color:var(--sodium) }
+.kdb{ padding:11px 14px 11px 0; font-size:13px; line-height:1.55; color:var(--ink-2) }
+.kdb b{ color:var(--ink) }
+@media (max-width:640px){ .kdate{ grid-template-columns:1fr } .kdb{ padding:0 14px 11px } .cmons{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px } }
+
 /* ---- academics ---- */
 .gpar{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line-soft);
   border:1px solid var(--line-soft); margin:12px 0 14px }
@@ -7588,7 +7630,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
   function bandLabel(h) { return h.heat >= 60 ? "Hot" : h.heat >= 45 ? "Warm" : "Watch"; }
   document.getElementById("cview-seat").innerHTML =
     '<div class="panel" style="margin-bottom:14px"><h2>Coaches on the hot seat</h2>' +
-    '<p class="lede">Built only from each coach\'s record at his current school, and only the seasons since he was hired. Heat goes up with losing this season, losing over the last three seasons, a losing career, a team getting worse, a low chance of making this year\'s playoffs (not counted in 1A&ndash;3A, where everyone gets in), and <strong>getting mercy-ruled</strong>: a loss by 35 or more (running clock) counts, a loss by 44 or more (the game is stopped) counts half again, this season weighted ahead of his earlier ones. <strong>Playoff wins cut it hard</strong>: a deep run takes most of it away and any state title takes off more. Second-year coaches carry 30% less, and a first-year coach is never on this list. Updated every Saturday at noon. It reads results only &mdash; it knows nothing about administrations, contracts, enrollment, or what a building thinks of its coach, and several of these men are rebuilding programs that were losing long before they arrived.</p><p class="hsnote" style="margin-top:10px;padding:10px 12px;border-left:3px solid #c9a227;background:rgba(201,162,39,.08);font-size:13px;line-height:1.5"><strong>This is not a judgment of anyone as a coach or a person.</strong> The list is built only from what can be counted &mdash; scores, rankings, playoff results and each coach&rsquo;s own history. It cannot see the things that matter most in a program: whether players&rsquo; GPAs are climbing, whether kids are staying out of trouble, or the culture a coach is building in his locker room. Those don&rsquo;t show up in a box score, and plenty of coaches on this list are winning there.</p></div>' +
+    '<p class="lede">Built only from each coach\'s record at his current school, and only the seasons since he was hired. Heat goes up with losing this season, losing over the last three seasons, a losing career, a team getting worse, a low chance of making this year\'s playoffs (not counted in 1A&ndash;3A, where everyone gets in), and <strong>getting mercy-ruled</strong>: a loss by 35 or more (running clock) counts, a loss by 44 or more (the game is stopped) counts half again, this season weighted ahead of his earlier ones. <strong>Playoff wins cut it hard</strong>: a deep run takes most of it away and any state title takes off more. <strong>Sending kids to college cools it</strong>: every senior who played for him and signed with a college counts, by number not level, up to 15% off at one a season. Second-year coaches carry 30% less, and a first-year coach is never on this list. Updated every Saturday at noon. It reads results only &mdash; it knows nothing about administrations, contracts, enrollment, or what a building thinks of its coach, and several of these men are rebuilding programs that were losing long before they arrived.</p><p class="hsnote" style="margin-top:10px;padding:10px 12px;border-left:3px solid #c9a227;background:rgba(201,162,39,.08);font-size:13px;line-height:1.5"><strong>This is not a judgment of anyone as a coach or a person.</strong> The list is built only from what can be counted &mdash; scores, rankings, playoff results, college recruiting and each coach&rsquo;s own history. It cannot see the things that matter most in a program: whether players&rsquo; GPAs are climbing, whether kids are staying out of trouble, or the culture a coach is building in his locker room. Those don&rsquo;t show up in a box score, and plenty of coaches on this list are winning there.</p></div>' +
     '<h3 class="divhead">Year three and beyond<span>' + HOT.filter(function (h) { return h.stage !== "early"; }).length +
     ' coaches, year three or later</span></h3>' +
     '<div class="heat">' + HOT.filter(function (h) { return h.stage !== "early"; }).map(function (h) {
@@ -7604,7 +7646,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         esc(h.school) + " " + h.cls + "</span></div>" +
         '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
         cxhStrip(h.school) + cxhHL(h.school) +
-        '<div class="why">rated #' + h.rank + " statewide</div></div></div>";
+        '<div class="why">rated #' + h.rank + " statewide" + (h.recruits ? " &middot; " + h.recruits + " college commit" + (h.recruits > 1 ? "s" : "") + " under him" : "") + "</div></div></div>";
     }).join("") + "</div>" +
     '<h3 class="divhead" style="margin-top:26px">Early pressure<span>' +
     HOT.filter(function (h) { return h.stage === "early"; }).length +
@@ -7618,7 +7660,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         esc(h.school) + " " + h.cls + "</span></div>" +
         '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
         cxhStrip(h.school) + cxhHL(h.school) +
-        '<div class="why">rated #' + h.rank + " statewide</div></div></div>";
+        '<div class="why">rated #' + h.rank + " statewide" + (h.recruits ? " &middot; " + h.recruits + " college commit" + (h.recruits > 1 ? "s" : "") + " under him" : "") + "</div></div></div>";
     }).join("") + "</div>";
 
   /* ================= PLAYERS ================= */
@@ -8809,9 +8851,10 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     /* ---------- Utah programs under a level ---------- */
     function utBlock(x) {
       if (!x) return "";
-      if (x.utnone) return '<div class="utnone">' + esc(x.utnone) + "</div>";
-      if (!x.ut || !x.ut.length) return "";
-      return '<div class="utchips">' + x.ut.map(function (u) {
+      var none = x.utnone ? '<div class="utnone">' + esc(x.utnone) + "</div>" : "";
+      if (!x.ut || !x.ut.length) return none;
+      return none + (x.uth ? '<div class="uth">' + esc(x.uth) + "</div>" : "") +
+        '<div class="utchips">' + x.ut.map(function (u) {
         var open = u.u ? '<a class="utchip" href="' + esc(u.u) + '" target="_blank" rel="noopener"'
                        : '<div class="utchip"';
         return open + ' style="--uc:' + esc(u.c) + '">' +
@@ -8912,11 +8955,11 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       return '<div class="lvls">' + sec.levels.map(function (L) {
         return '<div class="rlvl" style="--lc:' + esc(L.c) + '">' +
           '<div class="lvk">' + esc(L.k) + "</div>" +
-          '<div class="lvb"><div class="lvh"><b>' + esc(L.n) + "</b>" +
-          '<span class="rlvtag">' + esc(L.tag) + "</span></div>" +
-          "<p>" + L.p + "</p>" +
+          '<div class="lvb"><details class="lvd"><summary class="lvh"><b>' + esc(L.n) + "</b>" +
+          '<span class="rlvtag">' + esc(L.tag) + "</span></summary>" +
+          '<div class="lvx"><p>' + L.p + "</p>" +
           (L.more ? fold("More on this level", L.more) : "") +
-          utBlock(L) + "</div></div>";
+          utBlock(L) + "</div></details></div></div>";
       }).join("") + "</div>";
     }
 
@@ -9008,6 +9051,49 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
       }).join("") + "</div>" : "");
     }
 
+    /* ---------- the NCAA's published calendar as a day grid (Oct 11) ----------
+       sec.cal.subs[].ranges = [["YYYY-MM-DD","YYYY-MM-DD","Period"], ...]; a later
+       range wins a shared day. sec.cal.marks = [["YYYY-MM-DD","label"]]. */
+    function calBlock(cal) {
+      if (!cal || !cal.subs) return "";
+      var P = {}, MN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      (cal.legend || []).forEach(function (l) { P[l[0]] = l[1]; });
+      function pk(s) { var a = s.split("-"); return (+a[0]) * 10000 + (+a[1]) * 100 + (+a[2]); }
+      var mk = {};
+      (cal.marks || []).forEach(function (m) { mk[pk(m[0])] = m[1]; });
+      var subs = cal.subs.map(function (s) {
+        var rng = s.ranges.map(function (r) { return [pk(r[0]), pk(r[1]), r[2]]; });
+        var months = (cal.months || []).map(function (ym, mi) {
+          var y = +ym.slice(0, 4), m = +ym.slice(5, 7) - 1;
+          var first = new Date(Date.UTC(y, m, 1)).getUTCDay(), n = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+          var cells = "";
+          for (var i = 0; i < first; i++) cells += '<i class="cd0"></i>';
+          for (var d = 1; d <= n; d++) {
+            var k = y * 10000 + (m + 1) * 100 + d, per = "";
+            for (var j = rng.length - 1; j >= 0; j--) if (k >= rng[j][0] && k <= rng[j][1]) { per = rng[j][2]; break; }
+            cells += '<i class="' + (mk[k] ? "cdm" : "cdd") + '"' + (per ? ' style="--pc:' + esc(P[per] || "#888") + '"' : "") +
+              ' title="' + esc(MN[m] + " " + d + (per ? " \u00b7 " + per : "") + (mk[k] ? " \u00b7 " + mk[k] : "")) + '">' + d + "</i>";
+          }
+          return '<div class="cmon"><div class="cmh">' + MN[m] + (mi === 0 || m === 0 ? " " + y : "") + "</div>" +
+            '<div class="rcgrid">' + "SMTWTFS".split("").map(function (w) { return "<b>" + w + "</b>"; }).join("") + cells + "</div></div>";
+        }).join("");
+        return '<div class="csub"><div class="csh"><b>' + esc(s.k) + "</b>" + (s.note ? "<span>" + esc(s.note) + "</span>" : "") + "</div>" +
+          '<div class="cmons">' + months + "</div></div>";
+      }).join("");
+      var legend = '<div class="clegend">' + (cal.legend || []).map(function (l) {
+        return '<span><i style="background:' + esc(l[1]) + '"></i>' + esc(l[0]) + "</span>";
+      }).join("") + (cal.marks && cal.marks.length ? '<span><i class="lgm"></i>' + esc(cal.markl || "Key date") + "</span>" : "") + "</div>";
+      return '<div class="rcal"><h3>' + esc(cal.h) + "</h3>" + (cal.p ? '<p class="clede">' + cal.p + "</p>" : "") +
+        legend + subs + (cal.notes ? '<ul class="cnotes">' + cal.notes.map(function (t) { return "<li>" + t + "</li>"; }).join("") + "</ul>" : "") +
+        (cal.src ? '<p class="csrc">' + cal.src + "</p>" : "") + "</div>";
+    }
+    function datesBlock(list) {
+      if (!list || !list.length) return "";
+      return '<div class="kdates">' + list.map(function (r) {
+        return '<div class="kdate"><div class="kdd">' + esc(r[0]) + '</div><div class="kdb"><b>' + esc(r[1]) + "</b> " + r[2] + "</div></div>";
+      }).join("") + "</div>";
+    }
+
     /* ---------- recruiting calendar periods ---------- */
     function periodsSection(sec) {
       return '<div class="prds">' + sec.periods.map(function (p) {
@@ -9017,7 +9103,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
           '<div class="prdh"><b>' + esc(p.k) + '</b><span class="pdots">' + dots + "</span></div>" +
           "<p>" + esc(p.p) + "</p></div>";
       }).join("") + "</div>" +
-      (sec.note ? '<p class="notbet">' + esc(sec.note) + "</p>" : "");
+      (sec.note ? '<p class="notbet">' + esc(sec.note) + "</p>" : "") +
+      calBlock(sec.cal) + datesBlock(sec.dates);
     }
 
     function cards(list) {
@@ -9085,6 +9172,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
               (f.l ? '<img class="crest" src="logo-college-' + esc(f.l) + '.webp" alt="" loading="lazy">' : "") +
               '<span class="qftx"><b>' + esc(f.n) + "</b><em>" + esc(f.note) + "</em></span></a>";
           }).join("") + "</div>" +
+          (R.forms.cards ? '<h3 class="qhow">' + esc(R.forms.cards_h || "How to fill one out") + "</h3>" + cards(R.forms.cards) : "") +
           (R.forms.warn ? fold("Three links worth knowing about", R.forms.warn) : "") + "</div>"
         : "") +
       '<div class="panel" style="margin-bottom:14px"><h2>Go to the source</h2>' +
