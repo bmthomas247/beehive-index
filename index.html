@@ -2447,6 +2447,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .lvb .rfold{ margin:10px 0 0 }
 .lvb .utchips{ margin-top:10px; padding-top:10px }
 
+a.costcta{ margin-top:14px }
 /* ---- Hudl help videos fold (Oct 11) ---- */
 .hudlfold{ margin-top:14px }
 .hudlfold > summary{ font-family:var(--f-display); font-weight:700; font-size:14px }
@@ -9026,7 +9027,9 @@ h3.qhow{ margin:18px 0 8px }
         return '<div class="cost"><div class="rcv">' + esc(c.v) + "</div>" +
           '<div class="rck">' + esc(c.k) + "</div>" +
           '<div class="cw">' + esc(c.w) + "</div></div>";
-      }).join("") + "</div>";
+      }).join("") + "</div>" +
+      (sec.playlist ? '<a class="fullpage costcta" href="' + esc(sec.playlist.u) +
+        '" target="_blank" rel="noopener noreferrer">' + esc(sec.playlist.t) + " &rarr;</a>" : "");
     }
 
     /* ---------- numbered steps (Hudl) ----------
@@ -9170,7 +9173,7 @@ h3.qhow{ margin:18px 0 8px }
             (r.p ? '<p class="vgp">' + esc(r.p) + "</p>" : "") + vcards(r.videos) + "</div>";
         }).join("");
       }
-      if (sec.playlist) {
+      if (sec.playlist && sec.kind !== "cost") {
         out += '<a class="fullpage vgall" href="' + esc(sec.playlist.u) +
           '" target="_blank" rel="noopener noreferrer">' + esc(sec.playlist.t) + " &rarr;</a>";
       }
