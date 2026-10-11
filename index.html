@@ -6169,7 +6169,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     ].join("") + "</div>" +
     '<div class="panel" style="margin-bottom:16px"><h2>The cut line</h2>' +
     '<p class="lede">UHSAA capped the 2026 playoffs at <strong>16 teams per classification</strong> and seeds them by RPI. For 3A, 2A and 1A nothing changes — every eligible program gets in (13, 9 and 9; Layton Christian plays as an independent and is not on UHSAA’s RPI). 6A has 17, so the 17th misses. For <strong>5A and 4A it is a real cut</strong>: both used to take 24 seeds with byes for the top eight, so ' + missing5 + " and " + missing4 + ' teams now miss entirely.</p>' +
-    '<p class="lede" data-v="cxf-v2">Ordered by <strong>RPI</strong>, the number UHSAA seeds with: 45% win percentage, 45% opponents\' win percentage, 10% their opponents\', score ignored. We recompute it from every final in the game file after each update. UHSAA also adjusts for wins across classifications and does not publish exactly how, so a team can sit a spot off the official list. The percentage under each team is its chance of finishing inside the cut, from playing out the rest of the season 10,000 times; that projection is refreshed every Saturday at noon. RATING DISAGREES marks a team whose power rating puts it six or more places away from where RPI has it.</p></div>' +
+    '<p class="lede" data-v="cxf-v2">Ordered by <strong>RPI</strong>, the number UHSAA seeds with: 45% win percentage, 45% opponents\' win percentage, 10% their opponents\', score ignored. The RPI and seed shown are UHSAA\'s own published numbers (uhsaa.org/football-rpi), pulled every update, so today\'s order is the state\'s order. Games against independents (Layton Christian) do not count, and independents are not eligible. The percentage under each team is its chance of finishing inside the cut, from playing out the rest of the season 10,000 times; that projection is refreshed every Saturday at noon. RATING DISAGREES marks a team whose power rating puts it six or more places away from where RPI has it.</p></div>' +
     '<div class="panel" style="margin-bottom:16px"><h2>Projected bracket</h2>' +
     '<p class="lede">The bracket as RPI is projected to seed it once the regular season is played out, refreshed every Saturday at noon. The higher seed hosts through the quarterfinals; semifinals and final are neutral. Highlighted teams are the chalk path — the favourite advancing every round. The percentages underneath come from running the whole bracket <strong>' +
     (SIMS ? SIMS.toLocaleString() : "20,000") + ' times</strong> and counting how often each team gets there, which is a fairer picture than chalk: a 63% favourite still loses a third of the time.</p>' +
@@ -8679,7 +8679,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
         ["recap", "Scores"], ["pred", "Week " + NW + " Picks"], ["pmach", "Playoff Machine"],
         ["playoffs", "Playoff Predictions"], ["cmp", "Prediction Calculator"],
         ["oos", "Out of State"], ["oosnext", "Out of State Picks"]] },
-    { id: "stand", label: "Standings", views: [["stand", "Standings"], ["pmach", "Playoff Machine"]] },
+    { id: "stand", label: "Standings", views: [["stand", "Standings"], ["pmach", "Playoff Machine"], ["playoffs", "Playoff Predictions"]] },
     { id: "rank", label: "Rankings", views: [
         ["rank", "Programs"], ["prank", "Players"], ["crank", "Coaches"]] },
     { id: "people", label: "Players", views: [
