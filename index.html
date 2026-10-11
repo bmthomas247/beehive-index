@@ -8658,34 +8658,31 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
      the rest of THIS week, not next week. The engine says which week that is;
      assuming W + 1 labelled Saturday's games as next week's slate. */
   var NW = parseInt(DATA.next_week, 10) || (W + 1);
+  // Brandon, Oct 11 2026: Scores includes Picks; "Players" not "Player Search";
+  // Players, Programs and Coaches each carry their own Rankings (the Rankings tab
+  // stays too, so a board shows in several spots); the Playoff Machine sits under
+  // both Scores and Standings. A view may live in several groups -- showView()
+  // keeps you in the group you came from.
   var GROUPS = [
     { id: "home", label: "Home", views: [["home", "Home"]] },
     { id: "recap", label: "Scores", views: [
-        ["recap", "Scores"], ["oos", "Out of State"]] },
-    { id: "stand", label: "Standings", views: [["stand", "Standings"]] },
-    { id: "pred", label: "Picks", views: [
-        ["pred", "Week " + NW + " Picks"], ["playoffs", "Playoff Predictions"],
-        ["oosnext", "Out of State"], ["cmp", "Prediction Calculator"]] },
-    // Brandon, Sep 14: "lets also show under rankings a program and a player
-    // tab so each can be found." Two boards, one heading -- a parent looking
-    // for where his son ranks and a coach looking for where his program ranks
-    // were both being sent to the same table, and only one of them was there.
+        ["recap", "Scores"], ["pred", "Week " + NW + " Picks"], ["pmach", "Playoff Machine"],
+        ["playoffs", "Playoff Predictions"], ["cmp", "Prediction Calculator"],
+        ["oos", "Out of State"], ["oosnext", "Out of State Picks"]] },
+    { id: "stand", label: "Standings", views: [["stand", "Standings"], ["pmach", "Playoff Machine"]] },
     { id: "rank", label: "Rankings", views: [
         ["rank", "Programs"], ["prank", "Players"], ["crank", "Coaches"]] },
+    { id: "people", label: "Players", views: [
+        ["prank", "Rankings"], ["players", "All Players"], ["recruit", "Commitments"]] },
+    { id: "programs", label: "Programs", views: [
+        ["rank", "Rankings"], ["breakdown", "All 106"], ["cpipe", "College Pipeline"],
+        ["xfer", "Transfers"]] },
+    { id: "coaches", label: "Coaches", views: [
+        ["crank", "Rankings"], ["coach", "Coaches Stats"], ["seat", "Hot Seat"],
+        ["caro", "Carousel"]] },
     { id: "leaders", label: "Stats", views: [
         ["stats", "Stats"], ["history", "History"]] },
-    { id: "people", label: "Player Search", views: [
-        ["players", "All Players"],
-        ["recruit", "Commitments"]] },
-    { id: "programs", label: "Programs", views: [
-        ["breakdown", "All 106"],
-        ["coach", "Coaches Stats"], ["cpipe", "College Pipeline"],
-        ["caro", "Carousel"], ["seat", "Hot Seat"],
-        ["xfer", "Transfers"]] },
-    // Brandon, Sep 14: "we want a realignment tab as its own, its going to be
-    // a big topic for the next year." It was the seventh sub-tab under
-    // Programs, which is where things go to not be found.
-    { id: "pmach", label: "Playoff Machine", views: [["pmach", "Playoff Machine"]] },
+    // Brandon, Sep 14: "we want a realignment tab as its own".
     { id: "realign", label: "Realignment", views: [["realign", "Realignment"]] },
     { id: "recruit101", label: "Recruiting Help", views: [["recruit101", "Recruiting Help"]] },
     { id: "send", label: "Send Info", views: [
@@ -8693,13 +8690,17 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     { id: "flag", label: "Flag Football", views: [["flag", "Flag Football"]] }
   ];
   var VIEWS = [];
-  GROUPS.forEach(function (g) { g.views.forEach(function (v) { VIEWS.push(v[0]); }); });
+  GROUPS.forEach(function (g) { g.views.forEach(function (v) { if (VIEWS.indexOf(v[0]) < 0) VIEWS.push(v[0]); }); });
 
   // remember where you were inside a group, so coming back to Players does not
   // dump you at the first sub-tab every time
   var lastSub = {}, curGroup = GROUPS[0].id;
 
-  function groupOf(view) {
+  function groupOf(view, gid) {
+    var want = gid || curGroup;
+    for (var k = 0; k < GROUPS.length; k++) {
+      if (GROUPS[k].id === want && GROUPS[k].views.some(function (v) { return v[0] === view; })) return GROUPS[k];
+    }
     for (var i = 0; i < GROUPS.length; i++) {
       for (var j = 0; j < GROUPS[i].views.length; j++) {
         if (GROUPS[i].views[j][0] === view) return GROUPS[i];
@@ -8708,8 +8709,8 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     return GROUPS[0];
   }
 
-  function showView(view, scroll) {
-    var g = groupOf(view);
+  function showView(view, scroll, gid) {
+    var g = groupOf(view, gid);
     curGroup = g.id;
     lastSub[g.id] = view;
     VIEWS.forEach(function (v) {
@@ -8741,12 +8742,12 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
     var b = e.target.closest(".tab"); if (!b) return;
     var g = GROUPS.filter(function (x) { return x.id === b.dataset.g; })[0];
     if (!g) return;
-    showView(lastSub[g.id] || g.views[0][0]);
+    showView(lastSub[g.id] || g.views[0][0], true, g.id);
   });
 
   document.getElementById("subtabs").addEventListener("click", function (e) {
     var b = e.target.closest(".subtab"); if (!b) return;
-    showView(b.dataset.v);
+    showView(b.dataset.v, true, curGroup);
   });
 
   // anything elsewhere on the page that wants to jump to a view
