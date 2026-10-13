@@ -1292,6 +1292,21 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
 .phasehead{font-family:var(--f-display);font-size:19px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;
   margin:0;padding-bottom:6px;border-bottom:2px solid var(--ink)}
 .phasenote{margin:8px 0 14px;font-size:12.5px;color:var(--ink-3);line-height:1.55;max-width:78ch}
+/* Stats -> Team (Oct 13 2026). Scoped class names; the global table min-width
+   is overridden so the wrapper scrolls instead of the page. */
+.tswrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line-soft);border-radius:var(--r)}
+table.tstab{min-width:860px}
+table.tstab th,table.tstab td{padding:8px 9px;white-space:nowrap;font-size:13px}
+table.tstab td.tsv,table.tstab th.tsv{text-align:right;font-variant-numeric:tabular-nums}
+table.tstab th.tson{color:var(--ink)}
+table.tstab .tsn{position:sticky;left:0;background:var(--surface);z-index:2}
+table.tstab thead .tsn{z-index:11}
+table.tstab tbody tr{cursor:pointer;border-bottom:1px solid var(--line-soft)}
+table.tstab tbody tr:hover td{background:var(--surface-2)}
+table.tstab .tsthin{color:var(--ink-3)}
+table.tstab .tsteam{display:flex;align-items:center;gap:7px}
+table.tstab .tsteam > *:first-child{flex:none}
+.tsbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0 6px}
 .rbcol{background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);padding:13px 15px}
 .rbcol h4{margin:0 0 3px;font-family:var(--f-display);font-size:15px;font-weight:600;letter-spacing:.01em}
 .rbcol .cnt{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px}
@@ -2784,6 +2799,7 @@ h3.qhow{ margin:18px 0 8px }
   <section id="v-recruit" hidden></section>
   <section id="v-talent" hidden></section>
   <section id="v-stats" hidden></section>
+  <section id="v-tstats" hidden></section>
   <section id="v-players" hidden></section>
   <section id="v-coach" hidden></section>
   <section id="v-cpipe" hidden></section>
@@ -6187,8 +6203,13 @@ h3.qhow{ margin:18px 0 8px }
       }).join("") + "</div>";
   }
 
+  // Oct 13 2026 (Brandon): Stats -> Player carries Offense / Defense /
+  // Special teams as its own tabs instead of one long page.
+  var leadPhase = "off";
   function drawLeaders() {
-    document.getElementById("leadgrid").innerHTML = LEADPHASE.map(function (g) {
+    document.getElementById("leadgrid").innerHTML = LEADPHASE.filter(function (g) {
+      return g.id === leadPhase;
+    }).map(function (g) {
       var cards = g.cats.map(leadCard).join("") +
         (g.units.indexOf("ol") >= 0 ? olCard() : "") +
         (g.units.indexOf("dl") >= 0 ? dlCard() : "");
@@ -6207,8 +6228,12 @@ h3.qhow{ margin:18px 0 8px }
   }
   var _lo = leadOpts();
   var leadHtml =
-    '<div class="panel" style="margin-bottom:14px"><h2>State leaders</h2>' +
-    '<p class="lede">Who is actually producing &mdash; a different question from who is ranked, which is why it sits on its own tab next to Talent. A quarterback leading Utah in passing yards is talent whether or not a recruiting service has ever heard of him. Recruiting boards measure who gets <em>noticed</em>; plenty of production never gets noticed at all.</p>' +
+    '<div class="panel" style="margin-bottom:14px"><h2>Player stats</h2>' +
+    '<div class="seg" id="leadphase" role="tablist" style="width:max-content;max-width:100%;margin:4px 0 12px">' +
+      LEADPHASE.map(function (g) {
+        return '<button type="button" data-lp="' + g.id + '" aria-pressed="' + (g.id === leadPhase) + '">' + esc(g.label) + "</button>";
+      }).join("") + "</div>" +
+    '<p class="lede">Who is actually producing &mdash; a different question from who is ranked. A quarterback leading Utah in passing yards is talent whether or not a recruiting service has ever heard of him. Recruiting boards measure who gets <em>noticed</em>; plenty of production never gets noticed at all.</p>' +
     '<p class="lede">Raw season totals from what each program has reported, with a per-game figure alongside &mdash; anyone can lead a total by having played an extra game.</p>' +
     '<div class="leadfilt" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 6px">' +
       '<label style="font-size:12.5px;color:var(--ink-2)">Division ' +
@@ -6239,6 +6264,187 @@ h3.qhow{ margin:18px 0 8px }
 
   document.getElementById("v-stats").innerHTML = leadHtml;
   drawLeaders();
+  (function () {
+    var seg = document.getElementById("leadphase");
+    if (seg) seg.addEventListener("click", function (e) {
+      var bt = e.target.closest("[data-lp]"); if (!bt) return;
+      leadPhase = bt.dataset.lp;
+      seg.querySelectorAll("[data-lp]").forEach(function (x) { x.setAttribute("aria-pressed", x === bt); });
+      drawLeaders();
+    });
+  })();
+
+  /* ---- Stats -> Team: program totals (Oct 13 2026) ----
+     Brandon: "total team rushing yards, total team take aways that type of
+     stuff." Summed from every box score a school's stat keeper entered
+     (teamstats.py, rebuilt every run). Points and record come from the
+     schedule and cover every game; everything else covers only the box-score
+     games, and the Box column says how many of the games played that is.
+     Nothing is scaled up to fill a missing game. */
+  (function () {
+    var TSD = DATA.teamstats || {};
+    var el = document.getElementById("v-tstats");
+    if (!el) return;
+    var ROWS = Object.keys(TSD).map(function (k) { return TSD[k]; });
+    var ph = "off", per = false, fcls = "", freg = "", sk = {}, sd = {};
+    function bx(r, v) { return r.bg ? (per ? v / r.bg : v) : null; }
+    function gm(r, v) { return r.gp ? (per ? v / r.gp : v) : null; }
+    function rt(a, b) { return b ? a / b : null; }
+    // [key, label, value(r), decimals for a rate, display(r) override, title]
+    var COLS = {
+      off: [
+        ["pts", "Points", function (r) { return gm(r, r.pf); }, null, null, "Points scored, every game played"],
+        ["tot", "Total yds", function (r) { return bx(r, r.tot_yds); }],
+        ["py", "Pass yds", function (r) { return bx(r, r.pass_yds); }],
+        ["ca", "Cmp-Att", function (r) { return r.bg ? r.cmp : null; }, null,
+          function (r) { return r.bg ? r.cmp + "-" + r.pass_att : ""; }],
+        ["cp", "Cmp %", function (r) { return r.bg ? rt(100 * r.cmp, r.pass_att) : null; }, 1],
+        ["ptd", "Pass TD", function (r) { return bx(r, r.pass_td); }],
+        ["ry", "Rush yds", function (r) { return bx(r, r.rush_yds); }],
+        ["car", "Carries", function (r) { return bx(r, r.car); }],
+        ["ypc", "Yds/carry", function (r) { return r.bg ? rt(r.rush_yds, r.car) : null; }, 1],
+        ["rtd", "Rush TD", function (r) { return bx(r, r.rush_td); }],
+        ["give", "Giveaways", function (r) { return bx(r, r.give); }, null, null, "Interceptions thrown + fumbles lost"]
+      ],
+      def: [
+        ["pa", "Pts allowed", function (r) { return gm(r, r.pa); }, null, null, "Points allowed, every game played"],
+        ["take", "Takeaways", function (r) { return bx(r, r.take); }, null, null, "Interceptions + fumble recoveries"],
+        ["int", "INT", function (r) { return bx(r, r.ints); }],
+        ["fr", "Fum rec", function (r) { return bx(r, r.fumble_rec); }],
+        ["tom", "TO margin", function (r) { return bx(r, r.tomargin); }, null, null, "Takeaways minus giveaways"],
+        ["sk", "Sacks", function (r) { return bx(r, r.sacks); }],
+        ["tfl", "TFL", function (r) { return bx(r, r.tfl); }],
+        ["tkl", "Tackles", function (r) { return bx(r, r.tkl); }],
+        ["ff", "Forced fum", function (r) { return bx(r, r.forced_fumbles); }],
+        ["dtd", "Def TD", function (r) { return bx(r, r.def_td); }],
+        ["pd", "Pass def", function (r) { return bx(r, r.pass_def); }],
+        ["ya", "Yds allowed", function (r) { return r.og ? (per ? r.opp_tot / r.og : r.opp_tot) : null; }, null, null,
+          "What opponents gained, in the games where the opponent entered its box score"],
+        ["og", "Opp box", function (r) { return r.og || null; }, 0, null, "Games where the opponent's box score exists"]
+      ],
+      spec: [
+        ["fg", "FG", function (r) { return r.bg ? r.fg : null; }, null,
+          function (r) { return r.bg ? r.fg + "-" + r.fg_att : ""; }, "Field goals made-attempted"],
+        ["fgp", "FG %", function (r) { return r.fg_att ? rt(100 * r.fg, r.fg_att) : null; }, 0],
+        ["pat", "PAT", function (r) { return r.bg ? r.pat : null; }, null,
+          function (r) { return r.bg ? r.pat + "-" + r.pat_att : ""; }, "Extra points made-attempted"],
+        ["pun", "Punts", function (r) { return bx(r, r.punts); }],
+        ["pav", "Punt avg", function (r) { return r.punts ? rt(r.punt_yds, r.punts) : null; }, 1],
+        ["p20", "Inside 20", function (r) { return bx(r, r.punts_in20); }],
+        ["kry", "KR yds", function (r) { return bx(r, r.kr_yds); }],
+        ["kra", "KR avg", function (r) { return r.kr ? rt(r.kr_yds, r.kr) : null; }, 1],
+        ["pry", "PR yds", function (r) { return bx(r, r.pr_yds); }],
+        ["rtd2", "Return TD", function (r) { return bx(r, r.ret_td); }],
+        ["blk", "Blocked kicks", function (r) { return bx(r, r.blk); }],
+        ["tb", "Touchbacks", function (r) { return bx(r, r.touchbacks); }]
+      ]
+    };
+    var DEF = { off: "tot", def: "take", spec: "fg" };
+    var LOWGOOD = { pa: 1, give: 1, ya: 1 };
+    var PHL = [["off", "Offense"], ["def", "Defense"], ["spec", "Special teams"]];
+    var NOTE = {
+      off: "Points come from every game played. Yards, touchdowns and giveaways are summed from the box scores each school entered.",
+      def: "Takeaways are interceptions plus fumble recoveries. Yards allowed are what opponents gained, only in games where the opponent entered its own box score (the Opp box column).",
+      spec: "Kicking, punting and returns as each school's stat keeper entered them. A blank attempt column means it was not recorded, not that it never happened."
+    };
+    var clsL = [], regL = [];
+    (DATA.teams || []).forEach(function (t) {
+      if (t.cls && clsL.indexOf(t.cls) < 0) clsL.push(t.cls);
+      if (t.region && regL.indexOf(t.region) < 0) regL.push(t.region);
+    });
+    clsL.sort(function (a, b) { return parseInt(b, 10) - parseInt(a, 10); });
+    regL.sort(function (a, b) { return (parseInt(a.replace(/\D/g, ""), 10) || 0) - (parseInt(b.replace(/\D/g, ""), 10) || 0); });
+    var full = ROWS.filter(function (r) { return r.bg && r.bg >= r.gp; }).length;
+    var none = ROWS.filter(function (r) { return !r.bg; }).map(function (r) { return r.school; }).sort();
+
+    function fmt(v, dec) {
+      if (v === null || v === undefined || isNaN(v)) return "";
+      if (dec !== null && dec !== undefined) return v.toFixed(dec);
+      if (per) return (Math.round(v * 10) / 10).toFixed(1);
+      return (Math.round(v * 10) / 10).toLocaleString("en-US");
+    }
+    function draw() {
+      var cols = COLS[ph], key = sk[ph] || DEF[ph];
+      var col = cols.filter(function (c) { return c[0] === key; })[0] || cols[0];
+      var dir = sd[ph] || (LOWGOOD[key] ? 1 : -1);
+      var list = ROWS.filter(function (r) {
+        return (!fcls || r.cls === fcls) && (!freg || r.reg === freg);
+      }).map(function (r) { return { r: r, v: col[2](r) }; });
+      list.sort(function (a, b) {
+        var an = a.v === null || isNaN(a.v), bn = b.v === null || isNaN(b.v);
+        if (an || bn) return an - bn || a.r.school.localeCompare(b.r.school);
+        return dir * (a.v - b.v) || a.r.school.localeCompare(b.r.school);
+      });
+      var head = '<tr><th class="tsv">#</th><th class="tsn">Team</th><th>Record</th>' +
+        '<th class="tsv" title="Box-score games entered / games played">Box</th>' +
+        cols.map(function (c) {
+          return '<th class="tsv' + (c[0] === key ? " tson" : "") + '" data-tsk="' + c[0] + '"' +
+            (c[5] ? ' title="' + esc(c[5]) + '"' : "") + ">" + esc(c[1]) +
+            (c[0] === key ? (dir < 0 ? " &#9660;" : " &#9650;") : "") + "</th>";
+        }).join("") + "</tr>";
+      var body = list.map(function (x, i) {
+        var r = x.r, thin = r.bg < r.gp;
+        return '<tr data-t="' + esc(r.school) + '"><td class="tsv">' + (x.v === null || isNaN(x.v) ? "" : i + 1) + "</td>" +
+          '<td class="tsn"><span class="tsteam">' + logo(r.school, "sm") + "<span>" + esc(r.school) +
+          ' <span class="tsthin">' + esc(r.cls) + "</span></span></span></td>" +
+          "<td>" + r.w + "-" + r.l + "</td>" +
+          '<td class="tsv' + (thin ? " tsthin" : "") + '">' + r.bg + "/" + r.gp + "</td>" +
+          cols.map(function (c) {
+            var v = c[2](r);
+            return '<td class="tsv">' + (c[4] ? esc(c[4](r)) : fmt(v, c[3])) + "</td>";
+          }).join("") + "</tr>";
+      }).join("");
+      document.getElementById("tsnote").innerHTML = esc(NOTE[ph]) +
+        (per ? " <strong>Per game</strong>: box numbers are divided by box games, points by games played." : "");
+      document.getElementById("tsgrid").innerHTML =
+        '<div class="tswrap"><table class="tstab"><thead>' + head + "</thead><tbody>" + body + "</tbody></table></div>";
+    }
+    el.innerHTML =
+      '<div class="panel" style="margin-bottom:14px"><h2>Team stats</h2>' +
+      '<div class="seg" id="tsph" style="width:max-content;max-width:100%;margin:4px 0 12px">' +
+        PHL.map(function (p) { return '<button type="button" data-tp="' + p[0] + '" aria-pressed="' + (p[0] === ph) + '">' + p[1] + "</button>"; }).join("") +
+      "</div>" +
+      '<p class="lede">Program totals for 2026 &mdash; every number is the sum of what each school\u2019s stat keeper entered in its MaxPreps box scores, game by game. Points and records come from the final scores of every game. Click a column to sort; click a team to open it.</p>' +
+      '<div class="tsbar">' +
+        '<label style="font-size:12.5px;color:var(--ink-2)">Division <select id="tscls"><option value="">All divisions</option>' +
+          clsL.map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + "</option>"; }).join("") + "</select></label>" +
+        '<label style="font-size:12.5px;color:var(--ink-2)">Region <select id="tsreg"><option value="">All regions</option>' +
+          regL.map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + "</option>"; }).join("") + "</select></label>" +
+        '<div class="seg" id="tsper"><button type="button" data-pm="0" aria-pressed="true">Totals</button><button type="button" data-pm="1" aria-pressed="false">Per game</button></div>' +
+      "</div>" +
+      '<p class="lede" id="tsnote" style="margin-top:6px;font-size:13px"></p>' +
+      "</div>" +
+      '<div id="tsgrid"></div>' +
+      '<div class="panel" style="margin-top:16px"><h2>How complete these are</h2>' +
+      '<p class="notbet"><strong>' + full + " of " + ROWS.length + "</strong> programs have a box score entered for every game they have played. " +
+      "The <strong>Box</strong> column shows box games over games played; a team with fewer box games has smaller totals because games are missing, not because it did less, and nothing here is estimated to fill the gap. Use <strong>Per game</strong> to compare those teams fairly." +
+      (none.length ? " No box scores at all yet: " + esc(none.join(", ")) + "." : "") + "</p>" +
+      '<p class="notbet">Tackles, sacks, pass breakups and return numbers are only as complete as each school\u2019s stat keeper makes them &mdash; some programs chart every snap, some enter the basics. Coaches: entering your box scores on MaxPreps is what puts your team on these boards.</p>' +
+      "</div>";
+    draw();
+    document.getElementById("tsph").addEventListener("click", function (e) {
+      var bt = e.target.closest("[data-tp]"); if (!bt) return;
+      ph = bt.dataset.tp;
+      this.querySelectorAll("[data-tp]").forEach(function (x) { x.setAttribute("aria-pressed", x === bt); });
+      draw();
+    });
+    document.getElementById("tsper").addEventListener("click", function (e) {
+      var bt = e.target.closest("[data-pm]"); if (!bt) return;
+      per = bt.dataset.pm === "1";
+      this.querySelectorAll("[data-pm]").forEach(function (x) { x.setAttribute("aria-pressed", x === bt); });
+      draw();
+    });
+    document.getElementById("tscls").addEventListener("change", function () { fcls = this.value; draw(); });
+    document.getElementById("tsreg").addEventListener("change", function () { freg = this.value; draw(); });
+    document.getElementById("tsgrid").addEventListener("click", function (e) {
+      var th = e.target.closest("[data-tsk]"); if (!th) return;
+      e.stopPropagation();
+      var k = th.dataset.tsk;
+      if ((sk[ph] || DEF[ph]) === k) sd[ph] = -(sd[ph] || (LOWGOOD[k] ? 1 : -1));
+      else { sk[ph] = k; sd[ph] = LOWGOOD[k] ? 1 : -1; }
+      draw();
+    });
+  })();
   (function () {
     var c = document.getElementById("leadcls"), r = document.getElementById("leadreg"),
         b = document.getElementById("leadclear");
@@ -8931,7 +9137,7 @@ h3.qhow{ margin:18px 0 8px }
         ["crank", "Rankings"], ["coach", "Coaches Stats"], ["seat", "Hot Seat"],
         ["caro", "Carousel"]] },
     { id: "leaders", label: "Stats", views: [
-        ["stats", "Stats"], ["history", "History"]] },
+        ["stats", "Player"], ["tstats", "Team"], ["history", "History"]] },
     // Brandon, Sep 14: "we want a realignment tab as its own".
     { id: "realign", label: "Realignment", views: [["realign", "Realignment"]] },
     { id: "recruit101", label: "Recruiting Help", views: [["recruit101", "Recruiting Help"]] },
