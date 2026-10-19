@@ -2745,6 +2745,38 @@ h3.qhow{ margin:18px 0 8px }
 .cxh-hi{color:var(--grow,#2e7d4f)}
 .cxh-lo{color:var(--fall,#b3402f)}
 .cxh-cap{font-size:11px;color:var(--ink-3);margin-top:4px}
+/* hpo: front page in playoff mode (Oct 19 2026) */
+.hpo-hero{position:relative;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#0f1a2b 0%,#1b2a44 55%,#3a2a0c 100%);color:#fff;padding:26px 26px 22px;margin-bottom:18px;display:grid;grid-template-columns:1.25fr 1fr;gap:22px}
+.hpo-hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 88% 0%,rgba(243,210,122,.30),transparent 55%);pointer-events:none}
+.hpo-hc,.hpo-seeds{position:relative;min-width:0}
+.hpo-tag{color:#f3d27a;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.hpo-hero h2{font-size:clamp(28px,4.2vw,46px);line-height:1.04;margin:8px 0 10px;color:#fff;font-weight:800;letter-spacing:-.01em}
+.hpo-sub{color:rgba(255,255,255,.84);margin:0 0 16px;font-size:15px;line-height:1.45}
+.hpo-btns{display:flex;flex-wrap:wrap;gap:8px}
+.hpo-btns button{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:7px 14px;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+.hpo-btns button:hover{background:#f3d27a;color:#1b1b22;border-color:#f3d27a}
+.hpo-btns .hpo-all{background:#f3d27a;color:#1b1b22;border-color:#f3d27a}
+.hpo-seeds{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-content:start}
+.hpo-sl{grid-column:1/-1;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.62)}
+.hpo-sd{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.08);border-radius:10px;padding:8px;cursor:pointer;min-width:0}
+.hpo-sd:hover{background:rgba(243,210,122,.18)}
+.hpo-sd span{display:flex;flex-direction:column;font-size:13px;line-height:1.25;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.hpo-sd b{color:#f3d27a;font-size:11px}
+.hpo-p{margin-bottom:18px}
+.hpo-cls{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.hpo-ch{display:flex;align-items:baseline;gap:8px;font-size:12px;color:var(--ink-3);margin-bottom:6px;border-bottom:2px solid #d9b45a;padding-bottom:4px}
+.hpo-ch b{font-size:17px;color:var(--ink,inherit)}
+.hpo-bk{margin-left:auto;background:none;border:0;color:#1a5fb4;cursor:pointer;font:inherit;font-size:12px;padding:0}
+.hpo-g{border:1px solid rgba(127,127,127,.22);border-radius:8px;padding:6px 8px;margin-bottom:6px;cursor:pointer}
+.hpo-g:hover{border-color:#d9b45a}
+.hpo-k{font-size:11px;color:var(--ink-3);margin-bottom:3px}
+.hpo-t{display:flex;align-items:center;gap:6px;font-size:14px;padding:2px 0;min-width:0}
+.hpo-t i{font-style:normal;font-size:11px;color:var(--ink-3);width:16px;text-align:right;flex:none}
+.hpo-n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hpo-r{font-size:12px;color:var(--ink-3);flex:none}
+.hpo-r b{font-size:15px;color:var(--ink,inherit)}
+.hpo-t.l{opacity:.5}
+@media(max-width:760px){.hpo-hero{grid-template-columns:1fr;padding:20px 16px}.hpo-cls{grid-template-columns:1fr}}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -7111,6 +7143,123 @@ h3.qhow{ margin:18px 0 8px }
     else if (upNext.length) { lead = upNext[0]; leadKind = "next"; }
     else if (lastBig.length) { lead = lastBig[0]; leadKind = "recap"; }
 
+    /* ---- PLAYOFF MODE -- hpo (Brandon, Oct 19 2026: "we need to be pushing
+       playoffs not week 11"). While the UHSAA brackets are live the front page
+       leads with them instead of the regular-season game of the week, the
+       weekly preview and the week's pick cards. Seeds, pairings and kickoffs:
+       DATA.po_official (the official bracket). Scores: DATA.recap (Deseret)
+       only, same rule as the Playoffs tab. 8-player stays off the front page
+       (Brandon, Oct 18). Reverts by itself a week after the last final. ---- */
+    var POH = (function () {
+      var PO = (DATA.po_official || {}).classes || {};
+      var ORD = ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) { return PO[c] && PO[c].rounds && PO[c].rounds.length; });
+      if (!ORD.length) return null;
+      function iso(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+      function addD(s, n) { var q = s.split("-"); return iso(new Date(+q[0], +q[1] - 1, +q[2] + n)); }
+      var today = iso(new Date());
+      var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      var DY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      function day(s) { var q = s.split("-"), d = new Date(+q[0], +q[1] - 1, +q[2]); return DY[d.getDay()] + ", " + MON[d.getMonth()] + " " + (+q[2]); }
+      function tm(k) { var m = /T(\d\d):(\d\d)/.exec(k || ""); if (!m) return ""; var h = +m[1], ap = h >= 12 ? "pm" : "am"; h = h % 12 || 12; return h + (m[2] !== "00" ? ":" + m[2] : "") + ap; }
+      var FIN = {};
+      (DATA.recap || []).forEach(function (g) { if (g.date && g.date >= "2026-10-20") FIN[[g.away, g.home].sort().join("|")] = g; });
+      function named(t) { return t && t.team && !/^Winner\b/i.test(t.team); }
+      function real(t) { return named(t) && !/bye/i.test(t.res || ""); }
+      var G = [], last = "", nTeams = {};
+      ORD.forEach(function (c) {
+        var R = PO[c].rounds;
+        R.forEach(function (r, k) {
+          var rn = (k === 0 && R[1] && r.games.length < 2 * R[1].games.length) ? "Play-in"
+                 : String(r.name || "").replace(/ at .*$| - .*$/i, "");
+          r.games.forEach(function (g) {
+            var d = String(g.ko || r.date || "").slice(0, 10);
+            if (d > last) last = d;
+            g.teams.forEach(function (t) { if (named(t)) nTeams[t.team] = 1; });
+            if (g.bye || !real(g.teams[0]) || !real(g.teams[1])) return;
+            G.push({ c: c, rn: rn, d: d, ko: g.ko, a: g.teams[0], b: g.teams[1],
+                     f: FIN[[g.teams[0].team, g.teams[1].team].sort().join("|")] });
+          });
+        });
+      });
+      if (!G.length || (last && today > addD(last, 7))) return null;
+      var byD = function (x, y) { return x.d < y.d ? -1 : x.d > y.d ? 1 : 0; };
+      var open = G.filter(function (g) { return !g.f && g.d && g.d >= today; }).sort(byD);
+      var done = G.filter(function (g) { return g.f && g.d >= addD(today, -8); }).sort(byD).reverse();
+      function slate(from) { return open.filter(function (g) { return g.d >= from && g.d <= addD(from, 6); }); }
+      var s1 = open.length ? slate(open[0].d) : [];
+      var rest = open.filter(function (g) { return s1.indexOf(g) < 0; });
+      var s2 = rest.length ? slate(rest[0].d) : [];
+      function clsOf(list) { var o = []; ORD.forEach(function (c) { if (list.some(function (g) { return g.c === c; })) o.push(c); }); return o; }
+
+      function side(t, sc, w) {
+        var x = byName[t.team];
+        return '<div class="hpo-t' + (w === false ? " l" : "") + '"><i>' + (t.seed || "") + "</i>" + logo(t.team, "sm") +
+          '<span class="hpo-n"' + (x ? ' data-t="' + esc(t.team) + '"' : "") + ">" + esc(t.team) + "</span>" +
+          '<span class="hpo-r">' + (sc != null ? "<b>" + Math.round(sc) + "</b>" : x ? x.w + "&ndash;" + x.l : "") + "</span></div>";
+      }
+      function gameCard(g) {
+        var f = g.f, sa = null, sb = null, wa = null, wb = null;
+        if (f) { var s = {}; s[f.away] = f.away_score; s[f.home] = f.home_score; sa = s[g.a.team]; sb = s[g.b.team];
+                 wa = f.winner === g.a.team; wb = f.winner === g.b.team; }
+        return '<div class="hpo-g" data-poc="' + g.c + '"><div class="hpo-k">' +
+          (f ? "Final &middot; " + esc(g.rn) : esc(day(g.d)) + (tm(g.ko) ? " &middot; " + tm(g.ko) : "")) + "</div>" +
+          side(g.a, sa, wa) + side(g.b, sb, wb) + "</div>";
+      }
+      function block(list, title, sub) {
+        if (!list.length) return "";
+        var by = {}; list.forEach(function (g) { (by[g.c] = by[g.c] || []).push(g); });
+        return '<div class="panel hpo-p"><h2>' + title + "</h2>" + (sub ? '<p class="lede">' + sub + "</p>" : "") +
+          '<div class="hpo-cls">' + clsOf(list).map(function (c) {
+            var rns = []; by[c].forEach(function (g) { if (rns.indexOf(g.rn) < 0) rns.push(g.rn); });
+            return '<div class="hpo-c"><div class="hpo-ch"><b>' + c + "</b><span>" + rns.map(esc).join(" &middot; ") + "</span>" +
+              '<button class="hpo-bk" data-poc="' + c + '">Bracket &rsaquo;</button></div>' +
+              by[c].map(gameCard).join("") + "</div>";
+          }).join("") + "</div></div>";
+      }
+
+      var tops = ORD.map(function (c) {
+        var f = null;
+        PO[c].rounds.forEach(function (r) { r.games.forEach(function (g) { g.teams.forEach(function (t) {
+          if (!f && named(t) && t.seed === 1) f = t.team; }); }); });
+        return { c: c, t: f };
+      }).filter(function (x) { return x.t; });
+      var nextD = open.length ? open[0].d : "";
+      var head = !nextD ? "State playoffs"
+               : done.length ? "Next up in the playoffs: " + esc(day(nextD))
+               : "The road to state starts " + esc(day(nextD));
+      var subl = Object.keys(nTeams).length + " teams in six classes, seeded by the UHSAA. ";
+      if (s1.length) subl += s1.length + " game" + (s1.length > 1 ? "s" : "") + " in " + clsOf(s1).join(", ") + " this round";
+      if (s2.length) subl += "; then " + clsOf(s2).join(", ") + " on " + esc(day(s2[0].d));
+      subl += ".";
+      var yr = (last || today).slice(0, 4);
+      var hero = '<section class="hpo-hero"><div class="hpo-hc">' +
+        '<span class="hpo-tag">' + yr + " UHSAA State Playoffs</span>" +
+        "<h2>" + head + "</h2>" +
+        '<p class="hpo-sub">' + subl + "</p>" +
+        '<div class="hpo-btns">' + ORD.map(function (c) { return '<button data-poc="' + c + '">' + c + "</button>"; }).join("") +
+        '<button class="hpo-all" data-go="poff">Every bracket &rsaquo;</button></div></div>' +
+        '<div class="hpo-seeds"><span class="hpo-sl">No. 1 seeds</span>' + tops.map(function (x) {
+          return '<div class="hpo-sd" data-poc="' + x.c + '">' + logo(x.t, "md") +
+            "<span><b>" + x.c + "</b>" + esc(x.t) + "</span></div>";
+        }).join("") + "</div></section>";
+      var note = "Seeds, pairings and kickoffs from the official UHSAA bracket; higher seed hosts through the quarterfinals. Click a game for the full bracket.";
+      var html = hero +
+        block(done, "Playoff results", "Final scores from the Deseret News.") +
+        block(s1, (done.length ? "Next up" : "First up") + " &middot; " + esc(day(s1.length ? s1[0].d : nextD)), note) +
+        block(s2, "Then &middot; " + esc(day(s2.length ? s2[0].d : nextD)), "");
+      if (!window._hpoBound) {
+        window._hpoBound = 1;
+        document.addEventListener("click", function (e) {
+          if (e.target.closest("[data-t]")) return;
+          var b = e.target.closest("[data-poc]"); if (!b || !window.goToView) return;
+          window.goToView("poff");
+          var cb = document.querySelector('#pofcls button[data-c="' + b.dataset.poc + '"]'); if (cb) cb.click();
+          try { window.scrollTo(0, 0); } catch (x) {}
+        });
+      }
+      return { html: html };
+    })();
+
     // callers pass display-ready markup (entities included), so this does not escape
     function chip(txt, tone) {
       return '<span class="kick' + (tone ? " " + tone : "") + '">' + txt + "</span>";
@@ -7358,10 +7507,10 @@ h3.qhow{ margin:18px 0 8px }
     document.getElementById("v-home").innerHTML =
       '<div class="frontgrid">' +
       '<div class="fmain">' +
-      heroHtml +
+      (POH ? POH.html : heroHtml +
       artHtml +
       (heroHtml ? "" : leadHtml) +
-      (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "") +
+      (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
       vidHtml +
       freshBlock(16) +
       '<div class="panel"><h2>Around Utah</h2>' +
