@@ -1363,6 +1363,39 @@ table.tstab .tsteam > *:first-child{flex:none}
 .pm-g .st.you{color:#ffd166}
 .pm-g.fin .tm.win{background:#2b3442;border-color:#3b495c}
 .pm-empty{color:#7e8a99;padding:10px;font-size:13px}
+/* poffcss Oct 18: Playoffs tab (official UHSAA brackets) */
+.pof{background:#0f1520;color:#e8ecf2;border-radius:10px;padding:16px 16px 12px;border:1px solid #243044}
+.pof-hd{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:12px}
+.pof-ttl{font-weight:800;letter-spacing:.06em;font-size:18px}.pof-ttl b{color:#ffd166}
+.pof-cls{display:flex;flex-wrap:wrap;gap:4px}
+.pof-cls button{background:#1a2333;color:#c9d2de;border:1px solid #2c394c;border-radius:5px;padding:5px 11px;font-weight:700;cursor:pointer;font-size:13px}
+.pof-cls button[aria-pressed="true"]{background:#ffd166;color:#151b26;border-color:#ffd166}
+.pof-pi{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.pof-pi .pof-lab{font-size:10px;letter-spacing:.12em;color:#8b97a7;text-transform:uppercase}
+.pof-pi .pof-m{width:230px}
+.pof-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pof-br{display:grid;gap:10px;min-width:760px}
+.pof-rh{font-size:10px;letter-spacing:.1em;color:#8b97a7;text-transform:uppercase;text-align:center;line-height:1.35}
+.pof-rh b{display:block;color:#c9d2de;font-size:11px}
+.pof-col{display:flex;flex-direction:column;justify-content:space-around;gap:8px}
+.pof-m{background:#161d29;border:1px solid #2c394c;border-radius:6px;overflow:hidden}
+.pof-ko{font-size:10px;color:#8b97a7;padding:3px 7px;background:#121925;border-bottom:1px solid #253144}
+.pof-s{display:flex;align-items:center;gap:6px;padding:4px 7px;font-size:12px;min-height:26px}
+.pof-s+.pof-s{border-top:1px solid #253144}
+.pof-s i.pof-sd{font-style:normal;color:#8b97a7;width:16px;text-align:right;font-size:10px;flex:none}
+.pof-s .pof-nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.pof-s .pof-rc{color:#8b97a7;font-size:10px;flex:none}
+.pof-s .pof-sc{font-weight:800;min-width:20px;text-align:right;flex:none}
+.pof-s.w{background:#2f6f3e;color:#fff;font-weight:700}.pof-s.w .pof-rc,.pof-s.w i.pof-sd{color:#d6f0dc}
+.pof-s.l{opacity:.5}
+.pof-s.tbd{color:#5d6876;font-style:italic}
+.pof-s .crest,.pof-s .swatch{width:18px;height:18px;flex:none}
+.pof-ch{text-align:center;align-self:center}
+.pof-ch svg{width:64px;height:96px;display:block;margin:0 auto 6px}
+.pof-ch .pof-cap{font-size:10px;letter-spacing:.14em;color:#aab3bf;text-transform:uppercase}
+.pof-ch .pof-cn{font-size:16px;font-weight:800;margin-top:6px;color:#ffd166;min-height:22px}
+.pof-note{font-size:11.5px;color:#8b97a7;margin:12px 0 0;line-height:1.5}
+.pof-note a{color:#c9d2de}
 .pm-br{margin:16px 0 6px;display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:center;min-height:420px}
 .pm-col{display:flex;flex-direction:column;justify-content:space-around;height:100%;gap:6px}
 .pm-m{background:#161d29;border:1px solid #2c394c;border-radius:6px;overflow:hidden}
@@ -2794,6 +2827,7 @@ h3.qhow{ margin:18px 0 8px }
   <section id="v-pred" hidden></section>
   <section id="v-cmp" hidden></section>
   <section id="v-playoffs" hidden></section>
+  <section id="v-poff" hidden></section>
   <section id="v-oos" hidden></section>
   <section id="v-oosnext" hidden></section>
   <section id="v-recruit" hidden></section>
@@ -7596,7 +7630,106 @@ h3.qhow{ margin:18px 0 8px }
       }
     }, true);
     drawAll();
-    if (/pm=/.test(location.hash)) setTimeout(function () { window.goToView && window.goToView("pmach"); }, 0);
+    if (/pm=/.test(location.hash)) setTimeout(function () { window.goToView && window.goToView("poff"); }, 0);
+  })();
+
+  /* ---- PLAYOFFS (Brandon, Oct 18 2026) -- pofjs ---------------------------
+     The official UHSAA brackets, read every run by harvest_brackets.py from the
+     MaxPreps tournament pages UHSAA links on uhsaa.org/football. Seeds, pairings,
+     kickoffs and who advanced come from that bracket; every SCORE shown comes
+     from our own game file (DATA.recap, Deseret), never from the bracket page. */
+  (function () {
+    var PO = (DATA.po_official || {}).classes || {};
+    var el = document.getElementById("v-poff");
+    if (!el) return;
+    var ORDER = ["6A", "5A", "4A", "3A", "2A", "1A", "8P"].filter(function (c) { return PO[c]; });
+    if (!ORDER.length) { el.innerHTML = '<div class="panel"><h2>Playoffs</h2><p class="lede">The state brackets are not out yet.</p></div>'; return; }
+    var cur = ORDER[0];
+    try { var hc = (location.hash.match(/po=(\w+)/) || [])[1]; if (hc && PO[hc]) cur = hc; } catch (e) {}
+    var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var MONS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    function ko(s) {
+      var m = String(s || "").match(/^(\d{4})-(\d\d)-(\d\d)(?:T(\d\d):(\d\d))?/); if (!m) return "";
+      var d = new Date(+m[1], +m[2] - 1, +m[3]);
+      var out = DAYS[d.getDay()] + " " + MONS[d.getMonth()] + " " + (+m[3]);
+      if (m[4]) { var h = +m[4], ap = h >= 12 ? "pm" : "am"; h = h % 12 || 12; out += " · " + h + (m[5] !== "00" ? ":" + m[5] : "") + ap; }
+      return out;
+    }
+    function rdate(r) { return r.date || ((r.games[0] || {}).ko || "").slice(0, 10); }
+    // finals from our game file, keyed by the pair
+    var FIN = {};
+    (DATA.recap || []).forEach(function (g) {
+      if (!g.date || g.date < "2026-10-20") return;
+      FIN[[g.away, g.home].sort().join("|")] = g;
+    });
+    function score(a, b) {
+      if (!a || !b) return null;
+      var g = FIN[[a, b].sort().join("|")]; if (!g) return null;
+      var s = {}; s[g.away] = g.away_score; s[g.home] = g.home_score;
+      return { a: s[a], b: s[b], win: g.winner };
+    }
+    function real(t) { return t && t.team && !/^Winner\b/i.test(t.team); }
+    function rec(t) { var x = byName[t]; return x ? x.w + "-" + x.l : ""; }
+    function side(t, won, lost, sc) {
+      if (!real(t)) return '<div class="pof-s tbd"><i class="pof-sd"></i><span class="pof-nm">' +
+        (t && /^Winner P/i.test(t.team) ? "Play-in winner" : "TBD") + "</span></div>";
+      return '<div class="pof-s' + (won ? " w" : lost ? " l" : "") + '"><i class="pof-sd">' + (t.seed || "") + "</i>" +
+        logo(t.team) + '<span class="pof-nm" title="' + esc(t.team) + '" data-pt="' + esc(t.team) + '">' + esc(t.team) + "</span>" +
+        '<span class="pof-rc">' + esc(rec(t.team)) + "</span>" +
+        (sc != null ? '<span class="pof-sc">' + Math.round(sc) + "</span>" : "") + "</div>";
+    }
+    function card(g, adv) {
+      var ts = g.teams.filter(real);
+      if (g.bye || (g.teams.some(function (t) { return /bye/i.test(t.res); }))) {
+        var t = ts[0];
+        return '<div class="pof-m"><div class="pof-ko">First-round bye</div>' + side(t, false, false, null) + "</div>";
+      }
+      var a = g.teams[0], b = g.teams[1];
+      var s = score(a && a.team, b && b.team), wa = false, wb = false;
+      if (s) { wa = s.win === a.team; wb = s.win === b.team; }
+      else if (adv) { wa = real(a) && adv[a.team]; wb = real(b) && adv[b.team]; }
+      return '<div class="pof-m"><div class="pof-ko">' + (s ? "Final" : esc(ko(g.ko))) + "</div>" +
+        side(a, wa, wb, s ? s.a : null) + side(b, wb, wa, s ? s.b : null) + "</div>";
+    }
+    function draw() {
+      var C = PO[cur], R = C.rounds.slice();
+      // a round smaller than a full feed of the next is a play-in, shown above the bracket
+      var pi = [];
+      while (R.length > 1 && R[0].games.length < 2 * R[1].games.length) pi.push(R.shift());
+      var allR = pi.concat(R);
+      function advOf(i) { var s = {}; var nx = allR[i + 1]; if (!nx) return s;
+        nx.games.forEach(function (g) { g.teams.forEach(function (t) { if (real(t)) s[t.team] = 1; }); }); return s; }
+      var fin = R[R.length - 1], fg = fin && fin.games[0], champ = "";
+      if (fg) { var fs = score(fg.teams[0] && fg.teams[0].team, fg.teams[1] && fg.teams[1].team); if (fs) champ = fs.win; }
+      var cols = R.length + 1;
+      var TROPHY = '<svg viewBox="0 0 74 110" aria-hidden="true"><defs><linearGradient id="pofg" x1="0" x2="1"><stop offset="0" stop-color="#8a6a1c"/><stop offset=".5" stop-color="#f3d27a"/><stop offset="1" stop-color="#8a6a1c"/></linearGradient></defs>' +
+        '<path d="M14 6h46v14c0 17-10 30-23 32C24 50 14 37 14 20z" fill="url(#pofg)"/><path d="M14 12H4c0 14 6 22 14 24M60 12h10c0 14-6 22-14 24" fill="none" stroke="#d9b45a" stroke-width="3"/>' +
+        '<rect x="32" y="52" width="10" height="20" fill="url(#pofg)"/><path d="M22 72h30l4 12H18z" fill="url(#pofg)"/><rect x="12" y="84" width="50" height="16" rx="2" fill="#2a2f38" stroke="#d9b45a"/></svg>';
+      var lab = function (c) { return c === "8P" ? "8-Player" : c; };
+      el.innerHTML = '<div class="pof"><div class="pof-hd"><div class="pof-ttl">' + "2026 UHSAA <b>STATE PLAYOFFS</b></div>" +
+        '<div class="pof-cls" id="pofcls">' + ORDER.map(function (c) {
+          return '<button data-c="' + c + '" aria-pressed="' + (c === cur) + '">' + lab(c) + "</button>"; }).join("") + "</div></div>" +
+        (pi.length ? '<div class="pof-pi"><span class="pof-lab">Play-in · ' + esc(ko(rdate(pi[0])).split(" · ")[0]) + "</span>" +
+          pi.map(function (r, k) { return r.games.map(function (g) { return card(g, advOf(k)); }).join(""); }).join("") + "</div>" : "") +
+        '<div class="pof-wrap"><div class="pof-br" style="grid-template-columns:repeat(' + cols + ',minmax(150px,1fr))">' +
+        R.map(function (r) { return '<div class="pof-rh"><b>' + esc(r.name.replace(/ at Home Sites?| - Home Sites?/i, "")) + "</b>" +
+          esc(ko(rdate(r)).split(" · ")[0]) + "</div>"; }).join("") + '<div class="pof-rh"><b>Champion</b>&nbsp;</div>' +
+        R.map(function (r, k) { var ix = pi.length + k;
+          return '<div class="pof-col">' + r.games.map(function (g) { return card(g, advOf(ix)); }).join("") + "</div>"; }).join("") +
+        '<div class="pof-ch">' + TROPHY + '<div class="pof-cap">' + lab(cur) + " state champion</div>" +
+        '<div class="pof-cn">' + esc(champ) + "</div></div></div></div>" +
+        '<p class="pof-note">Bracket, seeds and kickoffs: UHSAA official bracket (<a href="' + esc(C.url) +
+        '" target="_blank" rel="noopener">MaxPreps tournament page</a>, linked from uhsaa.org/football). ' +
+        "Higher seed hosts through the quarterfinals. Final scores: Deseret News, the night they are played. " +
+        "Records are regular-season overall. Click a team for its card.</p></div>";
+    }
+    el.addEventListener("click", function (e) {
+      var b = e.target.closest("#pofcls button");
+      if (b) { cur = b.dataset.c; draw(); return; }
+      var n = e.target.closest("[data-pt]");
+      if (n && byName[n.dataset.pt]) openTeam(n.dataset.pt);
+    });
+    draw();
   })();
 
   /* ---- COLLEGE PIPELINE (Brandon, Oct 10 2026) --------------------------------
@@ -9121,10 +9254,10 @@ h3.qhow{ margin:18px 0 8px }
   var GROUPS = [
     { id: "home", label: "Home", views: [["home", "Home"]] },
     { id: "recap", label: "Scores", views: [
-        ["recap", "Scores"], ["pred", "Week " + NW + " Picks"], ["pmach", "Playoff Machine"],
-        ["playoffs", "Playoff Predictions"], ["cmp", "Prediction Calculator"],
+        ["recap", "Scores"], ["poff", "Playoffs"], ["pred", "Week " + NW + " Picks"],
+        ["cmp", "Prediction Calculator"], /* poffnav Oct 18: Playoff Machine + Predictions retired */
         ["oos", "Out of State"], ["oosnext", "Out of State Picks"]] },
-    { id: "stand", label: "Standings", views: [["stand", "Standings"], ["pmach", "Playoff Machine"], ["playoffs", "Playoff Predictions"]] },
+    { id: "stand", label: "Standings", views: [["stand", "Standings"], ["poff", "Playoffs"]] },
     { id: "rank", label: "Rankings", views: [
         ["rank", "Programs"], ["prank", "Players"], ["crank", "Coaches"]] },
     { id: "people", label: "Players", views: [
