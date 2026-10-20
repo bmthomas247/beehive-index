@@ -2776,6 +2776,9 @@ h3.qhow{ margin:18px 0 8px }
 .hpo-r{font-size:12px;color:var(--ink-3);flex:none}
 .hpo-r b{font-size:15px;color:var(--ink,inherit)}
 .hpo-t.l{opacity:.5}
+.tkpo-sd{font-weight:700;color:#a57c1b;font-size:.85em;margin-right:1px}
+.tkpo-tag{color:#a57c1b;font-weight:700}
+.tcard.tkpo .tstat{color:#a57c1b;font-weight:700}
 @media(max-width:760px){.hpo-hero{grid-template-columns:1fr;padding:20px 16px}.hpo-cls{grid-template-columns:1fr}}
 </style>
 
@@ -9919,7 +9922,67 @@ h3.qhow{ margin:18px 0 8px }
     var TK = DATA.ticker || [];
     var wrap = document.getElementById("tickwrap");
     var rail = document.getElementById("tickrail");
-    if (!wrap || !rail || !TK.length) return;
+    /* ---- tkpo (Brandon, Oct 19 2026: "we should have the playoffs in the
+       ticker"). Playoff games lead the strip: finals from the last 8 days
+       (scores from DATA.recap / Deseret only), then every playoff game in the
+       next 14 days. Seeds, pairings, kickoffs: DATA.po_official. 8-player off,
+       same as the home page. Click opens that class's bracket. ---- */
+    var POTK = (function () {
+      var PO = (DATA.po_official || {}).classes || {};
+      var ORD = ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) { return PO[c] && PO[c].rounds; });
+      function iso(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+      function addD(x, n) { var q = x.split("-"); return iso(new Date(+q[0], +q[1] - 1, +q[2] + n)); }
+      var today = iso(new Date());
+      var FIN = {};
+      (DATA.recap || []).forEach(function (g) { if (g.date && g.date >= "2026-10-20") FIN[[g.away, g.home].sort().join("|")] = g; });
+      function real(t) { return t && t.team && !/^Winner\b/i.test(t.team) && !/bye/i.test(t.res || ""); }
+      var out = [];
+      ORD.forEach(function (c, ci) {
+        var R = PO[c].rounds;
+        R.forEach(function (r, k) {
+          var rn = (k === 0 && R[1] && r.games.length < 2 * R[1].games.length) ? "Play-in"
+                 : String(r.name || "").replace(/ at .*$| - .*$/i, "");
+          r.games.forEach(function (g) {
+            if (g.bye || !real(g.teams[0]) || !real(g.teams[1])) return;
+            var d = String(g.ko || r.date || "").slice(0, 10), a = g.teams[0], b = g.teams[1];
+            var key = [a.team, b.team].sort().join("|"), f = FIN[key];
+            if (f ? d < addD(today, -8) : (d < today || d > addD(today, 14))) return;
+            out.push({ c: c, ci: ci, rn: rn, d: d, ko: g.ko || "", a: a, b: b, f: f, key: key });
+          });
+        });
+      });
+      out.sort(function (x, y) {
+        if (!!x.f !== !!y.f) return x.f ? -1 : 1;
+        if (x.d !== y.d) return x.f ? (x.d < y.d ? 1 : -1) : (x.d < y.d ? -1 : 1);
+        return x.ci - y.ci;
+      });
+      return out;
+    })();
+    var POKEYS = {};
+    POTK.forEach(function (p) { POKEYS[p.key] = 1; });
+    TK = TK.filter(function (g) { return !POKEYS[[g.away, g.home].sort().join("|")]; });
+    if (!wrap || !rail || (!TK.length && !POTK.length)) return;
+    function poCard(p) {
+      function tm(k) { var m = /T(\d\d):(\d\d)/.exec(k); if (!m) return ""; var h = +m[1], ap = h >= 12 ? "pm" : "am"; h = h % 12 || 12; return h + (m[2] !== "00" ? ":" + m[2] : "") + ap; }
+      var f = p.f, sc = {};
+      if (f) { sc[f.away] = f.away_score; sc[f.home] = f.home_score; }
+      function pside(t, lost) {
+        var x = byName[t.team] || {};
+        return '<div class="tteam' + (lost ? " lost" : "") + '">' + logo(t.team, "sm") +
+          '<span class="tab">' + (t.seed ? '<b class="tkpo-sd">' + t.seed + "</b> " : "") + esc(t.team) + "</span>" +
+          (f ? '<span class="tsc">' + Math.round(sc[t.team]) + "</span>"
+             : '<span class="trec">' + (x.w != null ? x.w + "-" + x.l : "") + "</span>") + "</div>";
+      }
+      var ca = (byName[p.a.team] || {}).c1 || "#1b1b22", cb = (byName[p.b.team] || {}).c1 || "#1b1b22";
+      return '<button class="tcard tkpo" type="button" data-poc="' + p.c + '" aria-label="' +
+        esc(p.c + " playoffs: " + p.a.team + " vs " + p.b.team) + '">' +
+        '<div class="tbars"><i style="background:' + esc(ca) + '"></i><i style="background:' + esc(cb) + '"></i></div>' +
+        '<div class="tbody"><div class="tmeta"><span class="tstat">' + (f ? "Final" : esc(p.c) + " playoffs") + "</span>" +
+        "<span>" + esc(mdy(p.d)) + "</span></div>" +
+        pside(p.a, f && f.winner === p.b.team) + pside(p.b, f && f.winner === p.a.team) +
+        '<div class="tfoot"><span class="tkpo-tag">' + esc(p.c) + " &middot; " + esc(p.rn) + "</span>" +
+        (!f && tm(p.ko) ? " &middot; " + tm(p.ko) : "") + "</div></div></button>";
+    }
 
     // Full school names, not abbreviations -- nobody outside a program knows
     // what MTRG or SNCY is, and the strip exists for instant recognition.
@@ -9932,7 +9995,7 @@ h3.qhow{ margin:18px 0 8px }
         "</div>";
     }
 
-    rail.innerHTML = TK.map(function (g) {
+    rail.innerHTML = POTK.map(poCard).join("") + TK.map(function (g) {
       var fin = g.final;
       // A final grades the pick; an upcoming game shows the number we published.
       var foot;
