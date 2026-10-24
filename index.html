@@ -2780,6 +2780,37 @@ h3.qhow{ margin:18px 0 8px }
 .tkpo-tag{color:#a57c1b;font-weight:700}
 .tcard.tkpo .tstat{color:#a57c1b;font-weight:700}
 @media(max-width:760px){.hpo-hero{grid-template-columns:1fr;padding:20px 16px}.hpo-cls{grid-template-columns:1fr}}
+/* hgs: home follows the game week -- written game stories (Oct 24 2026) */
+.hgs-hero{border-radius:14px;background:linear-gradient(135deg,#0f1a2b 0%,#1b2a44 60%,#3a2a0c 100%);color:#fff;padding:24px 26px 20px;margin-bottom:18px}
+.hgs-tag{display:block;color:#f3d27a;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.hgs-kick{display:block;color:rgba(255,255,255,.7);font-size:13px;margin-top:6px}
+.hgs-hero h2{font-size:clamp(26px,3.8vw,42px);line-height:1.08;margin:6px 0 14px;color:#fff;font-weight:800;letter-spacing:-.01em}
+.hgs-sc{display:grid;gap:4px;max-width:420px;margin-bottom:14px}
+.hgs-t{display:flex;align-items:center;gap:8px;font-size:16px;min-width:0;opacity:.62}
+.hgs-t.w{opacity:1;font-weight:700}
+.hgs-t b{margin-left:auto;font-size:20px}
+.hgs-n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hgs-n i{font-style:normal;font-size:11px;opacity:.75;margin-right:5px}
+.hgs-body p{margin:0 0 10px;font-size:16px;line-height:1.55;color:rgba(255,255,255,.92);max-width:72ch}
+.hgs-hero .hgs-src a{color:#f3d27a}
+.hgs-src{font-size:12px!important;opacity:.85;margin:6px 0 0!important}
+.hgs-p h2 small{font-size:13px;font-weight:600;color:var(--ink-3);margin-left:6px}
+.hgs-f{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.hgs-f button{border:1px solid rgba(127,127,127,.35);background:none;border-radius:999px;padding:5px 12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;color:inherit}
+.hgs-f button[aria-pressed="true"]{background:#d9b45a;border-color:#d9b45a;color:#1b1b22}
+.hgs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.hgs-c{border:1px solid rgba(127,127,127,.22);border-radius:10px;padding:12px 14px;min-width:0}
+.hgs-c[hidden]{display:none}
+.hgs-grid:not(.all) .hgs-c.x{display:none}
+.hgs-more{display:block;margin:14px auto 0;border:1px solid #d9b45a;background:none;border-radius:999px;padding:8px 18px;font:inherit;font-weight:700;cursor:pointer;color:inherit}
+.hgs-more[hidden]{display:none}
+.hgs-ck{display:block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#a57c1b}
+.hgs-c h3{font-size:18px;line-height:1.2;margin:4px 0 8px}
+.hgs-sc.sm .hgs-t{font-size:14px}
+.hgs-sc.sm .hgs-t b{font-size:16px}
+.hgs-c p{font-size:14px;line-height:1.5;margin:0 0 8px}
+.hgs-c details summary{cursor:pointer;color:#1a5fb4;font-size:13px;font-weight:600;margin-bottom:6px}
+@media(max-width:760px){.hgs-hero{padding:18px 16px}.hgs-grid{grid-template-columns:1fr}.hgs-body p{font-size:15px}}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -7246,10 +7277,10 @@ h3.qhow{ margin:18px 0 8px }
             "<span><b>" + x.c + "</b>" + esc(x.t) + "</span></div>";
         }).join("") + "</div></section>";
       var note = "Seeds, pairings and kickoffs from the official UHSAA bracket; higher seed hosts through the quarterfinals. Click a game for the full bracket.";
-      var html = hero +
-        block(done, "Playoff results", "Final scores from the Deseret News.") +
-        block(s1, (done.length ? "Next up" : "First up") + " &middot; " + esc(day(s1.length ? s1[0].d : nextD)), note) +
-        block(s2, "Then &middot; " + esc(day(s2.length ? s2[0].d : nextD)), "");
+      var pDone = block(done, "Playoff results", "Final scores from the Deseret News.");
+      var pNext = block(s1, (done.length ? "Next up" : "First up") + " &middot; " + esc(day(s1.length ? s1[0].d : nextD)), note);
+      var pThen = block(s2, "Then &middot; " + esc(day(s2.length ? s2[0].d : nextD)), "");
+      var html = hero + pDone + pNext + pThen;
       if (!window._hpoBound) {
         window._hpoBound = 1;
         document.addEventListener("click", function (e) {
@@ -7260,7 +7291,99 @@ h3.qhow{ margin:18px 0 8px }
           try { window.scrollTo(0, 0); } catch (x) {}
         });
       }
-      return { html: html };
+      return { html: html, hero: hero, done: pDone, next: pNext, then: pThen };
+    })();
+
+    /* ---- hgs: home follows the game week (Brandon, Oct 24 2026: "friday-sunday
+       should all be about wed - fridays scores and what happened in the games
+       ... monday is when we should be talking about next weeks games").
+       Fri/Sat/Sun in Mountain time: the Wed-Fri finals lead, each with its
+       written story (DATA.stories, game_stories.py -- every sentence from the
+       Deseret score, the UHSAA bracket, games.csv history or the MaxPreps box).
+       Mon-Thu: next week's games lead; a morning after a game night shows
+       "Last night" first. ?hd=YYYY-MM-DD previews any day. ---- */
+    var HGS = (function () {
+      var ST = DATA.stories || [];
+      function pad(n) { return ("0" + n).slice(-2); }
+      function isoD(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+      var today = "";
+      var q = /[?&]hd=(\d{4}-\d\d-\d\d)/.exec(location.search || "");
+      if (q) today = q[1];
+      if (!today) {
+        try { today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Denver", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date()); } catch (e) {}
+      }
+      if (!/^\d{4}-\d\d-\d\d$/.test(today)) today = isoD(new Date());
+      var tp = today.split("-"), td = new Date(+tp[0], +tp[1] - 1, +tp[2]);
+      var dow = td.getDay();
+      function back(n) { return isoD(new Date(td.getFullYear(), td.getMonth(), td.getDate() - n)); }
+      var weekend = dow === 5 || dow === 6 || dow === 0;
+      var from = weekend ? back((dow - 3 + 7) % 7) : back(1);
+      var list = ST.filter(function (s) { return s.date >= from && s.date <= today; })
+                   .sort(function (a, b) { return b.score - a.score || (a.date < b.date ? 1 : -1); });
+      if (!list.length) return null;
+      var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      var DY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      function day(s) { var p = s.split("-"), d = new Date(+p[0], +p[1] - 1, +p[2]); return DY[d.getDay()] + ", " + MON[d.getMonth()] + " " + (+p[2]); }
+      var dates = []; list.forEach(function (s) { if (dates.indexOf(s.date) < 0) dates.push(s.date); });
+      dates.sort();
+      var span = dates.length > 1 ? day(dates[0]) + " &ndash; " + day(dates[dates.length - 1]) : day(dates[0]);
+      var anyPO = list.some(function (s) { return s.playoff; });
+      function side(s, t) {
+        var sc = t === s.away ? s.away_score : s.home_score, w = s.winner === t, x = byName[t];
+        var sd = (s.seeds || {})[t];
+        return '<div class="hgs-t' + (w ? " w" : "") + '">' + logo(t, "sm") +
+          '<span class="hgs-n"' + (x ? ' data-t="' + esc(t) + '"' : "") + ">" + (sd ? "<i>" + sd + "</i>" : "") + esc(t) + "</span>" +
+          "<b>" + Math.round(sc) + "</b></div>";
+      }
+      function srcs(s) {
+        return '<p class="hgs-src">' + (s.src || []).map(function (x) {
+          return '<a href="' + esc(x.u) + '" target="_blank" rel="noopener">' + esc(x.t) + "</a>";
+        }).join(" &middot; ") + "</p>";
+      }
+      function paras(ps) { return ps.map(function (p) { return "<p>" + esc(p) + "</p>"; }).join(""); }
+      var lead = list[0];
+      var heroHtml = '<section class="hgs-hero">' +
+        '<span class="hgs-tag">' + (weekend ? (anyPO ? "Playoff results" : "This week&rsquo;s finals") : (dates.indexOf(today) >= 0 ? "Latest finals" : "Last night")) +
+        " &middot; " + span + "</span>" +
+        '<span class="hgs-kick">' + esc(lead.kicker) + "</span>" +
+        "<h2>" + esc(lead.head) + "</h2>" +
+        '<div class="hgs-sc">' + side(lead, lead.winner) + side(lead, lead.winner === lead.away ? lead.home : lead.away) + "</div>" +
+        '<div class="hgs-body">' + paras(lead.body) + srcs(lead) + "</div></section>";
+      var rest = list.slice(1);
+      var CL = ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) { return rest.some(function (s) { return s.cls === c; }); });
+      var SHOW = 12;
+      var cards = rest.map(function (s, k) {
+        var vis = s.body.length > 2 && !/^Individual stats/.test(s.body[1]) ? 2 : 1;
+        return '<article class="hgs-c' + (k >= SHOW ? " x" : "") + '" data-hgc="' + esc(s.cls || "") + '">' +
+          '<span class="hgs-ck">' + esc(s.kicker) + " &middot; " + day(s.date) + "</span>" +
+          "<h3>" + esc(s.head) + "</h3>" +
+          '<div class="hgs-sc sm">' + side(s, s.winner) + side(s, s.winner === s.away ? s.home : s.away) + "</div>" +
+          paras(s.body.slice(0, vis)) +
+          (s.body.length > vis ? "<details><summary>Read the rest</summary>" + paras(s.body.slice(vis)) + srcs(s) + "</details>" : srcs(s)) +
+          "</article>";
+      }).join("");
+      var grid = rest.length ? '<div class="panel hgs-p"><h2>' + (weekend ? "Every final" : "Also last night") +
+        ' <small>' + list.length + " game" + (list.length > 1 ? "s" : "") + "</small></h2>" +
+        '<p class="lede">Scores from the Deseret News; seeds from the UHSAA bracket; player stats from MaxPreps box scores as coaches enter them, so stories fill in through the weekend.</p>' +
+        (CL.length > 1 ? '<div class="hgs-f"><button aria-pressed="true" data-hgf="">All</button>' +
+          CL.map(function (c) { return '<button aria-pressed="false" data-hgf="' + c + '">' + c + "</button>"; }).join("") + "</div>" : "") +
+        '<div class="hgs-grid">' + cards + "</div>" +
+        (rest.length > SHOW ? '<button class="hgs-more" data-hgm="1">Show all ' + list.length + " finals</button>" : "") +
+        "</div>" : "";
+      if (!window._hgsBound) {
+        window._hgsBound = 1;
+        document.addEventListener("click", function (e) {
+          var m = e.target.closest("[data-hgm]");
+          if (m) { var gr = document.querySelector(".hgs-grid"); if (gr) gr.classList.add("all"); m.hidden = true; return; }
+          var f = e.target.closest("[data-hgf]"); if (!f) return;
+          var g2 = document.querySelector(".hgs-grid"); if (g2) g2.classList.add("all");
+          var mb = document.querySelector("[data-hgm]"); if (mb) mb.hidden = true;
+          var c = f.getAttribute("data-hgf");
+          document.querySelectorAll("[data-hgf]").forEach(function (x) { x.setAttribute("aria-pressed", x === f ? "true" : "false"); });
+          document.querySelectorAll(".hgs-c").forEach(function (x) { x.hidden = !!c && x.getAttribute("data-hgc") !== c; });
+        });
+      }
+      return { weekend: weekend, html: heroHtml + grid };
     })();
 
     // callers pass display-ready markup (entities included), so this does not escape
@@ -7510,10 +7633,13 @@ h3.qhow{ margin:18px 0 8px }
     document.getElementById("v-home").innerHTML =
       '<div class="frontgrid">' +
       '<div class="fmain">' +
-      (POH ? POH.html : heroHtml +
-      artHtml +
-      (heroHtml ? "" : leadHtml) +
-      (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
+      (HGS && HGS.weekend
+        ? HGS.html + (POH ? POH.hero + POH.next + POH.then : "")
+        : (HGS ? HGS.html : "") +
+          (POH ? POH.hero + POH.next + POH.then + POH.done : heroHtml +
+          artHtml +
+          (heroHtml ? "" : leadHtml) +
+          (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : ""))) +
       vidHtml +
       freshBlock(16) +
       '<div class="panel"><h2>Around Utah</h2>' +
