@@ -7383,7 +7383,7 @@ h3.qhow{ margin:18px 0 8px }
           document.querySelectorAll(".hgs-c").forEach(function (x) { x.hidden = !!c && x.getAttribute("data-hgc") !== c; });
         });
       }
-      return { weekend: weekend, html: heroHtml + grid };
+      return { weekend: weekend, monday: dow === 1, html: heroHtml + grid };
     })();
 
     // callers pass display-ready markup (entities included), so this does not escape
@@ -7635,11 +7635,12 @@ h3.qhow{ margin:18px 0 8px }
       '<div class="fmain">' +
       (HGS && HGS.weekend
         ? HGS.html + (POH ? POH.hero + POH.next + POH.then : "")
-        : (HGS ? HGS.html : "") +
+        : (HGS && !HGS.monday ? HGS.html : "") +
           (POH ? POH.hero + POH.next + POH.then + POH.done : heroHtml +
           artHtml +
           (heroHtml ? "" : leadHtml) +
-          (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : ""))) +
+          (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
+          (HGS && HGS.monday ? HGS.html : "")) +
       vidHtml +
       freshBlock(16) +
       '<div class="panel"><h2>Around Utah</h2>' +
