@@ -3182,7 +3182,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       <div class="tablewrap"><table class="srctab">
         <thead><tr><th>Source</th><th>What is taken from it</th><th>Kind</th></tr></thead>
         <tbody>
-          <tr><td>UHSAA</td><td>Classifications and regions, official results, state wrestling tournament scoring and placement</td><td><span class="tierbadge t-rec">Public record</span></td></tr>
+          <tr><td>UHSAA</td><td>Classifications and regions, official results, playoff brackets (seeds, pairings and kickoffs, published on MaxPreps tournament pages), state wrestling tournament scoring and placement</td><td><span class="tierbadge t-rec">Public record</span></td></tr>
           <tr><td>Deseret News</td><td>Team and player season statistics, quarter-by-quarter box scores, schedules and scores, all-state teams</td><td><span class="tierbadge t-rec">Public record</span></td></tr>
           <tr><td>Athletic.net</td><td>Track and field marks and event results</td><td><span class="tierbadge t-rec">Public record</span></td></tr>
           <tr><td>247Sports</td><td>Player rankings, national and state ranks, the Utah commitment board, published offer counts and offer lists</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
@@ -3194,7 +3194,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           <tr><td>Player&rsquo;s own public posts</td><td>GPA, when he has published it himself for recruiting</td><td><span class="tierbadge t-self">Self-reported</span></td></tr>
           <tr><td>X, Instagram and Facebook &mdash; public accounts</td><td>Commitment and offer announcements, camp and combine results, and a player&rsquo;s own X handle when he or his program publishes it. Read one post at a time, never scraped in bulk, and never from a private account. Handles are never guessed</td><td><span class="tierbadge t-self">Self-reported</span></td></tr>
           <tr><td>School and program social accounts</td><td>Scores, honors and roster news a program posts about itself</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
-          <tr><td>MaxPreps</td><td>National team ratings, used to pin out-of-state opponents to a scale Utah does not control. Player statistics from MaxPreps are not in yet</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
+          <tr><td>MaxPreps</td><td>Player statistics from per-game box scores (the state leaders on the home page and the Stats tab; Deseret News fills in for programs that file nothing there), and national team ratings used to pin out-of-state opponents to a scale Utah does not control. Scores: Deseret News wins any disagreement</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>ESPN and the colleges&rsquo; own athletics sites</td><td>College team logos on the Recruiting Help page</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>The Rush</td><td>Utah high school sports video coverage &mdash; highlights, interviews and weekly features. Linked where a player appears in one</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
           <tr><td>KSL Sports</td><td>High school news coverage. Linked from a player&rsquo;s page when an article names him</td><td><span class="tierbadge t-pub">Third party</span></td></tr>
@@ -7899,7 +7899,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '<div class="pb-rl"><span>Quarterfinals</span><span>Semifinals</span><span></span><span>Semifinals</span><span>Quarterfinals</span></div>' +
           "</div>";
       }
-      return '<div class="panel pbpanel"><div class="pb-hd"><h2>2026 Playoff Picture</h2>' +
+      return '<div class="panel pbpanel"><div class="pb-hd"><h2>2026 Playoffs</h2>' +
         '<div class="pb-tabs">' + CL.map(function (c, i) {
           return '<button type="button" data-pbc="' + c + '" aria-pressed="' + (i === 0) + '">' + c + "</button>";
         }).join("") + "</div></div>" +
