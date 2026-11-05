@@ -7690,13 +7690,13 @@ h3.qhow{ margin:18px 0 8px }
         logo(top.school, "xl") + '<div class="hl-who"><span class="hl-cat">' + esc(b.label) +
         '</span><strong>' + esc(top.name) + "</strong><small>" + esc(top.school) +
         (top.cls ? " &middot; " + esc(top.cls) : "") +
-        (GRAD[top.yr] ? " &middot; Class of " + GRAD[top.yr] : "") + "</small></div>" +
+        (YRW[top.yr] ? " &middot; " + YRW[top.yr] : "") + "</small></div>" +
         '<div class="hl-big">' + top.v.toLocaleString() + "<small>" + c[1] + "</small></div></div>" +
         '<ol class="hl-ol">' + all.slice(0, 5).map(function (p, i) {
           return '<li class="' + (i === 0 ? "on" : "") + '" data-p="' + esc(p.name) +
             '" data-ps="' + esc(p.school) + '"><span class="hl-nm">' + rk(p) + ". " + esc(p.name) +
             "</span>" + logo(p.school, "sm") +
-            (GRAD[p.yr] ? '<span class="hl-yr">' + GRAD[p.yr] + "</span>" : "") +
+            (YRW[p.yr] ? '<span class="hl-yr">' + YRW[p.yr] + "</span>" : "") +
             '<b>' + p.v.toLocaleString() + "</b></li>";
         }).join("") + "</ol></div>";
     }).join("");
