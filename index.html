@@ -3014,6 +3014,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .rcard{position:relative}
 .rclogo{position:absolute;top:10px;right:10px;cursor:pointer}
 .rclogo .crest{width:38px;height:38px;object-fit:contain}
+/* ---- record book groups (Nov 5 2026) ---- */
+.recgh{margin:18px 0 8px;font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--sodium);border-bottom:1px solid var(--line-soft);padding-bottom:5px}
+.panel h2 + .recgh{margin-top:8px}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -7253,8 +7256,31 @@ nav.topbar ~ main.wrap{margin-top:20px}
       recScope.map(function (sc) {
         var rows = AREC.filter(function (r) { return r.scope === sc[0]; });
         if (!rows.length) return "";
+        // Nov 5 2026: grouped by kind of record.
+        function recGroup(r) {
+          var c = (r.cat || "").toLowerCase();
+          if (sc[0] === "team") {
+            if (/coach/.test(c)) return "Coaching";
+            if (/streak|shutouts|championships/.test(c)) return "Streaks and titles";
+            if (/allowed|interception/.test(c)) return "Defense";
+            return "Offense";
+          }
+          if (/kickoff return|punt return/.test(c)) return "Returns";
+          if (/interception|tackle|sack/.test(c)) return "Defense";
+          if (/rushing/.test(c)) return "Rushing";
+          if (/pass/.test(c)) return "Passing";
+          if (/receiv|reception/.test(c)) return "Receiving";
+          if (/field goal|extra point|punt/.test(c)) return "Kicking";
+          return "Scoring and total offense";
+        }
+        var ORDER = sc[0] === "team" ? ["Offense", "Defense", "Streaks and titles", "Coaching"]
+          : ["Passing", "Rushing", "Receiving", "Scoring and total offense", "Kicking", "Returns", "Defense"];
+        var groups = {};
+        rows.forEach(function (r) { var g = recGroup(r); (groups[g] = groups[g] || []).push(r); });
         return '<div class="panel" style="margin-bottom:16px"><h2>' + sc[1] + " records</h2>" +
-          '<div class="recg">' + rows.map(function (r) {
+          ORDER.filter(function (g) { return groups[g]; }).map(function (g) {
+          return '<h3 class="recgh">' + g + "</h3>" +
+          '<div class="recg">' + groups[g].map(function (r) {
             // who and school both exist for an individual record; a program
             // record has only the school, so do not print a stray separator.
             var line = [r.who, r.school].filter(Boolean).map(function (x, i) {
@@ -7268,7 +7294,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
               (r.src === "uhsaa only" ? '<span class="uns">UHSAA book only</span>' : "") + "</div>" +
               '<div class="rcw">' + line + (r.y ? "<br>" + esc(r.y) : "") + "</div>" +
               "</div>";
-          }).join("") + "</div></div>";
+          }).join("") + "</div>";
+          }).join("") + "</div>";
       }).join("") +
 
       '<div class="panel" style="margin-bottom:16px"><h2>Every champion, newest first</h2>' +
