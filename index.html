@@ -2866,6 +2866,20 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
 .gsearch[hidden],.stamp[hidden]{display:none}
 @media (max-width:1480px){ .tb-brand span{display:none} }
 @media (max-width:900px){ .topbar-in{gap:10px;padding-left:12px} .topbar .tab{padding:19px 8px 16px} }
+.flagad{display:flex;align-items:center;gap:20px;margin:0 0 16px;padding:16px 22px;border-radius:10px;
+  background:#0B0B0D;color:#fff;text-decoration:none;min-height:84px;overflow:hidden;position:relative}
+.flagad:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 46px,rgba(232,163,61,.10) 46px 50px);pointer-events:none}
+.flagad > span{position:relative}
+.fa-l strong{display:block;font-family:var(--f-display);font-weight:800;font-size:21px;line-height:1.1;text-transform:uppercase;letter-spacing:-.01em}
+.fa-l small{display:block;margin-top:4px;font-size:13px;color:#C9CDD3}
+.fa-m{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;color:#C9CDD3;white-space:nowrap}
+.fa-m b{font-family:var(--f-display);font-size:26px;font-weight:800;color:#E8A33D;margin-right:-6px}
+.fa-m i{width:1px;height:28px;background:#3A3D44}
+.fa-r{display:flex;align-items:center;gap:16px;flex:none}
+.fa-tag{font-family:var(--f-display);font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:#E8A33D;max-width:7em;line-height:1.1}
+.fa-btn{background:#fff;color:#0B0B0D;font-weight:700;font-size:14px;padding:11px 18px;border-radius:7px;white-space:nowrap}
+.flagad:hover .fa-btn{background:#E8A33D}
+@media (max-width:760px){ .flagad{flex-wrap:wrap;gap:12px} .fa-m{order:3;justify-content:flex-start;flex-basis:100%;flex-wrap:wrap;white-space:normal;row-gap:4px} .fa-tag{display:none} .fa-r{margin-left:auto} }
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -7751,6 +7765,12 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
           (heroHtml ? "" : leadHtml) +
           (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
           (HGS && HGS.monday ? HGS.html : "")) +
+      '<a class="flagad" href="#" data-go="flag" aria-label="Girls flag football in Utah: sign the petition">' +
+        '<span class="fa-l"><strong>Utah girls are already playing football.</strong>' +
+        "<small>The state just doesn&rsquo;t count it yet.</small></span>" +
+        '<span class="fa-m"><b>17</b> states sanction it<i></i><b>2028</b> Olympic debut, LA</span>' +
+        '<span class="fa-r"><span class="fa-tag">Girls&rsquo; flag football</span>' +
+        '<span class="fa-btn">Sign the petition</span></span></a>' +
       hlHtml +
       vidHtml +
       freshBlock(16) +
@@ -9662,7 +9682,7 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
     { id: "recruit101", label: "Recruiting Help", views: [["recruit101", "Recruiting Help"]] },
     { id: "send", label: "Send Info", views: [
         ["send", "Send Info"], ["sources", "Sources & Trust"], ["method", "Method"]] },
-    { id: "flag", label: "Flag Football", views: [["flag", "Flag Football"]] }
+    { id: "flag", label: "Flag Football", hide: true, views: [["flag", "Flag Football"]] }
   ];
   var VIEWS = [];
   GROUPS.forEach(function (g) { g.views.forEach(function (v) { if (VIEWS.indexOf(v[0]) < 0) VIEWS.push(v[0]); }); });
@@ -9708,7 +9728,7 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
     if (scroll !== false) window.scrollTo({ top: 0, behavior: "instant" });
   }
 
-  document.getElementById("toptabs").innerHTML = GROUPS.map(function (g, i) {
+  document.getElementById("toptabs").innerHTML = GROUPS.filter(function (g) { return !g.hide; }).map(function (g, i) {
     return '<button class="tab" role="tab" data-g="' + g.id + '" aria-selected="' +
       (i === 0) + '">' + esc(g.label) + "</button>";
   }).join("");
