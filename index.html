@@ -7950,9 +7950,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="frontgrid">' +
       '<div class="fmain">' +
       (HGS && HGS.weekend
-        ? HGS.html + (POH ? POH.hero + PBR + POH.next + POH.then : "")
+        ? HGS.html + (POH ? PBR + POH.next + POH.then : "")
         : (HGS && !HGS.monday ? HGS.html : "") +
-          (POH ? POH.hero + PBR + POH.next + POH.then + POH.done : heroHtml +
+          (POH ? PBR + POH.next + POH.then + POH.done : heroHtml +
           artHtml +
           (heroHtml ? "" : leadHtml) +
           (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
