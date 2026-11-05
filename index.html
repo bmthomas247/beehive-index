@@ -2880,6 +2880,7 @@ h3.qhow{ margin:18px 0 8px }
         <th class="num" data-s="ypg">Yds/g</th>
         <th class="num" data-s="sos">SOS</th>
         <th class="num" data-s="rpi" title="UHSAA's official Rating Percentage Index as last published Oct 13, 2026 - UHSAA took the tables down after the playoffs were seeded">RPI<small>UHSAA Oct 13 · class rank</small></th>
+        <th class="num" data-s="rpi_gap" title="UHSAA RPI class rank minus our class rank. ▲ = we rank the team higher than RPI does, ▼ = lower">vs RPI<small>our class # · gap</small></th>
         <th>Head coach</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
@@ -3122,7 +3123,7 @@ h3.qhow{ margin:18px 0 8px }
       <p>SOS is the average rating of the opponents a team has actually faced. At two games it's a small sample and swings hard &mdash; a team that opened against Corner Canyon and IMG will show an inflated number. It becomes meaningful around Week 5. Note this is <em>schedule faced to date</em>, not full-season projected schedule; that arrives once full schedules are loaded.</p>
 
       <h3>UHSAA RPI</h3>
-      <p>The state seeds and selects the playoffs on the RPI: 45% your win percentage, 45% your opponents' win percentage, 10% your opponents' opponents'. Score does not count. We show <strong>UHSAA's own published number</strong> (uhsaa.org/football-rpi), pulled every update, in the RPI column and on every team card, so you can see the state's view next to ours.</p>
+      <p>The state seeds and selects the playoffs on the RPI: 45% your win percentage, 45% your opponents' win percentage, 10% your opponents' opponents'. Score does not count. We show <strong>UHSAA's own published number</strong> (uhsaa.org/football-rpi), as last published Oct 13, 2026 - UHSAA took the tables down once the playoffs were seeded - in the RPI column and on every team card, so you can see the state's view next to ours.</p>
       <p>It also feeds the Ledger Rating, lightly: <strong>rating + 6 &times; (RPI &minus; .500) &times; 2</strong>. That is worth about &minus;4 to +4 points against a rating spread of roughly 23, so it nudges the board without driving it. Added Oct 11, 2026; it moved 14 teams, none more than two spots in its class.</p>
 
       <h3>Recency</h3>
@@ -3263,6 +3264,9 @@ h3.qhow{ margin:18px 0 8px }
   });
 
   function rows() {
+    T.forEach(function (t) {
+      t.rpi_gap = (t.rpi_official && t.rpi_seed && t.class_rank) ? t.rpi_seed - t.class_rank : null;
+    });
     var r = T.filter(function (t) {
       if (filt !== "ALL" && t.cls !== filt) return false;
       if (regFilt && t.region !== regFilt) return false;
@@ -3304,6 +3308,10 @@ h3.qhow{ margin:18px 0 8px }
         '<td class="num mono">' + sgn(t.sos) + "</td>" +
         '<td class="num mono">' + (t.rpi === null || t.rpi === undefined ? '<span class="none">—</span>' :
           t.rpi.toFixed(3).replace(/^0/, "") + (t.rpi_seed ? '<small class="raw">#' + t.rpi_seed + " " + esc(t.cls) + "</small>" : "")) + "</td>" +
+        '<td class="num mono" title="' + (t.rpi_gap === null ? 'No UHSAA RPI' : esc(t.school) + ': our #' + t.class_rank + ' in ' + esc(t.cls) + ', RPI #' + t.rpi_seed) + '">' +
+          (t.rpi_gap === null ? '<span class="none">—</span>' :
+            (t.rpi_gap > 0 ? '▲' + t.rpi_gap : t.rpi_gap < 0 ? '▼' + (-t.rpi_gap) : '=') +
+            '<small class="raw">ours #' + t.class_rank + ' · RPI #' + t.rpi_seed + '</small>') + "</td>" +
         "<td>" + esc(t.coach) + '<small style="display:block;font-size:11px;color:var(--ink-3)">' +
         ((t.coach_cur ? t.coach_cur + " this year" : "") + (t.coach_w !== "" && t.coach_w !== undefined ? (t.coach_cur ? " · " : "") + t.coach_w + "–" + t.coach_l + " career, yr " + t.coach_yrs : "")) + "</small></td></tr>";
     }).join("");
