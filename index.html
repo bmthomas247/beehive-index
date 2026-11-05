@@ -2870,9 +2870,13 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
   background:#0B0B0D;color:#fff;text-decoration:none;min-height:84px;overflow:hidden;position:relative}
 .flagad:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 46px,rgba(232,163,61,.10) 46px 50px);pointer-events:none}
 .flagad > span{position:relative}
-.fa-l strong{display:block;font-family:var(--f-display);font-weight:800;font-size:21px;line-height:1.1;text-transform:uppercase;letter-spacing:-.01em}
-.fa-l small{display:block;margin-top:4px;font-size:13px;color:#C9CDD3}
-.fa-m{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;color:#C9CDD3;white-space:nowrap}
+.fa-l{flex:1 1 auto;min-width:0}
+.fa-l strong{display:block;font-family:var(--f-display);font-weight:800;font-size:22px;line-height:1.1;text-transform:uppercase;letter-spacing:-.005em;text-wrap:balance}
+.fa-l small{display:block;margin-top:5px;font-size:13.5px;color:#C9CDD3}
+.fa-m{flex:0 1 auto;display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;color:#C9CDD3;white-space:nowrap}
+.fa-l strong{font-size:24px;max-width:17em}
+.fa-l small em{font-style:normal;color:#E8A33D;white-space:nowrap}
+@media (max-width:760px){ .fa-l strong{font-size:20px} }
 .fa-m b{font-family:var(--f-display);font-size:26px;font-weight:800;color:#E8A33D;margin-right:-6px}
 .fa-m i{width:1px;height:28px;background:#3A3D44}
 .fa-r{display:flex;align-items:center;gap:16px;flex:none}
@@ -2896,6 +2900,15 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
 .ug-follow{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;font-size:13.5px}
 .ug-note{font-size:12px;color:var(--ink-3);margin:8px 0 0}
 .ug-src{font-size:11.5px;color:var(--steel);white-space:nowrap}
+nav.topbar ~ main.wrap{margin-top:20px}
+.fa-crests{display:flex;align-items:center;flex:none;position:relative}
+.fa-crests .crest{width:34px;height:34px;background:#fff;border-radius:50%;padding:3px;box-sizing:border-box;margin-left:-8px;border:2px solid #0B0B0D;object-fit:contain}
+.fa-crests .crest:first-child{margin-left:0}
+.flagad .fa-tag{display:none}
+@media (max-width:1700px){ .fa-crests .crest:nth-child(n+6){display:none} }
+@media (max-width:1100px){ .fa-crests .crest:nth-child(n+5){display:none} }
+@media (max-width:760px){ .fa-crests{order:3} }
+.flagbtn2{margin-left:10px;background:transparent;border:2px solid currentColor}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -3006,6 +3019,7 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
         <div><b>0</b><span>Utah state titles awarded</span></div>
       </div>
       <a class="flagbtn" href="https://www.change.org/p/petition-to-sanction-girls-high-school-varsity-flag-football-in-utah" target="_blank" rel="noopener">Sign the petition &rarr;</a>
+      <a class="flagbtn flagbtn2" href="https://uhsgfa.org/" target="_blank" rel="noopener">Visit uhsgfa.org &rarr;</a>
     </div>
 
     <div class="panel method" style="margin-bottom:16px">
@@ -3068,7 +3082,7 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
     <div class="panel method">
       <h2>The petition</h2>
       <p><strong>Petition to Sanction Girls&rsquo; High School Varsity Flag Football in Utah</strong><br>
-      Started by <strong>Stacie Carver</strong> on August 21, 2026. It had just over 70 verified signatures as of August 27, against a first target of 100.</p>
+      Started by <strong>Stacie Carver</strong> on August 21, 2026. It had 93 verified signatures as of November 5, 2026, against a goal of 100 (<a href="https://www.change.org/p/petition-to-sanction-girls-high-school-varsity-flag-football-in-utah" target="_blank" rel="noopener">change.org</a>).</p>
       <p>It is not our petition and we get nothing from it. It is here because it is the right thing to put in front of people who care about Utah high school football, and because the argument for it is one this site already makes every day about somebody else.</p>
       <p style="margin-top:14px"><a class="flagbtn" href="https://www.change.org/p/petition-to-sanction-girls-high-school-varsity-flag-football-in-utah" target="_blank" rel="noopener">Add your name &rarr;</a></p>
       <p class="notbet" style="margin-top:16px">Coaching a girls&rsquo; flag program, or playing in one? <strong>Send it in.</strong> When Utah sanctions this, the rosters and the results belong on this site the same as everybody else&rsquo;s &mdash; and having the history already collected is a good reason to start now rather than at kickoff.</p>
@@ -7823,8 +7837,9 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
           (HGS && HGS.monday ? HGS.html : "")) +
       '<a class="flagad" href="#" data-go="flag" aria-label="Girls flag football in Utah: sign the petition">' +
         '<span class="fa-l"><strong>Utah girls are already playing football.</strong>' +
-        "<small>The state just doesn&rsquo;t count it yet.</small></span>" +
-        '<span class="fa-m"><b>17</b> states sanction it<i></i><b>2028</b> Olympic debut, LA</span>' +
+        "<small>The state just doesn&rsquo;t count it yet. <em>17 states sanction it &middot; Olympic debut, LA 2028</em></small></span>" +
+        '<span class="fa-crests" title="Schools that have hosted UHSGFA games (uhsgfa.org)">' +
+          ["American Fork", "Cottonwood", "Lehi", "Mountain Ridge", "Park City", "Skyridge", "Timpview"].map(function (sc) { return logo(sc, "md"); }).join("") + "</span>" +
         '<span class="fa-r"><span class="fa-tag">Girls&rsquo; flag football</span>' +
         '<span class="fa-btn">Sign the petition</span></span></a>' +
       hlHtml +
