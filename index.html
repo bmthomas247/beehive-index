@@ -2954,6 +2954,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .pb-src{margin:10px 0 0;font-size:12px}
 :root[data-theme="dark"] .pb-ttl b{color:#fff}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pb-ttl b{color:#fff} }
+/* bracket: plain logos instead of diamonds (Nov 5 2026) */
+.pb-d{transform:none;background:none;border:0;box-shadow:none;border-radius:0;width:52px;height:52px;margin:8px 0 4px}
+.pb-di{transform:none}
+.pb-di .crest{width:50px;height:50px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.18))}
+.pb-c .pb-d{width:62px;height:62px}.pb-c .pb-di .crest{width:60px;height:60px}
+.pb-t.tbd .pb-d{border:2px dashed var(--line);border-radius:50%;background:var(--surface-2);width:44px;height:44px}
+.pb-seed{left:calc(50% - 36px)}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
