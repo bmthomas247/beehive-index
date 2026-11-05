@@ -2824,7 +2824,8 @@ h3.qhow{ margin:18px 0 8px }
 .totop[hidden]{display:none}
 .hlpanel .hl-h{cursor:pointer;display:inline-block}
 .hlpanel .hl-h span{color:var(--sodium)}
-.hl-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin-top:6px}
+.hl-g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:6px}
+@media(max-width:640px){.hl-g{grid-template-columns:1fr}}
 .hl-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer}
 .hl-hd .crest{width:46px;height:46px;flex:none;object-fit:contain}
 .hl-who{flex:1;min-width:0}
