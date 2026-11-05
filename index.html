@@ -2916,6 +2916,44 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .rlvlogo img{width:30px;height:30px;object-fit:contain}
 .rlvnear{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-left:10px;vertical-align:middle}
 @media (max-width:640px){ .rlvlogo{width:32px;height:32px} .rlvlogo img{width:25px;height:25px} }
+.pbpanel{background:linear-gradient(180deg,var(--surface) 0%,var(--surface-2) 100%)}
+.pb-hd{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pb-hd h2{margin:0;font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;font-size:24px}
+.pb-tabs{display:flex;gap:4px}
+.pb-tabs button{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:5px 12px;font-weight:700;font-size:13px;cursor:pointer}
+.pb-tabs button[aria-pressed="true"]{background:#0B1F3A;color:#fff;border-color:#0B1F3A}
+.pb-scroll{overflow-x:auto;margin-top:14px;scrollbar-width:thin}
+.pb-cls[hidden]{display:none}
+.pb-grid{display:grid;grid-template-columns:1fr 1fr 1.15fr 1fr 1fr;min-width:640px;align-items:stretch}
+.pb-col{display:flex;flex-direction:column;justify-content:space-around;gap:18px;position:relative}
+.pb-m{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0}
+.pb-t{position:relative;display:flex;flex-direction:column;align-items:center;width:100%;cursor:pointer}
+.pb-t.tbd{cursor:default}
+.pb-d{width:44px;height:44px;margin:9px 0 6px;transform:rotate(45deg);background:#fff;border:3px solid var(--tc);border-radius:5px;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.pb-di{transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--ink-3)}
+.pb-di .crest{width:34px;height:34px;object-fit:contain}
+.pb-t.tbd .pb-d{border-style:dashed;border-color:var(--line);background:var(--surface-2);box-shadow:none}
+.pb-seed{position:absolute;top:0;left:calc(50% - 40px);width:20px;height:20px;border-radius:50%;background:#16161A;color:#fff;
+  font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.pb-nm{font-size:11.5px;font-weight:700;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 4px}
+.pb-t.lost{opacity:.42}
+.pb-t.lost .pb-d{filter:grayscale(1)}
+.pb-res{font-size:11px;font-weight:700;color:var(--ink-2);text-align:center;min-height:14px;line-height:1.2;padding:0 4px}
+.pb-l .pb-m:after,.pb-r .pb-m:after{content:"";position:absolute;top:30px;bottom:30px;width:14px;border:2px solid var(--line)}
+.pb-l .pb-m:after{right:-2px;border-left:0}
+.pb-r .pb-m:after{left:-2px;border-right:0}
+.pb-c{justify-content:center;gap:6px}
+.pb-ttl{text-align:center;line-height:1}
+.pb-ttl b{display:block;font-family:var(--f-display);font-weight:800;font-size:44px;letter-spacing:-.02em;color:#0B1F3A}
+.pb-ttl span{display:block;font-family:var(--f-display);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--sodium);margin-top:3px}
+.pb-c .pb-d{width:52px;height:52px}
+.pb-when{text-align:center;font-size:12px;color:var(--ink-2)}
+.pb-rl{display:grid;grid-template-columns:1fr 1fr 1.15fr 1fr 1fr;min-width:640px;margin-top:6px}
+.pb-rl span{text-align:center;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.pb-src{margin:10px 0 0;font-size:12px}
+:root[data-theme="dark"] .pb-ttl b{color:#fff}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pb-ttl b{color:#fff} }
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -7780,6 +7818,76 @@ nav.topbar ~ main.wrap{margin-top:20px}
         }).join("") + "</div></div>"
       : "";
 
+
+    /* ---- MLB-style playoff picture (Nov 5 2026) ---- */
+    var PBR = (function () {
+      var PO = (DATA.po_official || {}).classes || {};
+      var CL = ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) { return PO[c] && PO[c].rounds && PO[c].rounds.length; });
+      if (!CL.length) return "";
+      var FIN = {};
+      (DATA.recap || []).forEach(function (g) { if (g.date && g.date >= "2026-10-20") FIN[[g.away, g.home].sort().join("|")] = g; });
+      var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], DY = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+      function when(ko) {
+        var m = /^(\d{4})-(\d\d)-(\d\d)(?:T(\d\d):(\d\d))?/.exec(ko || ""); if (!m) return "";
+        var d = new Date(+m[1], +m[2] - 1, +m[3]), t = "";
+        if (m[4]) { var h = +m[4], ap = h >= 12 ? "pm" : "am"; h = h % 12 || 12; t = " " + h + (m[5] !== "00" ? ":" + m[5] : "") + ap; }
+        return DY[d.getDay()] + " " + MON[d.getMonth()] + " " + (+m[3]) + t;
+      }
+      function result(g) {
+        var a = g.teams[0] || {}, b = g.teams[1] || {};
+        if (!a.team || !b.team) return null;
+        var f = FIN[[a.team, b.team].sort().join("|")], sa, sb;
+        if (f) { sa = f.away === a.team ? f.away_score : f.home_score; sb = f.away === a.team ? f.home_score : f.away_score; }
+        else if (a.res !== "" && b.res !== "" && !isNaN(+a.res) && !isNaN(+b.res)) { sa = +a.res; sb = +b.res; }
+        else return null;
+        if (sa === sb) return null;
+        return { w: sa > sb ? a.team : b.team, hi: Math.max(sa, sb), lo: Math.min(sa, sb) };
+      }
+      function team(t, lost) {
+        var nm = t && t.team;
+        var c = nm && byName[nm] ? byName[nm].c1 : "#6C7883";
+        return '<div class="pb-t' + (lost ? " lost" : "") + (nm ? "" : " tbd") + '"' + (nm ? ' data-t="' + esc(nm) + '"' : "") + '>' +
+          '<span class="pb-d" style="--tc:' + esc(c || "#6C7883") + '"><span class="pb-di">' + (nm ? logo(nm, "md") : "TBD") + "</span></span>" +
+          (t && t.seed ? '<span class="pb-seed">' + t.seed + "</span>" : "") +
+          '<span class="pb-nm">' + (nm ? esc(nm) : "&nbsp;") + "</span></div>";
+      }
+      function match(g, cls) {
+        if (!g) return '<div class="pb-m ' + cls + '"></div>';
+        var r = result(g), a = g.teams[0] || {}, b = g.teams[1] || {};
+        var note = r ? esc(r.w) + " won " + r.hi + "&ndash;" + r.lo : (a.team && b.team ? when(g.ko) : "");
+        return '<div class="pb-m ' + cls + '">' + team(a, r && r.w !== a.team) +
+          '<div class="pb-res">' + note + "</div>" + team(b, r && r.w !== b.team) + "</div>";
+      }
+      function build(c) {
+        var rounds = PO[c].rounds, byId = {};
+        rounds.forEach(function (r) { r.games.forEach(function (g) { byId[g.id] = g; g._r = r; }); });
+        var last = rounds[rounds.length - 1], fin = last.games[0];
+        function feeders(id) { var o = []; rounds.forEach(function (r) { r.games.forEach(function (g) { if (g.next === id) o.push(g); }); }); return o; }
+        var sf = feeders(fin.id), L = sf[0], R = sf[1];
+        var qL = L ? feeders(L.id) : [], qR = R ? feeders(R.id) : [];
+        var fr = result(fin);
+        var venue = (last.name || "").replace(/^Finals? at /i, "");
+        return '<div class="pb-cls" data-pbcls="' + c + '"' + (c === CL[0] ? "" : " hidden") + '>' +
+          '<div class="pb-grid">' +
+            '<div class="pb-col pb-l">' + match(qL[0], "q") + match(qL[1], "q") + "</div>" +
+            '<div class="pb-col pb-l">' + match(L, "s") + "</div>" +
+            '<div class="pb-col pb-c"><div class="pb-ttl"><b>' + c + "</b><span>State final</span></div>" +
+              match(fin, "f") +
+              '<div class="pb-when">' + (fr ? "Champion: <b>" + esc(fr.w) + "</b>" : esc(when(fin.ko)) + (venue ? " &middot; " + esc(venue) : "")) + "</div></div>" +
+            '<div class="pb-col pb-r">' + match(R, "s") + "</div>" +
+            '<div class="pb-col pb-r">' + match(qR[0], "q") + match(qR[1], "q") + "</div>" +
+          "</div>" +
+          '<div class="pb-rl"><span>Quarterfinals</span><span>Semifinals</span><span></span><span>Semifinals</span><span>Quarterfinals</span></div>' +
+          "</div>";
+      }
+      return '<div class="panel pbpanel"><div class="pb-hd"><h2>2026 Playoff Picture</h2>' +
+        '<div class="pb-tabs">' + CL.map(function (c, i) {
+          return '<button type="button" data-pbc="' + c + '" aria-pressed="' + (i === 0) + '">' + c + "</button>";
+        }).join("") + "</div></div>" +
+        '<div class="pb-scroll">' + CL.map(build).join("") + "</div>" +
+        '<p class="lede pb-src">Pairings, seeds and kickoffs from the UHSAA bracket (MaxPreps tournament pages, fetched ' +
+        esc((DATA.po_official || {}).fetched || "") + "); scores from Deseret News box scores. Click a team for its page.</p></div>";
+    })();
     /* State leaders (Nov 5 2026). Same DATA.leaders as the Stats tab. */
     var HL = DATA.leaders || {};
     var YRW = { Sr: "Senior", Jr: "Junior", So: "Sophomore", Fr: "Freshman" };
@@ -7835,9 +7943,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="frontgrid">' +
       '<div class="fmain">' +
       (HGS && HGS.weekend
-        ? HGS.html + (POH ? POH.hero + POH.next + POH.then : "")
+        ? HGS.html + (POH ? POH.hero + PBR + POH.next + POH.then : "")
         : (HGS && !HGS.monday ? HGS.html : "") +
-          (POH ? POH.hero + POH.next + POH.then + POH.done : heroHtml +
+          (POH ? POH.hero + PBR + POH.next + POH.then + POH.done : heroHtml +
           artHtml +
           (heroHtml ? "" : leadHtml) +
           (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
@@ -10790,6 +10898,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
   draw(); drawCoaches(); drawCmp(); drawPlayers();
   drawHistory(); drawBreakdown(); drawHome();
 })();
+</script>
+<script>
+/* playoff picture class tabs (Nov 5 2026) */
+document.addEventListener("click", function (e) {
+  var b = e.target.closest("[data-pbc]"); if (!b) return;
+  var p = b.closest(".pbpanel"); if (!p) return;
+  p.querySelectorAll("[data-pbc]").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+  p.querySelectorAll("[data-pbcls]").forEach(function (x) { x.hidden = x.dataset.pbcls !== b.dataset.pbc; });
+});
 </script>
 <script>
 /* header search toggle (Nov 5 2026) */
