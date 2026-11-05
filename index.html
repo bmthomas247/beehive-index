@@ -9782,6 +9782,17 @@ nav.topbar ~ main.wrap{margin-top:20px}
     return GROUPS[0];
   }
 
+  /* Back button (Brandon, Nov 5 2026): each tab is its own page in the browser's
+     history, ?view=X, so Back steps through the site instead of leaving it.
+     NAV_QUIET is on while the page boots and while Back/Forward replays a URL. */
+  var NAV_QUIET = true;
+  function navPush(view) {
+    if (NAV_QUIET) return;
+    var u = location.pathname + (view && view !== "home" ? "?view=" + encodeURIComponent(view) : "");
+    if (u === location.pathname + location.search) return;
+    try { history.pushState({ view: view }, "", u); } catch (e) {}
+  }
+
   function showView(view, scroll, gid) {
     var g = groupOf(view, gid);
     curGroup = g.id;
@@ -9804,6 +9815,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       subs.hidden = true;
     }
     if (scroll !== false) window.scrollTo({ top: 0, behavior: "instant" });
+    navPush(view);
   }
 
   document.getElementById("toptabs").innerHTML = GROUPS.filter(function (g) { return !g.hide; }).map(function (g, i) {
@@ -10424,8 +10436,39 @@ nav.topbar ~ main.wrap{margin-top:20px}
       }
       if (tm && byName[tm]) openTeam(tm);
     }
+    /* A card opened by a click pushes its own history entry, so Back closes it.
+       Closing it with the X, the scrim or Esc pops that entry again. */
+    var cardMine = false;
+    var mo = new MutationObserver(function () {
+      var open = drawer.classList.contains("open");
+      if (open && !cardMine && !NAV_QUIET) {
+        try { history.pushState({ card: true }, "", location.pathname + location.search); } catch (e) {}
+        cardMine = true;
+      } else if (!open && cardMine) {
+        cardMine = false;
+        if (history.state && history.state.card) history.back();
+      } else if (!open && !NAV_QUIET && /[?&](player|team)=/.test(location.search)) {
+        // closed the card a shared link opened: drop it from the URL so Back
+        // or a refresh does not pop it open again
+        var cv = lastSub[curGroup] || "home";
+        try { history.replaceState(null, "", location.pathname + (cv !== "home" ? "?view=" + encodeURIComponent(cv) : "")); } catch (e) {}
+      }
+    });
+    mo.observe(drawer, { attributes: true, attributeFilter: ["class"] });
     fromUrl();
-    window.addEventListener("popstate", fromUrl);
+    mo.takeRecords();
+    NAV_QUIET = false;
+    window.addEventListener("popstate", function () {
+      NAV_QUIET = true;
+      cardMine = false;
+      if (!(history.state && history.state.card) && drawer.classList.contains("open")) closeDrawer();
+      var vw = null;
+      try { vw = new URLSearchParams(location.search).get("view"); } catch (e) {}
+      if (!vw || VIEWS.indexOf(vw) < 0) showView("home", false);
+      fromUrl();
+      mo.takeRecords();
+      NAV_QUIET = false;
+    });
   })();
 
   /* Every card names the static page it belongs to, so a reader can move from
