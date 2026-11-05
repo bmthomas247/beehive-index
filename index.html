@@ -7790,7 +7790,19 @@ nav.topbar ~ main.wrap{margin-top:20px}
       return mdy(r.date);
     }
     var seenTag = {}, pick = [];
-    lastBig.concat(RECAP).forEach(function (r) {
+    // Latest week only (Nov 5 2026 - this used to pull rivalry games from all season).
+    var lastWk = RECAP.reduce(function (m, r) { return Math.max(m, r.wk || 0); }, 0);
+    var lastDate = RECAP.reduce(function (m, r) { return r.wk === lastWk && r.date > m ? r.date : m; }, "");
+    var poStart = "";
+    Object.keys((DATA.po_official || {}).classes || {}).forEach(function (c) {
+      ((DATA.po_official.classes[c] || {}).rounds || []).forEach(function (rd) {
+        if (rd.date && (!poStart || rd.date < poStart)) poStart = rd.date;
+      });
+    });
+    var inPO = !!(poStart && lastDate && lastDate >= poStart);
+    var MONS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    var lastDay = lastDate ? MONS[+lastDate.slice(5, 7) - 1] + " " + (+lastDate.slice(8, 10)) : "";
+    lastBig.concat(RECAP).filter(function (r) { return r.wk === lastWk; }).forEach(function (r) {
       if (pick.length >= 6) return;
       var k = recapKey(r), tg = recTag(r);
       if (pick.some(function (x) { return recapKey(x) === k; })) return;
@@ -7861,7 +7873,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       function match(g, cls) {
         if (!g) return '<div class="pb-m ' + cls + '"></div>';
         var r = result(g), a = g.teams[0] || {}, b = g.teams[1] || {};
-        var note = r ? esc(r.w) + " won " + r.hi + "&ndash;" + r.lo : (a.team && b.team ? when(g.ko) : "");
+        var note = r ? r.hi + "&ndash;" + r.lo : (a.team && b.team ? when(g.ko) : "");
         return '<div class="pb-m ' + cls + '">' + team(a, r && r.w !== a.team) +
           '<div class="pb-res">' + note + "</div>" + team(b, r && r.w !== b.team) + "</div>";
       }
@@ -7892,8 +7904,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           return '<button type="button" data-pbc="' + c + '" aria-pressed="' + (i === 0) + '">' + c + "</button>";
         }).join("") + "</div></div>" +
         '<div class="pb-scroll">' + CL.map(build).join("") + "</div>" +
-        '<p class="lede pb-src">Pairings, seeds and kickoffs from the UHSAA bracket (MaxPreps tournament pages, fetched ' +
-        esc((DATA.po_official || {}).fetched || "") + "); scores from Deseret News box scores. Click a team for its page.</p></div>";
+        "</div>";
     })();
     /* State leaders (Nov 5 2026). Same DATA.leaders as the Stats tab. */
     var HL = DATA.leaders || {};
@@ -7926,9 +7937,6 @@ nav.topbar ~ main.wrap{margin-top:20px}
     }).join("");
     var hlHtml = hlCards
       ? '<div class="panel hlpanel"><h2 class="hl-h" data-go="stats">2026 State Leaders <span aria-hidden="true">&rsaquo;</span></h2>' +
-        '<p class="lede">All classes, every 11-man program. Includes playoff games. Source: MaxPreps ' +
-        "box scores (Deseret News for programs that file none there), as of " +
-        esc(DATA.updated_at || "") + ".</p>" +
         '<div class="hl-g">' + hlCards + "</div></div>"
       : "";
 
@@ -7975,14 +7983,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
       "anyone else&rsquo;s writing.</p>" + newsHtml + "</div>" +
       buzzBlock(null, 6) +
       '<div class="panel rpanel"><h2>Top 10</h2>' +
-      '<p class="lede">Through Week ' + W + ". Opponent-adjusted and blowout-capped.</p>" +
+      '<p class="lede">' + (inPO ? "Through the " + lastDay + " playoff games" : "Through Week " + W) + ". Opponent-adjusted and blowout-capped.</p>" +
       railTop +
       '<button class="rmore" data-go="rank">All ' + T.length + " programs &rsaquo;</button></div>" +
 
       '<div class="panel rpanel"><h2>How our picks are doing</h2>' + recHtml + "</div>" +
 
-      (lastRecap ? '<div class="panel rpanel"><h2>Week ' + W + " results</h2>" + lastRecap +
-        '<button class="rmore" data-go="recap">Full Week ' + W + " summary &rsaquo;</button></div>" : "") +
+      (lastRecap ? '<div class="panel rpanel"><h2>' + (inPO ? "Latest playoff results" : "Week " + W + " results") + "</h2>" + lastRecap +
+        '<button class="rmore" data-go="recap">' + (inPO ? "All playoff scores" : "Full Week " + W + " summary") + " &rsaquo;</button></div>" : "") +
 
       '<div class="panel rpanel"><h2>What this is</h2>' +
       '<p class="lede" style="margin:0">All ' + T.length + " eleven-man programs and every player on those " +
