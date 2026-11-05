@@ -2836,7 +2836,12 @@ h3.qhow{ margin:18px 0 8px }
 .hl-big small{display:block;font-size:10.5px;font-weight:500;color:var(--ink-3);text-transform:uppercase;letter-spacing:.05em;margin-top:3px}
 .hl-ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .hl-ol li{display:flex;justify-content:space-between;gap:8px;border:1px solid var(--line);border-radius:6px;padding:8px 11px;font-size:13.5px;cursor:pointer}
-.hl-ol li span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hl-ol li{align-items:center;justify-content:flex-start}
+.hl-ol li .hl-nm{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hl-ol li .crest{flex:none;margin-left:-2px}
+.hl-ol li .hl-yr{flex:none;font-size:11.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.hl-ol li.on .hl-yr{color:inherit;opacity:.75}
+.hl-ol li b{margin-left:auto}
 .hl-ol li b{font-variant-numeric:tabular-nums}
 .hl-ol li.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .hl-ol li:hover{border-color:var(--sodium)}
@@ -7669,6 +7674,7 @@ h3.qhow{ margin:18px 0 8px }
     /* State leaders (Nov 5 2026). Same DATA.leaders as the Stats tab. */
     var HL = DATA.leaders || {};
     var YRW = { Sr: "Senior", Jr: "Junior", So: "Sophomore", Fr: "Freshman" };
+    var GRAD = { Sr: "2027", Jr: "2028", So: "2029", Fr: "2030" };   // 2026 season
     var hlCards = [["pass_yds", "Yards"], ["rush_yds", "Yards"], ["rec_yds", "Yards"],
                    ["tackles", "Tackles"]].map(function (c) {
       var b = HL[c[0]], all = (b && b.players) || [];
@@ -7684,12 +7690,14 @@ h3.qhow{ margin:18px 0 8px }
         logo(top.school, "xl") + '<div class="hl-who"><span class="hl-cat">' + esc(b.label) +
         '</span><strong>' + esc(top.name) + "</strong><small>" + esc(top.school) +
         (top.cls ? " &middot; " + esc(top.cls) : "") +
-        (YRW[top.yr] ? " &middot; " + YRW[top.yr] : "") + "</small></div>" +
+        (GRAD[top.yr] ? " &middot; Class of " + GRAD[top.yr] : "") + "</small></div>" +
         '<div class="hl-big">' + top.v.toLocaleString() + "<small>" + c[1] + "</small></div></div>" +
         '<ol class="hl-ol">' + all.slice(0, 5).map(function (p, i) {
           return '<li class="' + (i === 0 ? "on" : "") + '" data-p="' + esc(p.name) +
-            '" data-ps="' + esc(p.school) + '"><span>' + rk(p) + ". " + esc(p.name) +
-            '</span><b>' + p.v.toLocaleString() + "</b></li>";
+            '" data-ps="' + esc(p.school) + '"><span class="hl-nm">' + rk(p) + ". " + esc(p.name) +
+            "</span>" + logo(p.school, "sm") +
+            (GRAD[p.yr] ? '<span class="hl-yr">' + GRAD[p.yr] + "</span>" : "") +
+            '<b>' + p.v.toLocaleString() + "</b></li>";
         }).join("") + "</ol></div>";
     }).join("");
     var hlHtml = hlCards
