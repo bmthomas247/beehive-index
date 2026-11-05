@@ -2961,6 +2961,44 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .pb-c .pb-d{width:62px;height:62px}.pb-c .pb-di .crest{width:60px;height:60px}
 .pb-t.tbd .pb-d{border:2px dashed var(--line);border-radius:50%;background:var(--surface-2);width:44px;height:44px}
 .pb-seed{left:calc(50% - 36px)}
+/* ---- Stats restyle (Nov 5 2026) ---- */
+#v-stats .panel h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;font-size:24px}
+#v-stats .sc-lede{margin:2px 0 10px}
+#v-stats .leadfilt{padding:10px 12px;background:var(--surface-2);border-radius:10px;margin:8px 0 4px!important}
+#v-stats .leadfilt select{border-radius:8px;padding:5px 8px;border:1px solid var(--line);background:var(--surface)}
+.sc-about{margin-top:8px}
+.sc-about summary{cursor:pointer;font-size:12.5px;font-weight:700;color:var(--steel)}
+#v-stats .phasehead{font-family:var(--f-display);font-weight:800;font-size:22px;letter-spacing:-.01em;margin-top:6px}
+#v-stats .rbgrid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+#v-stats .rbcol{border-radius:12px;border:1px solid var(--line);box-shadow:0 1px 2px rgba(0,0,0,.04);padding:14px 14px 10px}
+.sc-hd{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}
+.sc-cat{font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--sodium)}
+.sc-cnt{font-size:11px;color:var(--ink-3)}
+.sc-top{display:flex;align-items:center;gap:12px;padding:4px 0 12px;border-bottom:1px solid var(--line-soft);margin-bottom:6px;cursor:pointer}
+.sc-top .crest{width:52px;height:52px;object-fit:contain;flex:none}
+.sc-who{flex:1;min-width:0}
+.sc-who strong{display:block;font-size:16px;line-height:1.2}
+.sc-who small{display:block;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sc-who em{display:block;font-style:normal;font-size:11.5px;color:var(--ink-2);margin-top:2px}
+.sc-big{font-family:var(--f-display);font-weight:800;font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+#v-stats .ldrow{grid-template-columns:26px 24px minmax(0,1fr) auto;border-radius:8px;padding:7px 6px;border-top:0}
+#v-stats .ldrow:hover{background:var(--surface-2)}
+#v-stats .ldrow.ld1{background:var(--ink);color:var(--surface)}
+#v-stats .ldrow.ld1 .ldmeta,#v-stats .ldrow.ld1 .ldn{color:inherit;opacity:.75}
+#v-stats .ldn{font-size:12px;font-weight:700}
+#v-stats .ldname{font-size:14px}
+#v-stats .ldmeta{font-size:11.5px}
+.ldex{display:block}
+#v-stats .ldv{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+/* ---- Team stats + Record Book restyle (Nov 5 2026) ---- */
+#v-tstats .panel h2,#v-history .panel h2{font-family:var(--f-display);font-weight:800;text-transform:uppercase;letter-spacing:-.01em;font-size:24px}
+#v-tstats .tstab{border-collapse:separate;border-spacing:0;width:100%;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+#v-tstats .tstab thead th{background:#0B1F3A;color:#fff;font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:9px 8px}
+#v-tstats .tstab thead th a,#v-tstats .tstab thead th button{color:inherit}
+#v-tstats .tstab tbody tr:nth-child(even) td{background:var(--surface-2)}
+#v-tstats .tstab tbody tr:hover td{background:color-mix(in srgb,var(--sodium) 12%,var(--surface))}
+#v-tstats .tstab td{padding:8px;font-variant-numeric:tabular-nums}
+#v-tstats .tstab tbody tr:nth-child(-n+3) td:first-child{font-weight:800;color:var(--sodium)}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -6408,22 +6446,36 @@ nav.topbar ~ main.wrap{margin-top:20px}
         "<p style='margin:8px 0 0;font-size:12.5px;color:var(--ink-3);line-height:1.5'>" +
         "No qualifying player in this cut has a number entered. That is a reporting gap, not an empty division.</p></div>";
     }
-    return '<div class="rbcol"><h4>' + esc(c.label) + "</h4>" +
-      '<div class="cnt">top ' + Math.min(10, list.length) +
-      (leadCls || leadReg ? " in " + esc(leadReg || leadCls) : " in the state") + "</div>" +
+    // Nov 5 2026 restyle: featured leader + ranked rows (home-page leaders look).
+    var YRW2 = { Sr: "Senior", Jr: "Junior", So: "Sophomore", Fr: "Freshman" };
+    function rk2(p) {
+      var above = list.filter(function (q) { return q.v > p.v; }).length;
+      var tied = list.filter(function (q) { return q.v === p.v; }).length > 1;
+      return (tied ? "T" : "") + (above + 1);
+    }
+    function fmtv(v) { return typeof v === "number" ? v.toLocaleString() : esc(String(v)); }
+    var top = list[0];
+    var topEx = Object.keys(top.extra || {}).map(function (k) { return k ? top.extra[k] + " " + k : top.extra[k]; }).join(" · ");
+    return '<div class="rbcol sc">' +
+      '<div class="sc-hd"><span class="sc-cat">' + esc(c.label) + '</span><span class="sc-cnt">' +
+      (leadCls || leadReg ? esc(leadReg || leadCls) : "Utah") + " &middot; top " + Math.min(10, list.length) + "</span></div>" +
+      '<div class="sc-top"' + pAttr(top.name, top.school) + ">" + logo(top.school, "xl") +
+      '<div class="sc-who"><strong>' + esc(top.name) + "</strong><small>" + esc(top.school) +
+      (top.cls ? " &middot; " + esc(top.cls) : "") + (YRW2[top.yr] ? " &middot; " + YRW2[top.yr] : "") + "</small>" +
+      (topEx ? '<em>' + esc(topEx) + "</em>" : "") + "</div>" +
+      '<div class="sc-big">' + fmtv(top.v) + "</div></div>" +
       list.slice(0, 10).map(function (p, i) {
         // an empty key lets a category supply a whole phrase instead of "3 td"
         var ex = Object.keys(p.extra || {}).map(function (k) {
           return k ? p.extra[k] + " " + k : p.extra[k];
         }).join(", ");
-        return '<div class="ldrow"' + pAttr(p.name, p.school) + '><div class="ldn">' + (i + 1) + "</div>" +
+        return '<div class="ldrow' + (i === 0 ? " ld1" : "") + '"' + pAttr(p.name, p.school) + '><div class="ldn">' + rk2(p) + "</div>" +
           logo(p.school, "sm") +
           '<div class="ldname">' + esc(p.name) +
-          '<span class="ldmeta">' + esc(p.school) + " " + esc(p.cls) +
-          (p.reg && !leadReg ? " " + esc(p.reg) : "") +
-          (p.yr ? " · " + esc(p.yr) : "") +
-          (ex ? "<br>" + esc(ex) : "") + "</span></div>" +
-          '<div class="ldv">' + p.v + "</div></div>";
+          '<span class="ldmeta">' + esc(p.school) + " &middot; " + esc(p.cls) +
+          (YRW2[p.yr] ? " &middot; " + YRW2[p.yr] : "") +
+          (ex ? '<span class="ldex">' + esc(ex) + "</span>" : "") + "</span></div>" +
+          '<div class="ldv">' + fmtv(p.v) + "</div></div>";
       }).join("") + "</div>";
   }
 
@@ -6529,8 +6581,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       LEADPHASE.map(function (g) {
         return '<button type="button" data-lp="' + g.id + '" aria-pressed="' + (g.id === leadPhase) + '">' + esc(g.label) + "</button>";
       }).join("") + "</div>" +
-    '<p class="lede">Who is actually producing &mdash; a different question from who is ranked. A quarterback leading Utah in passing yards is talent whether or not a recruiting service has ever heard of him. Recruiting boards measure who gets <em>noticed</em>; plenty of production never gets noticed at all.</p>' +
-    '<p class="lede">Raw season totals from what each program has reported, with a per-game figure alongside &mdash; anyone can lead a total by having played an extra game.</p>' +
+    '<p class="lede sc-lede">Who is actually producing &mdash; every 11-man program, every classification, playoffs included.</p>' +
     '<div class="leadfilt" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0 6px">' +
       '<label style="font-size:12.5px;color:var(--ink-2)">Division ' +
       '<select id="leadcls"><option value="">All divisions</option>' +
@@ -6542,7 +6593,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
       "</select></label>" +
       '<button id="leadclear" class="dclose" style="position:static;font-size:12px">Clear</button>' +
     "</div>" +
-    '<p class="lede" id="leadcut" style="margin-top:4px"></p>' +
+    '<details class="sc-about"><summary>About these numbers</summary>' +
+    '<p class="lede" id="leadcut" style="margin-top:8px"></p>' +
+    '<p class="lede">A different question from who is ranked. A quarterback leading Utah in passing yards is talent whether or not a recruiting service has ever heard of him. Recruiting boards measure who gets <em>noticed</em>; plenty of production never gets noticed at all.</p>' +
+    '<p class="lede">Raw season totals from what each program has reported &mdash; anyone can lead a total by having played an extra game, so per-game figures sit alongside on each player&rsquo;s page.</p></details>' +
     "</div>" +
     '<div id="leadgrid"></div>' +
     '<div class="panel" style="margin-top:16px"><h2>How these boards are built</h2>' +
@@ -7144,7 +7198,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var recScope = [["career", "Career"], ["season", "Season"], ["game", "Single game"], ["team", "Team and program"]];
 
     document.getElementById("v-history").innerHTML =
-      '<div class="panel" style="margin-bottom:16px"><h2>Utah football history</h2>' +
+      '<div class="panel" style="margin-bottom:16px"><h2>Utah football record book</h2>' +
       '<p class="lede">Every state championship Utah has awarded, back to <strong>1898</strong> &mdash; ' + CH.length +
       ' titles across ' + years.length + ' seasons &mdash; and the all-time individual and program records from ' +
       "UHSAA's own book. Click any school still playing to open its card.</p>" +
@@ -9877,7 +9931,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
         ["crank", "Rankings"], ["coach", "Coaches Stats"], ["seat", "Hot Seat"],
         ["caro", "Carousel"]] },
     { id: "leaders", label: "Stats", views: [
-        ["stats", "Player"], ["tstats", "Team"], ["history", "History"]] },
+        ["stats", "Player"], ["tstats", "Team"]] },
+    { id: "records", label: "Record Book", views: [["history", "Record Book"]] },
     // Brandon, Sep 14: "we want a realignment tab as its own".
     { id: "realign", label: "Realignment", views: [["realign", "Realignment"]] },
     { id: "recruit101", label: "Recruiting Help", views: [["recruit101", "Recruiting Help"]] },
