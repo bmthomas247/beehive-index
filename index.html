@@ -2845,6 +2845,27 @@ h3.qhow{ margin:18px 0 8px }
 .hl-ol li b{font-variant-numeric:tabular-nums}
 .hl-ol li.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
 .hl-ol li:hover{border-color:var(--sodium)}
+/* ---- header option C: MLB-style navy bar (Nov 5 2026) ---- */
+nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid var(--sodium-bright, #E8A33D);position:sticky;top:0;z-index:40}
+.topbar-in{display:flex;align-items:center;gap:16px;min-height:60px;max-width:none;padding-left:20px;padding-right:12px}
+.tb-brand{margin:0;flex:none;font-size:inherit}
+.tb-brand a{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+.tb-brand .blogo{width:38px;height:38px;flex:none}
+.tb-brand span{font-family:var(--f-display);font-weight:800;font-size:14px;line-height:1.05;letter-spacing:.02em;text-transform:uppercase;color:#fff;white-space:nowrap}
+.tb-brand em{font-style:normal;color:#E8A33D;display:block}
+.topbar .tabs-in{flex:1;min-width:0;display:flex;gap:0;padding:0;overflow-x:auto;scrollbar-width:none}
+.topbar .tabs-in::-webkit-scrollbar{display:none}
+.topbar .tab{color:#fff;background:none;border-radius:0;font-family:var(--f-display);font-size:12.5px;font-weight:700;
+  letter-spacing:.02em;text-transform:uppercase;padding:21px 8px 18px;border-bottom:3px solid transparent;margin-bottom:-3px}
+.topbar .tab:hover{background:#132C4F;color:#fff}
+.topbar .tab[aria-selected="true"]{background:none;color:#fff;border-bottom-color:#fff}
+.tb-right{display:flex;align-items:center;gap:4px;flex:none}
+.tb-x,.tb-search{color:#C9D3E0;background:none;border:0;cursor:pointer;font-family:var(--f-display);font-weight:800;
+  font-size:15px;text-decoration:none;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%}
+.tb-x:hover,.tb-search:hover,.tb-search[aria-expanded="true"]{background:#132C4F;color:#fff}
+.gsearch[hidden],.stamp[hidden]{display:none}
+@media (max-width:1480px){ .tb-brand span{display:none} }
+@media (max-width:900px){ .topbar-in{gap:10px;padding-left:12px} .topbar .tab{padding:19px 8px 16px} }
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -2853,29 +2874,21 @@ h3.qhow{ margin:18px 0 8px }
   <button class="tarrow ta-r" id="tick-r" aria-label="Scroll scores right">&#8250;</button>
 </div>
 
-<header class="mast">
-  <div class="wrap mast-in">
-    <div class="brand">
-      <h1><img class="blogo" src="logo-uhsfb.webp" width="42" height="42"
-               alt="" decoding="async"><span>Utah High School <em>Football</em></span></h1>
-      <p><strong>Utah high school football.</strong> Every 11-man program on one scale and every player on those rosters &mdash; not just the ones somebody already noticed. Results-driven, opponent-adjusted, blowout-capped.</p>
-      <!-- Somewhere to follow the thing. Deliberately not an email address:
-           the contact route is the Send Info form, so that a coach sending a
-           roster correction lands somewhere it can be acted on. -->
-      <p class="social"><a href="https://x.com/TheLedgerUT" target="_blank" rel="noopener">
-        <span class="xmark" aria-hidden="true">X</span> @TheLedgerUT</a></p>
-    </div>
-    <div class="stamp">
-      <div><div class="k">Through</div><div class="v" id="s-week">Week 2</div></div>
-      <div><div class="k">Teams</div><div class="v" id="s-teams">106</div></div>
-      <div><div class="k">Games in</div><div class="v" id="s-games">122</div></div>
-      <div class="upd"><div class="k">Last updated</div><div class="v" id="s-upd">—</div>
-        <div class="sub2" id="s-nextupd"></div></div>
+<nav class="tabs topbar" aria-label="Main">
+  <div class="wrap topbar-in">
+    <h1 class="tb-brand"><a href="/" data-go="home"><img class="blogo" src="logo-uhsfb.webp" width="38" height="38"
+      alt="" decoding="async"><span>Utah High School <em>Football</em></span></a></h1>
+    <div class="tabs-in" role="tablist" id="toptabs"></div>
+    <div class="tb-right">
+      <a class="tb-x" href="https://x.com/TheLedgerUT" target="_blank" rel="noopener" aria-label="Follow @TheLedgerUT on X">X</a>
+      <button class="tb-search" id="tbsearch" type="button" aria-label="Search players and programs"
+        aria-controls="gsearch" aria-expanded="false"><svg viewBox="0 0 24 24" width="19" height="19" fill="none"
+        stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></button>
     </div>
   </div>
-</header>
+</nav>
 
-<div class="gsearch">
+<div class="gsearch" id="gsearch" hidden>
   <div class="wrap gsearch-in">
     <label class="gs-lab" for="gq">Find</label>
     <div class="gs-box">
@@ -2888,9 +2901,14 @@ h3.qhow{ margin:18px 0 8px }
     <span class="gs-hint" id="gshint"></span>
   </div>
 </div>
-
-<nav class="tabs"><div class="wrap tabs-in" role="tablist" id="toptabs"></div></nav>
 <div class="subs" id="subs" hidden><div class="wrap subs-in" role="tablist" id="subtabs"></div></div>
+
+<!-- Old masthead stamp: no longer shown (header option C, Nov 5 2026), kept
+     because the page script writes into these ids. -->
+<div class="stamp" hidden>
+  <div id="s-week"></div><div id="s-teams"></div><div id="s-games"></div>
+  <div id="s-upd"></div><div id="s-nextupd"></div>
+</div>
 
 <main class="wrap">
 
@@ -10616,6 +10634,23 @@ h3.qhow{ margin:18px 0 8px }
 
   draw(); drawCoaches(); drawCmp(); drawPlayers();
   drawHistory(); drawBreakdown(); drawHome();
+})();
+</script>
+<script>
+/* header search toggle (Nov 5 2026) */
+(function () {
+  var b = document.getElementById("tbsearch"), g = document.getElementById("gsearch");
+  if (!b || !g) return;
+  b.addEventListener("click", function () {
+    g.hidden = !g.hidden; b.setAttribute("aria-expanded", String(!g.hidden));
+    if (!g.hidden) document.getElementById("gq").focus();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "/" && !/input|textarea|select/i.test((e.target.tagName || ""))) {
+      e.preventDefault(); g.hidden = false; b.setAttribute("aria-expanded", "true");
+      document.getElementById("gq").focus();
+    }
+  });
 })();
 </script>
 <button class="totop" id="totop" type="button" aria-label="Back to top" hidden>
