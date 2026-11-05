@@ -2880,6 +2880,22 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
 .fa-btn{background:#fff;color:#0B0B0D;font-weight:700;font-size:14px;padding:11px 18px;border-radius:7px;white-space:nowrap}
 .flagad:hover .fa-btn{background:#E8A33D}
 @media (max-width:760px){ .flagad{flex-wrap:wrap;gap:12px} .fa-m{order:3;justify-content:flex-start;flex-basis:100%;flex-wrap:wrap;white-space:normal;row-gap:4px} .fa-tag{display:none} .fa-r{margin-left:auto} }
+.ugpanel h2{margin-top:2px}
+.ug-kick{display:block;font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--sodium)}
+.ug-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:14px}
+.ug-card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--surface)}
+.ug-card h3{margin:0 0 8px;font-family:var(--f-display);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-2)}
+.ug-tl{list-style:none;margin:0;padding:0;border-left:2px solid var(--sodium);padding-left:14px;display:grid;gap:9px}
+.ug-tl b{display:block;font-size:14px}.ug-tl span{font-size:12.5px;color:var(--ink-3)}
+.ug-schools{display:flex;flex-wrap:wrap;gap:8px}
+.ug-sch{display:inline-flex;align-items:center;gap:6px;font-size:13px;border:1px solid var(--line-soft);border-radius:999px;padding:3px 10px 3px 4px}
+.ug-links{list-style:none;margin:0;padding:0;display:grid;gap:9px}
+.ug-links a,.ug-follow a{font-weight:700;color:var(--ink);text-decoration:none}
+.ug-links a:hover,.ug-follow a:hover{color:var(--sodium)}
+.ug-links span{display:block;font-size:12.5px;color:var(--ink-3)}
+.ug-follow{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0;font-size:13.5px}
+.ug-note{font-size:12px;color:var(--ink-3);margin:8px 0 0}
+.ug-src{font-size:11.5px;color:var(--steel);white-space:nowrap}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -2998,6 +3014,46 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
       <p>This whole index exists on one idea: <strong>a recruiting service only carries the players somebody already noticed, and a roster carries everybody.</strong> Half the point of building it was that a 1A kid in Kanab putting up numbers deserves to be findable next to a 6A commit.</p>
       <p>Girls playing flag football in Utah are further down that same road. They are not under-covered &mdash; <strong>they are not counted at all</strong>. There is no state championship to win, no letter to earn, no official record that any of it happened. You cannot be overlooked by a system you were never entered into.</p>
       <p>So this tab stays up until Utah sanctions it. Then it comes down, and the rankings start.</p>
+    </div>
+
+    <div class="panel ugpanel" style="margin-bottom:16px">
+      <span class="ug-kick">The league that&rsquo;s already playing</span>
+      <h2>Utah High School Girls Football Association</h2>
+      <p class="lede">UHSGFA is a 501(c)(3) nonprofit that runs girls&rsquo; high school flag football along the Wasatch Front &mdash; organized, coached and competitive, built to grow confidence, teamwork and leadership. Its stated goal is the one this page is about: making girls&rsquo; flag football a sanctioned sport in Utah. <a class="ug-src" href="https://uhsgfa.org/" target="_blank" rel="noopener">uhsgfa.org</a> &middot; <a class="ug-src" href="https://uhsgfa.org/who-we-are" target="_blank" rel="noopener">Who we are</a></p>
+
+      <div class="ug-grid">
+        <div class="ug-card">
+          <h3>The season</h3>
+          <ol class="ug-tl">
+            <li><b>Week of Aug 3</b><span>Practices begin</span></li>
+            <li><b>Aug 31</b><span>Registration closes</span></li>
+            <li><b>Week of Sept 14</b><span>Games begin</span></li>
+            <li><b>Week of Oct 26</b><span>Playoffs begin</span></li>
+          </ol>
+          <p class="ug-note">Teams of 10&ndash;15 athletes. Dates as UHSGFA&rsquo;s FAQ lists them (the FAQ is not dated). <a class="ug-src" href="https://uhsgfa.org/faqs" target="_blank" rel="noopener">FAQ</a></p>
+        </div>
+        <div class="ug-card">
+          <h3>Schools that have hosted games</h3>
+          <div class="ug-schools"><span class="ug-sch"><img class="crest c-md" src="/logo-american-fork.webp" alt="" loading="lazy">American Fork</span><span class="ug-sch"><img class="crest c-md" src="/logo-cottonwood.webp" alt="" loading="lazy">Cottonwood</span><span class="ug-sch"><img class="crest c-md" src="/logo-lehi.webp" alt="" loading="lazy">Lehi</span><span class="ug-sch"><img class="crest c-md" src="/logo-mountain-ridge.webp" alt="" loading="lazy">Mountain Ridge</span><span class="ug-sch"><img class="crest c-md" src="/logo-park-city.webp" alt="" loading="lazy">Park City</span><span class="ug-sch"><img class="crest c-md" src="/logo-skyridge.webp" alt="" loading="lazy">Skyridge</span><span class="ug-sch"><img class="crest c-md" src="/logo-timpview.webp" alt="" loading="lazy">Timpview</span></div>
+          <p class="ug-note">As listed in UHSGFA&rsquo;s FAQ. <a class="ug-src" href="https://uhsgfa.org/faqs" target="_blank" rel="noopener">FAQ</a></p>
+          <h3 style="margin-top:16px">2025 playoff teams</h3>
+          <div class="ug-schools"><span class="ug-sch"><img class="crest c-md" src="/logo-timpview.webp" alt="" loading="lazy">Timpview</span><span class="ug-sch"><img class="crest c-md" src="/logo-skyridge.webp" alt="" loading="lazy">Skyridge</span><span class="ug-sch"><img class="crest c-md" src="/logo-park-city.webp" alt="" loading="lazy">Park City</span><span class="ug-sch"><img class="crest c-md" src="/logo-maple-mountain.webp" alt="" loading="lazy">Maple Mountain</span></div>
+          <p class="ug-note"><a class="ug-src" href="https://uhsgfa.org/2025-recap" target="_blank" rel="noopener">2025 recap</a> &middot; <a class="ug-src" href="https://uhsgfa.org/scores" target="_blank" rel="noopener">Scores</a> &middot; <a class="ug-src" href="https://uhsgfa.org/standings" target="_blank" rel="noopener">Standings</a></p>
+        </div>
+        <div class="ug-card">
+          <h3>Get involved</h3>
+          <ul class="ug-links">
+            <li><a href="https://uhsgfa.org/hs-girls-flag-sign-up" target="_blank" rel="noopener">Sign up to play &rarr;</a><span>Start by asking your school&rsquo;s athletic director.</span></li>
+            <li><a href="https://uhsgfa.org/start-a-club" target="_blank" rel="noopener">Start a club at your school &rarr;</a></li>
+            <li><a href="https://uhsgfa.org/volunteer-to-coach" target="_blank" rel="noopener">Volunteer to coach &rarr;</a></li>
+          </ul>
+          <h3 style="margin-top:16px">Partners</h3>
+          <p class="ug-note" style="margin-top:2px">Las Vegas Raiders &middot; Harmons <a class="ug-src" href="https://uhsgfa.org/" target="_blank" rel="noopener">uhsgfa.org</a></p>
+          <h3 style="margin-top:16px">Follow</h3>
+          <p class="ug-follow"><a href="https://www.x.com/uhsgfa" target="_blank" rel="noopener">X @uhsgfa</a><a href="https://www.instagram.com/uhsgfa" target="_blank" rel="noopener">Instagram @uhsgfa</a><a href="https://www.facebook.com/profile.php?id=61578391628554" target="_blank" rel="noopener">Facebook</a></p>
+        </div>
+      </div>
+      <p class="notbet" style="margin-top:14px">Everything in this panel is UHSGFA&rsquo;s own information, read from uhsgfa.org on Nov 5, 2026 &mdash; each line links to the page it came from. We are not affiliated with UHSGFA.</p>
     </div>
 
     <div class="panel" style="margin-bottom:16px">
