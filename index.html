@@ -3000,6 +3000,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
 #v-tstats .tstab td{padding:8px;font-variant-numeric:tabular-nums}
 #v-tstats .tstab tbody tr:nth-child(-n+3) td:first-child{font-weight:800;color:var(--sodium)}
 .sc-foot{margin:8px 4px 2px;font-size:11.5px;color:var(--ink-3);line-height:1.45}
+/* ---- Team stats fit (Nov 5 2026) ---- */
+#v-tstats .tstab{table-layout:auto;font-size:12.5px}
+#v-tstats .tstab thead th{white-space:normal;line-height:1.15;padding:8px 5px;vertical-align:bottom;font-size:10.5px;letter-spacing:.03em;min-width:0}
+#v-tstats .tstab td{padding:7px 5px;white-space:nowrap}
+#v-tstats .tstab td:nth-child(2),#v-tstats .tstab th:nth-child(2){white-space:nowrap}
+@media (max-width:900px){
+  #v-tstats .tstab td:nth-child(2),#v-tstats .tstab th:nth-child(2){position:sticky;left:0;z-index:1;background:var(--surface);box-shadow:2px 0 0 var(--line-soft)}
+  #v-tstats .tstab thead th:nth-child(2){background:#0B1F3A}
+  #v-tstats .tstab tbody tr:nth-child(even) td:nth-child(2){background:var(--surface-2)}
+}
+/* ---- record book logos (Nov 5 2026) ---- */
+.rcard{position:relative}
+.rclogo{position:absolute;top:10px;right:10px;cursor:pointer}
+.rclogo .crest{width:38px;height:38px;object-fit:contain}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -6405,7 +6419,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
   // the offensive line under offense, the defensive line under defense.
   var LEADPHASE = [
     { id: "off", label: "Offense",
-      note: "Who is moving the ball. The line board is a UNIT ranking, not a player one — rushing yards are a five-man stat.",
+      note: "Who is moving the ball. Sacks allowed and yards per carry are team stats — the five up front share them.",
       cats: ["pass_yds", "pass_td", "rush_yds", "rush_td", "rec_yds", "rec_td", "rec_catch"],
       units: ["ol"] },
     { id: "def", label: "Defense",
@@ -6485,38 +6499,46 @@ nav.topbar ~ main.wrap{margin-top:20px}
   // stat and pretending otherwise would be dishonest — so the card says so and
   // the class/region cuts apply to it exactly like the rest.
   function olCard() {
-    // Nov 5 2026: real stats on the card; the 0-100 grade stays the ranking.
-    var list = Object.keys(OL).map(function (k) { return OL[k]; })
-      .filter(function (r) {
-        return (!leadCls || r.cls === leadCls) &&
-               (!leadReg || (byName[r.school] || {}).region === leadReg);
-      })
-      .sort(function (a, b) { return b.grade - a.grade; });
-    if (!list.length) return "";
-    function g1(v) { return (Math.round(v * 10) / 10).toFixed(1); }
-    function line(r) {
-      var bits = [Math.round(r.rypg) + " rush yds/g", (Math.round(r.ypc * 10) / 10) + " yds/carry"];
-      if (r.sacks_allowed_pg !== null && r.sacks_allowed_pg !== undefined && r.games_charted)
-        bits.push(g1(r.sacks_allowed_pg) + " sacks allowed/g");
-      return bits.join(" &middot; ");
+    // Nov 5 2026 (b): two team stat boards instead of the 0-100 O-line grade.
+    var all = Object.keys(OL).map(function (k) { return OL[k]; }).filter(function (r) {
+      return (!leadCls || r.cls === leadCls) && (!leadReg || (byName[r.school] || {}).region === leadReg);
+    });
+    function board(title, rows, val, sub, asc, note) {
+      if (!rows.length) return "";
+      rows.sort(function (a, b) { return asc ? val(a) - val(b) : val(b) - val(a); });
+      function rk(r) {
+        var v = val(r), better = rows.filter(function (q) { return asc ? val(q) < v : val(q) > v; }).length;
+        var tied = rows.filter(function (q) { return val(q) === v; }).length > 1;
+        return (tied ? "T" : "") + (better + 1);
+      }
+      var top = rows[0];
+      return '<div class="rbcol sc">' +
+        '<div class="sc-hd"><span class="sc-cat">' + title + '</span><span class="sc-cnt">' +
+        (leadCls || leadReg ? esc(leadReg || leadCls) : "Utah") + " &middot; top " + Math.min(10, rows.length) + "</span></div>" +
+        '<div class="sc-top" data-t="' + esc(top.school) + '">' + logo(top.school, "xl") +
+        '<div class="sc-who"><strong>' + esc(top.school) + "</strong><small>" + esc(top.cls) + " &middot; offensive line</small>" +
+        "<em>" + sub(top) + "</em></div>" +
+        '<div class="sc-big">' + val(top).toFixed(asc ? 2 : 1) + "</div></div>" +
+        rows.slice(0, 10).map(function (r, i) {
+          return '<div class="ldrow' + (i === 0 ? " ld1" : "") + '" data-t="' + esc(r.school) + '" style="cursor:pointer"><div class="ldn">' +
+            rk(r) + "</div>" + logo(r.school, "sm") +
+            '<div class="ldname">' + esc(r.school) +
+            '<span class="ldmeta">' + esc(r.cls) + '<span class="ldex">' + sub(r) + "</span></span></div>" +
+            '<div class="ldv">' + val(r).toFixed(asc ? 2 : 1) + "</div></div>";
+        }).join("") +
+        '<p class="sc-foot">' + note + "</p></div>";
     }
-    var top = list[0];
-    return '<div class="rbcol sc">' +
-      '<div class="sc-hd"><span class="sc-cat">Offensive line</span><span class="sc-cnt">' +
-      (leadCls || leadReg ? esc(leadReg || leadCls) : "Utah") + " &middot; top " + Math.min(10, list.length) + "</span></div>" +
-      '<div class="sc-top" data-t="' + esc(top.school) + '">' + logo(top.school, "xl") +
-      '<div class="sc-who"><strong>' + esc(top.school) + "</strong><small>" + esc(top.cls) + " &middot; unit grade</small>" +
-      "<em>" + line(top) + "</em></div>" +
-      '<div class="sc-big">' + g1(top.grade) + "</div></div>" +
-      list.slice(0, 10).map(function (r, i) {
-        return '<div class="ldrow' + (i === 0 ? " ld1" : "") + '" data-t="' + esc(r.school) + '" style="cursor:pointer"><div class="ldn">' +
-          (i + 1) + "</div>" + logo(r.school, "sm") +
-          '<div class="ldname">' + esc(r.school) +
-          '<span class="ldmeta">' + esc(r.cls) + '<span class="ldex">' + line(r) + "</span></span></div>" +
-          '<div class="ldv">' + g1(r.grade) + "</div></div>";
-      }).join("") +
-      '<p class="sc-foot">Grade 0&ndash;100: run blocking against the defenses faced, plus sacks allowed. Same for all five starters &mdash; it&rsquo;s a unit stat.</p>' +
-      "</div>";
+    var sacks = board("Sacks allowed",
+      all.filter(function (r) { return r.games_charted >= 6 && r.sacks_allowed_pg !== null && r.sacks_allowed_pg !== undefined; }),
+      function (r) { return Math.round(r.sacks_allowed_pg * 100) / 100; },
+      function (r) { return (Math.round(r.sacks_allowed * 10) / 10) + " sacks in " + r.games_charted + " charted games"; },
+      true, "Fewest sacks allowed per game, from the games Deseret charted. Teams with at least 6 charted games.");
+    var ypc = board("Yards per carry",
+      all.filter(function (r) { return r.car >= 150; }),
+      function (r) { return Math.round(r.ypc * 10) / 10; },
+      function (r) { return r.yds.toLocaleString() + " yds on " + r.car + " carries"; },
+      false, "Team rushing yards per carry. Teams with at least 150 carries.");
+    return sacks + ypc;
   }
 
   function dlCard() {
@@ -7238,8 +7260,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
             var line = [r.who, r.school].filter(Boolean).map(function (x, i) {
               return i === 0 ? "<b>" + esc(x) + "</b>" : esc(x);
             }).join(" &middot; ");
+            var rv = /^\d{4,}$/.test(String(r.v)) ? (+r.v).toLocaleString() : esc(r.v);
             return '<div class="rcard">' +
-              '<div class="rcv">' + esc(r.v) + "</div>" +
+              (r.school && LOGOS[r.school] ? '<span class="rclogo"' + (byName[r.school] ? ' data-t="' + esc(r.school) + '"' : "") + ">" + logo(r.school, "md") + "</span>" : "") +
+              '<div class="rcv">' + rv + "</div>" +
               '<div class="rck">' + esc(r.cat) +
               (r.src === "uhsaa only" ? '<span class="uns">UHSAA book only</span>' : "") + "</div>" +
               '<div class="rcw">' + line + (r.y ? "<br>" + esc(r.y) : "") + "</div>" +
