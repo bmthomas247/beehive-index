@@ -310,6 +310,16 @@ table tr:hover td{background:var(--surface-2)}
 .mx-v b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:13.5px;line-height:1.3;margin-top:8px}
 .mx-v>span:last-child{display:block;font-size:11.5px;color:var(--ink-3);margin-top:3px}
 @media(max-width:760px){.mx-top{grid-template-columns:1fr}.mx-cap b{font-size:16px}.mx-rail{grid-auto-columns:72%}}
+#ytmodal{position:fixed;inset:0;z-index:9999;background:rgba(5,10,18,.86);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:16px;animation:ytin .18s ease}
+@keyframes ytin{from{opacity:0}to{opacity:1}}
+.ytbox{position:relative;width:min(1000px,100%)}
+.ytframe{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.ytframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ytx{position:absolute;top:-44px;right:0;background:#fff;color:#111;border:0;border-radius:999px;width:34px;height:34px;font-size:15px;font-weight:700;cursor:pointer}
+.ytx:hover{background:#FF3B30;color:#fff}
+.ytcap{display:flex;justify-content:space-between;align-items:baseline;gap:14px;margin-top:12px;color:#fff}
+.ytcap b{font-size:15px;line-height:1.3}
+.ytgo{flex:none;color:#C9D6E6;font-size:13px;text-decoration:underline}
 /* records tab v2 + hudl tab (Nov 8 2026) */
 .rx-case{display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin:12px 0 6px;padding:20px 22px;border-radius:14px;color:#fff;
  background:radial-gradient(120% 140% at 0% 0%,#2A4A7A 0%,#0B1F3A 55%,#081528 100%);box-shadow:0 14px 34px -16px rgba(0,0,0,.5);position:relative;overflow:hidden}
@@ -542,6 +552,43 @@ night games finish.</p>
   });
   window.addEventListener("popstate", function () { show(fromHash(), true); });
   show(fromHash(), !!location.hash);
+  // ---- YouTube clips play in a pop-up on our page (Brandon, Nov 8), same player as the
+  // front page (patch_ytmodal_oct11). Embedded plays count for the channel; "Watch on
+  // YouTube" stays in the pop-up for clips that block embedding. Hudl reels still open on Hudl.
+  function ytId(u) {
+    var m = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/.exec(u || "");
+    return m ? m[1] : "";
+  }
+  function ytModal(url, title) {
+    var id = ytId(url); if (!id) return false;
+    var old = document.getElementById("ytmodal"); if (old) old.remove();
+    var d = document.createElement("div");
+    d.id = "ytmodal"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true");
+    d.setAttribute("aria-label", title || "Video");
+    var box = document.createElement("div"); box.className = "ytbox";
+    box.innerHTML = '<button class="ytx" aria-label="Close video">✕</button>' +
+      '<div class="ytframe"><iframe src="https://www.youtube-nocookie.com/embed/' + id +
+      '?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>';
+    var cap = document.createElement("div"); cap.className = "ytcap";
+    var tt = document.createElement("b"); tt.textContent = title || "";
+    var go = document.createElement("a"); go.className = "ytgo"; go.href = url; go.target = "_blank";
+    go.rel = "noopener noreferrer"; go.textContent = "Watch on YouTube ↗";
+    cap.appendChild(tt); cap.appendChild(go); box.appendChild(cap); d.appendChild(box);
+    var last = document.activeElement;
+    function close() { d.remove(); document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; if (last && last.focus) last.focus(); }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    d.addEventListener("click", function (e) { if (e.target === d || e.target.closest(".ytx")) close(); });
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(d); document.body.style.overflow = "hidden";
+    d.querySelector(".ytx").focus();
+    return true;
+  }
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest("a.mx-feat, a.mx-v");
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    var b = a.querySelector("b");
+    if (ytModal(a.href, b ? b.textContent : "")) e.preventDefault();
+  });
 })();
 </script><!--/px:js--></div></main>
 <footer class="site"><div class="wrap">
