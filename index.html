@@ -2973,6 +2973,17 @@ h3.qhow{ margin:18px 0 8px }
 .tkpo-sd{font-weight:700;color:#a57c1b;font-size:.85em;margin-right:1px}
 .tkpo-tag{color:#a57c1b;font-weight:700}
 .tcard.tkpo .tstat{color:#a57c1b;font-weight:700}
+/* TICKGO-NOV8 */
+.tcard.tkpo{position:relative;cursor:default}
+.tkgo{position:absolute;inset:0;display:flex;flex-direction:column;z-index:1;
+  opacity:0;pointer-events:none;transition:opacity .12s}
+.tcard.tkpo:hover .tkgo,.tcard.tkpo:focus .tkgo,.tcard.tkpo:has(:focus-visible) .tkgo{opacity:1;pointer-events:auto}
+.tkgo button{flex:1;border:0;margin:0;font:inherit;font-family:var(--f-display);font-size:14px;
+  font-weight:700;letter-spacing:.01em;cursor:pointer;color:var(--ink);
+  background:color-mix(in srgb,var(--surface-2) 97%,transparent)}
+.tkgo button+button{border-top:1px solid var(--line)}
+.tkgo button.tkgo-bk{color:#a57c1b}
+.tkgo button:hover,.tkgo button:focus-visible{background:var(--surface);text-decoration:underline;outline:0}
 @media(max-width:760px){.hpo-hero{grid-template-columns:1fr;padding:20px 16px}.hpo-cls{grid-template-columns:1fr}}
 /* hgs: home follows the game week -- written game stories (Oct 24 2026) */
 .hgs-hero{border-radius:14px;background:linear-gradient(135deg,#0f1a2b 0%,#1b2a44 60%,#3a2a0c 100%);color:#fff;padding:24px 26px 20px;margin-bottom:18px}
@@ -10958,8 +10969,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
       });
       return out;
     })();
-    var POKEYS = {};
+    var POKEYS = {}, TKID = {};
     POTK.forEach(function (p) { POKEYS[p.key] = 1; });
+    TK.forEach(function (g) { TKID[[g.away, g.home].sort().join("|")] = g.id; });
     TK = TK.filter(function (g) { return !POKEYS[[g.away, g.home].sort().join("|")]; });
     if (!wrap || !rail || (!TK.length && !POTK.length)) return;
     function poCard(p) {
@@ -10974,14 +10986,21 @@ nav.topbar ~ main.wrap{margin-top:20px}
              : '<span class="trec">' + (x.w != null ? x.w + "-" + x.l : "") + "</span>") + "</div>";
       }
       var ca = (byName[p.a.team] || {}).c1 || "#1b1b22", cb = (byName[p.b.team] || {}).c1 || "#1b1b22";
-      return '<button class="tcard tkpo" type="button" data-poc="' + p.c + '" aria-label="' +
-        esc(p.c + " playoffs: " + p.a.team + " vs " + p.b.team) + '">' +
+      /* TICKGO-NOV8: hover/tap menu -- read about the game, or the bracket */
+      var rk = f && RECAPBY[recapKey(f)] ? recapKey(f) : "";
+      var gid = !f && TKID[p.key] && byGame[TKID[p.key]] ? TKID[p.key] : "";
+      var go = '<div class="tkgo">' +
+        (rk ? '<button type="button" data-recap="' + esc(rk) + '">Game story</button>'
+            : gid ? '<button type="button" data-game="' + esc(gid) + '">Game preview</button>' : "") +
+        '<button type="button" class="tkgo-bk" data-poc="' + p.c + '">' + esc(p.c) + " bracket</button></div>";
+      return '<div class="tcard tkpo" tabindex="0" role="group" aria-label="' +
+        esc(p.c + " playoffs: " + p.a.team + " vs " + p.b.team) + '">' + go +
         '<div class="tbars"><i style="background:' + esc(ca) + '"></i><i style="background:' + esc(cb) + '"></i></div>' +
         '<div class="tbody"><div class="tmeta"><span class="tstat">' + (f ? "Final" : esc(p.c) + " playoffs") + "</span>" +
         "<span>" + esc(mdy(p.d)) + "</span></div>" +
         pside(p.a, f && f.winner === p.b.team) + pside(p.b, f && f.winner === p.a.team) +
         '<div class="tfoot"><span class="tkpo-tag">' + esc(p.c) + " &middot; " + esc(p.rn) + "</span>" +
-        (!f && tm(p.ko) ? " &middot; " + tm(p.ko) : "") + "</div></div></button>";
+        (!f && tm(p.ko) ? " &middot; " + tm(p.ko) : "") + "</div></div></div>";
     }
 
     // Full school names, not abbreviations -- nobody outside a program knows
