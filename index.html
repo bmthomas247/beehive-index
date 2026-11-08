@@ -1524,6 +1524,74 @@ table.tstab .tsteam > *:first-child{flex:none}
   border-left:3px solid var(--line);padding:14px 16px;font-size:13px;
   line-height:1.65;color:var(--ink-2)}
 
+/* REALIGN-CRI-NOV8 */
+/* ---------- realignment, CRI edition (Nov 8) ---------- */
+.crihead{display:grid;gap:10px}
+.crihead .kick{font-family:var(--f-display);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.crihead h2{font-size:clamp(26px,4.4vw,38px);line-height:1.02;margin:0;text-wrap:balance}
+.crihead .lede{max-width:70ch;margin:0}
+.criw{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:16px 0 4px}
+.criwc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;display:grid;gap:8px}
+.criwc h4{margin:0;font-family:var(--f-display);font-size:13px;letter-spacing:.06em;text-transform:uppercase;display:flex;gap:8px;align-items:center}
+.criwc .prov{font-size:9.5px;letter-spacing:.1em;padding:2px 6px;border:1px solid var(--sodium);color:var(--sodium);border-radius:2px}
+.cribar{display:flex;height:30px;border-radius:2px;overflow:hidden;font-family:var(--f-display);font-size:12.5px;font-weight:700}
+.cribar span{display:flex;align-items:center;padding:0 8px;white-space:nowrap;overflow:hidden}
+.cribar .e{background:var(--steel);color:var(--surface)}
+.cribar .s{background:var(--steel-soft);color:var(--ink)}
+.cribar .r{background:var(--sodium);color:var(--surface)}
+.criwc p{margin:0;font-size:12px;color:var(--ink-3);line-height:1.5}
+.cristats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0}
+.cristat{border-top:3px solid var(--ink);padding-top:6px}
+.cristat b{display:block;font-family:var(--f-display);font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.cristat span{font-size:12px;color:var(--ink-3)}
+.cristat.up{border-color:var(--rise)} .cristat.up b{color:var(--rise)}
+.cristat.dn{border-color:var(--fall)} .cristat.dn b{color:var(--fall)}
+.cristat.cl{border-color:var(--sodium)} .cristat.cl b{color:var(--sodium)}
+.crifieldwrap{overflow-x:auto;margin:6px 0 4px}
+.crifield{position:relative;min-width:680px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.crizones{position:absolute;inset:0 0 34px 0;pointer-events:none}
+.crizone{position:absolute;top:0;bottom:0}
+.crizone:nth-child(odd){background:color-mix(in srgb,var(--steel) 7%,transparent)}
+.cricut{position:absolute;top:0;bottom:0;border-left:2px dashed color-mix(in srgb,var(--ink-3) 70%,transparent)}
+.crilane{position:relative;height:30px;border-top:1px solid var(--line-soft)}
+.crilane:first-child{border-top:0}
+.crilane .ll{position:absolute;left:6px;top:7px;z-index:2;font-family:var(--f-display);font-size:10.5px;letter-spacing:.06em;color:var(--ink-3);background:var(--surface);padding:0 4px;border-radius:2px}
+.cridot{position:absolute;top:9px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--ink-3);border:2px solid var(--surface);z-index:1;cursor:pointer;padding:0}
+.cridot.up{background:var(--rise)} .cridot.down{background:var(--fall)}
+.cridot.close{box-shadow:0 0 0 2px var(--sodium)}
+.cridot:hover,.cridot:focus-visible{transform:scale(1.35);z-index:3;outline:none}
+.criaxis{position:relative;height:34px;border-top:1px solid var(--line)}
+.criaxis span{position:absolute;transform:translateX(-50%);font-family:var(--f-num);font-size:10.5px;color:var(--ink-3);top:18px}
+.criaxis span.c{top:3px;font-family:var(--f-display);font-weight:800;font-size:13px;color:var(--ink)}
+.crikey{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:11.5px;color:var(--ink-3);margin-bottom:14px}
+.crikey i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.crictl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0 12px}
+.crigrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.cricard{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:11px 13px;cursor:pointer;display:grid;gap:7px;min-width:0}
+.cricard.up{border-left-color:var(--rise)} .cricard.down{border-left-color:var(--fall)}
+.cricard .t{display:flex;align-items:center;gap:8px;min-width:0}
+.cricard .t b{flex:1;min-width:0;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crimv{font-family:var(--f-display);font-weight:700;font-size:12.5px;letter-spacing:.04em;padding:3px 8px;border-radius:2px;background:var(--surface-2);color:var(--ink-2);white-space:nowrap}
+.cricard.up .crimv{background:color-mix(in srgb,var(--rise) 15%,transparent);color:var(--rise)}
+.cricard.down .crimv{background:color-mix(in srgb,var(--fall) 15%,transparent);color:var(--fall)}
+.crinums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.crinums div{background:var(--surface-2);border-radius:2px;padding:5px 7px}
+.crinums b{display:block;font-family:var(--f-num);font-size:14px;font-variant-numeric:tabular-nums}
+.crinums span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.criclose{font-size:12px;color:var(--ink-2);padding:6px 8px;border-radius:2px;background:color-mix(in srgb,var(--sodium) 12%,transparent)}
+.criclose strong{color:var(--sodium)}
+.criwhy{font-size:11.5px;color:var(--ink-3);line-height:1.45}
+.critab{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+table.critable{min-width:640px;width:100%}
+table.critable th,table.critable td{padding:7px 11px;white-space:nowrap}
+table.critable thead th{position:static;cursor:default}
+table.critable td.n{font-family:var(--f-num);text-align:right;font-variant-numeric:tabular-nums}
+table.critable tr.up td.p{color:var(--rise);font-weight:700}
+table.critable tr.down td.p{color:var(--fall);font-weight:700}
+table.critable tbody tr{cursor:pointer}
+.crisrc{font-size:12px;color:var(--ink-3);line-height:1.6;display:grid;gap:4px;margin:0;padding-left:18px}
+.crisrc a{color:var(--steel)}
+.crimeth{font-size:12.5px;color:var(--ink-2);line-height:1.6;display:grid;gap:6px;margin:0;padding-left:18px;max-width:78ch}
 /* ---------- rumor mill ---------- */
 .rmgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(310px,1fr))}
 .rmrow{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--sodium);
@@ -9699,88 +9767,133 @@ nav.topbar ~ main.wrap{margin-top:20px}
   });
 
   /* ================= REALIGNMENT ================= */
+  /* REALIGN-CRI-NOV8 */
+  /* Rebuilt on UHSAA's published football CRI (85% enrollment,
+     8% SES, 7% results; provisional) run on USBE's Oct 1 2026 count. See
+     realign.py for the method and claude/Realignment_CRI_Nov_8_2026.md. The
+     score shown is the 93% public data covers; results are not in it, and a
+     school within one results-SD (0.07) of a line is flagged as a close call. */
   var RAD = DATA.realign_dates || [];
-  /* ---- REALIGNMENT -----------------------------------------------------
-     Brandon, Sep 14: its own tab, and "predict who goes where based on the new
-     information we find out each week."
-
-     The honest shape of this page is set by what we can actually see. UHSAA's
-     Composite Realignment Index has three inputs -- enrolment, socioeconomic
-     status and competitive performance -- and we can measure one. So the
-     projection is labelled a performance projection in the first paragraph
-     rather than the footnotes, and the notebook below it is where the other
-     two get filled in by hand, dated and sourced, as the cycle runs. */
   var RJ = DATA.realign || [], RN = DATA.realign_notes || [];
   var RCUT = DATA.realign_cuts || {};
-  function rjn(v) { return v === null || v === undefined ? "\u2014" : v.toLocaleString(); }
-  var rjFilter = "move";
+  var RMETA = RCUT._meta || { weights: { football: [85, 8, 7], general: [77, 13, 10] },
+                              sizes: {}, sources: [] };
+  var CORD = ["6A", "5A", "4A", "3A", "2A", "1A"];
   var KINDNAME = { enrollment: "Enrollment", appeal: "Appeal", region: "Region",
                    newschool: "New school", rule: "Rule", note: "Note" };
-  function rjCard(r) {
-    var moved = r.direction !== "hold";
-    var sd = r.size_direction;
-    // The two signals are shown as two lines, never as one blended verdict.
-    // Enrollment is what UHSAA starts from; results are what the CRI adds.
-    var sizeLine = r.size_cls
-      ? '<div class="rjsize' + (r.agree ? " agree" : "") + '">' +
-        '<span class="lab">Size</span>' +
-        '<b>' + (sd === "hold" ? "stays " + esc(r.cls)
-                               : esc(r.cls) + " &rarr; " + esc(r.size_cls)) + "</b>" +
-        '<span class="det">' + rjn(r.enrol_proj) + " juniors &amp; seniors projected for Oct 2026" +
-        (r.enrol_trend ? " &middot; " + (r.enrol_trend > 0 ? "+" : "") + r.enrol_trend +
-                         " on the cycle" : "") +
-        " &middot; #" + r.size_rank + " statewide</span></div>"
-      : '<div class="rjsize none"><span class="lab">Size</span><b>not on file</b>' +
-        '<span class="det">private school &mdash; UHSAA collects this figure directly</span></div>';
-    return '<div class="rjrow ' + esc(r.direction) + (r.agree ? " agree" : "") +
-      '" data-t="' + esc(r.school) + '">' +
-      '<div class="rjtop">' + logo(r.school, "sm") + "<b>" + esc(r.school) + "</b>" +
-      (r.agree ? '<span class="rjagree">both agree</span>' : "") +
-      '<span class="rjmove">' + (moved ? esc(r.cls) + " &rarr; " + esc(r.to)
-                                       : "stays " + esc(r.cls)) + "</span></div>" +
-      sizeLine +
-      '<div class="rjwhy">' + esc(r.why || "") + "</div>" +
-      '<div class="rjmeta"><span class="rjconf">' + esc(r.confidence) + "</span>" +
-      "<span>" + esc(r.region || "") + "</span>" +
-      '<span class="z">' + (r.z > 0 ? "+" : "") + r.z.toFixed(2) + "&sigma;</span></div></div>";
+  var rjFilter = "move", rjClass = "all";
+  function crif(x) { return (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(2); }
+  function crin(v) { return v === null || v === undefined ? "—" : v.toLocaleString(); }
+  function crimove(r) { return r.direction === "hold" ? "stays " + esc(r.cls)
+                                                       : esc(r.cls) + " &rarr; " + esc(r.proj); }
+  function criCard(r) {
+    var nums = r.held
+      ? '<div class="criwhy">Private school &mdash; files no USBE count, so it is held in ' +
+        esc(r.cls) + ' and not scored.</div>'
+      : '<div class="crinums"><div><b>' + crin(r.size) + '</b><span>Gr 10+11</span></div>' +
+        '<div><b>' + (r.edp * 100).toFixed(1) + '%</b><span>Econ. disadv.</span></div>' +
+        '<div><b>' + crif(r.cri) + '</b><span>Score &middot; #' + r.cri_rank + '</span></div></div>';
+    var close = r.bubble
+      ? '<div class="criclose"><strong>Close call.</strong> Within 0.07 of a class line, so ' +
+        'on-field results (7% of the index) could decide it.' +
+        (r.lean && r.lean !== r.proj ? ' Our own three-season results read would put it in <strong>' +
+                                       esc(r.lean) + '</strong>.' : '') + '</div>'
+      : "";
+    return '<div class="cricard ' + esc(r.direction) + '" data-t="' + esc(r.school) + '">' +
+      '<div class="t">' + logo(r.school, "sm") + "<b>" + esc(r.school) + "</b>" +
+      '<span class="crimv">' + crimove(r) + "</span></div>" + nums + close +
+      (r.why ? '<div class="criwhy">Results (not in the score): ' + esc(r.why) + "</div>" : "") +
+      "</div>";
+  }
+  function criField() {
+    var sc = RJ.filter(function (r) { return r.cri !== null && r.cri !== undefined; });
+    if (!sc.length) return "";
+    var lo = Math.min.apply(null, sc.map(function (r) { return r.cri; })) - 0.15;
+    var hi = Math.max.apply(null, sc.map(function (r) { return r.cri; })) + 0.15;
+    function X(v) { return ((v - lo) / (hi - lo)) * 100; }
+    var cuts = CORD.slice(0, 5).map(function (c) { return RCUT[c]; })
+                   .filter(function (v) { return typeof v === "number"; });
+    var b = [hi].concat(cuts).concat([lo]), zones = "", ax = "";
+    for (var k = 0; k < b.length - 1; k++) {
+      zones += '<div class="crizone" style="left:' + X(b[k + 1]) + '%;width:' + (X(b[k]) - X(b[k + 1])) + '%"></div>';
+      ax += '<span class="c" style="left:' + ((X(b[k]) + X(b[k + 1])) / 2) + '%">' + CORD[k] + "</span>";
+    }
+    zones += cuts.map(function (c) { return '<div class="cricut" style="left:' + X(c) + '%"></div>'; }).join("");
+    for (var t = Math.ceil(lo); t <= Math.floor(hi); t++)
+      ax += '<span style="left:' + X(t) + '%">' + (t > 0 ? "+" : t < 0 ? "−" : "") + Math.abs(t) + "</span>";
+    var lanes = CORD.map(function (c) {
+      return '<div class="crilane"><span class="ll">now ' + c + "</span>" +
+        sc.filter(function (r) { return r.cls === c; }).map(function (r) {
+          return '<button class="cridot ' + esc(r.direction) + (r.bubble ? " close" : "") +
+            '" data-t="' + esc(r.school) + '" style="left:' + X(r.cri) + '%" title="' +
+            esc(r.school) + ": " + esc(r.cls) + " to " + esc(r.proj) + ", score " + crif(r.cri) +
+            '" aria-label="' + esc(r.school) + '"></button>';
+        }).join("") + "</div>";
+    }).join("");
+    return '<div class="crifieldwrap"><div class="crifield"><div class="crizones">' + zones +
+      "</div>" + lanes + '<div class="criaxis">' + ax + "</div></div></div>" +
+      '<div class="crikey"><span><i style="background:var(--rise)"></i>Projected up</span>' +
+      '<span><i style="background:var(--fall)"></i>Projected down</span>' +
+      '<span><i style="background:var(--ink-3)"></i>Stays</span>' +
+      '<span><i style="background:transparent;box-shadow:0 0 0 2px var(--sodium)"></i>Close call</span>' +
+      "<span>Rows = class today. Shaded bands = projected class. Tap a dot for the team.</span></div>";
   }
   function drawRealign() {
     var up = RJ.filter(function (r) { return r.direction === "up"; });
     var dn = RJ.filter(function (r) { return r.direction === "down"; });
-    var hold = RJ.filter(function (r) { return r.direction === "hold"; });
-    var watch = hold.filter(function (r) { return r.confidence === "watch"; });
-    var sup = RJ.filter(function (r) { return r.size_direction === "up"; });
-    var sdn = RJ.filter(function (r) { return r.size_direction === "down"; });
-    var agree = RJ.filter(function (r) { return r.agree; });
-    var show = rjFilter === "up" ? up : rjFilter === "down" ? dn
-             : rjFilter === "watch" ? watch
-             : rjFilter === "size" ? sup.concat(sdn)
-             : rjFilter === "agree" ? agree : up.concat(dn);
+    var cl = RJ.filter(function (r) { return r.bubble; });
+    var fw = RMETA.weights.football, gw = RMETA.weights.general;
+    var n6 = RJ.filter(function (r) { return r.cls === "6A"; }).length;
+    var pool = rjFilter === "close" ? cl : rjFilter === "all" ? RJ.slice() : up.concat(dn);
+    if (rjClass !== "all") pool = pool.filter(function (r) { return r.cls === rjClass || r.proj === rjClass; });
+    pool.sort(function (a, b) { return (b.cri === null ? -9 : b.cri) - (a.cri === null ? -9 : a.cri); });
+    var sizes = CORD.map(function (c) { return c + " " + (RMETA.sizes[c] || "?"); }).join(" &middot; ");
 
     document.getElementById("v-realign").innerHTML =
-      '<div class="panel" style="margin-bottom:14px"><h2>Realignment</h2>' +
-      '<p class="lede">UHSAA has approved a <strong>Composite Realignment Index</strong> ' +
-      'for the 2027&ndash;29 cycle. Classification is no longer enrollment alone: the CRI ' +
-      'combines <strong>enrollment</strong>, <strong>socioeconomic status</strong> and ' +
-      '<strong>competitive performance</strong>, and football is aligned separately from ' +
-      'every other sport. It is the biggest procedural change to Utah realignment in years ' +
-      'and it applies to all 162 member schools.</p>' +
-      '<p class="notbet"><strong>This page now measures two of those three, and keeps them ' +
-      'apart.</strong> <strong>Size</strong> comes from the Utah State Board of Education&rsquo;s ' +
-      'October 1 head count &mdash; grades 11 and 12, which is what UHSAA counts. ' +
-      '<strong>Results</strong> are three seasons of record against the middle of a ' +
-      'program&rsquo;s own classification. They are not added together: UHSAA has not ' +
-      'published how it weights them, so a single blended number here would be a number we ' +
-      'invented. Socioeconomic status we still cannot see.</p>' +
-      '<p class="notbet"><strong>The size projection is not a trend line.</strong> The juniors ' +
-      'and seniors UHSAA counts on October 1, 2026 are the sophomores and juniors sitting in ' +
-      'these buildings right now &mdash; the same kids, one year older. That makes the ' +
-      'enrollment half of the next alignment close to knowable a year early. What it cannot ' +
-      'know: a school that <em>petitions up</em>, which is why Corner Canyon plays 6A on a 5A ' +
-      'enrollment, and the board&rsquo;s final say over geography and appeals.</p>' +
-      '<p class="notbet">Anything else we learn &mdash; an appeal, a region proposal, a district ' +
-      'enrollment release &mdash; goes in the notebook at the bottom of this page as we learn ' +
-      'it, with who said it.</p></div>' +
+      '<div class="panel" style="margin-bottom:14px"><div class="crihead">' +
+      '<span class="kick">UHSAA 2027&ndash;29 &middot; football alignment &middot; first placements Nov 19</span>' +
+      "<h2>Where every program lands under the new index</h2>" +
+      '<p class="lede">UHSAA now places schools with a <strong>Composite Realignment Index</strong>, ' +
+      'and it has published the weights. Football is <strong>' + fw[0] + '% school size</strong>, ' +
+      fw[1] + '% economic need and ' + fw[2] + '% results. We ran that formula on the Utah State ' +
+      'Board of Education&rsquo;s October 1, 2026 count &mdash; sophomores plus juniors, the grades ' +
+      'UHSAA counts this cycle &mdash; to project who moves. These are our projections; the Board ' +
+      'sets class sizes and rules on appeals.</p></div>' +
+      '<div class="criw">' +
+      '<div class="criwc"><h4>Football index <span class="prov">Provisional</span></h4>' +
+      '<div class="cribar"><span class="e" style="width:' + fw[0] + '%">' + fw[0] + '% ENROLLMENT</span>' +
+      '<span class="s" style="width:' + fw[1] + '%">' + fw[1] + '</span><span class="r" style="width:' + fw[2] + '%">' + fw[2] + "</span></div>" +
+      "<p>Its own index for the football classes, 8-player included.</p></div>" +
+      '<div class="criwc"><h4>Every other sport</h4>' +
+      '<div class="cribar"><span class="e" style="width:' + gw[0] + '%">' + gw[0] + '% ENROLLMENT</span>' +
+      '<span class="s" style="width:' + gw[1] + '%">' + gw[1] + '%</span><span class="r" style="width:' + gw[2] + '%">' + gw[2] + "</span></div>" +
+      "<p>Results from 25 sports, averaged over three seasons. Football never enters it.</p></div></div>" +
+      '<div class="crikey"><span><i style="background:var(--steel);border-radius:2px"></i>Enrollment: grades 10+11, log-scaled</span>' +
+      '<span><i style="background:var(--steel-soft);border-radius:2px"></i>Economic need: share of K&ndash;12 economically disadvantaged (more need, lower score)</span>' +
+      '<span><i style="background:var(--sodium);border-radius:2px"></i>Results: against a school&rsquo;s own class</span></div></div>' +
+
+      '<div class="cristats">' +
+      '<div class="cristat up"><b>' + up.length + "</b><span>projected to move up</span></div>" +
+      '<div class="cristat dn"><b>' + dn.length + "</b><span>projected to move down</span></div>" +
+      '<div class="cristat cl"><b>' + cl.length + "</b><span>close calls results could decide</span></div>" +
+      '<div class="cristat"><b>' + n6 + "&rarr;" + (RMETA.sizes["6A"] || "?") + "</b><span>6A schools, now vs projected</span></div></div>" +
+
+      '<h3 class="divhead" style="margin-top:8px">The field<span>every program on one scale</span></h3>' +
+      criField() +
+
+      '<h3 class="divhead" style="margin-top:22px">Projected moves<span>' + pool.length + ' shown &middot; class sizes ' + sizes + "</span></h3>" +
+      '<div class="crictl"><div class="seg" id="rjseg">' +
+      [["move", "Moving"], ["close", "Close calls"], ["all", "All"]].map(function (o) {
+        return '<button data-f="' + o[0] + '" aria-pressed="' + (rjFilter === o[0]) + '">' + o[1] + "</button>"; }).join("") +
+      '</div><div class="seg" id="rjcls">' +
+      ["all"].concat(CORD).map(function (c) {
+        return '<button data-c="' + c + '" aria-pressed="' + (rjClass === c) + '">' + (c === "all" ? "Every class" : c) + "</button>"; }).join("") +
+      "</div></div>" +
+      (pool.length ? '<div class="crigrid">' + pool.map(criCard).join("") + "</div>"
+                   : '<p class="lede">Nobody in this cut.</p>') +
+      '<p class="lede" style="margin-top:14px">Moving down is how a school with 40 players stops ' +
+      'playing schools with 90, and moving up is what happens to a program that has outgrown its ' +
+      'bracket. A school can still apply to play up in football before regions are drawn on Dec 1.</p>' +
 
       '<h3 class="divhead" style="margin-top:26px">The calendar<span>placement in November, final in December, played in 2027</span></h3>' +
       '<div class="rtl">' + RAD.map(function (d) {
@@ -9788,57 +9901,64 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '</div><div class="rtlw">' + esc(d[1]) + "</div></div>";
       }).join("") + "</div>" +
 
-      '<h3 class="divhead" style="margin-top:26px">Projected: where each program is heading' +
-      '<span>' + show.length + ' shown &middot; click any card for the full team</span></h3>' +
-      "<p class='notbet'><strong>These are projections, not UHSAA decisions.</strong> They come from "+
-      "our enrollment and results model. UHSAA sets the real alignment (first consideration "+
-      "November 19, final in December).</p>" +
-      '<div class="controls"><div class="seg" id="rjseg">' +
-      [["move", "Results"], ["size", "Size"], ["agree", "Both agree"],
-       ["up", "Up"], ["down", "Down"], ["watch", "Watching"]]
-        .map(function (o) {
-          return '<button data-f="' + o[0] + '" aria-pressed="' + (rjFilter === o[0]) +
-            '">' + o[1] + "</button>"; }).join("") + "</div></div>" +
-      (show.length
-        ? '<div class="rjgrid">' + show.map(rjCard).join("") + "</div>"
-        : '<p class="lede">Nobody in this cut.</p>') +
-      '<p class="lede" style="margin-top:14px">A program appearing here is not being ' +
-      'criticised. Moving down is how a school with 40 players stops playing schools with ' +
-      '90, and moving up is what happens to a program that has outgrown its bracket. Both ' +
-      'are the system working &mdash; the CRI exists because enrollment alone was ' +
-      'producing neither.</p>' +
-
-      '<h3 class="divhead" style="margin-top:30px">The notebook' +
-      '<span>' + RN.length + (RN.length === 1 ? " entry" : " entries") +
-      ' &middot; what we have learned this cycle</span></h3>' +
+      '<h3 class="divhead" style="margin-top:26px">The notebook<span>' + RN.length +
+      (RN.length === 1 ? " entry" : " entries") + " &middot; what we have learned this cycle</span></h3>" +
       (RN.length
         ? RN.map(function (n) {
-            return '<div class="rnote">' +
-              '<div class="rnh"><span class="kind">' +
+            return '<div class="rnote"><div class="rnh"><span class="kind">' +
               esc(KINDNAME[n.kind] || n.kind) + "</span>" +
               (n.school ? logo(n.school, "sm") + "<b>" + esc(n.school) + "</b>" : "") +
-              (n.enrollment ? '<span class="rjmove">' + n.enrollment.toLocaleString() +
-                              " students</span>" : "") +
               "<time>" + esc(n.d ? mdy(n.d) : "") + "</time></div>" +
               "<p>" + esc(n.head) + "</p>" +
-              (n.detail ? '<p style="color:var(--ink-3);font-size:12.5px">' +
-                          esc(n.detail) + "</p>" : "") +
+              (n.detail ? '<p style="color:var(--ink-3);font-size:12.5px">' + esc(n.detail) + "</p>" : "") +
               '<div class="rnsrc">Reported by ' +
-              (n.u ? '<a href="' + esc(n.u) + '" target="_blank" rel="noopener noreferrer">' +
-                     esc(n.src) + "</a>" : "<strong>" + esc(n.src) + "</strong>") +
-              "</div></div>";
+              (n.u ? '<a href="' + esc(n.u) + '" target="_blank" rel="noopener noreferrer">' + esc(n.src) + "</a>"
+                   : "<strong>" + esc(n.src) + "</strong>") + "</div></div>";
           }).join("")
-        : '<div class="rempty"><strong>Nothing on file yet &mdash; placement starts ' +
-          'November 19.</strong><br>Every enrollment figure, appeal and region proposal ' +
-          'lands here as it is published, with who reported it. An enrollment number in ' +
-          'the notebook feeds the projection above, which is how this page gets less ' +
-          'speculative every week between now and December. Heard something? ' +
-          '<a href="#" data-go="send">Send it in</a>.</div>');
+        : '<div class="rempty"><strong>Nothing on file yet.</strong> Every appeal and region ' +
+          'proposal lands here as it is published, with who reported it. ' +
+          '<a href="#" data-go="send">Send it in</a>.</div>') +
+
+      '<h3 class="divhead" style="margin-top:26px">Every program<span>ranked by score</span></h3>' +
+      '<div class="critab"><table class="critable"><thead><tr><th>#</th><th>School</th><th>Now</th>' +
+      '<th>Projected</th><th>Gr 10+11</th><th>Econ. disadv.</th><th>Score</th><th></th></tr></thead><tbody>' +
+      RJ.map(function (r) {
+        return '<tr class="' + esc(r.direction) + '" data-t="' + esc(r.school) + '"><td class="n">' +
+          (r.cri_rank || "&mdash;") + "</td><td>" + esc(r.school) + "</td><td>" + esc(r.cls) +
+          '</td><td class="p">' + esc(r.proj) + (r.direction === "up" ? " &uarr;" : r.direction === "down" ? " &darr;" : "") +
+          '</td><td class="n">' + crin(r.size) + '</td><td class="n">' +
+          (r.edp === null || r.edp === undefined ? "&mdash;" : (r.edp * 100).toFixed(1) + "%") +
+          '</td><td class="n">' + (r.cri === null || r.cri === undefined ? "&mdash;" : crif(r.cri)) +
+          "</td><td>" + (r.held ? "Private, held" : r.bubble ? "Close call" : "") + "</td></tr>";
+      }).join("") + "</tbody></table></div>" +
+
+      '<h3 class="divhead" style="margin-top:26px">How we built it</h3>' +
+      '<ul class="crimeth">' +
+      "<li><strong>Score</strong> = 0.85 &times; Z(log of grade 10 + 11) + 0.08 &times; Z(economically disadvantaged share, flipped), " +
+      "with Z-scores across the " + (RMETA.zgroup || "") + " football schools that have USBE data, 8-player included. " +
+      "That is the 93% of UHSAA&rsquo;s football index public data covers.</li>" +
+      "<li><strong>Results</strong> (7%) use UHSAA&rsquo;s own MaxPreps-plus-RPI ranking, which it has not released. " +
+      "Every school is treated as average for its class. A school one standard deviation above or below its class moves 0.07, " +
+      "so anything that close to a line is a close call.</li>" +
+      "<li><strong>Class sizes</strong> are the Board&rsquo;s call. We used today&rsquo;s football class sizes with 6A raised to " +
+      "the 21-school minimum: " + sizes + ".</li>" +
+      "<li><strong>Private schools</strong> (Juan Diego, Judge Memorial, Layton Christian) file no USBE count and are held in place.</li>" +
+      "<li>Self-contained special-education students are excluded by UHSAA but reported by USBE only as a school total, " +
+      "so we could not remove them by grade.</li></ul>" +
+      '<h3 class="divhead" style="margin-top:20px">Sources</h3><ol class="crisrc">' +
+      (RMETA.sources || []).map(function (s) {
+        return '<li><a href="' + esc(s[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(s[0]) + "</a></li>";
+      }).join("") + "</ol>";
 
     var seg = document.getElementById("rjseg");
     if (seg) seg.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
       rjFilter = b.dataset.f; drawRealign();
+    });
+    var cs = document.getElementById("rjcls");
+    if (cs) cs.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      rjClass = b.dataset.c; drawRealign();
     });
   }
   drawRealign();
