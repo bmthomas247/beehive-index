@@ -390,6 +390,18 @@ table tr:hover td{background:var(--surface-2)}
 .hx-more a{font-size:12px;color:var(--ink-2);text-decoration:none;display:flex;justify-content:space-between;gap:8px}
 .hx-more a:hover{color:#FF6300}.hx-more small{color:var(--ink-3)}
 .hx-p{margin-top:auto;padding-top:8px;font-size:12.5px;font-weight:700;color:#FF6300;text-decoration:none}
+.hx[hidden]{display:none!important}
+.hx-filters{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:6px 0 14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.hx-pos{display:flex;flex-wrap:wrap;gap:6px}
+.hx-pos button{font:inherit;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.hx-pos button:hover{border-color:#FF6300;color:#FF6300}
+.hx-pos button[aria-pressed="true"]{background:#FF6300;border-color:#FF6300;color:#fff}
+.hx-sel{display:flex;flex-wrap:wrap;gap:10px}
+.hx-sel label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.hx-sel select{font:inherit;font-size:13px;font-weight:600;text-transform:none;letter-spacing:0;padding:6px 10px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.hx-count{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--ink-3)}
+.hx-empty{padding:30px;text-align:center;color:var(--ink-3);background:var(--surface);border:1px dashed var(--line);border-radius:12px}
+@media(max-width:760px){.hx-count{margin-left:0;flex-basis:100%}}
 @media(max-width:760px){.rx-board{grid-template-columns:1fr}.rx-case{gap:14px}.rx-cnt b{font-size:56px}}
 @media(max-width:640px){.px-hero{grid-template-columns:auto 1fr;padding:18px}.px-rec{grid-column:1/-1;text-align:left}
  .px-rec b{font-size:40px;display:inline}.px-rec span{margin-left:8px}.px-crest{width:64px;height:64px;padding:5px}.px-hero h1{font-size:24px}}
@@ -554,6 +566,46 @@ night games finish.</p>
   });
   window.addEventListener("popstate", function () { show(fromHash(), true); });
   show(fromHash(), !!location.hash);
+  // ---- Hudl filters: position, class, date posted, sort (Brandon, Nov 8) ----
+  (function () {
+    var f = document.getElementById("hxf"), grid = document.getElementById("hxgrid");
+    if (!f || !grid) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(".hx"));
+    var st = { pos: "", yr: "", when: "", sort: "new" };
+    var today = new Date();
+    function age(d) { return d ? (today - new Date(d + "T12:00:00Z")) / 864e5 : 1e9; }
+    function apply() {
+      var shown = 0;
+      cards.forEach(function (c) {
+        var ok = (!st.pos || (" " + c.dataset.pos + " ").indexOf(" " + st.pos + " ") >= 0) &&
+                 (!st.yr || c.dataset.yr === st.yr);
+        if (ok && st.when) {
+          var p = c.dataset.posted || "";
+          if (st.when === "season") ok = p >= "2026-07-01";
+          else if (st.when === "old") ok = !!p && p < "2026-07-01";
+          else ok = age(p) <= +st.when;
+        }
+        c.hidden = !ok; if (ok) shown++;
+      });
+      cards.slice().sort(function (a, b) {
+        return st.sort === "views" ? (+b.dataset.views - +a.dataset.views)
+                                   : (b.dataset.posted || "").localeCompare(a.dataset.posted || "");
+      }).forEach(function (c) { grid.appendChild(c); });
+      document.getElementById("hxcount").textContent = shown + " of " + cards.length + " players";
+      document.getElementById("hxempty").hidden = shown > 0;
+    }
+    f.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-hf]"); if (!b) return;
+      st.pos = b.dataset.v;
+      f.querySelectorAll("button[data-hf]").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      apply();
+    });
+    f.addEventListener("change", function (e) {
+      var k = e.target.getAttribute("data-hf"); if (!k) return;
+      st[k] = e.target.value; apply();
+    });
+    apply();
+  })();
   // ---- YouTube clips play in a pop-up on our page (Brandon, Nov 8), same player as the
   // front page (patch_ytmodal_oct11). Embedded plays count for the channel; "Watch on
   // YouTube" stays in the pop-up for clips that block embedding. Hudl reels still open on Hudl.
