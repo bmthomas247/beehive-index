@@ -1730,6 +1730,64 @@ table.tstab .tsteam > *:first-child{flex:none}
   text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-left:7px;vertical-align:1px}
 .tagline.rep{background:color-mix(in srgb,var(--rise) 15%,transparent);color:var(--rise)}
 .tagline.inf{background:color-mix(in srgb,var(--sodium) 17%,transparent);color:var(--sodium)}
+/* ---------- carousel war room (Nov 8 2026) ---------- */
+.cw-ban{position:relative;overflow:hidden;background:linear-gradient(120deg,#0B1F3A 0%,#14325C 55%,#0B1F3A 100%);
+  color:#fff;padding:22px 22px 18px;border-radius:4px;margin-bottom:16px}
+.cw-ban::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 38px,rgba(255,255,255,.035) 38px 76px);pointer-events:none}
+.cw-kick{font-family:var(--f-display);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:#FFC64B}
+.cw-ban h2{font-family:var(--f-display);font-size:34px;line-height:1;font-weight:800;letter-spacing:-.01em;margin:6px 0 4px;color:#fff;text-transform:uppercase}
+.cw-ban p{margin:0;font-size:13.5px;color:#C9D6E6;max-width:640px}
+.cw-ctr{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1}
+.cw-ctr div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:4px;padding:8px 14px;min-width:96px}
+.cw-ctr b{display:block;font-family:var(--f-display);font-size:28px;line-height:1;font-weight:800}
+.cw-ctr span{font-family:var(--f-display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#C9D6E6}
+.cw-ctr .o b{color:#FF6A56}.cw-ctr .h b{color:#FFC64B}
+.cw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:22px}
+.cw-job{position:relative;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:4px;overflow:hidden;
+  transition:transform .15s ease,box-shadow .15s ease;cursor:pointer}
+.cw-job:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.18)}
+.cw-top{position:relative;display:flex;gap:14px;align-items:center;padding:16px 108px 14px 16px;color:#fff}
+.cw-top .crest{width:60px;height:60px;background:#fff;border-radius:50%;padding:4px;flex:none}
+.cw-top .swatch{width:60px;height:60px;border-radius:50%;flex:none;border:3px solid #fff}
+.cw-nm{font-family:var(--f-display);font-size:22px;font-weight:800;line-height:1.02;text-transform:uppercase;text-shadow:0 1px 2px rgba(0,0,0,.35)}
+.cw-sub{font-size:12px;opacity:.88;margin-top:3px}
+.cw-pill{position:absolute;top:12px;right:12px;font-family:var(--f-display);font-size:10.5px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;padding:4px 9px 4px 8px;border-radius:20px;display:flex;align-items:center;gap:6px}
+.cw-pill.open{background:#FF3B30;color:#fff}
+.cw-pill.hearing{background:#FFC64B;color:#1A1300}
+.cw-pill.filled{background:#1F7A52;color:#fff}
+.cw-pill i{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+.cw-pill.open i{animation:cwpulse 1.3s ease-in-out infinite}
+@keyframes cwpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(1.6)}}
+@media (prefers-reduced-motion:reduce){.cw-pill.open i{animation:none}.cw-job{transition:none}}
+.cw-body{padding:13px 16px 15px}
+.cw-hl{font-family:var(--f-display);font-size:17px;font-weight:700;line-height:1.2}
+.cw-dt{font-size:13px;color:var(--ink-2);margin-top:4px;line-height:1.45}
+.cw-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);margin-top:12px}
+.cw-facts div{background:var(--surface);padding:7px 8px;text-align:center}
+.cw-facts b{display:block;font-family:var(--f-display);font-size:16px;font-weight:700}
+.cw-facts span{font-family:var(--f-display);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+.cw-src{font-size:11.5px;color:var(--ink-3);margin-top:10px}
+.cw-src.unc{color:var(--sodium);font-weight:600}
+.cw-job.hearing{border:2px dashed var(--sodium)}
+.cw-job.hearing .cw-top{filter:saturate(.75)}
+.cw-next{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:26px}
+.cw-next h3{font-family:var(--f-display);font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px}
+.cw-hr{display:grid;grid-template-columns:24px 1fr 120px 34px;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line-soft);cursor:pointer;font-size:13.5px}
+.cw-hr:first-of-type{border-top:0}
+.cw-hr .r{font-family:var(--f-display);font-weight:800;color:var(--ink-3)}
+.cw-hr small{color:var(--ink-3)}
+.cw-bar{height:8px;border-radius:4px;background:var(--surface-2);overflow:hidden}
+.cw-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#E8A33D,#FF3B30)}
+.cw-hr .n{font-family:var(--f-num);font-weight:700;text-align:right}
+.seat .jt{display:inline-block;font-family:var(--f-display);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:2px 7px;border-radius:10px;margin-left:8px;vertical-align:2px}
+.seat .jt.open{background:#FF3B30;color:#fff}
+.seat .jt.hearing{background:#FFC64B;color:#1A1300}
+.nl-it.ours .nl-t{font-weight:700}
+.nl-own{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#FF3B30;color:#fff;
+  font-family:var(--f-display);font-size:11px;font-weight:800}
+@media (max-width:660px){.cw-ban h2{font-size:26px}.cw-grid{grid-template-columns:1fr}.cw-hr{grid-template-columns:22px 1fr 70px 30px}}
 
 /* ---------- quarter profile ---------- */
 .qgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
@@ -8093,7 +8151,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<aside class="frail">' +
       '<div class="panel rpanel nlist"><h2>Latest News</h2>' +
       '<p class="lede">Links go to the original story &mdash; this page does not reproduce ' +
-      "anyone else&rsquo;s writing.</p>" + newsHtml + "</div>" +
+      "anyone else&rsquo;s writing.</p>" + (DATA.openings || []).filter(function (o) { return o.status !== "hearing"; }).map(function (o) { return '<div class="nl-it ours" data-go="caro" style="cursor:pointer">' + '<span class="nl-ic">' + logo(o.school, "sm") + '</span><div>' + '<span class="nl-t">' + esc((o.status === "filled" ? "Filled: " : "Coaching change: ") + o.school + " " + "\u2014 " + o.headline) + '</span>' + '<span class="nl-src">UHSFB Carousel &middot; ' + esc(o.source) + ' &middot; ' + esc(o.date) + '</span></div></div>'; }).join("") + newsHtml + "</div>" +
       buzzBlock(null, 6) +
       '<div class="panel rpanel"><h2>Top 10</h2>' +
       '<p class="lede">' + (inPO ? "Through the " + lastDay + " playoff games" : "Through Week " + W) + ". Opponent-adjusted and blowout-capped.</p>" +
@@ -8110,6 +8168,76 @@ nav.topbar ~ main.wrap{margin-top:20px}
       "rosters &mdash; not just the ones somebody already noticed. A recruiting service only carries the " +
       "players someone has already found. A roster carries everybody. Free, and always will be.</p></div>" +
       "</aside></div>";
+  }
+
+  /* ================= CAROUSEL WAR ROOM (Nov 8 2026) =================
+     Brandon: "make the carousel page fun and exciting". Driven by
+     data/carousel_openings.csv via DATA.openings. open/filled are sourced;
+     hearing is published with an Unconfirmed label, never as fact. */
+  var OPEN = DATA.openings || [];
+  var JOBTAG = {};
+  OPEN.forEach(function (o) { if (!JOBTAG[o.school]) JOBTAG[o.school] = o.status; });
+  function jobTag(s) {
+    var st = JOBTAG[s];
+    if (st === "open") return '<span class="jt open">Job open</span>';
+    if (st === "hearing") return '<span class="jt hearing">Hearing &middot; unconfirmed</span>';
+    return "";
+  }
+  function cwDate(d) {
+    var m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var p = String(d || "").split("-");
+    return p.length === 3 ? m[+p[1] - 1] + " " + (+p[2]) : esc(d);
+  }
+  function caroWar() {
+    var nOpen = OPEN.filter(function (o) { return o.status === "open"; }).length,
+        nHear = OPEN.filter(function (o) { return o.status === "hearing"; }).length,
+        nFill = OPEN.filter(function (o) { return o.status === "filled"; }).length;
+    var cards = OPEN.map(function (o) {
+      var t = byName[o.school] || {};
+      var c1 = t.c1 || "#14325C", c2 = t.c2 || c1;
+      var pill = o.status === "open" ? "<i></i>Open" : o.status === "hearing" ? "<i></i>Hearing" : "Filled";
+      // The coordinators, minus the outgoing coach himself (several head coaches call their own plays).
+      var outLast = String(o.coach_out || "").split(" ").slice(-1)[0];
+      var staff = [["OC", t.oc], ["DC", t.dc]].filter(function (x) {
+        return x[1] && (!outLast || String(x[1]).split(" ").slice(-1)[0] !== outLast);
+      }).map(function (x) { return x[0] + " " + esc(x[1]); }).join(" &middot; ");
+      return '<div class="cw-job ' + o.status + '" data-t="' + esc(o.school) + '">' +
+        '<div class="cw-top" style="background:linear-gradient(135deg,' + esc(c1) + " 0%," + esc(c1) + " 62%," + esc(c2) + ' 100%)">' +
+        logo(o.school, "xl") +
+        '<div><div class="cw-nm">' + esc(o.school) + (t.mascot ? " " + esc(t.mascot) : "") + "</div>" +
+        '<div class="cw-sub">' + [t.cls, t.region, t.city].filter(Boolean).map(esc).join(" &middot; ") + "</div></div>" +
+        '<span class="cw-pill ' + o.status + '">' + pill + "</span></div>" +
+        '<div class="cw-body"><div class="cw-hl">' + esc(o.headline) + "</div>" +
+        (o.detail ? '<div class="cw-dt">' + esc(o.detail) + "</div>" : "") +
+        '<div class="cw-facts">' +
+          "<div><b>" + (t.w != null ? t.w + "&ndash;" + t.l : "&mdash;") + "</b><span>2026 record</span></div>" +
+          "<div><b>" + esc(t.hired || "&mdash;") + "</b><span>" + (o.coach_out ? esc(o.coach_out.split(" ").slice(-1)[0]) + " hired" : "Hired") + "</span></div>" +
+          "<div><b>" + esc(t.cls || "") + "</b><span>Class</span></div>" +
+        "</div>" +
+        (staff && o.status === "open" ? '<div class="cw-dt" style="margin-top:9px"><strong>In the building:</strong> ' + staff + "</div>" : "") +
+        (o.confirmed
+          ? '<div class="cw-src">' + esc(o.source) + " &middot; " + cwDate(o.date) + "</div>"
+          : '<div class="cw-src unc">Unconfirmed &middot; heard ' + cwDate(o.date) + "</div>") +
+        "</div></div>";
+    }).join("");
+    var nextUp = (HOT || []).filter(function (h) { return !JOBTAG[h.school]; }).slice(0, 5).map(function (h, i) {
+      return '<div class="cw-hr" data-t="' + esc(h.school) + '"><span class="r">' + (i + 1) + "</span>" +
+        "<div><strong>" + esc(h.school) + "</strong> <small>" + esc(h.cls) + " &middot; " + esc(h.coach) + " &middot; " + esc(h.cur) + "</small></div>" +
+        '<div class="cw-bar"><i style="width:' + Math.max(4, Math.min(100, h.heat)).toFixed(0) + '%"></i></div>' +
+        '<span class="n">' + h.heat.toFixed(0) + "</span></div>";
+    }).join("");
+    return '<div class="cw-ban"><div class="cw-kick">Coaches &middot; 2027 offseason</div>' +
+      "<h2>The Coaching Carousel</h2>" +
+      "<p>Every Utah head-coaching job that opens, the minute we can stand behind it. Confirmed openings are marked " +
+      "<strong>Open</strong>. Anything we are only hearing is marked <strong>Hearing</strong> and stays labelled unconfirmed until it is.</p>" +
+      '<div class="cw-ctr"><div class="o"><b>' + nOpen + "</b><span>Job" + (nOpen === 1 ? "" : "s") + " open</span></div>" +
+      '<div class="h"><b>' + nHear + "</b><span>Hearing</span></div>" +
+      "<div><b>" + nFill + "</b><span>Filled</span></div>" +
+      "<div><b>29</b><span>Changes in 2026</span></div></div></div>" +
+      (cards ? '<div class="cw-grid">' + cards + "</div>"
+             : '<div class="panel" style="margin-bottom:22px"><p class="lede" style="margin:0">No openings yet this offseason.</p></div>') +
+      (nextUp ? '<div class="cw-next"><h3>&#128293; Next to open? Hottest seats</h3>' + nextUp +
+        '<button class="rmore" data-go="seat">Full Hot Seat &rsaquo;</button></div>' : "");
   }
 
   /* ================= COACHES ================= */
@@ -8130,7 +8258,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     '<div class="controls"><div class="seg" id="cdivfilter"></div>' +
     '<input type="search" id="cq" placeholder="Search coach, coordinator, or school" aria-label="Search coaches"></div>' +
     "</div><div id=\"coachgrid\"></div></div>" +
-    '<div id="cview-caro" hidden>' +
+    '<div id="cview-caro" hidden>' + caroWar() +
     '<div class="panel" style="margin-bottom:26px"><h2>Coordinators who have run a program</h2>' +
     '<p class="lede">Coordinator win-loss records are not kept anywhere in Utah — nobody publishes them, so no ranking can honestly claim one. What <em>is</em> on the record is a coordinator who used to be a head coach somewhere, and that is a real number. These ' +
     CHC.length + ' are the ones found across all 106 staffs; the combined record is his own, from his head-coaching stops, not his coordinator work. Two are documented stops whose records were never printed.</p>' +
@@ -8837,7 +8965,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         (band(h) === "hot" ? "fall" : band(h) === "warm" ? "sodium" : "steel") + ')">' + h.heat.toFixed(0) +
         '</div><div class="lab">' + bandLabel(h) + "</div></div>" +
         '<div><div class="who">' + esc(h.coach) + ' <span style="color:var(--ink-3);font-weight:400">· ' +
-        esc(h.school) + " " + h.cls + "</span></div>" +
+        esc(h.school) + " " + h.cls + "</span>" + jobTag(h.school) + "</div>" +
         '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
         cxhStrip(h.school) + cxhHL(h.school) +
         '<div class="why">rated #' + h.rank + " statewide" + (h.founding ? " &middot; founding coach, new school" : "") + (h.recruits ? " &middot; " + h.recruits + " college commit" + (h.recruits > 1 ? "s" : "") + " under him" : "") + "</div></div></div>";
@@ -8851,7 +8979,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<div class="gauge"><div class="n mono" style="color:var(--steel)">' + h.heat.toFixed(0) +
         '</div><div class="lab">Early</div></div>' +
         '<div><div class="who">' + esc(h.coach) + ' <span style="color:var(--ink-3);font-weight:400">· ' +
-        esc(h.school) + " " + h.cls + "</span></div>" +
+        esc(h.school) + " " + h.cls + "</span>" + jobTag(h.school) + "</div>" +
         '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
         cxhStrip(h.school) + cxhHL(h.school) +
         '<div class="why">rated #' + h.rank + " statewide" + (h.founding ? " &middot; founding coach, new school" : "") + (h.recruits ? " &middot; " + h.recruits + " college commit" + (h.recruits > 1 ? "s" : "") + " under him" : "") + "</div></div></div>";
