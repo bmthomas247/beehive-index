@@ -1588,6 +1588,20 @@ table.critable{min-width:640px;width:100%}
 table.critable th,table.critable td{padding:7px 11px;white-space:nowrap}
 table.critable thead th{position:static;cursor:default}
 table.critable td.n{font-family:var(--f-num);text-align:right;font-variant-numeric:tabular-nums}
+/* REALIGN-TABLEFILTER-NOV8 */
+table.critable th.n{text-align:right}
+table.critable thead th[data-k]{cursor:pointer;user-select:none}
+table.critable thead th[data-k]:hover,table.critable thead th.on{color:var(--ink)}
+.ctfilters{display:flex;flex-wrap:wrap;gap:8px 10px;align-items:flex-end;margin:6px 0 10px}
+.ctf{display:grid;gap:3px;min-width:0}
+.ctf span{font-family:var(--f-display);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+.ctf input,.ctf select{font:inherit;font-size:13px;padding:7px 9px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);min-width:0}
+.ctf.ctq{flex:1 1 200px}
+.ctf.ctq input{width:100%;box-sizing:border-box}
+.ctf input:focus-visible,.ctf select:focus-visible,.ctreset:focus-visible{outline:2px solid var(--steel);outline-offset:1px}
+.ctreset{font:inherit;font-size:12.5px;padding:7px 11px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface-2);color:var(--ink-2);cursor:pointer}
+td.ctnone{text-align:center;color:var(--ink-3);padding:18px}
+@media (max-width:560px){.ctf:not(.ctq){flex:1 1 40%}.ctf select{width:100%}}
 table.critable tr.up td.p{color:var(--rise);font-weight:700}
 table.critable tr.down td.p{color:var(--fall);font-weight:700}
 table.critable tbody tr{cursor:pointer}
@@ -9860,6 +9874,60 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<span><i style="background:transparent;box-shadow:0 0 0 2px var(--sodium)"></i>Close call</span>' +
       "<span>Rows = class today. Shaded bands = projected class. Tap a dot for the team.</span></div>";
   }
+  /* REALIGN-TABLEFILTER-NOV8 */
+  var ctQ = "", ctCls = "all", ctBy = "now", ctSt = "all", ctSort = { k: "cri", d: -1 };
+  var CTCOLS = [["cri_rank", "#", 1], ["school", "School", 0], ["cls", "Now", 0], ["proj", "Projected", 0],
+                ["size", "Gr 10+11", 1], ["edp", "Econ. disadv.", 1], ["cri", "Score", 1], ["", "", 0]];
+  function ctStatus(r) {
+    return r.held ? "held" : criclose(r) ? "close" : crisafe(r) ? "safe" : "";
+  }
+  function ctPass(r) {
+    if (ctQ && r.school.toLowerCase().indexOf(ctQ.trim().toLowerCase()) < 0) return false;
+    if (ctCls !== "all" && (ctBy === "proj" ? r.proj : r.cls) !== ctCls) return false;
+    if (ctSt === "up" || ctSt === "down") return r.direction === ctSt;
+    if (ctSt === "move") return r.direction !== "hold";
+    if (ctSt !== "all") return ctStatus(r) === ctSt;
+    return true;
+  }
+  function ctVal(r, k) {
+    if (k === "cls" || k === "proj") return CORD.length - CORD.indexOf(r[k]);
+    if (k === "school") return r.school.toLowerCase();
+    if (k === "cri_rank") return r.cri_rank == null ? 999 : r.cri_rank;
+    return r[k] == null ? -1e9 : r[k];
+  }
+  function drawCriTable() {
+    var box = document.getElementById("critabwrap"); if (!box) return;
+    var rows = RJ.filter(ctPass).sort(function (a, b) {
+      var x = ctVal(a, ctSort.k), y = ctVal(b, ctSort.k);
+      return (x < y ? -1 : x > y ? 1 : 0) * ctSort.d || (ctVal(a, "cri_rank") - ctVal(b, "cri_rank"));
+    });
+    var cnt = document.getElementById("ctcount");
+    if (cnt) cnt.textContent = rows.length === RJ.length ? "all " + RJ.length + " \u00b7 tap a column to sort"
+                                                         : rows.length + " of " + RJ.length;
+    box.innerHTML = '<table class="critable"><thead><tr>' + CTCOLS.map(function (c) {
+        if (!c[0]) return "<th></th>";
+        var on = ctSort.k === c[0];
+        return '<th class="' + (c[2] ? "n " : "") + (on ? "on" : "") + '" data-k="' + c[0] + '" aria-sort="' +
+          (on ? (ctSort.d > 0 ? "ascending" : "descending") : "none") + '">' + c[1] +
+          (on ? (ctSort.d > 0 ? " &#9650;" : " &#9660;") : "") + "</th>";
+      }).join("") + "</tr></thead><tbody>" +
+      (rows.length ? rows.map(function (r) {
+        return '<tr class="' + esc(r.direction) + '" data-t="' + esc(r.school) + '"><td class="n">' +
+          (r.cri_rank || "&mdash;") + "</td><td>" + esc(r.school) + "</td><td>" + esc(r.cls) +
+          '</td><td class="p">' + esc(r.proj) + (r.direction === "up" ? " &uarr;" : r.direction === "down" ? " &darr;" : "") +
+          '</td><td class="n">' + crin(r.size) + '</td><td class="n">' +
+          (r.edp === null || r.edp === undefined ? "&mdash;" : (r.edp * 100).toFixed(1) + "%") +
+          '</td><td class="n">' + (r.cri === null || r.cri === undefined ? "&mdash;" : crif(r.cri)) +
+          "</td><td>" + (r.held ? "Private, held" : criclose(r) ? "Close call" : crisafe(r) ? "Near line, results help" : "") + "</td></tr>";
+      }).join("") : '<tr><td colspan="8" class="ctnone">No program matches these filters.</td></tr>') +
+      "</tbody></table>";
+    box.querySelector("thead").addEventListener("click", function (e) {
+      var th = e.target.closest("th[data-k]"); if (!th) return;
+      var k = th.dataset.k;
+      ctSort = ctSort.k === k ? { k: k, d: -ctSort.d } : { k: k, d: (k === "school" || k === "cri_rank") ? 1 : -1 };
+      drawCriTable();
+    });
+  }
   function drawRealign() {
     var up = RJ.filter(function (r) { return r.direction === "up"; });
     var dn = RJ.filter(function (r) { return r.direction === "down"; });
@@ -9941,18 +10009,24 @@ nav.topbar ~ main.wrap{margin-top:20px}
           'proposal lands here as it is published, with who reported it. ' +
           '<a href="#" data-go="send">Send it in</a>.</div>') +
 
-      '<h3 class="divhead" style="margin-top:26px">Every program<span>ranked by score</span></h3>' +
-      '<div class="critab"><table class="critable"><thead><tr><th>#</th><th>School</th><th>Now</th>' +
-      '<th>Projected</th><th>Gr 10+11</th><th>Econ. disadv.</th><th>Score</th><th></th></tr></thead><tbody>' +
-      RJ.map(function (r) {
-        return '<tr class="' + esc(r.direction) + '" data-t="' + esc(r.school) + '"><td class="n">' +
-          (r.cri_rank || "&mdash;") + "</td><td>" + esc(r.school) + "</td><td>" + esc(r.cls) +
-          '</td><td class="p">' + esc(r.proj) + (r.direction === "up" ? " &uarr;" : r.direction === "down" ? " &darr;" : "") +
-          '</td><td class="n">' + crin(r.size) + '</td><td class="n">' +
-          (r.edp === null || r.edp === undefined ? "&mdash;" : (r.edp * 100).toFixed(1) + "%") +
-          '</td><td class="n">' + (r.cri === null || r.cri === undefined ? "&mdash;" : crif(r.cri)) +
-          "</td><td>" + (r.held ? "Private, held" : criclose(r) ? "Close call" : crisafe(r) ? "Near line, results help" : "") + "</td></tr>";
-      }).join("") + "</tbody></table></div>" +
+      '<h3 class="divhead" style="margin-top:26px">Every program<span id="ctcount"></span></h3>' +
+      '<div class="ctfilters">' +
+      '<label class="ctf ctq"><span>Find</span><input id="ctq" type="search" placeholder="School name" autocomplete="off" value="' + esc(ctQ) + '"></label>' +
+      '<label class="ctf"><span>Class</span><select id="ctcls">' +
+      ["all"].concat(CORD).map(function (c) {
+        return '<option value="' + c + '"' + (ctCls === c ? " selected" : "") + ">" + (c === "all" ? "Every class" : c) + "</option>"; }).join("") +
+      "</select></label>" +
+      '<label class="ctf"><span>Class is</span><select id="ctby">' +
+      [["now", "Now (2025-27)"], ["proj", "Projected"]].map(function (o) {
+        return '<option value="' + o[0] + '"' + (ctBy === o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") +
+      "</select></label>" +
+      '<label class="ctf"><span>Show</span><select id="ctst">' +
+      [["all", "Every program"], ["up", "Moving up"], ["down", "Moving down"], ["move", "Moving either way"],
+       ["close", "Close calls"], ["safe", "Near line, results help"], ["held", "Private, held"]].map(function (o) {
+        return '<option value="' + o[0] + '"' + (ctSt === o[0] ? " selected" : "") + ">" + o[1] + "</option>"; }).join("") +
+      "</select></label>" +
+      '<button type="button" class="ctreset" id="ctreset">Clear filters</button></div>' +
+      '<div class="critab" id="critabwrap"></div>' +
 
       '<h3 class="divhead" style="margin-top:26px">How we built it</h3>' +
       '<ul class="crimeth">' +
@@ -9972,6 +10046,22 @@ nav.topbar ~ main.wrap{margin-top:20px}
         return '<li><a href="' + esc(s[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(s[0]) + "</a></li>";
       }).join("") + "</ol>";
 
+    drawCriTable();
+    var ctq = document.getElementById("ctq");
+    if (ctq) ctq.addEventListener("input", function () { ctQ = ctq.value; drawCriTable(); });
+    [["ctcls", function (v) { ctCls = v; }], ["ctby", function (v) { ctBy = v; }],
+     ["ctst", function (v) { ctSt = v; }]].forEach(function (p) {
+      var el = document.getElementById(p[0]);
+      if (el) el.addEventListener("change", function () { p[1](el.value); drawCriTable(); });
+    });
+    var ctr = document.getElementById("ctreset");
+    if (ctr) ctr.addEventListener("click", function () {
+      ctQ = ""; ctCls = "all"; ctBy = "now"; ctSt = "all"; ctSort = { k: "cri", d: -1 };
+      ["ctq", "ctcls", "ctby", "ctst"].forEach(function (id) {
+        var el = document.getElementById(id); if (!el) return;
+        el.value = id === "ctq" ? "" : id === "ctby" ? "now" : "all"; });
+      drawCriTable();
+    });
     var seg = document.getElementById("rjseg");
     if (seg) seg.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b) return;
