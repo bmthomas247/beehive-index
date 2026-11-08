@@ -1730,6 +1730,38 @@ table.tstab .tsteam > *:first-child{flex:none}
   text-transform:uppercase;padding:2px 6px;border-radius:2px;margin-left:7px;vertical-align:1px}
 .tagline.rep{background:color-mix(in srgb,var(--rise) 15%,transparent);color:var(--rise)}
 .tagline.inf{background:color-mix(in srgb,var(--sodium) 17%,transparent);color:var(--sodium)}
+/* ---------- rankings: Top 25 + clean list (Nov 8 2026) ---------- */
+#rktable:not(.full){min-width:0}
+#rktable:not(.full) .xs{display:none}
+#v-rank .tablewrap{max-height:none;min-height:0}
+#v-rank:has(#rktable:not(.full)){max-width:1000px;margin-left:auto;margin-right:auto}
+#v-rank .tablewrap:has(#rktable:not(.full)){overflow:visible}
+.fsbtn{font:inherit;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-2);cursor:pointer;margin-left:auto}
+.fsbtn[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+#rktable td.mv{font-family:var(--f-display);font-weight:700;font-size:13px;width:54px;white-space:nowrap}
+.mvu{color:var(--rise)}.mvd{color:var(--fall)}.mv0{color:var(--ink-3);font-weight:400}
+.mvn{font-size:9.5px;letter-spacing:.1em;background:#FFC64B;color:#1A1300;padding:2px 6px;border-radius:9px}
+#rktable td.rtgc{font-family:var(--f-num);font-weight:700;text-align:right;white-space:nowrap}
+#rktable tr.t25 td{padding-top:14px;padding-bottom:14px}
+#rktable tr.t25 td:first-child{box-shadow:inset 5px 0 0 var(--tc,#14325C)}
+#rktable tr.t25 .rk{font-size:24px;font-weight:800;color:var(--ink)}
+#rktable tr.t25 .rk.top{color:var(--sodium)}
+#rktable tr.t25 .tm{font-size:17px;font-weight:700}
+#rktable tr.t25 .tm .crest.c-sm,#rktable tr.t25 .tm .swatch{width:36px;height:36px}
+#rktable tr.t25 td.rtgc{font-size:16px}
+#rktable tr.divrow{cursor:default}
+#rktable tr.divrow:hover{background:none}
+#rktable tr.divrow td{background:#0B1F3A;color:#fff;font-family:var(--f-display);font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;padding:9px 14px}
+#rktable tr.divrow td span{color:#FFC64B;margin-left:8px;letter-spacing:.08em;text-transform:none}
+.rk-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px;position:relative;z-index:1}
+.rk-tiles div{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:4px;padding:9px 12px;cursor:pointer}
+.rk-tiles span{display:block;font-family:var(--f-display);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#C9D6E6}
+.rk-tiles b{display:block;font-family:var(--f-display);font-size:17px;font-weight:800;margin-top:3px;line-height:1.15}
+.rk-tiles em{font-style:normal;font-family:var(--f-num);font-size:12px;color:#C9D6E6}
+.rk-tiles .u b em{color:#3ED9A0}.rk-tiles .d b em{color:#FF6A56}
+@media (max-width:760px){.rk-tiles{grid-template-columns:1fr 1fr}#rktable tr.t25 .tm{font-size:15px}#rktable tr.t25 .rk{font-size:20px}}
 /* ---------- carousel war room (Nov 8 2026) ---------- */
 .cw-ban{position:relative;overflow:hidden;background:linear-gradient(120deg,#0B1F3A 0%,#14325C 55%,#0B1F3A 100%);
   color:#fff;padding:22px 22px 18px;border-radius:4px;margin-bottom:16px}
@@ -3122,27 +3154,28 @@ nav.topbar ~ main.wrap{margin-top:20px}
 <main class="wrap">
 
   <section id="v-rank">
+    <div id="rkban"></div>
     <div class="controls">
       <div class="seg" id="clsfilter"></div>
       <select id="regfilter" aria-label="Region"><option value="">All regions</option></select>
       <input type="search" id="q" placeholder="Search school or coach" aria-label="Search school or coach">
-      <span class="hint">Click any row for the full card</span>
+      <button type="button" id="fullstats" class="fsbtn" aria-pressed="false">Show full stats</button>
     </div>
-    <div class="tablewrap"><table>
+    <div class="tablewrap" id="rkwrap"><table id="rktable">
       <thead><tr>
         <th data-s="rank">#</th>
+        <th class="mv num" data-s="mv">Move</th>
         <th data-s="school">Team</th>
-        <th>Class</th>
-        <th class="num" data-s="rating">Rating</th>
-        <th>Spread of field</th>
+        <th class="xs">Class</th>
         <th class="num" data-s="w">Rec</th>
-        <th class="num" data-s="pf">PF<small>total · per game</small></th>
-        <th class="num" data-s="pa">PA<small>total · per game</small></th>
-        <th class="num" data-s="ypg">Yds/g</th>
-        <th class="num" data-s="sos">SOS</th>
-        <th class="num" data-s="rpi" title="UHSAA's official Rating Percentage Index as last published Oct 13, 2026 - UHSAA took the tables down after the playoffs were seeded">RPI<small>UHSAA Oct 13 · class rank</small></th>
-        <th class="num" data-s="rpi_gap" title="UHSAA RPI class rank minus our class rank. ▲ = we rank the team higher than RPI does, ▼ = lower">vs RPI<small>our class # · gap</small></th>
-        <th>Head coach</th>
+        <th class="num" data-s="rating">Rating</th>
+        <th class="num xs" data-s="pf">PF<small>total · per game</small></th>
+        <th class="num xs" data-s="pa">PA<small>total · per game</small></th>
+        <th class="num xs" data-s="ypg">Yds/g</th>
+        <th class="num xs" data-s="sos">SOS</th>
+        <th class="num xs" data-s="rpi" title="UHSAA's official Rating Percentage Index as last published Oct 13, 2026 - UHSAA took the tables down after the playoffs were seeded">RPI<small>UHSAA Oct 13 · class rank</small></th>
+        <th class="num xs" data-s="rpi_gap" title="UHSAA RPI class rank minus our class rank. ▲ = we rank the team higher than RPI does, ▼ = lower">vs RPI<small>our class # · gap</small></th>
+        <th class="xs">Head coach</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table></div>
@@ -3542,6 +3575,55 @@ nav.topbar ~ main.wrap{margin-top:20px}
   }
 
   /* ================= RANKINGS ================= */
+  /* ---- Top 25 banner + movement (Nov 8 2026) ---- */
+  var RPA = DATA.rank_prev_asof;
+  function rkShort(d) {
+    var m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var p = String(d || "").split("-");
+    return p.length === 3 ? m[+p[1] - 1] + " " + (+p[2]) : "";
+  }
+  function rkThrough() { return DATA.last_game ? "Through " + rkShort(DATA.last_game) + " games" : ""; }
+  function mvHtml(t) {
+    if (!RPA) return "";
+    if (t.mv === null || t.mv === undefined) return '<span class="mvn">New</span>';
+    if (t.mv > 0) return '<span class="mvu">&#9650;' + t.mv + "</span>";
+    if (t.mv < 0) return '<span class="mvd">&#9660;' + (-t.mv) + "</span>";
+    return '<span class="mv0">&ndash;</span>';
+  }
+  (function rkBanner() {
+    var el = document.getElementById("rkban"); if (!el) return;
+    var top = T.slice().sort(function (a, b) { return a.rank - b.rank; });
+    var t25 = top.filter(function (t) { return t.rank <= 25; });
+    var one = top[0];
+    function d(t) { return (t.prev_rank || 0) - t.rank; }
+    var withPrev = t25.filter(function (t) { return t.prev_rank; });
+    var up = withPrev.slice().sort(function (a, b) { return d(b) - d(a); })[0];
+    var dn = withPrev.slice().sort(function (a, b) { return d(a) - d(b); })[0];
+    var fresh = t25.filter(function (t) { return t.prev_rank && t.prev_rank > 25; });
+    function tile(k, t, label, extra) {
+      return t ? '<div class="' + k + '" data-t="' + esc(t.school) + '"><span>' + label + "</span><b>" + esc(t.school) + " " + extra + "</b></div>" : "";
+    }
+    el.innerHTML = '<div class="cw-ban"><div class="cw-kick">Rankings &middot; ' + esc(rkThrough()) + "</div>" +
+      "<h2>Utah Top 25</h2>" +
+      "<p>Every 11-man program in the state, opponent-adjusted and blowout-capped." +
+      (RPA ? " Arrows show movement since our " + rkShort(RPA) + " rankings." : "") + "</p>" +
+      '<div class="rk-tiles">' +
+      tile("", one, "No. 1", "<em>" + one.w + "&ndash;" + one.l + "</em>") +
+      (RPA && up && d(up) > 0 ? tile("u", up, "Biggest climb", "<em>&#9650;" + d(up) + " to #" + up.rank + "</em>") : "") +
+      (RPA && dn && d(dn) < 0 ? tile("d", dn, "Biggest drop", "<em>&#9660;" + (-d(dn)) + " to #" + dn.rank + "</em>") : "") +
+      (RPA ? (fresh.length
+        ? '<div class="u" data-t="' + esc(fresh[0].school) + '"><span>New in the Top 25</span><b>' +
+          fresh.map(function (t) { return esc(t.school); }).join(", ") + "</b></div>"
+        : '<div><span>New in the Top 25</span><b>None this week</b></div>') : "") +
+      "</div></div>";
+  })();
+  document.getElementById("fullstats").addEventListener("click", function () {
+    var on = this.getAttribute("aria-pressed") !== "true";
+    this.setAttribute("aria-pressed", on);
+    this.textContent = on ? "Hide full stats" : "Show full stats";
+    document.getElementById("rktable").classList.toggle("full", on);
+  });
+
   var filt = "ALL", q = "", sortKey = "rank", sortDir = 1;
   document.getElementById("clsfilter").innerHTML =
     ["ALL", "6A", "5A", "4A", "3A", "2A", "1A"].map(function (c) {
@@ -3568,6 +3650,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
   function rows() {
     T.forEach(function (t) {
       t.rpi_gap = (t.rpi_official && t.rpi_seed && t.class_rank) ? t.rpi_seed - t.class_rank : null;
+      // Movement vs our own published rank on DATA.rank_prev_asof (Nov 8 2026).
+      var p = filt !== "ALL" ? t.prev_class_rank : t.prev_rank;
+      var n = filt !== "ALL" ? t.class_rank : t.rank;
+      t.mv = (p === null || p === undefined) ? null : p - n;
     });
     var r = T.filter(function (t) {
       if (filt !== "ALL" && t.cls !== filt) return false;
@@ -3588,33 +3674,39 @@ nav.topbar ~ main.wrap{margin-top:20px}
   }
   function draw() {
     var r = rows(), byClass = filt !== "ALL";
-    document.getElementById("tbody").innerHTML = r.map(function (t) {
+    // Top 25 treatment only on the plain statewide board, in rank order.
+    var top25 = !byClass && !regFilt && !q && sortKey === "rank" && sortDir === 1, shownRest = false;
+    document.getElementById("tbody").innerHTML = r.map(function (t, i) {
       var rk = byClass ? t.class_rank : t.rank;
       // Teams whose published rating is identical share a rank. Two games in,
       // four hundredths of a point is not an ordering worth printing.
       var tied = byClass ? t.cls_tied : t.tied;
-      return '<tr data-t="' + esc(t.school) + '">' +
+      var big = top25 && rk <= 25;
+      var div = top25 && i === 0 ? '<tr class="divrow"><td colspan="14">Utah Top 25<span>' + rkThrough() + "</span></td></tr>" :
+                top25 && rk > 25 && !shownRest ? (shownRest = true, '<tr class="divrow"><td colspan="14">The rest of the state<span>' +
+                  "26&ndash;" + T.length + "</span></td></tr>") : "";
+      return div + '<tr data-t="' + esc(t.school) + '"' + (big ? ' class="t25" style="--tc:' + esc(t.c1 || "#14325C") + '"' : "") + ">" +
         '<td class="rk mono' + (rk <= 3 ? " top" : "") + '">' +
         (tied ? '<span class="tie">T-</span>' : "") + rk + "</td>" +
+        '<td class="mv">' + mvHtml(t) + "</td>" +
         '<td class="tm">' + logo(t.school, "sm") + "<div>" + esc(t.school) +
           "<small>" + esc(t.city) + " · " + esc(t.cls) + " · " + esc(t.region) + "</small></div></td>" +
-        "<td>" + chip(t.cls) + "</td>" +
-        '<td class="num mono rtg ' + cls(t.rating) + '">' + sgn(t.rating) + "</td>" +
-        "<td>" + spine(t) + "</td>" +
+        '<td class="xs">' + chip(t.cls) + "</td>" +
         '<td class="num mono">' + t.w + "–" + t.l + "</td>" +
-        '<td class="num mono">' + t.pf +
+        '<td class="rtgc ' + cls(t.rating) + '">' + sgn(t.rating) + "</td>" +
+        '<td class="num mono xs">' + t.pf +
           '<small class="raw">' + t.ppg.toFixed(1) + "/gm</small></td>" +
-        '<td class="num mono">' + t.pa +
+        '<td class="num mono xs">' + t.pa +
           '<small class="raw">' + t.papg.toFixed(1) + "/gm</small></td>" +
-        '<td class="num mono">' + (t.ypg === null ? '<span class="none">—</span>' : t.ypg) + "</td>" +
-        '<td class="num mono">' + sgn(t.sos) + "</td>" +
-        '<td class="num mono">' + (t.rpi === null || t.rpi === undefined ? '<span class="none">—</span>' :
+        '<td class="num mono xs">' + (t.ypg === null ? '<span class="none">—</span>' : t.ypg) + "</td>" +
+        '<td class="num mono xs">' + sgn(t.sos) + "</td>" +
+        '<td class="num mono xs">' + (t.rpi === null || t.rpi === undefined ? '<span class="none">—</span>' :
           t.rpi.toFixed(3).replace(/^0/, "") + (t.rpi_seed ? '<small class="raw">#' + t.rpi_seed + " " + esc(t.cls) + "</small>" : "")) + "</td>" +
-        '<td class="num mono" title="' + (t.rpi_gap === null ? 'No UHSAA RPI' : esc(t.school) + ': our #' + t.class_rank + ' in ' + esc(t.cls) + ', RPI #' + t.rpi_seed) + '">' +
+        '<td class="num mono xs" title="' + (t.rpi_gap === null ? 'No UHSAA RPI' : esc(t.school) + ': our #' + t.class_rank + ' in ' + esc(t.cls) + ', RPI #' + t.rpi_seed) + '">' +
           (t.rpi_gap === null ? '<span class="none">—</span>' :
             (t.rpi_gap > 0 ? '▲' + t.rpi_gap : t.rpi_gap < 0 ? '▼' + (-t.rpi_gap) : '=') +
             '<small class="raw">ours #' + t.class_rank + ' · RPI #' + t.rpi_seed + '</small>') + "</td>" +
-        "<td>" + esc(t.coach) + '<small style="display:block;font-size:11px;color:var(--ink-3)">' +
+        '<td class="xs">' + esc(t.coach) + '<small style="display:block;font-size:11px;color:var(--ink-3)">' +
         ((t.coach_cur ? t.coach_cur + " this year" : "") + (t.coach_w !== "" && t.coach_w !== undefined ? (t.coach_cur ? " · " : "") + t.coach_w + "–" + t.coach_l + " career, yr " + t.coach_yrs : "")) + "</small></td></tr>";
     }).join("");
     document.querySelectorAll("thead th[data-s]").forEach(function (th) {
