@@ -1580,6 +1580,8 @@ table.tstab .tsteam > *:first-child{flex:none}
 .crinums span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
 .criclose{font-size:12px;color:var(--ink-2);padding:6px 8px;border-radius:2px;background:color-mix(in srgb,var(--sodium) 12%,transparent)}
 .criclose strong{color:var(--sodium)}
+.crisafe{font-size:12px;color:var(--ink-2);padding:6px 8px;border-radius:2px;background:color-mix(in srgb,var(--rise) 10%,transparent)}
+.crisafe strong{color:var(--rise)}
 .criwhy{font-size:11.5px;color:var(--ink-3);line-height:1.45}
 .critab{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
 table.critable{min-width:640px;width:100%}
@@ -9795,6 +9797,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
   var rjFilter = "move", rjClass = "all";
   function crif(x) { return (x >= 0 ? "+" : "−") + Math.abs(x).toFixed(2); }
   function crin(v) { return v === null || v === undefined ? "—" : v.toLocaleString(); }
+  /* REALIGN-SAFE-NOV8 */
+  function crisafe(r) { return !!(r.bubble && r.lean === r.proj && r.to_line && r.res_z &&
+                                  r.to_line * r.res_z > 0); }
+  function criclose(r) { return !!(r.bubble && !crisafe(r)); }
   function crimove(r) { return r.direction === "hold" ? "stays " + esc(r.cls)
                                                        : esc(r.cls) + " &rarr; " + esc(r.proj); }
   function criCard(r) {
@@ -9804,7 +9810,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
       : '<div class="crinums"><div><b>' + crin(r.size) + '</b><span>Gr 10+11</span></div>' +
         '<div><b>' + (r.edp * 100).toFixed(1) + '%</b><span>Econ. disadv.</span></div>' +
         '<div><b>' + crif(r.cri) + '</b><span>Score &middot; #' + r.cri_rank + '</span></div></div>';
-    var close = r.bubble
+    var close = crisafe(r)
+      ? '<div class="crisafe"><strong>Near the line, results make it safer.</strong> Within 0.07 of a class line, ' +
+        'but its three-season results sit ' + (r.res_z > 0 ? "above" : "below") + ' the rest of ' + esc(r.cls) +
+        ', which pushes it away from the line and keeps it in ' + esc(r.proj) +
+        ' (our read; UHSAA scores results itself).</div>'
+      : r.bubble
       ? '<div class="criclose"><strong>Close call.</strong> Within 0.07 of a class line, so ' +
         'on-field results (7% of the index) could decide it.' +
         (r.lean && r.lean !== r.proj ? ' Our own three-season results read would put it in <strong>' +
@@ -9835,7 +9846,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var lanes = CORD.map(function (c) {
       return '<div class="crilane"><span class="ll">now ' + c + "</span>" +
         sc.filter(function (r) { return r.cls === c; }).map(function (r) {
-          return '<button class="cridot ' + esc(r.direction) + (r.bubble ? " close" : "") +
+          return '<button class="cridot ' + esc(r.direction) + (criclose(r) ? " close" : "") +
             '" data-t="' + esc(r.school) + '" style="left:' + X(r.cri) + '%" title="' +
             esc(r.school) + ": " + esc(r.cls) + " to " + esc(r.proj) + ", score " + crif(r.cri) +
             '" aria-label="' + esc(r.school) + '"></button>';
@@ -9852,7 +9863,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
   function drawRealign() {
     var up = RJ.filter(function (r) { return r.direction === "up"; });
     var dn = RJ.filter(function (r) { return r.direction === "down"; });
-    var cl = RJ.filter(function (r) { return r.bubble; });
+    var cl = RJ.filter(criclose);
     var fw = RMETA.weights.football, gw = RMETA.weights.general;
     var n6 = RJ.filter(function (r) { return r.cls === "6A"; }).length;
     var pool = rjFilter === "close" ? cl : rjFilter === "all" ? RJ.slice() : up.concat(dn);
@@ -9940,7 +9951,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '</td><td class="n">' + crin(r.size) + '</td><td class="n">' +
           (r.edp === null || r.edp === undefined ? "&mdash;" : (r.edp * 100).toFixed(1) + "%") +
           '</td><td class="n">' + (r.cri === null || r.cri === undefined ? "&mdash;" : crif(r.cri)) +
-          "</td><td>" + (r.held ? "Private, held" : r.bubble ? "Close call" : "") + "</td></tr>";
+          "</td><td>" + (r.held ? "Private, held" : criclose(r) ? "Close call" : crisafe(r) ? "Near line, results help" : "") + "</td></tr>";
       }).join("") + "</tbody></table></div>" +
 
       '<h3 class="divhead" style="margin-top:26px">How we built it</h3>' +
