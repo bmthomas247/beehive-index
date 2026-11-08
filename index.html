@@ -1540,6 +1540,16 @@ table.tstab .tsteam > *:first-child{flex:none}
 .cribar .s{background:var(--steel-soft);color:var(--ink)}
 .cribar .r{background:var(--sodium);color:var(--surface)}
 .criwc p{margin:0;font-size:12px;color:var(--ink-3);line-height:1.5}
+/* REALIGN-EXPLAINER-NOV8 */
+.cristeps{list-style:none;counter-reset:st;margin:14px 0 0;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.cristeps li{counter-increment:st;position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 13px 12px 48px;display:grid;gap:6px;align-content:start;min-width:0}
+.cristeps li::before{content:counter(st);position:absolute;left:12px;top:11px;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--surface);font-family:var(--f-display);font-weight:800;font-size:14px;display:grid;place-items:center}
+.cristeps b{font-family:var(--f-display);font-size:15px;font-weight:800}
+.cristeps p{margin:0;font-size:13px;line-height:1.5;color:var(--ink-2)}
+.cristeps p.sm,.criex .sm{font-size:11.5px;color:var(--ink-3)}
+.cristeps .cribar{height:24px;font-size:11px}
+.criex{margin-top:12px;padding:12px 14px;border-radius:var(--r);background:color-mix(in srgb,var(--steel) 9%,var(--surface));border:1px solid var(--line);font-size:13.5px;line-height:1.6;max-width:none}
+.criex .sm{display:block;margin-top:4px}
 .cristats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0}
 .cristat{border-top:3px solid var(--ink);padding-top:6px}
 .cristat b{display:block;font-family:var(--f-display);font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
@@ -1601,6 +1611,21 @@ table.critable thead th[data-k]:hover,table.critable thead th.on{color:var(--ink
 .ctf input:focus-visible,.ctf select:focus-visible,.ctreset:focus-visible{outline:2px solid var(--steel);outline-offset:1px}
 .ctreset{font:inherit;font-size:12.5px;padding:7px 11px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface-2);color:var(--ink-2);cursor:pointer}
 td.ctnone{text-align:center;color:var(--ink-3);padding:18px}
+/* REALIGN-REGIONS-NOV8 */
+.rggrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));margin-bottom:6px}
+.rgcard{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--steel);border-radius:var(--r);box-shadow:var(--shadow);padding:11px 13px;display:grid;gap:8px;align-content:start;min-width:0}
+.rgh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.rgh b{font-family:var(--f-display);font-size:16px;font-weight:800;letter-spacing:.02em}
+.rgh span{font-size:11.5px;color:var(--ink-3)}
+.rgmeta{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--ink-3);padding-bottom:6px;border-bottom:1px solid var(--line-soft)}
+.rglist{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.rglist li{display:flex;align-items:center;gap:7px;padding:4px 2px;cursor:pointer;flex-wrap:wrap;min-width:0}
+.rglist li b{font-size:13.5px;font-weight:600}
+.rgcity{font-size:11.5px;color:var(--ink-3)}
+.rgtag{font-family:var(--f-display);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:2px;background:var(--surface-2);color:var(--ink-2)}
+.rgtag.up{background:color-mix(in srgb,var(--rise) 15%,transparent);color:var(--rise)}
+.rgtag.down{background:color-mix(in srgb,var(--fall) 15%,transparent);color:var(--fall)}
+.rgfar{font-size:10.5px;padding:1px 6px;border-radius:2px;background:color-mix(in srgb,var(--sodium) 15%,transparent);color:var(--sodium);font-weight:600}
 @media (max-width:560px){.ctf:not(.ctq){flex:1 1 40%}.ctf select{width:100%}}
 table.critable tr.up td.p{color:var(--rise);font-weight:700}
 table.critable tr.down td.p{color:var(--fall);font-weight:700}
@@ -9928,6 +9953,52 @@ nav.topbar ~ main.wrap{margin-top:20px}
       drawCriTable();
     });
   }
+  /* REALIGN-REGIONS-NOV8 */
+  var rgCls = "6A";
+  function criRegions() {
+    var R = (RMETA.regions || []).filter(function (g) { return g.cls === rgCls; });
+    if (!R.length) return '<p class="lede">No projected regions on file.</p>';
+    return '<div class="rggrid">' + R.map(function (g) {
+      var newc = g.members.filter(function (m) { return m.now !== g.cls; }).length;
+      var core = g.core && g.core.n > 1
+        ? "Built around " + g.core.n + " of today&rsquo;s " + esc(g.core.cls === g.cls ? g.core.region : g.core.cls + " " + g.core.region)
+        : "A new grouping";
+      return '<div class="rgcard"><div class="rgh"><b>' + esc(g.name) + '</b><span>' +
+        esc((g.counties || []).slice(0, 3).join(" \u00b7 ")) + " Co.</span></div>" +
+        '<div class="rgmeta"><span>' + g.members.length + " schools</span><span>" + core + "</span>" +
+        (newc ? "<span>" + newc + " new to " + esc(g.cls) + "</span>" : "") +
+        "<span>avg " + Math.round(g.avg_km * 0.621) + " mi apart &middot; farthest " + Math.round(g.max_km * 0.621) + " mi</span></div>" +
+        '<ul class="rglist">' + g.members.map(function (m) {
+          var tag = m.now !== g.cls ? '<span class="rgtag ' + (CORD.indexOf(g.cls) < CORD.indexOf(m.now) ? "up" : "down") +
+                    '">from ' + esc(m.now) + "</span>"
+                  : (g.core && m.region_now !== g.core.region ? '<span class="rgtag">from ' + esc(m.region_now) + "</span>" : "");
+          return '<li data-t="' + esc(m.school) + '">' + logo(m.school, "sm") + "<b>" + esc(m.school) + "</b>" +
+            '<span class="rgcity">' + esc(m.city) + "</span>" + tag +
+            (m.far ? '<span class="rgfar" title="Nearest region opponent ' + Math.round(m.nearest_km * 0.621) +
+                     ' mi away">' + Math.round(m.nearest_km * 0.621) + " mi to nearest &middot; appeal?</span>" : "") +
+            "</li>";
+        }).join("") + "</ul></div>";
+    }).join("") + "</div>";
+  }
+  /* REALIGN-EXPLAINER-NOV8 */
+  function criExample() {
+    var r = RJ.filter(function (x) { return x.school === "Orem" && x.cri != null; })[0] ||
+            RJ.filter(function (x) { return x.direction !== "hold" && x.cri != null; })[0];
+    if (!r) return "";
+    var i = CORD.indexOf(r.proj), above = i > 0 ? CORD[i - 1] : null;
+    var line = above ? RCUT[above] : null;
+    var out = "<b>Example: " + esc(r.school) + ".</b> It has <strong>" + crin(r.size) +
+      "</strong> sophomores and juniors, and " + (r.edp * 100).toFixed(0) +
+      "% of its students come from low-income families. That gives it a score of <strong>" + crif(r.cri) +
+      "</strong>" + (r.cri_rank ? ", " + r.cri_rank + (["th","st","nd","rd"][(r.cri_rank % 100 > 10 && r.cri_rank % 100 < 14) ? 0 : (r.cri_rank % 10 < 4 ? r.cri_rank % 10 : 0)]) + " of " + RJ.filter(function (x) { return x.cri != null; }).length : "") + ". ";
+    if (line != null) out += "The line between " + esc(above) + " and " + esc(r.proj) + " is at " + crif(line) + ", so " +
+      esc(r.school) + " lands in <strong>" + esc(r.proj) + "</strong>" +
+      (r.direction === "down" ? ", one class lower than today. Because it already plays " + esc(r.cls) +
+        " football, it can ask UHSAA to let it stay there (step 4)." :
+       r.direction === "up" ? ", one class higher than today." : ", the same class as today.");
+    out += ' <span class="sm">How to read a score: 0 is a middle-sized football school, + is bigger, &minus; is smaller.</span>';
+    return out;
+  }
   function drawRealign() {
     var up = RJ.filter(function (r) { return r.direction === "up"; });
     var dn = RJ.filter(function (r) { return r.direction === "down"; });
@@ -9941,26 +10012,33 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
     document.getElementById("v-realign").innerHTML =
       '<div class="panel" style="margin-bottom:14px"><div class="crihead">' +
-      '<span class="kick">UHSAA 2027&ndash;29 &middot; football alignment &middot; first placements Nov 19</span>' +
-      "<h2>Where every program lands under the new index</h2>" +
-      '<p class="lede">UHSAA now places schools with a <strong>Composite Realignment Index</strong>, ' +
-      'and it has published the weights. Football is <strong>' + fw[0] + '% school size</strong>, ' +
-      fw[1] + '% economic need and ' + fw[2] + '% results. We ran that formula on the Utah State ' +
-      'Board of Education&rsquo;s October 1, 2026 count &mdash; sophomores plus juniors, the grades ' +
-      'UHSAA counts this cycle &mdash; to project who moves. These are our projections; the Board ' +
-      'sets class sizes and rules on appeals.</p></div>' +
-      '<div class="criw">' +
-      '<div class="criwc"><h4>Football index <span class="prov">Provisional</span></h4>' +
-      '<div class="cribar"><span class="e" style="width:' + fw[0] + '%">' + fw[0] + '% ENROLLMENT</span>' +
+      '<span class="kick">UHSAA 2027&ndash;29 &middot; football &middot; first placements Nov 19</span>' +
+      "<h2>Who plays who in 2027: how realignment works</h2>" +
+      '<p class="lede">Every two years, the Utah High School Activities Association (UHSAA) re-sorts every ' +
+      'high school into a <strong>class</strong> (6A is the biggest schools, 1A the smallest) and a ' +
+      '<strong>region</strong> (the league you play your region games in). This year it uses a new formula. ' +
+      'Here is the whole process in six steps, then our projection of where every school lands.</p></div>' +
+      '<ol class="cristeps">' +
+      '<li><b>Count the students</b><p>The state counts every school&rsquo;s <strong>sophomores and juniors</strong> ' +
+      'on October 1, 2026. More students means a bigger school.</p></li>' +
+      '<li><b>Give each school a score</b><p>The score is mostly size. A little comes from how many students ' +
+      'come from low-income families (more means a slightly lower score) and a little from how good the ' +
+      'school&rsquo;s teams have been.</p>' +
+      '<div class="cribar"><span class="e" style="width:' + fw[0] + '%">' + fw[0] + '% SIZE</span>' +
       '<span class="s" style="width:' + fw[1] + '%">' + fw[1] + '</span><span class="r" style="width:' + fw[2] + '%">' + fw[2] + "</span></div>" +
-      "<p>Its own index for the football classes, 8-player included.</p></div>" +
-      '<div class="criwc"><h4>Every other sport</h4>' +
-      '<div class="cribar"><span class="e" style="width:' + gw[0] + '%">' + gw[0] + '% ENROLLMENT</span>' +
-      '<span class="s" style="width:' + gw[1] + '%">' + gw[1] + '%</span><span class="r" style="width:' + gw[2] + '%">' + gw[2] + "</span></div>" +
-      "<p>Results from 25 sports, averaged over three seasons. Football never enters it.</p></div></div>" +
-      '<div class="crikey"><span><i style="background:var(--steel);border-radius:2px"></i>Enrollment: grades 10+11, log-scaled</span>' +
-      '<span><i style="background:var(--steel-soft);border-radius:2px"></i>Economic need: share of K&ndash;12 economically disadvantaged (more need, lower score)</span>' +
-      '<span><i style="background:var(--sodium);border-radius:2px"></i>Results: against a school&rsquo;s own class</span></div></div>' +
+      '<p class="sm">Football: ' + fw[0] + '% size &middot; ' + fw[1] + '% family income &middot; ' + fw[2] +
+      '% team results (UHSAA calls these numbers provisional). Other sports use ' + gw[0] + '/' + gw[1] + '/' + gw[2] + '.</p></li>' +
+      '<li><b>Line them up and cut</b><p>Every school is ranked by score, biggest first. UHSAA draws lines to ' +
+      'split the list into classes. 6A, 5A and 4A must each get <strong>at least 21 schools</strong>; 3A, 2A ' +
+      'and 1A at least 8. First look: <strong>Nov 19</strong>.</p></li>' +
+      '<li><b>Schools can ask for changes</b><p>By <strong>Dec 1</strong> a school can ask to play up a class ' +
+      '(say, a strong program that wants tougher games) or ask for a change because it would have to travel too far.</p></li>' +
+      '<li><b>Draw the regions</b><p>Each class is split into regions of nearby schools. First look Dec 1, ' +
+      'a public hearing on Zoom <strong>Dec 8</strong>, second look Dec 9.</p></li>' +
+      '<li><b>Final vote</b><p>UHSAA votes on <strong>Dec 17</strong>. The new classes and regions start in ' +
+      '<strong>August 2027</strong> and last two seasons.</p></li></ol>' +
+      '<div class="criex">' + criExample() + "</div>" +
+      '</div>' +
 
       '<div class="cristats">' +
       '<div class="cristat up"><b>' + up.length + "</b><span>projected to move up</span></div>" +
@@ -9984,6 +10062,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<p class="lede" style="margin-top:14px">Moving down is how a school with 40 players stops ' +
       'playing schools with 90, and moving up is what happens to a program that has outgrown its ' +
       'bracket. A school can still apply to play up in football before regions are drawn on Dec 1.</p>' +
+
+      '<h3 class="divhead" style="margin-top:26px">Projected regions<span>our geography model &middot; UHSAA draws the real ones Dec 1&ndash;17</span></h3>' +
+      '<p class="lede" style="margin:0 0 10px">We redrew every class from scratch on the projected classes: ' +
+      'the same number of regions each class has today, sizes as even as possible, and the shortest ' +
+      'total distance between region opponents (straight-line, from federal NCES school locations). ' +
+      'UHSAA has not published how it draws regions, so treat these as a starting point.</p>' +
+      '<div class="crictl"><div class="seg" id="rgseg">' + CORD.map(function (c) {
+        return '<button data-c="' + c + '" aria-pressed="' + (rgCls === c) + '">' + c + "</button>"; }).join("") +
+      "</div></div>" +
+      '<div id="rgwrap">' + criRegions() + "</div>" +
 
       '<h3 class="divhead" style="margin-top:26px">The calendar<span>placement in November, final in December, played in 2027</span></h3>' +
       '<div class="rtl">' + RAD.map(function (d) {
@@ -10048,6 +10136,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
     drawCriTable();
     var ctq = document.getElementById("ctq");
+    var rgs = document.getElementById("rgseg");
+    if (rgs) rgs.addEventListener("click", function (e) {
+      var b = e.target.closest("button"); if (!b) return;
+      rgCls = b.dataset.c;
+      [].forEach.call(rgs.querySelectorAll("button"), function (x) {
+        x.setAttribute("aria-pressed", String(x.dataset.c === rgCls)); });
+      document.getElementById("rgwrap").innerHTML = criRegions();
+    });
     if (ctq) ctq.addEventListener("input", function () { ctQ = ctq.value; drawCriTable(); });
     [["ctcls", function (v) { ctCls = v; }], ["ctby", function (v) { ctBy = v; }],
      ["ctst", function (v) { ctSt = v; }]].forEach(function (p) {
