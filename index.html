@@ -3357,6 +3357,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .rxfind label{font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
 .rxfind input{flex:1;max-width:340px;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:15px;background:var(--surface);color:var(--ink)}
 .rxfind input:focus{outline:2px solid var(--sodium);outline-offset:1px}
+/* ---- crest hd (Nov 8 2026) ---- */
+.st-w .crest.lo,.st-tile.big .st-w .crest.lo{width:84px;height:84px}
+.st-l .crest.lo,.st-tile.big .st-l .crest.lo{width:48px;height:48px}
+@media (max-width:760px){.st-tile .st-w .crest.lo{width:70px;height:70px}.st-tile .st-l .crest.lo{width:36px;height:36px}}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -5254,6 +5258,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
     if (!src) {
       var tt = byName[school];
       return '<i class="swatch" style="background:' + esc((tt && tt.c1) || "#6C7883") + '"></i>';
+    }
+    if (cls === "xl") {   // Nov 8 2026: big crests use the 320px file; 80px fallback is size-capped (.lo)
+      var lo = esc(src);
+      return '<img class="crest c-xl" src="/logo-' + esc(LOGOS[school]) + '-hd.webp" alt="" loading="lazy" ' +
+        'onerror="this.onerror=null;this.classList.add(\'lo\');this.src=\'' + lo + '\'">';
     }
     return '<img class="crest c-' + (cls || "sm") + '" src="' + src + '" alt="" loading="lazy">';
   }
@@ -10751,7 +10760,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         ["oos", "Out of State"], ["oosnext", "Out of State Picks"]] },
     { id: "stand", label: "Standings", views: [["stand", "Standings"], ["poff", "Playoffs"]] },
     { id: "rank", label: "Rankings", views: [
-        ["rank", "Programs"], ["prank", "Players"], ["crank", "Coaches"]] },
+        ["rank", "Schools"], ["prank", "Players"], ["crank", "Coaches"]] },
     { id: "people", label: "Players", views: [
         ["prank", "Rankings"], ["players", "All Players"], ["recruit", "Commitments"]] },
     { id: "programs", label: "Schools", views: [
