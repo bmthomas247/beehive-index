@@ -1762,6 +1762,42 @@ table.tstab .tsteam > *:first-child{flex:none}
 .rk-tiles em{font-style:normal;font-family:var(--f-num);font-size:12px;color:#C9D6E6}
 .rk-tiles .u b em{color:#3ED9A0}.rk-tiles .d b em{color:#FF6A56}
 @media (max-width:760px){.rk-tiles{grid-template-columns:1fr 1fr}#rktable tr.t25 .tm{font-size:15px}#rktable tr.t25 .rk{font-size:20px}}
+/* ---------- team preview card (Nov 8 2026) ---------- */
+.drawer-in:has(.tp){padding:0;overflow:hidden;width:min(640px,100%);border-radius:14px;background:var(--ground)}
+.drawer-in:has(.tp) .dclose{position:absolute;top:12px;right:12px;float:none;z-index:3;background:rgba(255,255,255,.92);color:#111;border:0;border-radius:999px}
+.drawer-in:has(.tp){position:relative}
+.tp-hero{position:relative;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;padding:26px 22px 16px;color:#fff;
+ background:linear-gradient(125deg,var(--b) 0%,var(--b) 58%,color-mix(in srgb,var(--a) 80%,var(--b)) 150%)}
+.tp-hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(115deg,transparent 0 36px,rgba(255,255,255,.045) 36px 72px)}
+.tp-hero .crest,.tp-hero .swatch{position:relative;z-index:1;width:76px;height:76px;border-radius:50%;background:#fff;padding:6px;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.tp-id{position:relative;z-index:1;min-width:0}
+.tp-kick{font-size:10.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:.8}
+.tp-hero h2{margin:3px 0 7px;font-size:28px;line-height:1.02;font-weight:800;text-transform:uppercase;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.3)}
+.tp-hero h2 span{opacity:.75;font-weight:700}
+.tp-badges{display:flex;flex-wrap:wrap;gap:6px}
+.tp-badges span{font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25)}
+.tp-rec{position:relative;z-index:1;text-align:center;padding-right:30px}
+.tp-rec b{display:block;font-size:46px;line-height:1;font-weight:800;font-stretch:80%;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.tp-rec small{font-size:10px;letter-spacing:.2em;opacity:.8}
+.tp-strip{grid-column:1/-1;position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:4px}
+.tp-strip i{font-style:normal;font-size:10.5px;font-weight:800;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:4px}
+.tp-strip i.w{background:#3ED9A0;color:#062417}.tp-strip i.l{background:#FF6A56;color:#2A0703}
+.tp-facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.tp-facts>div{background:var(--surface);padding:12px 16px}
+.tp-facts span{display:block;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.tp-facts b{display:block;font-size:19px;font-weight:800;margin-top:2px;line-height:1.15}
+.tp-facts small{display:block;font-size:12px;color:var(--ink-3);margin-top:1px}
+.tp-jump{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:14px 16px 4px}
+.tp-jump>span{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-right:4px}
+.tp-jump a{font-size:13px;font-weight:700;text-decoration:none;color:var(--ink-2);padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.tp-jump a:hover{border-color:var(--b);color:var(--ink)}
+.tp-cta{position:relative;display:block;margin:12px 16px 18px;padding:15px 52px 15px 18px;border-radius:12px;text-decoration:none;color:#fff;font-size:16px;font-weight:800;
+ background:linear-gradient(120deg,var(--b),color-mix(in srgb,var(--b) 70%,#000));box-shadow:0 10px 24px -12px rgba(0,0,0,.5);border-bottom:3px solid var(--a);transition:transform .15s}
+.tp-cta:hover{transform:translateY(-2px)}
+.tp-cta em{display:block;font-style:normal;font-size:12px;font-weight:500;opacity:.85;margin-top:2px}
+.tp-cta i{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-style:normal;font-size:24px}
+@media(max-width:640px){.drawer-in:has(.tp){border-radius:0}.tp-hero{grid-template-columns:auto 1fr;padding:46px 16px 14px}.tp-rec{grid-column:1/-1;text-align:left;padding:0}
+ .tp-rec b{display:inline;font-size:36px}.tp-rec small{margin-left:8px}.tp-hero h2{font-size:22px}.tp-hero .crest,.tp-hero .swatch{width:58px;height:58px}}
 /* ---------- carousel war room (Nov 8 2026) ---------- */
 .cw-ban{position:relative;overflow:hidden;background:linear-gradient(120deg,#0B1F3A 0%,#14325C 55%,#0B1F3A 100%);
   color:#fff;padding:22px 22px 18px;border-radius:4px;margin-bottom:16px}
@@ -3739,6 +3775,65 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="sc mono">' + g.pf + "–" + g.pa + "</div>" +
       '<div class="rs ' + (won ? "w" : "l") + '">' + (won ? "W" : "L") + "</div></div>";
   }
+  /* ---------- team preview card (Nov 8 2026) ----------
+     Brandon: shorten the preview so people click into the full program page, and make
+     it look better. Facts only from data already on the card; no picks or lines. */
+  function tpLum(h) {
+    h = String(h || "").replace("#", "");
+    if (h.length !== 6) return .5;
+    var r = parseInt(h.slice(0, 2), 16) / 255, g = parseInt(h.slice(2, 4), 16) / 255, b = parseInt(h.slice(4, 6), 16) / 255;
+    return .2126 * r + .7152 * g + .0722 * b;
+  }
+  function tpColors(t) {
+    var c1 = t.c1 || "#14325C", c2 = t.c2 || c1;
+    var base = tpLum(c1) <= tpLum(c2) ? c1 : c2, acc = base === c1 ? c2 : c1;
+    if (tpLum(base) > .62) { acc = base; base = "#14325C"; }
+    if (tpLum(acc) > .86 || tpLum(acc) < .18) acc = "#E8A33D";
+    return [base, acc];
+  }
+  function teamPreview(t) {
+    var col = tpColors(t);
+    var url = "/" + t.school.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-football";
+    var res = t.results || [];
+    var strip = res.map(function (g) {
+      var w = g.margin > 0;
+      return '<i class="' + (w ? "w" : "l") + '" title="' + esc(g.date.slice(5).replace("-", "/") + " " + g.opp + " " + g.pf + "–" + g.pa) + '">' + (w ? "W" : "L") + "</i>";
+    }).join("");
+    var last = res.length ? res[res.length - 1] : null;
+    var next = (DATA.preds || []).filter(function (p) {
+      return !p.final && (p.home === t.school || p.away === t.school);
+    }).sort(function (a, b) { return a.date < b.date ? -1 : 1; })[0];
+    function day(d) {
+      var m = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      var p = String(d || "").split("-"); return p.length === 3 ? m[+p[1] - 1] + " " + (+p[2]) : "";
+    }
+    var facts = [];
+    if (last) facts.push(["Last game", (last.margin > 0 ? "W " : "L ") + last.pf + "–" + last.pa,
+                          (last.loc === "A" ? "at " : "vs ") + esc(last.opp) + " · " + day(last.date)]);
+    facts.push(next ? ["Next game", day(next.date), (next.home === t.school ? "vs " + esc(next.away) : "at " + esc(next.home))]
+                    : ["Next game", "—", t.in_playoffs ? "season complete" : "no game scheduled"]);
+    facts.push(["Head coach", esc(t.coach || "—"), t.coach_yrs ? "Year " + esc(t.coach_yrs) + (t.coach_w !== "" && t.coach_w !== undefined ? " · " + t.coach_w + "–" + t.coach_l + " career" : "") : ""]);
+    facts.push(["Points", (t.ppg != null ? t.ppg : "—") + " / " + (t.papg != null ? t.papg : "—"), "scored / allowed per game"]);
+    var tabs = [["media", "Media"], ["schedule", "Schedule"], ["stats", "Stats"], ["roster", "Roster"], ["hudl", "Hudl"], ["records", "Records"]];
+    return '<div class="tp" style="--b:' + esc(col[0]) + ";--a:" + esc(col[1]) + '">' +
+      '<div class="tp-hero">' + logo(t.school, "xl") +
+        '<div class="tp-id"><div class="tp-kick">' + esc(t.city) + " · " + esc(regLbl(t.cls, t.region)) + "</div>" +
+        "<h2>" + esc(t.school) + (t.mascot ? " <span>" + esc(t.mascot) + "</span>" : "") + "</h2>" +
+        '<div class="tp-badges"><span>#' + t.rank + " in Utah</span><span>#" + t.class_rank + " in " + esc(t.cls) + "</span>" +
+        "<span>Rating " + sgn(t.rating) + "</span></div></div>" +
+        '<div class="tp-rec"><b>' + t.w + "–" + t.l + "</b><small>2026</small></div>" +
+        (strip ? '<div class="tp-strip">' + strip + "</div>" : "") +
+      "</div>" +
+      '<div class="tp-facts">' + facts.map(function (f) {
+        return '<div><span>' + f[0] + "</span><b>" + f[1] + "</b><small>" + f[2] + "</small></div>";
+      }).join("") + "</div>" +
+      '<div class="tp-jump"><span>Jump to</span>' + tabs.map(function (x) {
+        return '<a href="' + url + "#" + x[0] + '">' + x[1] + "</a>";
+      }).join("") + "</div>" +
+      '<a class="tp-cta" href="' + url + '">Open the full ' + esc(t.school) + " page<em>Schedule, stats, leaders, roster, Hudl, records &amp; media</em><i>→</i></a>" +
+      "</div>";
+  }
+
   function openTeam(name) {
     var t = byName[name]; if (!t) return;
     lastFocus = document.activeElement;
@@ -4048,40 +4143,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         (t.xout ? " \u2014 " + t.xout + " left." : ".") + "</p>";
 
     document.getElementById("drawer-in").innerHTML =
-      '<button class="dclose" id="dclose">Close ✕</button>' +
-      colorBand(t.school) +
-      '<div class="dhead withcrest">' + logo(t.school, "xl") +
-      '<div><h2>' + esc(t.school) + "</h2>" +
-      '<div class="meta">' + esc(t.city) + " · " +
-      esc(regLbl(t.cls, t.region)) +
-      (t.mascot ? " " + esc(t.mascot) : "") + " · " + t.w + "–" + t.l + "</div></div></div>" +
-      fullPageLink(t.school) +
-      '<div class="kv">' + kv.map(function (p) {
-        return '<div><div class="k">' + p[0] + '</div><div class="v mono">' + p[1] + "</div></div>";
-      }).join("") + "</div>" +
-      '<div class="sect">Games played</div><div class="games">' + t.results.map(gameRow).join("") + "</div>" +
-      '<div class="sect">Head coach</div>' +
-      "<p style='margin:0;font-size:14.5px'><strong>" + esc(t.coach) + "</strong> — year " + t.coach_yrs +
-      (t.hired ? " (hired " + esc(t.hired) + ")" : "") + ", " + t.coach_w + "–" + t.coach_l +
-      (pct ? " (" + pct + ")" : "") + "</p>" +
-      (t.prior_stops ? "<p style='margin:6px 0 0;font-size:13.5px;color:var(--ink-2)'><strong>Before this:</strong> " + esc(t.prior_stops) + "</p>" : "") +
-      (t.cbg ? "<p style='margin:6px 0 0;font-size:13.5px;color:var(--ink-2)'>" + esc(t.cbg) + "</p>" : "") +
-      (t.cnotes ? "<p style='margin:6px 0 0;font-size:13.5px;color:var(--ink-3)'>" + esc(t.cnotes) + "</p>" : "") +
-      // This is the quick look. Transfers, program history and the full line-play
-      // breakdown live on the program page, which is the main card.
-      videoBlock(t.school) + pressBlock(t.school, 4) +
-      projBlock + qblock + yblock + lineQuick(t.school) + staff + rivBlock + talBlock + vets +
-      contactBlock(t, false) +
-      '<div class="sect">Rating build</div>' +
-      "<p style='margin:0;font-size:14.5px'>Preseason projection <span class='mono'>" + sgn(t.prior) +
-      "</span> → current <span class='mono'>" + sgn(t.rating) + "</span> (" +
-      (t.rating >= t.prior ? "outplaying" : "underplaying") + " projection by <span class='mono'>" +
-      Math.abs(t.rating - t.prior).toFixed(1) + "</span>). Prior still carries " +
-      Math.round(t.prior_share * 100) + "% of the number.</p>" +
-      '<div class="morecard">' +
-      "<p>Transfers in, program history, the full line-play breakdown and every player " +
-      "on the roster are on the " + esc(t.school) + " page.</p>" +
-      fullPageLink(t.school) + "</div>";
+      '<button class="dclose" id="dclose">Close ✕</button>' + teamPreview(t);
     drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden", "false");
     var c = document.getElementById("dclose");
     c.addEventListener("click", closeDrawer); c.focus();
