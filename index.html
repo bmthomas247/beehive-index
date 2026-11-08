@@ -1540,6 +1540,68 @@ table.tstab .tsteam > *:first-child{flex:none}
 .cribar .s{background:var(--steel-soft);color:var(--ink)}
 .cribar .r{background:var(--sodium);color:var(--surface)}
 .criwc p{margin:0;font-size:12px;color:var(--ink-3);line-height:1.5}
+/* REALIGN-LOOK-NOV8 */
+.rxhero{background:#0B1F3A;color:#fff;border-radius:6px;border-bottom:4px solid #E8A33D;overflow:hidden;position:relative;margin-bottom:6px}
+.rxhero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 59px,rgba(255,255,255,.05) 59px 60px);pointer-events:none}
+.rxhero-in{position:relative;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;padding:26px 28px;align-items:end}
+.rxkick{font-family:var(--f-display);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#E8A33D}
+.rxhl h2{font-family:var(--f-display);font-stretch:75%;font-weight:900;font-size:clamp(40px,7vw,76px);line-height:.9;text-transform:uppercase;letter-spacing:-.005em;margin:8px 0 12px;color:#fff}
+.rxhl p{margin:0;font-size:15px;line-height:1.55;color:rgba(255,255,255,.82);max-width:52ch}
+.rxhl p b{color:#fff}
+.rxside{display:grid;gap:14px}
+.rxcount{display:flex;align-items:center;gap:12px;background:rgba(232,163,61,.12);border:1px solid rgba(232,163,61,.45);border-radius:4px;padding:10px 14px}
+.rxcount b{font-family:var(--f-display);font-stretch:75%;font-weight:900;font-size:48px;line-height:1;color:#E8A33D}
+.rxcount span{font-size:12.5px;line-height:1.35;color:rgba(255,255,255,.85)}
+.rxnums{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.14);border-radius:4px;overflow:hidden}
+.rxnums div{background:#0B1F3A;padding:10px 12px}
+.rxnums b{display:block;font-family:var(--f-display);font-stretch:75%;font-weight:900;font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.rxnums b i{font-style:normal;color:#E8A33D;font-size:.6em;margin:0 2px}
+.rxnums span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.rxnums .up b{color:#6FD39C} .rxnums .dn b{color:#F08A74}
+.rxsteps{list-style:none;margin:0;padding:0;display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr));counter-reset:rx}
+.rxsteps li{counter-increment:rx;position:relative;background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:14px 14px 14px;display:grid;gap:6px;align-content:start;overflow:hidden;min-width:0}
+.rxsteps li::after{content:counter(rx);position:absolute;right:10px;top:-6px;font-family:var(--f-display);font-stretch:75%;font-weight:900;font-size:72px;line-height:1;color:color-mix(in srgb,var(--steel) 14%,transparent);pointer-events:none}
+.rxic{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#0B1F3A;color:#E8A33D}
+.rxic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.rxdate{font-family:var(--f-display);font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sodium)}
+.rxsteps b{font-family:var(--f-display);font-size:18px;font-weight:800;line-height:1.1;position:relative}
+.rxsteps p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink-2);position:relative}
+.rxsteps p.rxsm{font-size:11px;color:var(--ink-3)}
+.rxbar{display:flex;height:26px;border-radius:3px;overflow:hidden;font-family:var(--f-display);font-weight:800;font-size:11.5px;text-transform:uppercase}
+.rxbar span{display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden}
+.rxbar .e{background:#0B1F3A;color:#fff;justify-content:flex-start;padding-left:8px}
+.rxbar .s{background:var(--steel-soft);color:#0B1F3A}
+.rxbar .r{background:#E8A33D;color:#0B1F3A}
+.rxladder{display:grid;gap:3px}
+.rxladder div{display:grid;grid-template-columns:26px 1fr 22px;align-items:center;gap:6px}
+.rxladder em{font-style:normal;font-family:var(--f-display);font-weight:800;font-size:11px}
+.rxladder span{height:9px;border-radius:2px;background:linear-gradient(90deg,#0B1F3A,var(--steel))}
+.rxladder b{font-size:11px;font-family:var(--f-num);font-weight:600;text-align:right}
+.rxcard{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:16px 18px;display:grid;gap:14px;cursor:pointer;margin-bottom:8px}
+.rxct{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rxct b{font-family:var(--f-display);font-size:22px;font-weight:900}
+.rxct span{font-size:12.5px;color:var(--ink-3)}
+.rxverd{margin-left:auto;font-style:normal;font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:3px;background:var(--surface-2);color:var(--ink)}
+.rxcard.down .rxverd{background:var(--fall);color:#fff} .rxcard.up .rxverd{background:var(--rise);color:#fff}
+.rxstats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.rxstats div{border-top:3px solid #0B1F3A;padding-top:6px}
+.rxstats b{display:block;font-family:var(--f-display);font-stretch:75%;font-weight:900;font-size:clamp(28px,5vw,40px);line-height:1;font-variant-numeric:tabular-nums}
+.rxstats span{font-size:11.5px;color:var(--ink-3)}
+.rxstrip{position:relative;height:58px;border-radius:4px;overflow:hidden;background:var(--surface-2)}
+.rxzone{position:absolute;top:0;bottom:0}
+.rxzone.a{background:color-mix(in srgb,var(--steel) 22%,transparent)}
+.rxzone.b{background:color-mix(in srgb,var(--steel) 8%,transparent)}
+.rxzone span{position:absolute;bottom:5px;right:8px;font-family:var(--f-display);font-weight:900;font-size:18px;color:color-mix(in srgb,var(--ink) 40%,transparent)}
+.rxzone.b span{left:8px;right:auto}
+.rxline{position:absolute;top:0;bottom:0;border-left:3px solid #E8A33D}
+.rxline span{position:absolute;top:4px;left:6px;font-size:10.5px;font-weight:700;white-space:nowrap;color:var(--sodium)}
+.rxdot{position:absolute;top:24px;width:16px;height:16px;margin-left:-8px;border-radius:50%;background:var(--fall);border:3px solid var(--surface);box-shadow:0 0 0 1px var(--fall)}
+.rxcard.up .rxdot{background:var(--rise);box-shadow:0 0 0 1px var(--rise)} .rxcard.hold .rxdot{background:var(--ink-3)}
+.rxdot span{position:absolute;top:18px;left:50%;transform:translateX(-50%);font-size:10.5px;font-weight:700;white-space:nowrap}
+.rxwhy{margin:0;font-size:14px;line-height:1.55;color:var(--ink-2)}
+.rxwhy span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:3px}
+@media (max-width:860px){.rxhero-in{grid-template-columns:1fr;padding:22px 18px}.rxsteps{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.rxsteps{grid-template-columns:1fr}.rxnums b{font-size:32px}.rxct .rxverd{margin-left:0}}
 /* REALIGN-EXPLAINER-NOV8 */
 .cristeps{list-style:none;counter-reset:st;margin:14px 0 0;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
 .cristeps li{counter-increment:st;position:relative;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 13px 12px 48px;display:grid;gap:6px;align-content:start;min-width:0}
@@ -3263,6 +3325,33 @@ nav.topbar ~ main.wrap{margin-top:20px}
 /* ---- record book groups (Nov 5 2026) ---- */
 .recgh{margin:18px 0 8px;font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--sodium);border-bottom:1px solid var(--line-soft);padding-bottom:5px}
 .panel h2 + .recgh{margin-top:8px}
+/* ---- logo story tiles (Nov 8 2026) ---- */
+.st-mosaic{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:0 0 16px}
+.st-tile{grid-column:span 2;position:relative;display:block;min-height:210px;border-radius:10px;overflow:hidden;text-decoration:none;color:#fff;
+  background:radial-gradient(circle at 78% 30%,color-mix(in srgb,var(--c1) 85%,#fff) 0%,var(--c1) 38%,color-mix(in srgb,var(--c1) 55%,#000) 100%)}
+.st-tile.big{grid-column:span 3;min-height:300px}
+.st-tile:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 38px,rgba(255,255,255,.05) 38px 40px)}
+.st-tile:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.82) 100%)}
+.st-crests{position:absolute;top:16px;right:16px;display:flex;align-items:flex-end;z-index:1}
+.st-w .crest{width:120px;height:120px;object-fit:contain;filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
+.st-l .crest{width:58px;height:58px;object-fit:contain;margin-left:-14px;opacity:.9;filter:drop-shadow(0 3px 8px rgba(0,0,0,.45)) grayscale(.2)}
+.st-tile.big .st-w .crest{width:170px;height:170px}
+.st-tile.big .st-l .crest{width:80px;height:80px}
+.st-score{position:absolute;top:14px;left:14px;z-index:2;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:999px;font-weight:800;font-size:15px;font-variant-numeric:tabular-nums}
+.st-txt{position:absolute;left:16px;right:16px;bottom:14px;z-index:2}
+.st-k{display:block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.9;margin-bottom:4px}
+.st-h{display:block;font-family:var(--f-display);font-weight:800;text-transform:uppercase;font-size:19px;line-height:1.08;letter-spacing:-.005em;text-shadow:0 2px 6px rgba(0,0,0,.4)}
+.st-tile.big .st-h{font-size:27px}
+.st-tile:hover .st-h{text-decoration:underline;text-decoration-thickness:2px}
+.hgs-c.st-flash{outline:3px solid var(--sodium);outline-offset:2px;transition:outline-color 1.4s}
+@media (max-width:760px){
+  .st-mosaic{grid-template-columns:1fr 1fr}
+  .st-tile,.st-tile.big{grid-column:span 2;min-height:200px}
+  .st-tile:nth-child(n+3){grid-column:span 1;min-height:170px}
+  .st-tile:nth-child(n+3) .st-w .crest{width:70px;height:70px}.st-tile:nth-child(n+3) .st-l .crest{width:36px;height:36px}
+  .st-tile:nth-child(n+3) .st-h{font-size:14px}
+  .st-tile.big .st-h{font-size:21px}.st-tile.big .st-w .crest{width:120px;height:120px}
+}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -7992,12 +8081,25 @@ nav.topbar ~ main.wrap{margin-top:20px}
         "<h2>" + esc(lead.head) + "</h2>" +
         '<div class="hgs-sc">' + side(lead, lead.winner) + side(lead, lead.winner === lead.away ? lead.home : lead.away) + "</div>" +
         '<div class="hgs-body">' + paras(lead.body) + srcs(lead) + "</div></section>";
-      var rest = list.slice(1);
+      var rest = list;   // Nov 8 2026: lead story's text lives in the grid; tiles replace the hero
+      // ---- logo story tiles (Nov 8 2026) ----
+      function tile(s, big) {
+        var w = s.winner, l = w === s.away ? s.home : s.away;
+        var tw = byName[w] || {}, c1 = tw.c1 || "#0B1F3A", c2 = tw.c2 || "#16161A";
+        var ws = Math.round(w === s.away ? s.away_score : s.home_score), ls = Math.round(w === s.away ? s.home_score : s.away_score);
+        return '<a class="st-tile' + (big ? " big" : "") + '" href="#hgs-' + esc(s.id) + '" data-sttile="' + esc(s.id) + '" style="--c1:' + esc(c1) + ";--c2:" + esc(c2) + '">' +
+          '<span class="st-crests"><span class="st-w">' + logo(w, "xl") + "</span>" +
+          '<span class="st-l">' + logo(l, "xl") + "</span></span>" +
+          '<span class="st-score">' + ws + "&ndash;" + ls + "</span>" +
+          '<span class="st-txt"><span class="st-k">' + esc(s.kicker || "") + "</span>" +
+          '<span class="st-h">' + esc(s.head) + "</span></span></a>";
+      }
+      var tilesHtml = '<div class="st-mosaic">' + list.slice(0, 5).map(function (s, i) { return tile(s, i < 2); }).join("") + "</div>";
       var CL = ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) { return rest.some(function (s) { return s.cls === c; }); });
       var SHOW = 12;
       var cards = rest.map(function (s, k) {
         var vis = s.body.length > 2 && !/^Individual stats/.test(s.body[1]) ? 2 : 1;
-        return '<article class="hgs-c' + (k >= SHOW ? " x" : "") + '" data-hgc="' + esc(s.cls || "") + '">' +
+        return '<article class="hgs-c' + (k >= SHOW ? " x" : "") + '" id="hgs-' + esc(s.id) + '" data-hgc="' + esc(s.cls || "") + '">' +
           '<span class="hgs-ck">' + esc(s.kicker) + " &middot; " + day(s.date) + "</span>" +
           "<h3>" + esc(s.head) + "</h3>" +
           '<div class="hgs-sc sm">' + side(s, s.winner) + side(s, s.winner === s.away ? s.home : s.away) + "</div>" +
@@ -8026,7 +8128,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
           document.querySelectorAll(".hgs-c").forEach(function (x) { x.hidden = !!c && x.getAttribute("data-hgc") !== c; });
         });
       }
-      return { weekend: weekend, monday: dow === 1, html: heroHtml + grid };
+      if (!window._stBound) {
+        window._stBound = 1;
+        document.addEventListener("click", function (e) {
+          var t = e.target.closest("[data-sttile]"); if (!t) return;
+          e.preventDefault();
+          var a = document.getElementById("hgs-" + t.getAttribute("data-sttile")); if (!a) return;
+          var gr = document.querySelector(".hgs-grid"); if (gr) gr.classList.add("all");
+          a.hidden = false;
+          var d = a.querySelector("details"); if (d) d.open = true;
+          a.scrollIntoView({ behavior: "smooth", block: "start" });
+          a.classList.add("st-flash"); setTimeout(function () { a.classList.remove("st-flash"); }, 1600);
+        });
+      }
+      return { weekend: weekend, monday: dow === 1, html: tilesHtml + grid };
     })();
 
     // callers pass display-ready markup (entities included), so this does not escape
@@ -9981,23 +10096,41 @@ nav.topbar ~ main.wrap{margin-top:20px}
     }).join("") + "</div>";
   }
   /* REALIGN-EXPLAINER-NOV8 */
+  /* REALIGN-LOOK-NOV8 */
+  function criCountdown() {
+    var t = new Date("2026-11-19T09:00:00-07:00").getTime() - Date.now();
+    var d = Math.ceil(t / 86400000);
+    if (t <= 0) return '<div class="rxcount"><b>Out</b><span>UHSAA&rsquo;s first placements were released Nov 19</span></div>';
+    return '<div class="rxcount"><b>' + d + '</b><span>' + (d === 1 ? "day" : "days") +
+      ' until UHSAA&rsquo;s first placements &middot; Nov 19</span></div>';
+  }
   function criExample() {
-    var r = RJ.filter(function (x) { return x.school === "Orem" && x.cri != null; })[0] ||
-            RJ.filter(function (x) { return x.direction !== "hold" && x.cri != null; })[0];
+    var scored = RJ.filter(function (x) { return x.cri != null; });
+    var r = scored.filter(function (x) { return x.school === "Orem"; })[0] ||
+            scored.filter(function (x) { return x.direction !== "hold"; })[0];
     if (!r) return "";
-    var i = CORD.indexOf(r.proj), above = i > 0 ? CORD[i - 1] : null;
+    var i = CORD.indexOf(r.proj), above = i > 0 ? CORD[i - 1] : null, below = i < CORD.length - 1 ? CORD[i] : null;
     var line = above ? RCUT[above] : null;
-    var out = "<b>Example: " + esc(r.school) + ".</b> It has <strong>" + crin(r.size) +
-      "</strong> sophomores and juniors, and " + (r.edp * 100).toFixed(0) +
-      "% of its students come from low-income families. That gives it a score of <strong>" + crif(r.cri) +
-      "</strong>" + (r.cri_rank ? ", " + r.cri_rank + (["th","st","nd","rd"][(r.cri_rank % 100 > 10 && r.cri_rank % 100 < 14) ? 0 : (r.cri_rank % 10 < 4 ? r.cri_rank % 10 : 0)]) + " of " + RJ.filter(function (x) { return x.cri != null; }).length : "") + ". ";
-    if (line != null) out += "The line between " + esc(above) + " and " + esc(r.proj) + " is at " + crif(line) + ", so " +
-      esc(r.school) + " lands in <strong>" + esc(r.proj) + "</strong>" +
-      (r.direction === "down" ? ", one class lower than today. Because it already plays " + esc(r.cls) +
-        " football, it can ask UHSAA to let it stay there (step 4)." :
-       r.direction === "up" ? ", one class higher than today." : ", the same class as today.");
-    out += ' <span class="sm">How to read a score: 0 is a middle-sized football school, + is bigger, &minus; is smaller.</span>';
-    return out;
+    var lo = (line != null ? Math.min(line, r.cri) : r.cri) - 0.35, hi = (line != null ? Math.max(line, r.cri) : r.cri) + 0.35;
+    function X(v) { return ((v - lo) / (hi - lo)) * 100; }
+    var ord = function (n) { return n + (["th","st","nd","rd"][(n % 100 > 10 && n % 100 < 14) ? 0 : (n % 10 < 4 ? n % 10 : 0)]); };
+    var verdict = r.direction === "down" ? "Drops to " + r.proj : r.direction === "up" ? "Moves up to " + r.proj : "Stays " + r.proj;
+    return '<div class="rxcard ' + esc(r.direction) + '" data-t="' + esc(r.school) + '">' +
+      '<div class="rxct">' + logo(r.school, "sm") + "<b>" + esc(r.school) + '</b><span>plays ' + esc(r.cls) + ' today</span>' +
+      '<em class="rxverd">' + esc(verdict) + "</em></div>" +
+      '<div class="rxstats"><div><b>' + crin(r.size) + '</b><span>sophomores + juniors</span></div>' +
+      '<div><b>' + Math.round(r.edp * 100) + '%</b><span>low-income students</span></div>' +
+      '<div><b>' + crif(r.cri) + '</b><span>score &middot; ' + ord(r.cri_rank) + ' of ' + scored.length + '</span></div></div>' +
+      (line != null
+        ? '<div class="rxstrip"><div class="rxzone a" style="left:' + X(line) + '%;right:0"><span>' + esc(above) + '</span></div>' +
+          '<div class="rxzone b" style="left:0;width:' + X(line) + '%"><span>' + esc(r.proj) + '</span></div>' +
+          '<div class="rxline" style="left:' + X(line) + '%"><span>' + esc(above) + ' line ' + crif(line) + '</span></div>' +
+          '<div class="rxdot" style="left:' + X(r.cri) + '%"><span>' + esc(r.school) + '</span></div></div>'
+        : "") +
+      '<p class="rxwhy">' + esc(r.school) + "&rsquo;s score is " + (line != null ? (Math.abs(line - r.cri)).toFixed(2) +
+        " short of the " + esc(above) + " line, so it lands in <b>" + esc(r.proj) + "</b>." : "high enough for " + esc(r.proj) + ".") +
+      (r.direction === "down" ? " It already plays " + esc(r.cls) + " football, so it can ask UHSAA to stay there (step 4)." : "") +
+      ' <span>A score of 0 is a middle-sized football school; + is bigger, &minus; is smaller.</span></p></div>';
   }
   function drawRealign() {
     var up = RJ.filter(function (r) { return r.direction === "up"; });
@@ -10011,40 +10144,41 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var sizes = CORD.map(function (c) { return c + " " + (RMETA.sizes[c] || "?"); }).join(" &middot; ");
 
     document.getElementById("v-realign").innerHTML =
-      '<div class="panel" style="margin-bottom:14px"><div class="crihead">' +
-      '<span class="kick">UHSAA 2027&ndash;29 &middot; football &middot; first placements Nov 19</span>' +
-      "<h2>Who plays who in 2027: how realignment works</h2>" +
-      '<p class="lede">Every two years, the Utah High School Activities Association (UHSAA) re-sorts every ' +
-      'high school into a <strong>class</strong> (6A is the biggest schools, 1A the smallest) and a ' +
-      '<strong>region</strong> (the league you play your region games in). This year it uses a new formula. ' +
-      'Here is the whole process in six steps, then our projection of where every school lands.</p></div>' +
-      '<ol class="cristeps">' +
-      '<li><b>Count the students</b><p>The state counts every school&rsquo;s <strong>sophomores and juniors</strong> ' +
-      'on October 1, 2026. More students means a bigger school.</p></li>' +
-      '<li><b>Give each school a score</b><p>The score is mostly size. A little comes from how many students ' +
-      'come from low-income families (more means a slightly lower score) and a little from how good the ' +
-      'school&rsquo;s teams have been.</p>' +
-      '<div class="cribar"><span class="e" style="width:' + fw[0] + '%">' + fw[0] + '% SIZE</span>' +
-      '<span class="s" style="width:' + fw[1] + '%">' + fw[1] + '</span><span class="r" style="width:' + fw[2] + '%">' + fw[2] + "</span></div>" +
-      '<p class="sm">Football: ' + fw[0] + '% size &middot; ' + fw[1] + '% family income &middot; ' + fw[2] +
-      '% team results (UHSAA calls these numbers provisional). Other sports use ' + gw[0] + '/' + gw[1] + '/' + gw[2] + '.</p></li>' +
-      '<li><b>Line them up and cut</b><p>Every school is ranked by score, biggest first. UHSAA draws lines to ' +
-      'split the list into classes. 6A, 5A and 4A must each get <strong>at least 21 schools</strong>; 3A, 2A ' +
-      'and 1A at least 8. First look: <strong>Nov 19</strong>.</p></li>' +
-      '<li><b>Schools can ask for changes</b><p>By <strong>Dec 1</strong> a school can ask to play up a class ' +
-      '(say, a strong program that wants tougher games) or ask for a change because it would have to travel too far.</p></li>' +
-      '<li><b>Draw the regions</b><p>Each class is split into regions of nearby schools. First look Dec 1, ' +
-      'a public hearing on Zoom <strong>Dec 8</strong>, second look Dec 9.</p></li>' +
-      '<li><b>Final vote</b><p>UHSAA votes on <strong>Dec 17</strong>. The new classes and regions start in ' +
-      '<strong>August 2027</strong> and last two seasons.</p></li></ol>' +
-      '<div class="criex">' + criExample() + "</div>" +
-      '</div>' +
+      '<section class="rxhero"><div class="rxhero-in">' +
+      '<div class="rxhl"><span class="rxkick">UHSAA realignment &middot; 2027&ndash;29</span>' +
+      "<h2>Who plays who<br>in 2027</h2>" +
+      '<p>Every two years UHSAA re-sorts every school into a <b>class</b> (6A biggest, 1A smallest) ' +
+      'and a <b>region</b> (your league). Here is how it works, and where we project every school lands.</p></div>' +
+      '<div class="rxside">' + criCountdown() +
+      '<div class="rxnums"><div class="up"><b>' + up.length + '</b><span>moving up</span></div>' +
+      '<div class="dn"><b>' + dn.length + '</b><span>moving down</span></div>' +
+      '<div><b>' + n6 + '<i>&rarr;</i>' + (RMETA.sizes["6A"] || "?") + '</b><span>schools in 6A</span></div></div></div>' +
+      "</div></section>" +
 
-      '<div class="cristats">' +
-      '<div class="cristat up"><b>' + up.length + "</b><span>projected to move up</span></div>" +
-      '<div class="cristat dn"><b>' + dn.length + "</b><span>projected to move down</span></div>" +
-      '<div class="cristat cl"><b>' + cl.length + "</b><span>close calls results could decide</span></div>" +
-      '<div class="cristat"><b>' + n6 + "&rarr;" + (RMETA.sizes["6A"] || "?") + "</b><span>6A schools, now vs projected</span></div></div>" +
+      '<h3 class="divhead" style="margin-top:18px">How it works<span>six steps, Oct 1 to Dec 17</span></h3>' +
+      '<ol class="rxsteps">' +
+      '<li><i class="rxic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6M10 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg></i><span class="rxdate">Oct 1, 2026</span><b>Count the students</b>' +
+      '<p>The state counts every school&rsquo;s <strong>sophomores and juniors</strong>.</p></li>' +
+      '<li><i class="rxic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-6"/></svg></i><span class="rxdate">The formula</span><b>Turn it into a score</b>' +
+      '<p>Mostly size, plus a little for family income and team results.</p>' +
+      '<div class="rxbar"><span class="e" style="flex:' + fw[0] + '">' + fw[0] + '% size</span>' +
+      '<span class="s" style="flex:' + fw[1] + '">' + fw[1] + '</span><span class="r" style="flex:' + fw[2] + '">' + fw[2] + "</span></div>" +
+      '<p class="rxsm">' + fw[1] + '% income &middot; ' + fw[2] + '% results &middot; provisional</p></li>' +
+      '<li><i class="rxic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h12M4 14h9M4 18h6"/><path d="M2 12h20" stroke-dasharray="2 2"/></svg></i><span class="rxdate">Nov 19</span><b>Line up and cut</b>' +
+      '<p>Rank every school, draw the lines. 6A, 5A and 4A need <strong>21+</strong> schools each.</p>' +
+      '<div class="rxladder">' + CORD.map(function (c) {
+        var n = RMETA.sizes[c] || 0;
+        return '<div><em>' + c + '</em><span style="width:' + Math.round(n / 30 * 100) + '%"></span><b>' + n + "</b></div>";
+      }).join("") + "</div></li>" +
+      '<li><i class="rxic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 21h14"/></svg></i><span class="rxdate">By Dec 1</span><b>Ask for changes</b>' +
+      '<p>A school can ask to <strong>play up</strong> a class, or to move because of travel distance.</p></li>' +
+      '<li><i class="rxic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2"/></svg></i><span class="rxdate">Dec 1&ndash;9</span><b>Draw the regions</b>' +
+      '<p>Nearby schools become a league. Public hearing on Zoom <strong>Dec 8</strong>.</p></li>' +
+      '<li><i class="rxic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4 10-10"/><path d="M3 21h18"/></svg></i><span class="rxdate">Dec 17</span><b>Final vote</b>' +
+      '<p>Locked in for two seasons. Kickoff <strong>August 2027</strong>.</p></li></ol>' +
+
+      '<h3 class="divhead" style="margin-top:22px">See it on one school<span>the formula, start to finish</span></h3>' +
+      criExample() +
 
       '<h3 class="divhead" style="margin-top:8px">The field<span>every program on one scale</span></h3>' +
       criField() +
