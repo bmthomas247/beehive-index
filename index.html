@@ -3352,6 +3352,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
   .st-tile:nth-child(n+3) .st-h{font-size:14px}
   .st-tile.big .st-h{font-size:21px}.st-tile.big .st-w .crest{width:120px;height:120px}
 }
+/* ---- realign school search (Nov 8 2026) ---- */
+.rxfind{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:6px 0 10px}
+.rxfind label{font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.rxfind input{flex:1;max-width:340px;min-width:200px;padding:9px 12px;border:1px solid var(--line);border-radius:8px;font-size:15px;background:var(--surface);color:var(--ink)}
+.rxfind input:focus{outline:2px solid var(--sodium);outline-offset:1px}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -10104,9 +10109,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
     return '<div class="rxcount"><b>' + d + '</b><span>' + (d === 1 ? "day" : "days") +
       ' until UHSAA&rsquo;s first placements &middot; Nov 19</span></div>';
   }
-  function criExample() {
+  var rxPick = "Orem";   // Nov 8 2026: school search on "See it on one school"
+  function criExample(name) {
     var scored = RJ.filter(function (x) { return x.cri != null; });
-    var r = scored.filter(function (x) { return x.school === "Orem"; })[0] ||
+    var r = scored.filter(function (x) { return x.school === (name || rxPick); })[0] ||
+            scored.filter(function (x) { return x.school === "Orem"; })[0] ||
             scored.filter(function (x) { return x.direction !== "hold"; })[0];
     if (!r) return "";
     var i = CORD.indexOf(r.proj), above = i > 0 ? CORD[i - 1] : null, below = i < CORD.length - 1 ? CORD[i] : null;
@@ -10132,6 +10139,22 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (r.direction === "down" ? " It already plays " + esc(r.cls) + " football, so it can ask UHSAA to stay there (step 4)." : "") +
       ' <span>A score of 0 is a middle-sized football school; + is bigger, &minus; is smaller.</span></p></div>';
   }
+  document.addEventListener("input", function (e) {
+    if (!e.target || e.target.id !== "rxq") return;
+    var v = e.target.value.trim().toLowerCase(), hit = null;
+    var priv = null;
+    RJ.forEach(function (x) { if (x.school.toLowerCase() === v) { if (x.cri != null) hit = x.school; else priv = x; } });
+    if (priv) {
+      var pb = document.getElementById("rxone");
+      if (pb) pb.innerHTML = '<div class="rxcard hold"><div class="rxct">' + logo(priv.school, "sm") + "<b>" + esc(priv.school) +
+        '</b><span>plays ' + esc(priv.cls) + ' today</span><em class="rxverd">Stays ' + esc(priv.cls) + "</em></div>" +
+        '<p class="rxwhy">' + esc(priv.school) + " is a private school with no public enrollment data, so it gets no score and is held in its class.</p></div>";
+      return;
+    }
+    if (!hit) return;
+    rxPick = hit;
+    var box = document.getElementById("rxone"); if (box) box.innerHTML = criExample(hit);
+  });
   function drawRealign() {
     var up = RJ.filter(function (r) { return r.direction === "up"; });
     var dn = RJ.filter(function (r) { return r.direction === "down"; });
@@ -10178,7 +10201,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<p>Locked in for two seasons. Kickoff <strong>August 2027</strong>.</p></li></ol>' +
 
       '<h3 class="divhead" style="margin-top:22px">See it on one school<span>the formula, start to finish</span></h3>' +
-      criExample() +
+      '<div class="rxfind"><label for="rxq">Find your school</label>' +
+      '<input id="rxq" type="search" list="rxlist" autocomplete="off" placeholder="Type a school name" value="' + esc(rxPick) + '">' +
+      '<datalist id="rxlist">' + RJ.map(function (x) { return x.school; }).sort()
+        .map(function (n) { return '<option value="' + esc(n) + '">'; }).join("") + "</datalist></div>" +
+      '<div id="rxone">' + criExample() + "</div>" +
 
       '<h3 class="divhead" style="margin-top:8px">The field<span>every program on one scale</span></h3>' +
       criField() +
