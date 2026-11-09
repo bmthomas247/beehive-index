@@ -11673,7 +11673,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
             '<div class="rbdt">' + (r.lv ? '<i class="lv">' + esc(LVTXT[r.lv] || r.lv) + "</i>" : "") +
             r.tags.map(function (t) { return '<i class="' + t[0] + '">' + esc(t[1]) + "</i>"; }).join("") + "</div></div>" +
             (r.u ? '<a class="rbdq" href="' + esc(r.u) + '" target="_blank" rel="noopener noreferrer">Questionnaire</a>'
-                 : '<span class="rbdx">No questionnaire on file</span>') + "</div>";
+                 : '<span class="rbdx" title="This college does not post a football questionnaire on its athletics site. Send your film to its recruiting staff.">No public questionnaire</span>') + "</div>";
         }).join("") + "</div>" +
         (rows.length > 10 ? '<button type="button" class="rbdmore" id="rbdmore">Show all ' + rows.length + " colleges</button>" : "") +
         '<p class="rbdsrc">Commits: 247Sports Utah commit board. Questionnaires: each college&rsquo;s own athletics site. ' +
