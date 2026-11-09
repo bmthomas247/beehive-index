@@ -2732,6 +2732,101 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .fr-n{ cursor:pointer }
 /* ===== end v2 broadcast theme ===== */
 
+/* ---- Recruiting Help v2 (Nov 9 2026) ---- */
+.rtoday{ margin-bottom:14px; background:#0B1F3A; color:#fff; border:0; border-bottom:4px solid var(--sodium-bright,#E8A33D) }
+.rtoday h2{ color:#fff; font-family:var(--f-display); text-transform:uppercase; letter-spacing:.04em; font-size:24px }
+.rtoday .lede{ color:rgba(255,255,255,.78) }
+.rtoday .rtlive{ color:rgba(255,255,255,.7) }
+.rtoday .rtcard{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14); border-top-color:var(--pc,#888) }
+.rtoday .rtcard .rtk, .rtoday .rtcard .rtn, .rtoday .rtsrc{ color:rgba(255,255,255,.62) }
+.rtoday .rtcard p, .rtoday .rtsoon{ color:rgba(255,255,255,.9) }
+.rtoday .rtcard .rtp{ color:#fff; font-size:26px; text-transform:uppercase; letter-spacing:.02em }
+.rtoday .rtcard .rtp:before{ content:""; display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--pc,#888); margin-right:8px; vertical-align:middle }
+.rtoday .rtsoon strong{ color:var(--sodium-bright,#E8A33D) }
+.rtoday h2{ display:flex; align-items:center; gap:10px; flex-wrap:wrap }
+.rtlive{ display:inline-flex; align-items:center; gap:6px; font-family:var(--f-display); font-size:11px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3) }
+.rtlive i{ width:8px; height:8px; border-radius:50%; background:#1D7A4E; animation:rtpulse 1.8s infinite }
+@keyframes rtpulse{ 0%{ box-shadow:0 0 0 0 rgba(29,122,78,.5) } 70%{ box-shadow:0 0 0 8px rgba(29,122,78,0) } 100%{ box-shadow:0 0 0 0 rgba(29,122,78,0) } }
+@media (prefers-reduced-motion:reduce){ .rtlive i{ animation:none } }
+.rtgrid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px; margin-top:12px }
+.rtcard{ border:1px solid var(--line); border-top:4px solid var(--pc,#888); border-radius:0; padding:12px 14px; background:var(--surface) }
+.rtcard .rtk{ font-family:var(--f-display); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3) }
+.rtcard .rtp{ display:block; font-family:var(--f-display); font-size:20px; font-weight:700; color:var(--pc,#888); margin:2px 0 4px }
+.rtcard p{ margin:0; font-size:13px; line-height:1.5; color:var(--ink-2) }
+.rtcard .rtn{ margin-top:8px; font-size:12px; color:var(--ink-3) }
+.rtsoon{ margin:12px 0 0; font-size:13.5px }
+.rtsrc{ margin:10px 0 0; font-size:11.5px; color:var(--ink-3) }
+.rtsrc a{ color:inherit }
+.rchap{ position:sticky; top:var(--rtop,63px); z-index:30; background:var(--surface); border:1px solid var(--line);
+  margin:0 0 14px; padding:8px 10px 0; border-radius:var(--r) }
+.rchin{ display:flex; gap:6px; overflow-x:auto; scrollbar-width:none; padding-bottom:8px }
+.rchin::-webkit-scrollbar{ display:none }
+.rchb{ appearance:none; flex:none; display:inline-flex; align-items:center; gap:7px; border:1px solid var(--line);
+  background:var(--surface); color:var(--ink-2); border-radius:999px; padding:5px 12px 5px 5px; font:inherit;
+  font-size:13px; cursor:pointer; white-space:nowrap }
+.rchb b{ display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%;
+  background:var(--surface-2); font-family:var(--f-display); font-size:12px; color:var(--ink-2) }
+.rchb:hover{ border-color:var(--sodium) }
+.rchb.on{ background:var(--ink); color:var(--surface); border-color:var(--ink) }
+.rchb.on b{ background:var(--sodium); color:#fff }
+.rchb.done b{ background:var(--sodium); color:#fff }
+.rchbar{ height:3px; margin:0 -10px; background:var(--line-soft); overflow:hidden; border-radius:0 0 var(--r) var(--r) }
+.rchbar i{ display:block; height:100%; width:0; background:var(--sodium) }
+.rplan{ margin-top:14px; border:1px solid var(--line); border-radius:var(--r); padding:14px }
+.rplh{ display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap }
+.rplh b{ font-family:var(--f-display); font-size:17px; letter-spacing:.02em }
+.rplh span{ font-size:12.5px; color:var(--ink-3) }
+.rplg{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin:12px 0 }
+.rplb{ appearance:none; border:1px solid var(--line); background:var(--surface); border-radius:var(--r); padding:10px 6px;
+  cursor:pointer; font:inherit; color:var(--ink); display:flex; flex-direction:column; align-items:center; gap:2px }
+.rplb span{ font-family:var(--f-display); font-size:24px; font-weight:700; line-height:1 }
+.rplb small{ font-size:11.5px; color:var(--ink-3) }
+.rplb:hover{ border-color:var(--sodium) }
+.rplb.on{ background:var(--ink); border-color:var(--ink); color:var(--surface) }
+.rplb.on small{ color:var(--surface); opacity:.8 }
+.rplhd{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px }
+.rplhd b{ font-size:15px }
+.rplhd em{ font-style:normal; font-size:12.5px; color:var(--ink-3) }
+.rplbar{ height:8px; border-radius:4px; background:var(--line-soft); overflow:hidden; margin-bottom:10px }
+.rplbar i{ display:block; height:100%; background:#1D7A4E; transition:width .25s }
+.rpli{ display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-top:1px solid var(--line-soft); cursor:pointer; font-size:14px; line-height:1.45 }
+.rpli input{ width:18px; height:18px; margin:1px 0 0; flex:none; accent-color:#1D7A4E }
+.rpli.ok span{ color:var(--ink-3); text-decoration:line-through }
+.rplall{ margin-top:10px; font-size:13px; font-weight:600; color:#1D7A4E }
+.rpln{ margin:10px 0 0; font-size:11.5px; color:var(--ink-3) }
+.rbd-f{ display:flex; gap:6px; flex-wrap:wrap; margin:12px 0 }
+.rbd-f button{ appearance:none; border:1px solid var(--line); background:var(--surface); color:var(--ink-2); border-radius:999px;
+  padding:4px 12px; font:inherit; font-size:12.5px; cursor:pointer }
+.rbd-f button.on{ background:var(--ink); color:var(--surface); border-color:var(--ink) }
+.rbd-f button small{ opacity:.7; margin-left:4px }
+.rbd{ border-top:1px solid var(--line) }
+.rbdr{ display:grid; grid-template-columns:40px minmax(0,1fr) auto; gap:4px 12px; align-items:center; padding:10px 2px;
+  border-bottom:1px solid var(--line-soft) }
+.rbdr .crest, .rbdr .cmark{ width:36px; height:36px }
+.rbdn b{ font-size:14.5px }
+.rbdn small{ display:block; font-size:12px; color:var(--ink-3) }
+.rbdt{ display:flex; gap:5px; flex-wrap:wrap; margin-top:4px }
+.rbdt i{ font-style:normal; font-size:11px; padding:2px 7px; border-radius:999px; border:1px solid var(--line); color:var(--ink-2); white-space:nowrap }
+.rbdt i.lv{ background:var(--ink); border-color:var(--ink); color:var(--surface); font-family:var(--f-display); letter-spacing:.06em }
+.rbdt i.cm{ border-color:#1D7A4E; color:#1D7A4E }
+.rbdq{ font-size:12.5px; font-weight:600; text-decoration:none; border:1px solid var(--sodium); color:var(--ink); border-radius:999px;
+  padding:5px 12px; white-space:nowrap }
+.rbdq:hover{ background:var(--sodium); color:#fff }
+.rbdx{ font-size:11.5px; color:var(--ink-3) }
+.rbd:not(.all) .rbdr.more{ display:none }
+.rbdmore{ appearance:none; display:block; width:100%; margin-top:10px; padding:9px; border:1px solid var(--line); border-radius:var(--r);
+  background:var(--surface-2); color:var(--ink); font:inherit; font-size:13px; font-weight:600; cursor:pointer }
+.rbdmore:hover{ border-color:var(--sodium) }
+.rbdsrc{ margin:10px 0 0; font-size:11.5px; color:var(--ink-3) }
+@media (max-width:560px){
+  .rbdr{ grid-template-columns:36px minmax(0,1fr) }
+  .rbdr > :last-child{ grid-column:2 }
+  .rplb span{ font-size:20px }
+  .rtoday .rtcard .rtp{ font-size:21px }
+  .rtoday h2{ font-size:20px }
+}
+
 /* ================= RECRUITING HELP =================
    Sep 2026 rebuild. Brandon: "more graphics and less words." The tab used to be
    nine panels of prose; it is now a drive chart, a levels ladder, a core-course
@@ -10990,8 +11085,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
       return '<div class="fieldwrap">' + fieldH(stops) + fieldV(stops) + "</div>";
     }
     function driveSection(sec) {
-      return driveField(sec.stops) +
-        '<div class="dstops">' + sec.stops.map(function (s) {
+      return driveField(sec.stops) + planBlock(sec) +
+        '<div class="dstops" id="rplov">' + sec.stops.map(function (s) {
           return '<div class="dstop"><div class="dhd"><span class="dnum">' + esc(s.g) + "</span>" +
             "<div><b>" + esc(s.y) + "</b><em>" + esc(s.hd) + "</em></div></div>" +
             '<ul class="dlist">' + s.items.map(function (t) {
@@ -11258,6 +11353,243 @@ nav.topbar ~ main.wrap{margin-top:20px}
       return out;
     }
 
+
+    /* ---------- Recruiting Help v2 (Nov 9 2026) ---------- */
+    var SID = {};
+    R.sections.forEach(function (s) { SID[s.id] = s; });
+    var RCH = [["Timeline"], ["Levels"], ["Grades"], ["Get seen"], ["Money"], ["Calendar"]];
+    var SECCH = { drive: 0, levels: 1, academics: 2, center: 2, seen: 3, hudl: 3, xprofile: 3,
+                  whyx: 3, xstaff: 3, money: 4, scholarships: 4, calendars: 5 };
+    var PLANKEY = "uhsfb-plan-v1";
+    function planLoad() {
+      try { return JSON.parse(localStorage.getItem(PLANKEY) || "{}") || {}; } catch (e) { return {}; }
+    }
+    function planSave(o) {
+      try { localStorage.setItem(PLANKEY, JSON.stringify(o)); } catch (e) {}
+    }
+    function planBlock(sec) {
+      return '<div class="rplan" id="rplan"><div class="rplh"><b>Your game plan</b>' +
+        "<span>Tap your grade. Check things off as you do them.</span></div>" +
+        '<div class="rplg">' + sec.stops.map(function (st, i) {
+          return '<button type="button" class="rplb" data-g="' + i + '"><span>' + esc(st.g) + "</span>" +
+            "<small>" + esc(st.y) + "</small></button>";
+        }).join("") + "</div>" +
+        '<div class="rplbody" id="rplbody"></div>' +
+        '<p class="rpln">Your checks are saved on this phone or computer only. Nothing is sent to us.</p></div>';
+    }
+    function fmtD(k) {
+      var M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      return M[Math.floor(k / 100) % 100 - 1] + " " + (k % 100);
+    }
+    function pkD(x) { var a = x.split("-"); return (+a[0]) * 10000 + (+a[1]) * 100 + (+a[2]); }
+    function todayPanel() {
+      var C = SID.calendars;
+      if (!C || !C.cal || !C.cal.subs) return "";
+      var PC = {}, PT = {};
+      (C.cal.legend || []).forEach(function (l) { PC[l[0]] = l[1]; });
+      (C.periods || []).forEach(function (p) {
+        PT[p.k] = String(p.p).replace(/^He may /, "Coaches may ").replace(/^He /, "Coaches ");
+      });
+      var now = new Date(), key = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+      var soon = {}, srcs = [], known = 0;
+      var cards = C.cal.subs.map(function (sb) {
+        var cur = null, nxt = null, R2 = sb.ranges.map(function (r) { return [pkD(r[0]), pkD(r[1]), r[2]]; });
+        /* ranges can nest (Division II is one long contact period with dead days carved out),
+           so the narrowest range containing today wins, and the next change is whichever comes
+           first: a later range starting, or today's range ending. */
+        R2.forEach(function (r) {
+          if (r[0] <= key && key <= r[1] && (!cur || r[1] - r[0] < cur[1] - cur[0])) cur = r;
+        });
+        function on(k) { var c = null; R2.forEach(function (r) { if (r[0] <= k && k <= r[1] && (!c || r[1] - r[0] < c[1] - c[0])) c = r; }); return c; }
+        function nextDay(k) { var d = new Date(Math.floor(k / 10000), Math.floor(k / 100) % 100 - 1, k % 100 + 1); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); }
+        if (cur) {
+          var ch = null;
+          R2.forEach(function (r) { if (r[0] > key && r[0] <= cur[1] && (!ch || r[0] < ch)) ch = r[0]; });
+          var at = ch || nextDay(cur[1]), np = on(at);
+          nxt = [at, np ? np[2] : null];
+        }
+        (sb.marks || []).forEach(function (m) {
+          var k = pkD(m[0]);
+          if (k >= key && k - key <= 100) { soon[m[1]] = soon[m[1]] || []; if (soon[m[1]].indexOf(k) < 0) soon[m[1]].push(k); }
+        });
+        var sm = /href="([^"]+)"/.exec(sb.src || "");
+        if (sm) srcs.push('<a href="' + esc(sm[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(sb.k) + "</a>");
+        if (!cur) {
+          return '<div class="rtcard" style="--pc:#8A94A0"><span class="rtk">' + esc(sb.k) + "</span>" +
+            '<span class="rtp">Not published</span><p>The NCAA has not published this part of the calendar yet. We will add it when it is out.</p></div>';
+        }
+        known++;
+        return '<div class="rtcard" style="--pc:' + esc(PC[cur[2]] || "#888") + '"><span class="rtk">' + esc(sb.k) +
+          (sb.note ? " &middot; " + esc(sb.note) : "") + "</span>" +
+          '<span class="rtp">' + esc(cur[2]) + " period</span><p>" + esc(PT[cur[2]] || "") + "</p>" +
+          '<div class="rtn">Next change: ' + (nxt[1] ? esc(nxt[1]).toLowerCase() + " period from " + fmtD(nxt[0])
+                                                    : fmtD(nxt[0]) + " (not published yet)") +
+          "</div></div>";
+      }).join("");
+      var soonTxt = Object.keys(soon).map(function (k) {
+        var d = soon[k].sort(), a = d[0], b = d[d.length - 1];
+        return "<strong>" + esc(k) + "</strong> " + fmtD(a) + (b !== a ? "&ndash;" + (b % 100) : "");
+      });
+      var M = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      var W = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      return '<div class="panel rtoday" id="rtoday"><h2>Today in recruiting <span class="rtlive"><i></i>' +
+        esc(W[now.getDay()] + ", " + M[now.getMonth()] + " " + now.getDate()) + "</span></h2>" +
+        '<p class="lede">What a college coach is allowed to do with you today, by division.</p>' +
+        '<div class="rtgrid">' + cards + "</div>" +
+        (soonTxt.length ? '<p class="rtsoon">Coming up: ' + soonTxt.join(" &middot; ") + "</p>" : "") +
+        '<p class="rtsrc">From the NCAA&rsquo;s own 2026&ndash;27 recruiting calendars: ' + srcs.join(", ") +
+        '. The full day-by-day calendar is in chapter 6.</p></div>';
+    }
+    var LVORD = ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO"];
+    var LVTXT = { FBS: "FBS", FCS: "FCS", D2: "D-II", D3: "D-III", NAIA: "NAIA", JUCO: "JUCO" };
+    function lvOf(t) {
+      t = String(t || "");
+      if (/FBS/.test(t)) return "FBS";
+      if (/FCS/.test(t)) return "FCS";
+      if (/D-III|Division III|\bD3\b/.test(t)) return "D3";
+      if (/D-II|Division II|\bD2\b/.test(t)) return "D2";
+      if (/NAIA/.test(t)) return "NAIA";
+      if (/NJCAA|JUCO/.test(t)) return "JUCO";
+      return "";
+    }
+    function boardRows() {
+      var rows = {}, UT = {}, NEAR = {};
+      var lvsec = SID.levels;
+      ((lvsec && lvsec.levels) || []).forEach(function (L) {
+        (L.ut || []).forEach(function (u) { if (L.utnone) NEAR[u.n] = L.k; else UT[u.n] = 1; });
+      });
+      ((R.forms && R.forms.links) || []).forEach(function (f) {
+        rows[f.n] = { n: f.n, lv: lvOf(f.note), conf: "", st: "", c: 0, u: f.u, l: f.l, why: f.why || "" };
+      });
+      (DATA.colleges || []).forEach(function (c) {
+        var r = rows[c.college] || (rows[c.college] = { n: c.college, lv: "", conf: "", st: "", c: 0, u: "", l: "", why: "" });
+        r.lv = c.level || r.lv; r.conf = c.conf || ""; r.st = c.state || ""; r.c = c.n || 0;
+      });
+      return Object.keys(rows).map(function (k) {
+        var r = rows[k], t = [];
+        if (UT[r.n]) t.push(["", "Utah program"]);
+        if (r.c) t.push(["cm", r.c + " Utah commit" + (r.c === 1 ? "" : "s")]);
+        if (r.why) t.push(["", r.why]);
+        if (!UT[r.n] && NEAR[r.n]) t.push(["", "Nearest " + (LVTXT[NEAR[r.n]] || NEAR[r.n]) + " program"]);
+        if (!t.length) t.push(["", "Regional program"]);
+        r.tags = t; r.ut = UT[r.n] ? 1 : 0;
+        return r;
+      }).sort(function (a, b) {
+        return b.ut - a.ut || b.c - a.c || (b.u ? 1 : 0) - (a.u ? 1 : 0) ||
+               LVORD.indexOf(a.lv) - LVORD.indexOf(b.lv) || a.n.localeCompare(b.n);
+      });
+    }
+    function boardPanel() {
+      var rows = boardRows();
+      var n = {}; rows.forEach(function (r) { n[r.lv] = (n[r.lv] || 0) + 1; });
+      var lvs = LVORD.filter(function (k) { return n[k]; });
+      return '<div class="panel rsec" data-ch="1" style="margin-bottom:14px"><h2>Who&rsquo;s recruiting Utah</h2>' +
+        '<p class="lede">Every college on this page in one board: the Utah programs, the colleges Utah players have committed to, and the staffs that told us they recruit here. Tap a questionnaire to get into their system.</p>' +
+        '<div class="rbd-f" id="rbdf"><button type="button" class="on" data-lv="">All<small>' + rows.length + "</small></button>" +
+        lvs.map(function (k) {
+          return '<button type="button" data-lv="' + k + '">' + esc(LVTXT[k]) + "<small>" + n[k] + "</small></button>";
+        }).join("") + "</div>" +
+        '<div class="rbd" id="rbd">' + rows.map(function (r, ri) {
+          var mark = r.l ? '<img class="crest" src="logo-college-' + esc(r.l) + '.webp" alt="" loading="lazy">'
+                         : (typeof collegeMark === "function" ? collegeMark(r.n) : "");
+          return '<div class="rbdr' + (ri >= 10 ? " more" : "") + '" data-lv="' + esc(r.lv) + '">' + mark +
+            '<div class="rbdn"><b>' + esc(r.n) + "</b><small>" + esc([r.conf, r.st].filter(Boolean).join(" · ")) + "</small>" +
+            '<div class="rbdt">' + (r.lv ? '<i class="lv">' + esc(LVTXT[r.lv] || r.lv) + "</i>" : "") +
+            r.tags.map(function (t) { return '<i class="' + t[0] + '">' + esc(t[1]) + "</i>"; }).join("") + "</div></div>" +
+            (r.u ? '<a class="rbdq" href="' + esc(r.u) + '" target="_blank" rel="noopener noreferrer">Questionnaire</a>'
+                 : '<span class="rbdx">No questionnaire on file</span>') + "</div>";
+        }).join("") + "</div>" +
+        (rows.length > 10 ? '<button type="button" class="rbdmore" id="rbdmore">Show all ' + rows.length + " colleges</button>" : "") +
+        '<p class="rbdsrc">Commits: 247Sports Utah commit board. Questionnaires: each college&rsquo;s own athletics site. ' +
+        "Staff tags: the coach&rsquo;s public X bio, or the coach contacting us directly.</p></div>";
+    }
+    function chapBar() {
+      return '<div class="rchap" id="rchap"><div class="rchin">' + RCH.map(function (c, i) {
+        return '<button type="button" class="rchb" data-ch="' + i + '"><b>' + (i + 1) + "</b>" + esc(c[0]) + "</button>";
+      }).join("") + '</div><div class="rchbar"><i id="rchbar"></i></div></div>';
+    }
+    function bindV2() {
+      var root = document.getElementById("v-recruit101");
+      if (!root) return;
+      /* game plan */
+      var st = planLoad(); st.done = st.done || {};
+      var stops = (SID.drive && SID.drive.stops) || [];
+      var body = document.getElementById("rplbody"), ov = document.getElementById("rplov");
+      function drawPlan() {
+        var g = st.g;
+        root.querySelectorAll(".rplb").forEach(function (b) { b.classList.toggle("on", String(b.dataset.g) === String(g)); });
+        if (g == null || !stops[g]) { if (body) body.innerHTML = ""; if (ov) ov.style.display = ""; return; }
+        if (ov) ov.style.display = "none";
+        var s = stops[g], d = 0;
+        s.items.forEach(function (t, i) { if (st.done[g + "-" + i]) d++; });
+        body.innerHTML = '<div class="rplhd"><b>' + esc(s.y) + ": " + esc(s.hd) + "</b><em>" + d + " of " + s.items.length + " done</em></div>" +
+          '<div class="rplbar"><i style="width:' + Math.round(100 * d / s.items.length) + '%"></i></div>' +
+          s.items.map(function (t, i) {
+            var on = !!st.done[g + "-" + i];
+            return '<label class="rpli' + (on ? " ok" : "") + '"><input type="checkbox" data-i="' + i + '"' + (on ? " checked" : "") + "><span>" + t + "</span></label>";
+          }).join("") +
+          (d === s.items.length ? '<div class="rplall">All done for ' + esc(s.y.toLowerCase()) + " year. Look ahead to the next grade.</div>" : "");
+      }
+      root.querySelectorAll(".rplb").forEach(function (b) {
+        b.addEventListener("click", function () {
+          st.g = String(st.g) === b.dataset.g ? null : b.dataset.g; planSave(st); drawPlan();
+        });
+      });
+      if (body) body.addEventListener("change", function (e) {
+        var i = e.target && e.target.dataset ? e.target.dataset.i : null;
+        if (i == null) return;
+        var k = st.g + "-" + i;
+        if (e.target.checked) st.done[k] = 1; else delete st.done[k];
+        planSave(st); drawPlan();
+      });
+      drawPlan();
+      /* board filter */
+      var bf = document.getElementById("rbdf");
+      if (bf) bf.addEventListener("click", function (e) {
+        var b = e.target.closest("button"); if (!b) return;
+        bf.querySelectorAll("button").forEach(function (x) { x.classList.toggle("on", x === b); });
+        var lv = b.dataset.lv, bd = document.getElementById("rbd"), mo = document.getElementById("rbdmore");
+        if (bd) bd.classList.toggle("all", !!lv);
+        if (mo) mo.style.display = lv ? "none" : "";
+        root.querySelectorAll(".rbdr").forEach(function (r) { r.style.display = !lv || r.dataset.lv === lv ? "" : "none"; });
+      });
+      var mo = document.getElementById("rbdmore");
+      if (mo) mo.addEventListener("click", function () {
+        var bd = document.getElementById("rbd"), open = bd.classList.toggle("all");
+        mo.textContent = open ? "Show fewer" : "Show all " + bd.querySelectorAll(".rbdr").length + " colleges";
+      });
+      /* chapters */
+      var bar = document.getElementById("rchap"), fill = document.getElementById("rchbar");
+      if (!bar) return;
+      function navH() { var n = document.querySelector("nav.tabs"); return n ? n.offsetHeight : 0; }
+      function firstOf(i) { return root.querySelector('[data-ch="' + i + '"].panel'); }
+      bar.addEventListener("click", function (e) {
+        var b = e.target.closest(".rchb"); if (!b) return;
+        var t = firstOf(b.dataset.ch); if (!t) return;
+        var y = t.getBoundingClientRect().top + window.pageYOffset - navH() - bar.offsetHeight - 10;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      });
+      var btns = bar.querySelectorAll(".rchb"), last = -2;
+      function onScroll() {
+        if (root.hidden || !root.offsetParent) return;
+        bar.style.setProperty("--rtop", navH() + "px");
+        var top = navH() + bar.offsetHeight + 24, cur = -1;
+        for (var i = 0; i < RCH.length; i++) { var t = firstOf(i); if (t && t.getBoundingClientRect().top <= top) cur = i; }
+        var rr = root.getBoundingClientRect(), span = rr.height - window.innerHeight;
+        var p = span > 0 ? Math.min(1, Math.max(0, -rr.top / span)) : 0;
+        if (fill) fill.style.width = Math.round(p * 1000) / 10 + "%";
+        if (cur !== last) {
+          last = cur;
+          btns.forEach(function (b, i) { b.classList.toggle("on", i === cur); b.classList.toggle("done", i < cur); });
+          var on = btns[cur]; if (on && on.scrollIntoView && bar.querySelector(".rchin").scrollWidth > bar.offsetWidth) {
+            bar.querySelector(".rchin").scrollLeft = on.offsetLeft - 20;
+          }
+        }
+      }
+      if (!window.__rchBound) { window.addEventListener("scroll", function () { window.__rchScroll && window.__rchScroll(); }, { passive: true }); window.__rchBound = 1; }
+      window.__rchScroll = onScroll;
+      onScroll();
+    }
     var BODY = {
       drive: driveSection, levels: levelsSection, gpa: gpaSection, cost: costSection,
       steps: stepsSection, icards: icardsSection, pots: potsSection, periods: periodsSection
@@ -11267,16 +11599,18 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="panel rhero"><h2>' + esc(R.title) + "</h2>" +
       '<p class="lede">' + esc(R.dek) + "</p>" +
       '<p class="notbet">' + esc(R.note) + "</p></div>" +
+      todayPanel() + chapBar() +
       R.sections.map(function (sec) {
         var fn = BODY[sec.kind];
-        return '<div class="panel rsec" style="margin-bottom:14px"><h2' + (sec.icon ? ' class="secih"><img class="secico" src="' + esc(sec.icon) + '" alt="" width="28" height="28">' : ">") + esc(sec.h) + "</h2>" +
+        var chn = SECCH[sec.id] != null ? SECCH[sec.id] : 5;
+        return '<div class="panel rsec" data-ch="' + chn + '" style="margin-bottom:14px"><h2' + (sec.icon ? ' class="secih"><img class="secico" src="' + esc(sec.icon) + '" alt="" width="28" height="28">' : ">") + esc(sec.h) + "</h2>" +
           (sec.p ? '<p class="lede">' + esc(sec.p) + "</p>" : "") +
           (fn ? fn(sec) : (sec.cards ? cards(sec.cards) : "")) +
           videos(sec) +
-          "</div>";
+          "</div>" + (sec.id === "levels" ? boardPanel() : "");
       }).join("") +
       ((R.forms && R.forms.links)
-        ? '<div class="panel" style="margin-bottom:14px"><h2>' + esc(R.forms.h) + "</h2>" +
+        ? '<div class="panel" data-ch="5" style="margin-bottom:14px"><h2>' + esc(R.forms.h) + "</h2>" +
           '<p class="lede">' + esc(R.forms.p) + "</p>" +
           '<div class="qforms">' + R.forms.links.map(function (f) {
             return '<a class="qform" href="' + esc(f.u) + '" target="_blank" rel="noopener noreferrer">' +
@@ -11295,6 +11629,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="panel"><h2>Questions, or something to add</h2>' +
       '<p class="lede">' + esc(R.close) + "</p>" +
       '<a href="#" class="fullpage" data-go="send">Go to the form &rarr;</a></div>';
+    bindV2();
   }
   function drawTicker() {
     var TK = DATA.ticker || [];
