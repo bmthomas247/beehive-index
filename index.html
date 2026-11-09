@@ -11010,7 +11010,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       }
       if (L.utnone) {
         return '<span class="rlvtag">' + esc(L.tag) + "</span>" +
-          (ut.length ? '<span class="rlvnear">Nearest</span>' + ut.map(mk).join("") : "");
+          (ut.length ? '<span class="rlvnear">' + esc(L.near || "Nearest") + "</span>" + ut.map(mk).join("") : "");
       }
       return ut.length ? '<span class="rlvlogos">' + ut.map(mk).join("") + "</span>"
                        : '<span class="rlvtag">' + esc(L.tag) + "</span>";
