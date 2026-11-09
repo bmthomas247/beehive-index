@@ -2743,6 +2743,38 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .rtoday .rtcard .rtp{ color:#fff; font-size:26px; text-transform:uppercase; letter-spacing:.02em }
 .rtoday .rtcard .rtp:before{ content:""; display:inline-block; width:10px; height:10px; border-radius:50%; background:var(--pc,#888); margin-right:8px; vertical-align:middle }
 .rtoday .rtsoon strong{ color:var(--sodium-bright,#E8A33D) }
+/* ---- offers & signings (Nov 9) ---- */
+.rsign{ margin-bottom:14px }
+.rsign .sgcount{ display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 14px; background:#0B1F3A; color:#fff;
+  padding:14px 16px; border-bottom:4px solid var(--sodium-bright,#E8A33D); margin:10px 0 12px }
+.rsign .sgcount b{ font-family:var(--f-display); font-size:44px; line-height:1; color:var(--sodium-bright,#E8A33D) }
+.rsign .sgcount span{ font-family:var(--f-display); text-transform:uppercase; letter-spacing:.04em; font-size:18px }
+.rsign .sgcount em{ font-style:normal; color:rgba(255,255,255,.75); font-size:14px; flex-basis:100% }
+.rsign .sgdates{ list-style:none; padding:0; margin:0 0 14px; display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:8px }
+.rsign .sgdates li{ border:1px solid var(--line-soft); border-left:4px solid var(--ink-3); padding:8px 10px; background:var(--surface) }
+.rsign .sgdates li.sg{ border-left-color:var(--sodium-bright,#E8A33D) }
+.rsign .sgdates li.past{ opacity:.55 }
+.rsign .sgdates .sgd{ display:block; font-size:12px; text-transform:uppercase; letter-spacing:.05em; color:var(--ink-3) }
+.rsign .sgdates b{ display:block; margin:2px 0 }
+.rsign .sgdates p{ margin:0; font-size:13px; color:var(--ink-2) }
+.rsign .sgdates a{ font-size:12px }
+.rsign .sgcols{ display:grid; grid-template-columns:minmax(0,3fr) minmax(0,2fr); gap:16px }
+@media (max-width:760px){ .rsign .sgcols{ grid-template-columns:1fr } }
+.rsign h3{ font-family:var(--f-display); font-size:15px; font-weight:700; margin:4px 0 6px; text-transform:uppercase; letter-spacing:.04em }
+.rsign .sgfeed{ list-style:none; padding:0; margin:0 }
+.rsign .sgfeed li{ display:grid; grid-template-columns:52px 64px minmax(0,1fr) auto; gap:8px; align-items:baseline;
+  padding:7px 0; border-bottom:1px solid var(--line-soft); font-size:14px }
+.rsign .sgfeed .fd{ color:var(--ink-3); font-size:12px; white-space:nowrap }
+.rsign .sgk{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:2px 6px; border-radius:3px;
+  background:var(--line-soft); color:var(--ink); text-align:center }
+.rsign .sgk.offer{ background:#E8A33D; color:#0B1F3A } .rsign .sgk.commit{ background:#0B1F3A; color:#fff }
+.rsign .sgfeed .fw{ min-width:0 } .rsign .sgfeed .fw small{ color:var(--ink-3) }
+.rsign .sgfeed a.fs{ font-size:12px; white-space:nowrap }
+.rsign .sgtal{ list-style:none; padding:0; margin:0 0 14px }
+.rsign .sgtal li{ display:flex; justify-content:space-between; gap:8px; padding:5px 0; border-bottom:1px solid var(--line-soft); font-size:14px }
+.rsign .sgtal li span{ color:var(--ink-3); white-space:nowrap }
+.rsign .sgsrc{ font-size:12px; color:var(--ink-3); margin-top:10px }
+.rsign details.foldout{ margin-top:6px }
 .rtoday h2{ display:flex; align-items:center; gap:10px; flex-wrap:wrap }
 .rtlive{ display:inline-flex; align-items:center; gap:6px; font-family:var(--f-display); font-size:11px;
   letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3) }
@@ -11440,6 +11472,70 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<p class="rtsrc">From the NCAA&rsquo;s own 2026&ndash;27 recruiting calendars: ' + srcs.join(", ") +
         '. The full day-by-day calendar is in chapter 6.</p></div>';
     }
+    /* ---------- Offers & Signings (Nov 9 2026) ---------- */
+    function signPanel() {
+      var S = DATA.signings;
+      if (!S || !S.dates) return "";
+      var now = new Date(), key = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+      var M = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      var W = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      function dd(x) { var a = x.split("-"); return new Date(+a[0], +a[1] - 1, +a[2]); }
+      function md(x) { var d = dd(x); return M[d.getMonth()] + " " + d.getDate(); }
+      function rng(a, b) {
+        if (!b) return W[dd(a).getDay()] + ", " + md(a);
+        var x = dd(a), y = dd(b);
+        return md(a) + "&ndash;" + (x.getMonth() === y.getMonth() ? y.getDate() : md(b));
+      }
+      function src(u) { var m = /^https?:\/\/([^\/]+)/.exec(u || ""); return m ? m[1].replace(/^www\./, "") : "source"; }
+      var nxt = null;
+      S.dates.forEach(function (d) { if (d.kind === "sign" && pkD(d.end || d.d) >= key && (!nxt || d.d < nxt.d)) nxt = d; });
+      var count = "";
+      if (nxt) {
+        var days = Math.round((dd(nxt.d) - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5);
+        count = '<div class="sgcount">' + (days > 0 ? "<b>" + days + "</b><span>day" + (days === 1 ? "" : "s") + " to " + esc(nxt.label) + "</span>"
+            : "<b>Now</b><span>" + esc(nxt.label) + "</span>") +
+          "<em>" + rng(nxt.d, nxt.end) + " &middot; " + esc(nxt.detail) + "</em></div>";
+      }
+      var dates = '<ul class="sgdates">' + S.dates.map(function (d) {
+        var past = pkD(d.end || d.d) < key;
+        return '<li class="' + (d.kind === "sign" ? "sg" : "") + (past ? " past" : "") + '"><span class="sgd">' + rng(d.d, d.end) + "</span>" +
+          "<b>" + esc(d.label) + "</b><p>" + esc(d.detail) + '</p><a href="' + esc(d.src) +
+          '" target="_blank" rel="noopener noreferrer">NCAA</a></li>';
+      }).join("") + "</ul>";
+      var KN = { offer: "Offer", commit: "Commit", visit: "Visit", camp: "Camp", invite: "Invite" };
+      function frow(f) {
+        var y = typeof yr === "function" && f.cls ? yr(f.cls) : f.cls;
+        return '<li><span class="fd">' + md(f.d) + '</span><span class="sgk ' + esc(f.kind) + '">' + esc(KN[f.kind] || f.kind) + "</span>" +
+          '<span class="fw"><b>' + esc(f.player) + "</b> <small>" + esc(f.school) + (y ? " &middot; " + esc(y) : "") + "</small> &rarr; " + esc(f.college) + "</span>" +
+          '<a class="fs" href="' + esc(f.u) + '" target="_blank" rel="noopener noreferrer">' +
+          (f.via === "X" ? "his post on X" : f.via === "247" ? (f.kind === "commit" ? "247 commits" : "seen on 247") : "source") + "</a></li>";
+      }
+      var feed = S.feed || [];
+      var feedH = feed.length ? '<ul class="sgfeed">' + feed.slice(0, 12).map(frow).join("") + "</ul>" +
+          (feed.length > 12 ? '<details class="foldout"><summary>' + (feed.length - 12) + ' more</summary><ul class="sgfeed">' +
+            feed.slice(12).map(frow).join("") + "</ul></details>" : "")
+        : '<p class="lede">Nothing new on file yet.</p>';
+      var board = S.board || [];
+      var boardH = board.length ? '<details class="foldout"><summary>Class of 2027: ' + board.length + " committed</summary>" +
+          '<ul class="sgfeed">' + board.map(function (c) {
+            return '<li><span class="fd">' + (c.d ? md(c.d) : "") + '</span><span class="sgk commit">' + esc(c.level || "Commit") + "</span>" +
+              '<span class="fw"><b>' + esc(c.name) + "</b> <small>" + esc(c.school) + "</small> &rarr; " + esc(c.college) + "</span>" +
+              (c.u ? '<a class="fs" href="' + esc(c.u) + '" target="_blank" rel="noopener noreferrer">247</a>' : "<span></span>") + "</li>";
+          }).join("") + "</ul></details>" : "";
+      var tc = (S.top_colleges || []).map(function (c) { return "<li><b>" + esc(c[0]) + "</b><span>" + c[1] + " players</span></li>"; }).join("");
+      var ts = (S.top_schools || []).map(function (c) { return "<li><b>" + esc(c[0]) + "</b><span>" + c[1] + " players &middot; " + c[2] + " offers</span></li>"; }).join("");
+      return '<div class="panel rsign" id="rsign"><h2>Offers &amp; Signings</h2>' +
+        '<p class="lede">Every new offer, commitment and signing for Utah high school players, newest first, each with a link to where it came from.</p>' +
+        count + dates +
+        '<div class="sgcols"><div><h3>Latest</h3>' + feedH + boardH + "</div>" +
+        "<div><h3>Colleges offering the most Utah players</h3><ul class=\"sgtal\">" + tc + "</ul>" +
+        "<h3>Schools with the most offered players</h3><ul class=\"sgtal\">" + ts + "</ul></div></div>" +
+        '<p class="sgsrc">Offers: ' + S.n_offers + " to " + S.n_players + " Utah players in the " + (S.classes || []).join(" and ") +
+        " classes, from each player&rsquo;s 247Sports college list and offers the player posted on X himself. " +
+        "&ldquo;Seen on 247&rdquo; is the day we first saw it there, not always the day it was made. " +
+        (S.s247_asof ? "247 lists as of " + md(S.s247_asof) + ". " : "") +
+        "Commitments: 247Sports Utah commit board. Signings show here once a college or the player announces one.</p></div>";
+    }
     var LVORD = ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO"];
     var LVTXT = { FBS: "FBS", FCS: "FCS", D2: "D-II", D3: "D-III", NAIA: "NAIA", JUCO: "JUCO" };
     function lvOf(t) {
@@ -11599,7 +11695,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="panel rhero"><h2>' + esc(R.title) + "</h2>" +
       '<p class="lede">' + esc(R.dek) + "</p>" +
       '<p class="notbet">' + esc(R.note) + "</p></div>" +
-      todayPanel() + chapBar() +
+      todayPanel() + signPanel() + chapBar() +
       R.sections.map(function (sec) {
         var fn = BODY[sec.kind];
         var chn = SECCH[sec.id] != null ? SECCH[sec.id] : 5;
