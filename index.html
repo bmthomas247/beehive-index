@@ -8962,7 +8962,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       function src(u, lab) {
         if (!u) return "";
         var host = String(u).replace(/^https?:\/\/(www\.)?/, "").split("/")[0];
-        return '<a href="' + esc(u) + '" target="_blank" rel="noopener" title="' + esc(lab) + '">' + esc(host) + "</a>";
+        return '<a href="' + esc(u) + '" target="_blank" rel="noopener" title="' + esc(host) + '">' + esc(lab) + "</a>";
       }
       return '<details class="panel c26"><summary><div><span class="c26-k">Last offseason</span>' +
         "<h2>2026 carousel results</h2>" +
@@ -8982,7 +8982,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
                 "<small>" + (r.out_how ? esc(r.out_how) : "Reason not reported") + "</small>" +
                 (r.went_to ? '<div class="c26-now"><span>Now</span>' + esc(r.went_to) + "</div>" : "")
               : '<span class="c26-tag out">Out</span><small>Not yet sourced</small>') + "</div>" +
-            '<div class="c26-src">' + src(r.src_new, "Hire") + (r.src_out && r.src_out !== r.src_new ? src(r.src_out, "Departure") : "") + "</div>" +
+            '<div class="c26-src">' + (r.src_out && r.src_out === r.src_new ? src(r.src_new, "Source") : src(r.src_new, "Hire source") + src(r.src_out, "Exit source")) + "</div>" +
             "</div>";
         }).join("") + "</div>" +
         '<p class="c26-note">Each line links its source. Where a departure reason was never reported we say so instead of guessing; ' +
