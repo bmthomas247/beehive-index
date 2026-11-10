@@ -2991,6 +2991,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .rbdt i{ font-style:normal; font-size:11px; padding:2px 7px; border-radius:999px; border:1px solid var(--line); color:var(--ink-2); white-space:nowrap }
 .rbdt i.lv{ background:var(--ink); border-color:var(--ink); color:var(--surface); font-family:var(--f-display); letter-spacing:.06em }
 .rbdt i.cm{ border-color:#1D7A4E; color:#1D7A4E }
+.rbdt i.of{ border-color:#B8860B; color:#8A6508 }
 .rbdq{ font-size:12.5px; font-weight:600; text-decoration:none; border:1px solid var(--sodium); color:var(--ink); border-radius:999px;
   padding:5px 12px; white-space:nowrap }
 .rbdq:hover{ background:var(--sodium); color:#fff }
@@ -12452,17 +12453,22 @@ nav.topbar ~ main.wrap{margin-top:20px}
         var r = rows[c.college] || (rows[c.college] = { n: c.college, lv: "", conf: "", st: "", c: 0, u: "", l: "", why: "" });
         r.lv = c.level || r.lv; r.conf = c.conf || ""; r.st = c.state || ""; r.c = c.n || 0;
       });
+      (((DATA.signings || {}).offer_colleges) || []).forEach(function (o) {
+        var r = rows[o[0]] || (rows[o[0]] = { n: o[0], lv: "", conf: "", st: "", c: 0, u: "", l: "", why: "" });
+        r.o = o[1] || 0; if (!r.lv) r.lv = o[2] || "";
+      });
       return Object.keys(rows).map(function (k) {
         var r = rows[k], t = [];
         if (UT[r.n]) t.push(["", "Utah program"]);
         if (r.c) t.push(["cm", r.c + " Utah commit" + (r.c === 1 ? "" : "s")]);
-        if (r.why) t.push(["", r.why]);
+        if (r.o) t.push(["of", r.o + " Utah player" + (r.o === 1 ? "" : "s") + " offered"]);
+        if (r.why && !(r.o && r.why === "Offering Utah players")) t.push(["", r.why]);
         if (!UT[r.n] && NEAR[r.n]) t.push(["", "Nearest " + (LVTXT[NEAR[r.n]] || NEAR[r.n]) + " program"]);
         if (!t.length) t.push(["", "Regional program"]);
         r.tags = t; r.ut = UT[r.n] ? 1 : 0;
         return r;
       }).sort(function (a, b) {
-        return b.ut - a.ut || b.c - a.c || (b.u ? 1 : 0) - (a.u ? 1 : 0) ||
+        return b.ut - a.ut || b.c - a.c || (b.o || 0) - (a.o || 0) || (b.u ? 1 : 0) - (a.u ? 1 : 0) ||
                LVORD.indexOf(a.lv) - LVORD.indexOf(b.lv) || a.n.localeCompare(b.n);
       });
     }
@@ -12471,7 +12477,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var n = {}; rows.forEach(function (r) { n[r.lv] = (n[r.lv] || 0) + 1; });
       var lvs = LVORD.filter(function (k) { return n[k]; });
       return '<div class="panel rsec" data-ch="1" style="margin-bottom:14px"><h2>Who&rsquo;s recruiting Utah</h2>' +
-        '<p class="lede">Every college on this page in one board: the Utah programs, the colleges Utah players have committed to, and the staffs that told us they recruit here. Tap a questionnaire to get into their system.</p>' +
+        '<p class="lede">Every college on this page in one board: the Utah programs, the colleges Utah players have committed to, every college that has offered a Utah 2027 or 2028 player (offers from each player&rsquo;s recruiting profile and their own posts), and the staffs that told us they recruit here. New offers add colleges automatically. Tap a questionnaire to get into their system.</p>' +
         '<div class="rbd-f" id="rbdf"><button type="button" class="on" data-lv="">All<small>' + rows.length + "</small></button>" +
         lvs.map(function (k) {
           return '<button type="button" data-lv="' + k + '">' + esc(LVTXT[k]) + "<small>" + n[k] + "</small></button>";
