@@ -1981,6 +1981,12 @@ table.critable tbody tr{cursor:pointer}
 .cw-ctr b{display:block;font-family:var(--f-display);font-size:28px;line-height:1;font-weight:800}
 .cw-ctr span{font-family:var(--f-display);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#C9D6E6}
 .cw-ctr .o b{color:#FF6A56}.cw-ctr .h b{color:#FFC64B}
+.cw-und{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.cw-uh{font-family:var(--f-display);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+.cw-und>div:not(.cw-uh):not(.cw-us){display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:baseline;padding:3px 0;font-size:13px}
+.cw-und small{font-size:11px;color:var(--ink-3)}
+.cw-und span{font-weight:700;font-variant-numeric:tabular-nums}
+.cw-us{font-size:10.5px;color:var(--ink-3);margin-top:3px}
 .cw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:22px}
 .cw-job{position:relative;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:4px;overflow:hidden;
   transition:transform .15s ease,box-shadow .15s ease;cursor:pointer}
@@ -8823,6 +8829,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
           "<div><b>" + esc(t.hired || "&mdash;") + "</b><span>" + (o.coach_out ? esc(o.coach_out.split(" ").slice(-1)[0]) + " hired" : "Hired") + "</span></div>" +
           "<div><b>" + esc(t.cls || "") + "</b><span>Class</span></div>" +
         "</div>" +
+        /* carousel underclassmen (Nov 9 2026) */
+        ((o.under && o.under.length)
+          ? '<div class="cw-und"><div class="cw-uh">Top underclassmen &middot; 2026</div>' +
+            o.under.map(function (u) {
+              var yr = { Jr: "Junior", So: "Sophomore", Fr: "Freshman" }[u.yr] || "";
+              return "<div><b>" + esc(u.name) + "</b><small>" + yr + "</small><span>" +
+                Number(u.v).toLocaleString() + " " + esc(u.stat) + "</span></div>";
+            }).join("") + '<div class="cw-us">Stats: MaxPreps</div></div>'
+          : "") +
         (staff && o.status === "open" ? '<div class="cw-dt" style="margin-top:9px"><strong>In the building:</strong> ' + staff + "</div>" : "") +
         (o.confirmed
           ? '<div class="cw-src">' + esc(o.source) + " &middot; " + cwDate(o.date) + "</div>"
