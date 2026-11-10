@@ -3041,6 +3041,55 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .lvb .utchips{ margin-top:10px; padding-top:10px }
 
 a.costcta{ margin-top:14px }
+/* highlights page (Nov 9 2026) */
+.hl-head p{margin:4px 0 0;color:var(--ink-3);font-size:14px;max-width:760px}
+.hl-filters{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;margin:14px 0;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.hl-filters input,.hl-filters select{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:inherit}
+.hl-filters input{flex:1 1 200px;min-width:0}
+.hl-filters label{display:flex;flex-direction:column;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);gap:3px}
+.hl-pos{display:flex;flex-wrap:wrap;gap:6px;flex-basis:100%}
+.hl-pos button{font:inherit;font-size:13px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer}
+.hl-pos button:hover{border-color:#FF6300;color:#FF6300}
+.hl-pos button[aria-pressed="true"]{background:#FF6300;border-color:#FF6300;color:#fff}
+.hl-count{font-size:13px;font-weight:700;color:var(--ink-3);margin-left:auto}
+.hl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.hl{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s}
+.hl:hover{transform:translateY(-3px);box-shadow:0 16px 30px -14px rgba(0,0,0,.35)}
+.hl-th{position:relative;display:block;aspect-ratio:16/9;background:#111;overflow:hidden}
+.hl-th img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.hl:hover .hl-th img{transform:scale(1.05)}
+.hl-th i{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:#FF6300;box-shadow:0 0 0 6px rgba(255,99,0,.3)}
+.hl-th i::before{content:"";position:absolute;left:18px;top:14px;border-style:solid;border-width:10px 0 10px 16px;border-color:transparent transparent transparent #fff}
+.hl-d,.hl-s{position:absolute;bottom:8px;font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(0,0,0,.75);color:#fff}
+.hl-d{right:8px}.hl-s{left:8px;background:#FF6300}
+.hl-b{padding:11px 14px 13px;display:flex;flex-direction:column;gap:2px;flex:1}
+.hl-n{font-size:15.5px;font-weight:800;background:none;border:0;padding:0;text-align:left;font-family:inherit;color:inherit;cursor:pointer}
+.hl-n:hover{color:#FF6300}.hl-n small{font-size:12px;color:var(--ink-3);font-weight:600}
+.hl-sc{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--ink-2)}
+.hl-sc img,.hl-sc .swatch{width:18px;height:18px;flex:0 0 18px}
+.hl-m{font-size:12px;color:var(--ink-3)}
+.hl-t{font-size:13px;font-weight:600;margin-top:4px;color:var(--ink-2)}
+.hl-v{font-size:11.5px;color:var(--ink-3)}
+.hl-p{margin-top:auto;padding-top:8px;font-size:12.5px;font-weight:700;color:#FF6300;text-decoration:none}
+.hl-more{display:block;margin:18px auto 0;font:inherit;font-weight:800;font-size:14px;padding:10px 22px;border-radius:999px;border:1px solid #FF6300;background:transparent;color:#FF6300;cursor:pointer}
+.hl-more[hidden],.hl-empty[hidden]{display:none}
+.hl-empty{padding:30px 0;text-align:center;color:var(--ink-3)}
+.hl-src{font-size:12px;color:var(--ink-3);margin-top:18px}
+#hdmodal{position:fixed;inset:0;z-index:9999;background:rgba(5,10,18,.88);display:flex;align-items:center;justify-content:center;padding:16px}
+.hdbox{position:relative;width:min(1180px,100%);display:grid;grid-template-columns:1fr 300px;gap:16px;align-items:start}
+.hdnow{margin-top:10px;color:#fff}.hdnow b{display:block;font-size:16px}.hdnow span{font-size:12.5px;color:#C9D6E6}
+.hdside{background:#111820;border:1px solid #28333D;border-radius:12px;padding:14px;color:#E4E9ED;max-height:min(80vh,620px);display:flex;flex-direction:column}
+.hdwho b{display:block;font-size:18px;font-weight:800}.hdwho span{font-size:12.5px;color:#A3AFB9}
+.hdlist-h{margin:12px 0 6px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#FF8A3D}
+.hdlist{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:4px}
+.hdlist button{width:100%;text-align:left;font:inherit;background:#18212A;border:1px solid transparent;border-radius:8px;padding:8px 10px;color:#E4E9ED;cursor:pointer}
+.hdlist button:hover{border-color:#FF6300}
+.hdlist li.on button{background:#FF6300;color:#fff}
+.hdlist b{display:block;font-size:13px;line-height:1.3}.hdlist small{font-size:11px;opacity:.75}
+.hdbtns{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+.hdbtns a{display:block;text-align:center;font-size:13px;font-weight:800;text-decoration:none;padding:9px 12px;border-radius:8px}
+.hdgo{background:#FF6300;color:#fff}.hdall{background:#fff;color:#111}
+@media(max-width:860px){.hdbox{grid-template-columns:1fr;max-height:88vh;overflow-y:auto;margin-top:36px}.hdside{max-height:none}#hdmodal .ytx{position:fixed;top:10px;right:10px;z-index:3}.hl-filters{position:static}}
 /* ---- YouTube pop-up player (Oct 11) ---- */
 #ytmodal{ position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,.78); display:flex; align-items:center; justify-content:center; padding:16px }
 .ytbox{ position:relative; width:min(960px,100%) }
@@ -3884,6 +3933,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
   <section id="v-breakdown" hidden></section>
   <section id="v-send" hidden></section>
   <section id="v-recruit101" hidden></section>
+  <section id="v-hl" hidden></section>
 
   <section id="v-sources" hidden>
     <div class="panel" style="margin-bottom:16px">
@@ -11269,6 +11319,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
         ["rank", "Schools"], ["prank", "Players"], ["crank", "Coaches"]] },
     { id: "people", label: "Players", views: [
         ["prank", "Rankings"], ["players", "All Players"], ["recruit", "Commitments"]] },
+    // Brandon, Nov 9 2026: one Highlights page with every player's Hudl reels.
+    { id: "hl", label: "Highlights", views: [["hl", "Highlights"]] },
     { id: "programs", label: "Schools", views: [
         ["rank", "Rankings"], ["breakdown", "All 106"], ["cpipe", "College Pipeline"],
         ["xfer", "Transfers"]] },
@@ -12748,7 +12800,182 @@ nav.topbar ~ main.wrap{margin-top:20px}
     }
   })();
 
+  /* highlights page (Nov 9 2026) */
+  function drawHighlights() {
+    var el = document.getElementById("v-hl");
+    if (!el) return;
+    var GROUPS_P = [["QB", ["QB"]], ["RB", ["RB", "FB", "HB", "SB"]], ["WR", ["WR", "SLOT"]], ["TE", ["TE"]],
+      ["OL", ["OL", "OT", "OG", "IOL", "C", "T", "G"]], ["DL", ["DL", "DT", "NT", "NG", "DE"]],
+      ["EDGE", ["EDGE", "DE"]], ["LB", ["LB", "ILB", "OLB", "MLB"]],
+      ["DB", ["DB", "CB", "S", "SAF", "FS", "SS"]], ["K", ["K", "P", "LS"]], ["ATH", ["ATH"]]];
+    var YR = { "2027": "Senior", "2028": "Junior", "2029": "Sophomore", "2030": "Freshman" };
+    var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    function cut(u) { var m = /\/video\/3\/\d+\/([0-9a-f]{24})/.exec(u || ""); return m ? parseInt(m[1].slice(0, 8), 16) : 0; }
+    function md(ts) {
+      if (!ts) return "";
+      var d = new Date(ts * 1000), y = d.getFullYear();
+      return MON[d.getMonth()] + " " + d.getDate() + (y !== new Date().getFullYear() ? ", " + y : "");
+    }
+    function num(v) { var n = parseInt(String(v || "0").replace(/,/g, ""), 10); return isNaN(n) ? 0 : n; }
+    function fmtN(n) { return n.toLocaleString("en-US"); }
+    function fold(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ‘’'`]/g, ""); }
+
+    var all = [];
+    (DATA.pindex || []).forEach(function (p) {
+      var reels = (p.reels || []).filter(function (r) { return r && r.u; }).map(function (r) {
+        var ts = cut(r.u);
+        return { t: String(r.t || "Highlights").trim(), u: r.u, thumb: r.thumb || "", d: r.d || "", s: r.s || "",
+                 ts: ts, p: md(ts), v: num(r.v) };
+      });
+      if (!reels.length) return;
+      reels.sort(function (a, b) { return (b.ts - a.ts) || (b.v - a.v); });
+      var toks = String(p.pos || "").toUpperCase().split(/[\/,\s]+/).filter(Boolean);
+      var groups = GROUPS_P.filter(function (g) { return toks.some(function (t) { return g[1].indexOf(t) >= 0; }); })
+                           .map(function (g) { return g[0]; });
+      all.push({ p: p, reels: reels, ts: reels[0].ts, views: reels.reduce(function (s, r) { return s + r.v; }, 0),
+                 groups: groups, key: fold(p.name) });
+    });
+    if (!all.length) { el.innerHTML = ""; return; }
+
+    var schools = all.map(function (x) { return x.p.school; })
+      .filter(function (s, i, a) { return s && a.indexOf(s) === i; }).sort();
+    var present = GROUPS_P.map(function (g) { return g[0]; })
+      .filter(function (g) { return all.some(function (x) { return x.groups.indexOf(g) >= 0; }); });
+    var yrs = Object.keys(YR).filter(function (y) { return all.some(function (x) { return String(x.p.cls) === y; }); });
+    var nReels = all.reduce(function (s, x) { return s + x.reels.length; }, 0);
+
+    el.innerHTML =
+      '<div class="hl-head"><h2>Highlights</h2><p>Every Utah high school player we have a Hudl reel for &mdash; ' +
+      fmtN(all.length) + " players, " + fmtN(nReels) + " reels from " + schools.length + " schools. " +
+      "Coaches: filter by school, position and class, or search a name. Click a reel to watch it here; " +
+      "every player&rsquo;s full film is one click away on Hudl.</p></div>" +
+      '<div class="hl-filters" id="hlf">' +
+      '<input type="search" id="hlq" placeholder="Search player name" aria-label="Search player name">' +
+      '<label>School<select data-hl="school"><option value="">All schools</option>' +
+      schools.map(function (s) { return '<option value="' + esc(s) + '">' + esc(s) + "</option>"; }).join("") + "</select></label>" +
+      '<label>Class<select data-hl="yr"><option value="">All classes</option>' +
+      yrs.map(function (y) { return '<option value="' + y + '">' + YR[y] + " (" + y + ")</option>"; }).join("") + "</select></label>" +
+      '<label>Sort<select data-hl="sort"><option value="new">Recently added</option><option value="views">Most views</option></select></label>' +
+      '<span class="hl-count" id="hlcount"></span>' +
+      '<div class="hl-pos" role="group" aria-label="Position"><button type="button" data-v="" aria-pressed="true">All positions</button>' +
+      present.map(function (g) { return '<button type="button" data-v="' + g + '" aria-pressed="false">' + (g === "EDGE" ? "Edge" : g) + "</button>"; }).join("") +
+      "</div></div>" +
+      '<div class="hl-grid" id="hlgrid"></div>' +
+      '<p class="hl-empty" id="hlempty" hidden>No players match those filters.</p>' +
+      '<button type="button" class="hl-more" id="hlmore" hidden>Show more</button>' +
+      '<p class="hl-src">Source: each player&rsquo;s own Hudl profile. Reels play in Hudl&rsquo;s player; nothing is copied. ' +
+      "Posted dates come from Hudl&rsquo;s video ids; view counts are Hudl&rsquo;s, as of our last check. " +
+      "Positions and classes are as listed on our rosters.</p>";
+
+    var st = { q: "", school: "", yr: "", pos: "", sort: "new" }, PAGE = 48, shown = PAGE, list = [];
+    var grid = document.getElementById("hlgrid");
+
+    function card(x, i) {
+      var p = x.p, f = x.reels[0];
+      var meta = [p.pos || "", YR[String(p.cls)] || ""].filter(Boolean).join(" · ");
+      return '<div class="hl" data-i="' + i + '">' +
+        '<a class="hl-th" href="' + esc(f.u) + '" target="_blank" rel="noopener noreferrer" aria-label="Play ' + esc(p.name) + ' highlights">' +
+        '<img src="' + esc(f.thumb) + '" alt="" loading="lazy"><i></i>' +
+        (f.d ? '<span class="hl-d">' + esc(f.d) + "</span>" : "") +
+        (f.p ? '<span class="hl-s">Posted ' + esc(f.p) + "</span>" : "") + "</a>" +
+        '<div class="hl-b"><button type="button" class="hl-n">' + esc(p.name) + (p.no ? " <small>#" + esc(p.no) + "</small>" : "") + "</button>" +
+        '<span class="hl-sc">' + logo(p.school, "sm") + esc(p.school) + "</span>" +
+        (meta ? '<span class="hl-m">' + esc(meta) + "</span>" : "") +
+        '<span class="hl-t">' + esc(f.t) + "</span>" +
+        '<span class="hl-v">' + x.reels.length + " reel" + (x.reels.length === 1 ? "" : "s") + " &middot; " + fmtN(x.views) + " views</span>" +
+        (p.hudl ? '<a class="hl-p" href="' + esc(p.hudl) + '" target="_blank" rel="noopener noreferrer">All film on Hudl &rsaquo;</a>' : "") +
+        "</div></div>";
+    }
+    function apply(reset) {
+      if (reset) shown = PAGE;
+      var q = fold(st.q).trim();
+      list = all.filter(function (x) {
+        return (!st.school || x.p.school === st.school) && (!st.yr || String(x.p.cls) === st.yr) &&
+               (!st.pos || x.groups.indexOf(st.pos) >= 0) && (!q || x.key.indexOf(q) >= 0);
+      }).sort(function (a, b) {
+        return st.sort === "views" ? (b.views - a.views) || (b.ts - a.ts) : (b.ts - a.ts) || (b.views - a.views);
+      });
+      grid.innerHTML = list.slice(0, shown).map(card).join("");
+      document.getElementById("hlcount").textContent = fmtN(list.length) + " of " + fmtN(all.length) + " players";
+      document.getElementById("hlempty").hidden = list.length > 0;
+      document.getElementById("hlmore").hidden = list.length <= shown;
+      document.getElementById("hlmore").textContent = "Show more (" + fmtN(list.length - Math.min(shown, list.length)) + " left)";
+    }
+    var f = document.getElementById("hlf"), qt;
+    f.addEventListener("click", function (e) {
+      var b = e.target.closest(".hl-pos button"); if (!b) return;
+      st.pos = b.dataset.v;
+      f.querySelectorAll(".hl-pos button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      apply(true);
+    });
+    f.addEventListener("change", function (e) {
+      var k = e.target.getAttribute("data-hl"); if (!k) return;
+      st[k] = e.target.value; apply(true);
+    });
+    document.getElementById("hlq").addEventListener("input", function (e) {
+      clearTimeout(qt); var v = e.target.value;
+      qt = setTimeout(function () { st.q = v; apply(true); }, 120);
+    });
+    document.getElementById("hlmore").addEventListener("click", function () { shown += PAGE; apply(false); });
+
+    function embed(u) { var m = /hudl\.com\/video\/(\d+\/\d+\/[0-9a-f]{24})/.exec(u || ""); return m ? "https://www.hudl.com/embed/video/" + m[1] : ""; }
+    function modal(x) {
+      var reels = x.reels, p = x.p;
+      if (!reels.length || !embed(reels[0].u)) return false;
+      var old = document.getElementById("hdmodal"); if (old) old.remove();
+      var d = document.createElement("div");
+      d.id = "hdmodal"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true");
+      d.setAttribute("aria-label", p.name + " highlights");
+      d.innerHTML = '<div class="hdbox"><button class="ytx" aria-label="Close">✕</button>' +
+        '<div class="hdmain"><div class="ytframe"><iframe title="Hudl highlight" allow="autoplay; fullscreen" allowfullscreen></iframe></div>' +
+        '<div class="hdnow"><b></b><span></span></div></div>' +
+        '<aside class="hdside"><div class="hdwho"><b></b><span></span></div><div class="hdlist-h"></div><ol class="hdlist"></ol>' +
+        '<div class="hdbtns"><a class="hdgo" target="_blank" rel="noopener noreferrer">Watch on Hudl ↗</a>' +
+        '<a class="hdall" target="_blank" rel="noopener noreferrer">All film on Hudl ↗</a></div></aside></div>';
+      d.querySelector(".hdwho b").textContent = p.name + (p.no ? " #" + p.no : "");
+      d.querySelector(".hdwho span").textContent = [p.school, p.pos || "", YR[String(p.cls)] || ""].filter(Boolean).join(" · ");
+      d.querySelector(".hdlist-h").textContent = reels.length + " reel" + (reels.length === 1 ? "" : "s");
+      var allA = d.querySelector(".hdall");
+      if (p.hudl) allA.href = p.hudl; else allA.remove();
+      var ol = d.querySelector(".hdlist");
+      reels.forEach(function (r, i) {
+        var li = document.createElement("li"), b = document.createElement("button"); b.type = "button";
+        b.innerHTML = "<b></b><small></small>";
+        b.querySelector("b").textContent = r.t;
+        b.querySelector("small").textContent = [r.p ? "Posted " + r.p : "", r.d, r.v ? fmtN(r.v) + " views" : ""].filter(Boolean).join(" · ");
+        b.addEventListener("click", function () { play(i); });
+        li.appendChild(b); ol.appendChild(li);
+      });
+      function play(i) {
+        var r = reels[i], em = embed(r.u);
+        if (!em) { window.open(r.u, "_blank", "noopener"); return; }
+        d.querySelector("iframe").src = em + "?autoplay=true";
+        d.querySelector(".hdnow b").textContent = r.t;
+        d.querySelector(".hdnow span").textContent = [r.p ? "Posted " + r.p : "", r.d].filter(Boolean).join(" · ");
+        d.querySelector(".hdgo").href = r.u;
+        ol.querySelectorAll("li").forEach(function (li, j) { li.classList.toggle("on", j === i); });
+      }
+      var last = document.activeElement;
+      function close() { d.remove(); document.removeEventListener("keydown", onKey); document.body.style.overflow = ""; if (last && last.focus) last.focus(); }
+      function onKey(e) { if (e.key === "Escape") close(); }
+      d.addEventListener("click", function (e) { if (e.target === d || e.target.closest(".ytx")) close(); });
+      document.addEventListener("keydown", onKey);
+      document.body.appendChild(d); document.body.style.overflow = "hidden";
+      play(0);
+      d.querySelector(".ytx").focus();
+      return true;
+    }
+    grid.addEventListener("click", function (e) {
+      var c = e.target.closest(".hl"); if (!c) return;
+      var x = list[+c.dataset.i]; if (!x) return;
+      if (e.target.closest(".hl-n")) { if (typeof openPlayer === "function") openPlayer(x.p.name, x.p.school); return; }
+      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+      if (e.target.closest(".hl-th") && modal(x)) e.preventDefault();
+    });
+    apply(true);
+  }
   draw(); drawCoaches(); drawCmp(); drawPlayers();
+  drawHighlights();
   drawHistory(); drawBreakdown(); drawHome();
 })();
 </script>
