@@ -9062,6 +9062,17 @@ nav.topbar ~ main.wrap{margin-top:20px}
                ["all", "Full season", HL, "Regular season and playoffs combined. Source: MaxPreps box scores; Deseret News for schools that file no MaxPreps stats."]]
       .map(function (h) { return [h[0], h[1], hlBuild(h[2] || {}), h[3]]; })
       .filter(function (h) { return h[2]; });
+    /* hldefault Nov 10: once every state final has a score, open on Full season. */
+    var hlDone = (function () {
+      var C = (DATA.po_official || {}).classes || {}, k = Object.keys(C);
+      return k.length > 0 && k.every(function (c) {
+        var R = C[c].rounds || [], F = R.length ? R[R.length - 1].games || [] : [];
+        return F.length > 0 && F.every(function (g) {
+          return (g.teams || []).length === 2 && g.teams.every(function (t) { return t.res !== undefined && t.res !== null && t.res !== ""; });
+        });
+      });
+    })();
+    if (hlDone) HLS.sort(function (x, y) { return (y[0] === "all") - (x[0] === "all"); });
     var hlCards = HLS.length ? HLS[0][2] : "";
     var hlHtml = hlCards
       ? '<div class="panel hlpanel"><div class="hl-top"><h2 class="hl-h" data-go="stats">2026 State Leaders <span aria-hidden="true">&rsaquo;</span></h2>' +
