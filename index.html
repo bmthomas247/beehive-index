@@ -2768,7 +2768,7 @@ input[type="search"]{ border-radius:999px; padding:9px 15px }
 .rsign .sgk{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:2px 6px; border-radius:3px;
   background:var(--line-soft); color:var(--ink); text-align:center }
 .rsign .sgk.offer{ background:#E8A33D; color:#0B1F3A } .rsign .sgk.commit{ background:#0B1F3A; color:#fff }
-.rsign .sgfeed .fw{ min-width:0 } .rsign .sgfeed .fw small{ color:var(--ink-3) }
+.rsign .sgfeed .fw b[data-p]:hover{ text-decoration:underline; color:var(--accent,inherit) } .rsign .sgfeed .fw{ min-width:0 } .rsign .sgfeed .fw small{ color:var(--ink-3) }
 .rsign .sgfeed a.fs{ font-size:12px; white-space:nowrap }
 .rsign .sgtal{ list-style:none; padding:0; margin:0 0 14px }
 .rsign .sgtal li{ display:flex; justify-content:space-between; gap:8px; padding:5px 0; border-bottom:1px solid var(--line-soft); font-size:14px }
@@ -11582,10 +11582,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '" target="_blank" rel="noopener noreferrer">NCAA</a></li>';
       }).join("") + "</ul>";
       var KN = { offer: "Offer", commit: "Commit", visit: "Visit", camp: "Camp", invite: "Invite" };
+      // Name links to the profile; falls back to a match that ignores apostrophes/case only (Tuaone = Tua'one), same school.
+      var PNORM = {}; (DATA.pindex || []).forEach(function (p) { PNORM[(p.name + "|" + p.school).toLowerCase().replace(/[^a-z|]/g, "")] = p; });
+      function sgP(n, sc) { if (PKEY[pkeyOf(n, sc)]) return pAttr(n, sc); var p = PNORM[(n + "|" + sc).toLowerCase().replace(/[^a-z|]/g, "")]; return p ? pAttr(p.name, p.school) : ""; }
       function frow(f) {
         var y = typeof yr === "function" && f.cls ? yr(f.cls) : f.cls;
         return '<li><span class="fd">' + md(f.d) + '</span><span class="sgk ' + esc(f.kind) + '">' + esc(KN[f.kind] || f.kind) + "</span>" +
-          '<span class="fw"><b>' + esc(f.player) + "</b> <small>" + esc(f.school) + (y ? " &middot; " + esc(y) : "") + "</small> &rarr; " + esc(f.college) + "</span>" +
+          '<span class="fw"><b' + sgP(f.player, f.school) + '>' + esc(f.player) + "</b> <small>" + esc(f.school) + (y ? " &middot; " + esc(y) : "") + "</small> &rarr; " + esc(f.college) + "</span>" +
           '<a class="fs" href="' + esc(f.u) + '" target="_blank" rel="noopener noreferrer">' +
           (f.via === "X" ? "his post on X" : f.via === "247" ? (f.kind === "commit" ? "247 commits" : "seen on 247") : "source") + "</a></li>";
       }
@@ -11598,7 +11601,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var boardH = board.length ? '<details class="foldout"><summary>Class of 2027: ' + board.length + " committed</summary>" +
           '<ul class="sgfeed">' + board.map(function (c) {
             return '<li><span class="fd">' + (c.d ? md(c.d) : "") + '</span><span class="sgk commit">' + esc(c.level || "Commit") + "</span>" +
-              '<span class="fw"><b>' + esc(c.name) + "</b> <small>" + esc(c.school) + "</small> &rarr; " + esc(c.college) + "</span>" +
+              '<span class="fw"><b' + sgP(c.name, c.school) + '>' + esc(c.name) + "</b> <small>" + esc(c.school) + "</small> &rarr; " + esc(c.college) + "</span>" +
               (c.u ? '<a class="fs" href="' + esc(c.u) + '" target="_blank" rel="noopener noreferrer">247</a>' : "<span></span>") + "</li>";
           }).join("") + "</ul></details>" : "";
       var tc = (S.top_colleges || []).map(function (c) { return "<li><b>" + esc(c[0]) + "</b><span>" + c[1] + " players</span></li>"; }).join("");
