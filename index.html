@@ -11599,7 +11599,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var KN = { offer: "Offer", commit: "Commit", visit: "Visit", camp: "Camp", invite: "Invite" };
       // Name links to the profile; falls back to a match that ignores apostrophes/case only (Tuaone = Tua'one), same school.
       var PNORM = {}; (DATA.pindex || []).forEach(function (p) { PNORM[(p.name + "|" + p.school).toLowerCase().replace(/[^a-z|]/g, "")] = p; });
-      function sgP(n, sc) { if (PKEY[pkeyOf(n, sc)]) return pAttr(n, sc); var p = PNORM[(n + "|" + sc).toLowerCase().replace(/[^a-z|]/g, "")]; return p ? pAttr(p.name, p.school) : ""; }
+      // Brandon confirmed Nov 9: longer 247/X names = these profiles.
+      var SGALIAS = { "fine taufatofua vailahi|west": "Fine Vailahi", "maa'imoa meefi havili|granger": "Maa'imoa Havili" };
+      function sgP(n, sc) { var al = SGALIAS[pkeyOf(n, sc)]; if (al) n = al; if (PKEY[pkeyOf(n, sc)]) return pAttr(n, sc); var p = PNORM[(n + "|" + sc).toLowerCase().replace(/[^a-z|]/g, "")]; return p ? pAttr(p.name, p.school) : ""; }
       function frow(f) {
         var y = typeof yr === "function" && f.cls ? yr(f.cls) : f.cls;
         return '<li><span class="fd">' + md(f.d) + '</span><span class="sgk ' + esc(f.kind) + '">' + esc(KN[f.kind] || f.kind) + "</span>" +
