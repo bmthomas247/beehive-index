@@ -338,7 +338,7 @@ td.num{text-align:right;white-space:nowrap}
 
 /* ---------- hot seat ---------- */
 .heat{display:flex;flex-direction:column;gap:10px}
-.seat{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--sodium);padding:12px 14px}
+.seat{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--sodium);padding:12px 14px}
 .seat.hot{border-left-color:var(--fall)}
 .seat.warm{border-left-color:var(--sodium)}
 .seat.watch{border-left-color:var(--steel-soft)}
@@ -348,6 +348,27 @@ td.num{text-align:right;white-space:nowrap}
 .seat .who{font-weight:600;font-size:15px}
 .seat .det{font-size:12.5px;color:var(--ink-2);margin-top:2px}
 .seat .why{font-size:12px;color:var(--ink-3);margin-top:4px}
+.seat.hot{background:linear-gradient(90deg,color-mix(in srgb,var(--fall) 9%,var(--surface)),var(--surface) 55%)}
+.thermo{display:flex;align-items:flex-end;gap:7px;justify-content:center}
+.th-glass{position:relative;width:22px;height:124px;display:flex;flex-direction:column;align-items:center}
+.th-tube{position:relative;width:13px;flex:1;border:1.5px solid var(--line);border-bottom:0;
+  border-radius:8px 8px 0 0;background:var(--surface-2);overflow:hidden}
+.th-tube i{position:absolute;left:0;right:0;bottom:0;display:block;
+  background:linear-gradient(to top,var(--steel) 0,var(--steel-soft) 25%,var(--sodium-bright) 48%,var(--sodium) 62%,var(--fall) 82%);
+  background-size:100% 104px;background-position:bottom;background-repeat:no-repeat;
+  animation:thrise 1.4s cubic-bezier(.2,.7,.2,1) both}
+.th-tube b{position:absolute;left:-1px;width:5px;height:1px;background:var(--ink-3);opacity:.55}
+.th-bulb{width:24px;height:24px;border-radius:50%;margin-top:-4px;border:1.5px solid var(--line);
+  background:var(--steel);position:relative;z-index:1}
+.seat.warm .th-bulb{background:var(--sodium)}
+.seat.hot .th-bulb{background:var(--fall);animation:thglow 2.2s ease-in-out infinite}
+.th-read{display:flex;flex-direction:column;align-items:flex-start;padding-bottom:2px}
+.th-read .n{font-family:var(--f-display);font-size:30px;font-weight:700;line-height:1}
+.th-read .lab{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-top:3px}
+@keyframes thrise{from{height:0}}
+@keyframes thglow{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--fall) 0%,transparent)}
+  50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--fall) 22%,transparent)}}
+@media (prefers-reduced-motion:reduce){.th-tube i,.seat.hot .th-bulb{animation:none}}
 
 /* ---------- matchup simulator ---------- */
 .mpick{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:end;margin-bottom:16px}
@@ -9909,6 +9930,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
   }
   function band(h) { return h.heat >= 60 ? "hot" : h.heat >= 45 ? "warm" : "watch"; }
   function bandLabel(h) { return h.heat >= 60 ? "Hot" : h.heat >= 45 ? "Warm" : "Watch"; }
+  /* Thermometer: mercury rises to the heat score on a 0-100 tube; ticks at
+     the Warm (45) and Hot (60) lines. Brandon, Nov 10 2026. */
+  function thermo(h, col, lab) {
+    var lvl = Math.max(3, Math.min(100, h.heat));
+    return '<div class="thermo" title="Heat ' + h.heat.toFixed(1) + ' of 100">' +
+      '<div class="th-glass"><div class="th-tube"><i style="height:' + lvl.toFixed(1) + '%"></i>' +
+      '<b style="bottom:45%"></b><b style="bottom:60%"></b></div><div class="th-bulb"></div></div>' +
+      '<div class="th-read"><div class="n mono" style="color:var(--' + col + ')">' + h.heat.toFixed(0) +
+      '</div><div class="lab">' + lab + "</div></div></div>";
+  }
   document.getElementById("cview-seat").innerHTML =
     '<div class="panel" style="margin-bottom:14px"><h2>Coaches on the hot seat</h2>' +
     '<p class="lede">Built only from each coach\'s record at his current school, and only the seasons since he was hired. Heat goes up with losing this season, losing over the last three seasons, a losing career, a team getting worse, a low chance of making this year\'s playoffs (not counted in 1A&ndash;3A, where everyone gets in), and <strong>getting mercy-ruled</strong>: a loss by 35 or more (running clock) counts, a loss by 44 or more (the game is stopped) counts half again, this season weighted ahead of his earlier ones. <strong>Playoff wins cut it hard</strong>: a deep run takes most of it away and any state title takes off more. <strong>Sending kids to college cools it</strong>: every senior who played for him and signed with a college counts, by number not level &mdash; a light cool, up to 8% off at one a season, and it never takes a coach off this list. Second-year coaches carry 30% less, and a first-year coach is never on this list. <strong>The founding coach of a brand-new school</strong> gets more runway: he is not listed in his first two years, carries half the heat in year three and 30% less in year four. Updated every Saturday at noon. It reads results only &mdash; it knows nothing about administrations, contracts, enrollment, or what a building thinks of its coach, and several of these men are rebuilding programs that were losing long before they arrived.</p><p class="hsnote" style="margin-top:10px;padding:10px 12px;border-left:3px solid #c9a227;background:rgba(201,162,39,.08);font-size:13px;line-height:1.5"><strong>This is not a judgment of anyone as a coach or a person.</strong> The list is built only from what can be counted &mdash; scores, rankings, playoff results, college recruiting and each coach&rsquo;s own history. It cannot see the things that matter most in a program: whether players&rsquo; GPAs are climbing, whether kids are staying out of trouble, or the culture a coach is building in his locker room. Those don&rsquo;t show up in a box score, and plenty of coaches on this list are winning there.</p></div>' +
@@ -9920,9 +9951,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       if (h.po25 === "missed playoffs") why.push("missed the 2025 playoffs");
       else if (h.po25 === "lost R1") why.push("one-and-done in 2025");
       return '<div class="seat ' + band(h) + '" data-t="' + esc(h.school) + '" style="cursor:pointer">' +
-        '<div class="gauge"><div class="n mono" style="color:var(--' +
-        (band(h) === "hot" ? "fall" : band(h) === "warm" ? "sodium" : "steel") + ')">' + h.heat.toFixed(0) +
-        '</div><div class="lab">' + bandLabel(h) + "</div></div>" +
+        thermo(h, band(h) === "hot" ? "fall" : band(h) === "warm" ? "sodium" : "steel", bandLabel(h)) +
         '<div><div class="who">' + esc(h.coach) + ' <span style="color:var(--ink-3);font-weight:400">· ' +
         esc(h.school) + " " + h.cls + "</span>" + jobTag(h.school) + "</div>" +
         '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
@@ -9935,8 +9964,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     '<p class="lede" style="margin-bottom:10px">Year two. Same formula with 30% taken off, because most of these men inherited a program that was already losing.</p>' +
     '<div class="heat">' + HOT.filter(function (h) { return h.stage === "early"; }).map(function (h) {
       return '<div class="seat watch" data-t="' + esc(h.school) + '" style="cursor:pointer">' +
-        '<div class="gauge"><div class="n mono" style="color:var(--steel)">' + h.heat.toFixed(0) +
-        '</div><div class="lab">Early</div></div>' +
+        thermo(h, "steel", "Early") +
         '<div><div class="who">' + esc(h.coach) + ' <span style="color:var(--ink-3);font-weight:400">· ' +
         esc(h.school) + " " + h.cls + "</span>" + jobTag(h.school) + "</div>" +
         '<div class="det">Year ' + h.yrs + " · " + cxhRec(h.school, h.w, h.l) + "</div>" +
