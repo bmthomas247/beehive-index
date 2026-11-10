@@ -3646,6 +3646,57 @@ nav.topbar ~ main.wrap{margin-top:20px}
   .pp-hero .dhead.withcrest>.crest,.pp-hero .dhead.withcrest>img,.pp-hero .dhead.withcrest>span:first-child{width:64px;height:64px;padding:6px}
   .pp-card{padding:2px 14px 16px}
 }
+
+/* ---- profile tidy (Nov 9 2026) ---- */
+.pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
+.pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
+.ocommit{display:flex;align-items:center;gap:8px}
+.hsrc{height:20px;width:auto;vertical-align:-4px;margin-right:8px;background:#fff;padding:2px 5px;border-radius:3px;
+  box-sizing:content-box;border:1px solid var(--line-soft)}
+.crow .op{overflow-wrap:anywhere}
+.nowrap{white-space:nowrap}
+.crow .op .nowrap{color:inherit}
+.pp-side .crow{grid-template-columns:1fr !important;gap:2px;padding:10px 12px}
+.pp-side .crow .dt{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+
+/* ---- reels play on the page (Nov 9 2026) ---- */
+.reelplay{margin:0 0 12px;background:#000;border-radius:6px;overflow:hidden}
+.reelplay .rp16{position:relative;padding-top:56.25%}
+.reelplay iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.reelplay .rpbar{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 12px;background:#0B1F3A;color:#fff;font-size:13.5px}
+.reelplay .rpbar a{color:var(--sodium-bright,#E8A33D);white-space:nowrap;font-weight:600}
+.vcard[data-hudl]{cursor:pointer}
+.vcard[data-hudl].on .vthumb{outline:3px solid var(--sodium-bright,#E8A33D);outline-offset:-3px}
+.vcard[data-hudl]:focus-visible{outline:2px solid var(--sodium-bright,#E8A33D);outline-offset:2px}
+
+/* ---- player page extras (Nov 9 2026) ---- */
+.glop{display:flex;gap:12px;align-items:center}
+.glop .crest{width:32px;height:32px;flex:none}
+.glop .swatch{display:block;width:14px;height:14px;border-radius:3px;flex:none;margin:0 9px}
+.pp-so{border-top:4px solid var(--sodium-bright,#E8A33D)}
+.pp-so p:first-of-type{font-size:19px !important}
+.ntiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.ntile{position:relative;display:flex;flex-direction:column;gap:12px;min-height:180px;padding:14px;border-radius:8px;overflow:hidden;
+  color:#fff;text-decoration:none;background:linear-gradient(180deg,rgba(0,0,0,.12),rgba(0,0,0,.72)),var(--c1)}
+.ntile:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 38px,rgba(255,255,255,.05) 38px 40px);pointer-events:none}
+.ntile>*{position:relative}
+.ntile .nt-top{display:flex;justify-content:space-between;align-items:center}
+.ntile .crest{width:44px;height:44px;background:#fff;border-radius:50%;padding:5px;box-sizing:border-box}
+.ntile .nt-h{font-family:var(--f-display);font-size:16px;font-weight:700;line-height:1.22;margin-top:auto}
+.ntile .nt-d{font-size:11px;color:rgba(255,255,255,.78);text-transform:uppercase;letter-spacing:.07em}
+.ntile:hover .nt-h{text-decoration:underline}
+@media(max-width:1100px){.ntiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.ntiles{grid-template-columns:1fr}.ntile{min-height:140px}}
+
+/* ---- season stat tiles (Nov 9 2026) ---- */
+.stiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.stile{background:var(--surface);border:1px solid var(--line-soft);border-top:4px solid var(--pc,#0B1F3A);border-radius:8px;padding:12px 14px 14px}
+.stile .stk{font-family:var(--f-display);font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);margin-bottom:8px}
+.stile .stc{display:flex;flex-wrap:wrap;gap:10px 18px}
+.stile .sc b{display:block;font-family:var(--f-display);font-size:28px;line-height:1.05;color:var(--ink);font-variant-numeric:tabular-nums}
+.stile .sc b.txt{font-size:15px;line-height:1.3}
+.stile .sc span{display:block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+@media(max-width:560px){.stile .sc b{font-size:24px}}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -4869,7 +4920,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var off = p.offers || [];
     return '<div class="sect">' + (p.commit ? "Committed" : off.length ? "Offers" : "Recruiting interest") + "</div>" +
       (p.commit
-        ? "<p style='margin:0 0 6px;font-size:15px'><strong>" + esc(p.commit) + "</strong>" +
+        ? "<p class='ocommit' style='margin:0 0 6px;font-size:15px'>" + collegeMark(p.commit, true) + "<strong>" + esc(p.commit) + "</strong>" +
           (p.commit_level ? " <span style='color:var(--ink-3);font-size:13px'>" + esc(p.commit_level) + "</span>" : "") + "</p>"
         : "") +
       (off.length
@@ -4878,7 +4929,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
             var tg = sr.indexOf("247") >= 0 ? '<i class="osrc s247" title="Listed on 247Sports">247</i>' : "";
             if (sr.indexOf("X") >= 0 && sr.indexOf("247") < 0)
               tg += '<i class="osrc sx" title="Player-reported on X, not confirmed by a recruiting service">X</i>';
-            return '<span class="pl commit"><b>' + esc(o) + "</b>" + tg + "</span>"; }).join("") + "</div>" +
+            return '<span class="pl commit withmark">' + collegeMark(o) + '<b>' + esc(o) + "</b>" + tg + "</span>"; }).join("") + "</div>" +
           ((p.offers_x || []).filter(function (x) { return ((p.offer_src || {})[x.college] || []).indexOf("247") < 0; }).length ? "<p style='margin:7px 0 0;font-size:12px;color:var(--ink-3);line-height:1.55'>" +
             "<strong>Player-reported on X</strong> (announced by the player himself, not yet confirmed by a recruiting service): " +
             p.offers_x.filter(function (x) { return ((p.offer_src || {})[x.college] || []).indexOf("247") < 0; }).map(function (x) {
@@ -4947,18 +4998,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           (q.book > 1 ? "more" : "fewer") + " tackles than the football warrants"
         : "") +
       ", and pulled one game toward his position group so that a season is " +
-      "judged on a season.</p>" +
-      (p.resume
-        ? "<div class='sect'>R&eacute;sum&eacute;</div>" +
-          '<div class="beebig"><b>' + p.resume.toFixed(1) +
-          '<span>/ 5</span></b><span class="beectx">' +
-          (p.resume_why && p.resume_why.length ? esc(p.resume_why.join(" &middot; "))
-                                               : "honours on file") +
-          "</span></div>" +
-          "<p class='cnote'>Honours, a second sport, grades and a captaincy. " +
-          "Kept separate from the football number on purpose &mdash; they answer " +
-          "a different question, and adding them together only made both mean less.</p>"
-        : "");
+      "judged on a season.</p>";
   }
 
   // Each service published its own number. A recruiter wants to see them side
@@ -5021,7 +5061,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     }
     if (t.coach) rows.push(["Head coach", "<strong>" + esc(t.coach) + "</strong>" +
       (c.coach_email ? "<br>" + mail(c.coach_email) : "") +
-      (c.coach_phone ? " &middot; " + esc(c.coach_phone) : "")]);
+      (c.coach_phone ? " &middot; <span class='nowrap'>" + esc(c.coach_phone) + "</span>" : "")]);
     // The AD row is always shown, even empty. A recruiter needs to know this is a
     // door that exists at every school — an empty slot reads as "we have not
     // collected it," which is true, where a missing row reads as "there isn't one."
@@ -5050,12 +5090,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
       });
       rows.push(["Online", bits.join(" &middot; ")]);
     }
-    if (c.phone) rows.push(["School", esc(c.phone)]);
+    if (c.phone) rows.push(["School", "<span class='nowrap'>" + esc(c.phone) + "</span>"]);
     if (c.address) rows.push(["Address", esc(c.address)]);
     if (c.athletics_url) rows.push(["Athletics", '<a href="' + esc(c.athletics_url) +
-      '" target="_blank" rel="noopener">' + esc(c.athletics_url.replace(/^https?:\/\//, "").replace(/\/$/, "")) + "</a>"]);
+      '" target="_blank" rel="noopener">Athletics website &rarr;</a>']);
     else if (c.website) rows.push(["Website", '<a href="' + esc(c.website) +
-      '" target="_blank" rel="noopener">' + esc(c.website.replace(/^https?:\/\//, "").replace(/\/$/, "")) + "</a>"]);
+      '" target="_blank" rel="noopener">School website &rarr;</a>']);
 
     var missing = [];
     if (!c.coach_email) missing.push("the head coach");
@@ -5066,7 +5106,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         ? "<p style='margin:0 0 8px;font-size:12.5px;color:var(--ink-3);line-height:1.55'><strong>No player phone, email or address appears anywhere on this page and none will.</strong> Go through the program. A head coach and an athletic director are adults doing public jobs and a school publishes their contact on purpose &mdash; that is the door, and it is the one a college staff is expected to use anyway.</p>"
         : "<p style='margin:0 0 8px;font-size:12.5px;color:var(--ink-3);line-height:1.55'>Published by the school or district. Nothing here is a personal cell or a private address, and no address is ever guessed from a district's email pattern.</p>") +
       '<div class="games">' + rows.map(function (r) {
-        return '<div class="game" style="grid-template-columns:130px 1fr"><div class="dt">' +
+        return '<div class="game crow" style="grid-template-columns:130px 1fr"><div class="dt">' +
           r[0] + '</div><div class="op" style="font-weight:500;line-height:1.55">' + r[1] + "</div></div>";
       }).join("") + "</div>" +
       (missing.length
@@ -5164,11 +5204,21 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var line = [p.no ? "#" + p.no : "", p.pos, p.cls ? yr2(p.cls) : ""]
                  .filter(Boolean).join(" \u00b7 ") +
       (p.pos_src ? ' <span class="tagline rep">position ' + esc(p.pos_src) + "</span>" : "");
+    // Season lines as tiles (Brandon, Nov 9 2026). Split on commas only; every figure is the published one.
+    var SUNIT = { yds: "Yards", car: "Carries", rec: "Catches", tkl: "Tackles", sack: "Sacks", PD: "Pass breakups",
+                  FF: "Forced fumbles", FR: "Fumble rec.", TFL: "TFL" };
+    var tcol = (byName[p.school] || {}).c1 || "#0B1F3A";
     function yearRows(blob) {
       return Object.keys(blob || {}).map(function (k) {
-        return '<div class="game" style="grid-template-columns:96px 1fr"><div class="dt">' +
+        var cells = String(blob[k]).split(/\s*,\s*/).map(function (x) {
+          var m = /^(-?[\d.,\/]+)\s*(.*)$/.exec(x);
+          if (!m) return '<div class="sc"><b class="txt">' + esc(x) + "</b></div>";
+          var u = m[2] || (m[1].indexOf("/") >= 0 && k === "passing" ? "Comp/Att" : "");
+          return '<div class="sc"><b>' + esc(m[1]) + "</b><span>" + esc(SUNIT[u] || u) + "</span></div>";
+        }).join("");
+        return '<div class="stile" style="--pc:' + esc(tcol) + '"><div class="stk">' +
           (k === "defense" ? "Defense" : k.charAt(0).toUpperCase() + k.slice(1)) +
-          '</div><div class="op">' + esc(blob[k]) + "</div></div>";
+          '</div><div class="stc">' + cells + "</div></div>";
       }).join("");
     }
     var statRows = yearRows(p.stats);
@@ -5243,7 +5293,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
                 // a UHSAA or Deseret selection
                 return '<div class="game' + (h.kind === "beehive" ? " ourhon" : "") +
                   '" style="grid-template-columns:1fr auto"><div class="op" style="font-weight:600">' +
-                  esc(h.t) + (h.note ? '<span class="hnote">' + esc(h.note) + "</span>" : "") +
+                  (/^Sports Illustrated/.test(h.t) ? '<img class="hsrc" src="logo-src-si.webp" alt="Sports Illustrated" title="Sports Illustrated">' +
+                    esc(h.t.replace(/^Sports Illustrated\s*/, "")) : esc(h.t)) + (h.note ? '<span class="hnote">' + esc(h.note) + "</span>" : "") +
                   '</div><div class="dt" style="text-align:right">' + esc(h.y || "") + "</div></div>";
               }).join("") + "</div>"
             : "") +
@@ -5254,7 +5305,6 @@ nav.topbar ~ main.wrap{margin-top:20px}
             : "")
         : "") +
       (isLineman(p.pos) ? olBlock(p.school, true) : "") +
-      (p.pav !== null && p.pav !== undefined ? beeBlock(p) : "") +
       '<div class="sect">Recruiting</div>' +
       (p.grade ? svcBoard(p)
         : "<p style='margin:0;font-size:13.5px;color:var(--ink-2)'>No recruiting service has graded him. That is a statement about who has been watching, not about how he plays &mdash; the season numbers below are the evidence that exists.</p>") +
@@ -5280,7 +5330,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           // 300 yards in one game and 300 across four are different facts.
           (p.games ? ' <span class="gcount">' + p.games + " game" +
                      (p.games === 1 ? "" : "s") + " played</span>" : "") +
-          '</div><div class="games">' + statRows + "</div>" + statFrom
+          '</div><div class="stiles">' + statRows + "</div>" + statFrom
         : '<div class="sect">2026 season</div>' +
           "<p style='margin:0;font-size:13px;color:var(--ink-3)'>No statistics published" +
           ((DATA.stats_silent || []).indexOf(p.school) >= 0
@@ -5293,8 +5343,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
               : "";
             return '<div class="game" style="grid-template-columns:118px 1fr"><div class="dt">' +
               esc(gl.d.slice(5)) + "<br><span style='font-size:11px'>" + esc(res) + "</span></div>" +
-              '<div class="op"><strong>' + esc(gl.opp) + "</strong><br>" +
-              "<span style='color:var(--ink-2)'>" + esc(gl.line) + "</span></div></div>";
+              '<div class="op glop">' + logo(gl.opp, "md") + '<div><strong>' + esc(gl.opp) + "</strong><br>" +
+              "<span style='color:var(--ink-2)'>" + esc(gl.line) + "</span></div></div></div>";
           }).join("") + "</div>" +
           "<p style='margin:6px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>Every game he has a line in, from the box score Deseret publishes for that game. <strong>This is the part a season total cannot tell you</strong> &mdash; when it happened, and who it happened against.</p>"
         : "") +
@@ -5313,7 +5363,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           "<p style='margin:6px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>Picked from his box scores, not typed in &mdash; the best single game he has played, scored the same way production is scored everywhere else on this page.</p>"
         : "") +
       (stat25Rows
-        ? '<div class="sect">2025 season &mdash; full year</div><div class="games">' + stat25Rows + "</div>" +
+        ? '<div class="sect">2025 season &mdash; full year</div><div class="stiles">' + stat25Rows + "</div>" +
           "<p style='margin:6px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>" +
           (statRows
             ? "Two seasons side by side. A recruiter reads the trajectory, not just the total &mdash; and 2026 is only " +
@@ -5321,18 +5371,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
             : "Last year's production, on this roster. Nothing is entered for him yet in 2026.") + "</p>"
         : "") +
       (stat24Rows
-        ? '<div class="sect">2024 season &mdash; full year</div><div class="games">' + stat24Rows + "</div>" +
+        ? '<div class="sect">2024 season &mdash; full year</div><div class="stiles">' + stat24Rows + "</div>" +
           "<p style='margin:6px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>" +
           "<strong>A third varsity season on the sheet.</strong> Producing once can be a matchup; producing three years running is a player. " +
           "It is not in his Ledger, which is this season only &mdash; it is here because it is worth knowing.</p>"
         : "") +
       (function (news) { return news.length
-        ? '<div class="sect">In the news</div><div class="games">' +
+        ? '<div class="sect">In the news</div><div class="ntiles">' +
           news.map(function (n) {
-            return '<div class="game" style="grid-template-columns:96px 1fr"><div class="dt">' +
-              esc(n.src) + (n.d ? "<br><span style='font-size:11px'>" + esc(n.d.slice(5)) + "</span>" : "") +
-              '</div><div class="op"><a href="' + esc(n.u) + '" target="_blank" rel="noopener">' +
-              esc(n.t) + "</a></div></div>";
+            var tc = byName[p.school] || {};
+            return '<a class="ntile" href="' + esc(n.u) + '" target="_blank" rel="noopener" style="--c1:' +
+              esc(tc.c1 || "#0B1F3A") + '">' +
+              '<span class="nt-top">' + logo(p.school, "md") + srcChip(n.src) + "</span>" +
+              '<span class="nt-h">' + esc(n.t) + "</span>" +
+              '<span class="nt-d">' + esc(n.src) + (n.d ? " &middot; " + esc(mdy(n.d)) : "") + "</span></a>";
           }).join("") + "</div>" +
           "<p style='margin:6px 0 0;font-size:12px;color:var(--ink-3);line-height:1.5'>Utah outlets that named him, oldest to newest kept for good. <strong>A player getting written about or filmed is a recruiting credential no stat sheet records</strong> &mdash; a college staff can watch the segment or read the story without taking anybody's word for it. Linked only when his full name appears; if two players in the state share a name, the story has to name his school too or we leave it off.</p>"
         : ""; })((p.news && p.news.length) ? p.news : pressFor(p.name, p.school)) +
@@ -5412,6 +5464,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
       if (n.nodeType === 1 && n.classList.contains("sect")) cur = PP_SIDE.test(n.textContent.trim()) ? side : main;
       cur.appendChild(n);
     });
+    // Brandon: the standout game goes first, its own card at the top of the main column
+    var soHtml = "";
+    Array.prototype.slice.call(main.children).some(function (n) {
+      if (!(n.classList.contains("sect") && /^Standout game/i.test(n.textContent.trim()))) return false;
+      var grp = [n], nx = n.nextElementSibling;
+      while (nx && !nx.classList.contains("sect")) { grp.push(nx); nx = nx.nextElementSibling; }
+      soHtml = grp.map(function (e) { var h = e.outerHTML; e.remove(); return h; }).join("");
+      return true;
+    });
     // quick facts in the hero: only what the profile below already shows, from the same fields
     var facts = [["Height", p.ht ? esc(p.ht) : ""], ["Weight", p.wt ? esc(p.wt) + " lb" : ""],
       ["2026 games", p.games ? String(p.games) : ""],
@@ -5424,7 +5485,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (facts.length ? '<div class="pp-facts">' + facts.map(function (f) {
         return "<div><span>" + f[0] + "</span><b>" + f[1] + "</b></div>"; }).join("") + "</div>" : "") +
       "</div></div>" +
-      '<div class="pp-grid"><div class="pp-main"><div class="pp-card">' + main.innerHTML + "</div></div>" +
+      '<div class="pp-grid"><div class="pp-main">' + (soHtml ? '<div class="pp-card pp-so">' + soHtml + "</div>" : "") +
+      '<div class="pp-card">' + main.innerHTML + "</div></div>" +
       '<aside class="pp-side">' + (comb || side.innerHTML ? '<div class="pp-card">' + comb + side.innerHTML + "</div>" : "") +
       full + "</aside></div></div>";
     VIEWS.forEach(function (v) { var el = document.getElementById("v-" + v); if (el) el.hidden = true; });
@@ -5874,14 +5936,26 @@ nav.topbar ~ main.wrap{margin-top:20px}
   // Nothing is copied. The still is hot-linked off Hudl and every click goes
   // back to Hudl, so the view count stays on the reel the kid cut. If he has
   // not made one, this renders nothing at all rather than an empty shelf.
+  // hudl.com/video/3/<user>/<id> -> Hudl's embeddable player (the plain page refuses to be framed)
+  function hudlEmbed(u) {
+    var m = /^https?:\/\/(?:www\.)?hudl\.com\/video\/(\d+\/\d+\/[0-9a-f]+)/i.exec(u || "");
+    return m ? "https://www.hudl.com/embed/video/" + m[1] : "";
+  }
   function reelBlock(p) {
-    var list = (p.reels || []).slice(0, 4);
+    var list = p.reels || [];
     if (!list.length) return "";
+    var anyEmbed = list.some(function (v) { return hudlEmbed(v.u); });
     return '<div class="sect">His highlights</div>' +
       '<p class="lede" style="margin:-2px 0 8px">' +
-      "He cut these himself. Each one opens on his Hudl profile.</p>" +
+      (anyEmbed ? "He cut these himself. Tap one to watch it here, in Hudl&rsquo;s own player."
+                : "He cut these himself. Each one opens on his Hudl profile.") + "</p>" +
+      '<div class="reelplay" hidden></div>' +
       '<div class="vrail tight">' + list.map(function (v) {
-        return '<div class="vcard" data-story="' + esc(v.u) + '">' +
+        var em = hudlEmbed(v.u);
+        return (em
+          ? '<div class="vcard" role="button" tabindex="0" data-hudl="' + esc(em) + '" data-hu="' + esc(v.u) +
+            '" data-ht="' + esc(v.t) + '">'
+          : '<div class="vcard" data-story="' + esc(v.u) + '">') +
           '<span class="vthumb"><img src="' + esc(v.thumb) + '" alt="" loading="lazy">' +
           '<i class="vplay" aria-hidden="true"></i>' +
           (v.d ? '<span class="vdur">' + esc(v.d) + "</span>" : "") + "</span>" +
@@ -5890,6 +5964,30 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '<span class="vt">' + esc(v.t) + "</span></div>";
       }).join("") + "</div>";
   }
+
+  /* Highlights play on the page (Nov 9 2026): Hudl's embed player, one at a time, above the rail. */
+  function playReel(card) {
+    var block = card.closest(".vrail") && card.closest(".vrail").previousElementSibling;
+    if (!block || !block.classList.contains("reelplay")) return;
+    block.innerHTML = '<div class="rp16"><iframe src="' + esc(card.dataset.hudl) +
+      '" title="' + esc(card.dataset.ht || "Highlight") + '" allow="autoplay; fullscreen; encrypted-media" allowfullscreen loading="lazy"></iframe></div>' +
+      '<div class="rpbar"><b>' + esc(card.dataset.ht || "") + '</b><a href="' + esc(card.dataset.hu) +
+      '" target="_blank" rel="noopener">Open on Hudl &rarr;</a></div>';
+    block.hidden = false;
+    card.parentNode.querySelectorAll(".vcard.on").forEach(function (c) { c.classList.remove("on"); });
+    card.classList.add("on");
+    var r = block.getBoundingClientRect();
+    if (r.top < 60 || r.top > window.innerHeight * 0.5) window.scrollTo({ top: r.top + window.scrollY - 70, behavior: "smooth" });
+  }
+  document.addEventListener("click", function (e) {
+    var c = e.target.closest && e.target.closest(".vcard[data-hudl]");
+    if (c) { e.preventDefault(); playReel(c); }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var c = e.target.closest && e.target.closest(".vcard[data-hudl]");
+    if (c) { e.preventDefault(); playReel(c); }
+  });
 
   function videoBlock(school) {
     var ids = (DATA.videos_by_school || {})[school] || [];
@@ -10293,7 +10391,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     '<p>&mdash; <strong>corrected for who keeps the book.</strong> Tackles are typed in by a person in a press box, not read off a scoreboard, and across the state schools credit anywhere from 0.65 to 1.88 tackles per opposing play. A defense does not choose how many snaps it faces, so each school\'s defensive numbers are divided by its own rate &mdash; the same thing baseball does with a ballpark.</p>' +
     '<p>&mdash; <strong>pulled one game toward his position group.</strong> Split a season into odd and even games and a player\'s halves agree closely enough to trust five games, but not one. So one game of his group\'s average is added to everyone\'s ledger before the rate is taken. It costs a five-game starter almost nothing and it stops a boy with one enormous night from leading the state.</p>' +
     '<p>&mdash; <strong>measured against replacement.</strong> The bar is what a player who dresses and plays, but is not one of the ones the offense runs through, produces per game. Everything above it is the Ledger.</p>' +
-    '<p><strong>What is deliberately not in it:</strong> honours, a second sport, a GPA, a captaincy. Those are real and they are on every card &mdash; as a R&eacute;sum&eacute; score of their own. Adding them to a production number made both mean less, and it put players above others with three times their football.</p>' +
+    '<p><strong>What is deliberately not in it:</strong> honours, a second sport, a GPA, a captaincy. Those are real and they are on every card, listed as they are. Adding them to a production number made both mean less, and it put players above others with three times their football.</p>' +
     '<p><strong>What it cannot see:</strong> offensive line play, and anything that does not reach a box score. A great pull, a picked-up blitz, a corner nobody throws at. A low Ledger on a lineman is a gap in the measurement, not a verdict on the player.</p>' +
     '</div></details>' +
     '<details class="foldout"><summary>On GPA and X handles</summary><div class="foldbody">' +
