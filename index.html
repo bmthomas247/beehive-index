@@ -1709,6 +1709,66 @@ td.ctnone{text-align:center;color:var(--ink-3);padding:18px}
 .rgtag.up{background:color-mix(in srgb,var(--rise) 15%,transparent);color:var(--rise)}
 .rgtag.down{background:color-mix(in srgb,var(--fall) 15%,transparent);color:var(--fall)}
 .rgfar{font-size:10.5px;padding:1px 6px;border-radius:2px;background:color-mix(in srgb,var(--sodium) 15%,transparent);color:var(--sodium);font-weight:600}
+/* REALIGN-PUNCH-NOV10 */
+.rxpunch{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.rxp{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:14px 14px 12px;display:grid;gap:2px;align-content:start;min-width:0;border-top:4px solid var(--steel)}
+.rxp.gold{background:#0B1F3A;color:#fff;border-color:#0B1F3A;border-top-color:#E8A33D}
+.rxp b{font-family:var(--f-display);font-stretch:75%;font-weight:900;font-size:46px;line-height:1;letter-spacing:-.01em}
+.rxp b i{font-style:normal;font-size:.6em;margin:0 4px;color:#E8A33D}
+.rxp span{font-family:var(--f-display);font-weight:800;font-size:15px;text-transform:uppercase;letter-spacing:.03em}
+.rxp em{font-style:normal;font-size:12px;color:var(--ink-3);line-height:1.4}
+.rxp.gold em{color:rgba(255,255,255,.72)}
+.rxlanes{display:grid;gap:12px}
+.rxlane{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);overflow:hidden}
+.rxlh{display:flex;align-items:center;gap:10px;padding:9px 14px;background:#0B1F3A;color:#fff}
+.rxlh .rxfrom,.rxlh .rxto{font-family:var(--f-display);font-stretch:75%;font-weight:900;font-size:28px;line-height:1}
+.rxlh .rxfrom{opacity:.55}
+.rxlh .rxarr{font-size:16px}
+.rxlane.up .rxarr{color:#5BD49A}
+.rxlane.dn .rxarr{color:#FF8A73}
+.rxlh em{margin-left:auto;font-style:normal;font-size:12px;color:rgba(255,255,255,.75)}
+.rxlane.up{border-left:5px solid var(--rise)}
+.rxlane.dn{border-left:5px solid var(--fall)}
+.rxtiles{display:grid;gap:8px;padding:12px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.rxtile{display:grid;justify-items:center;text-align:center;gap:4px;padding:10px 6px;border-radius:6px;cursor:pointer;min-width:0;transition:background .15s}
+.rxtile:hover{background:var(--surface-2)}
+.rxtile b{font-family:var(--f-display);font-weight:800;font-size:16px;line-height:1.1}
+.rxtile>span{font-size:11.5px;color:var(--ink-3)}
+.rxtag{font-family:var(--f-display);font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:2px;line-height:1.3}
+.rxtag.cc{background:color-mix(in srgb,var(--sodium) 18%,transparent);color:var(--sodium)}
+.rxtag.sf{background:color-mix(in srgb,var(--steel) 15%,transparent);color:var(--steel)}
+.rxtag.pu{background:color-mix(in srgb,var(--rise) 15%,transparent);color:var(--rise)}
+.rxwin{display:grid;gap:12px;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+.rxwbars,.rxwflip{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:14px}
+.rxwrow{display:grid;grid-template-columns:150px minmax(0,1fr) 44px;align-items:center;gap:10px;margin-bottom:10px}
+.rxwrow span{font-size:13px;font-weight:600}
+.rxwrow div{height:26px;background:var(--surface-2);border-radius:3px;overflow:hidden}
+.rxwrow i{display:block;height:100%}
+.rxwrow i.sz{background:#0B1F3A}
+.rxwrow i.rs{background:#E8A33D}
+.rxwrow b{font-family:var(--f-display);font-weight:800;font-size:18px;text-align:right}
+.rxwsum{margin:4px 0 0;font-size:14px;line-height:1.55}
+.rxwflip>b{font-family:var(--f-display);font-weight:800;font-size:16px;display:block;margin-bottom:8px}
+.rxwflip ul{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:4px}
+.rxwflip li{display:flex;align-items:center;gap:9px;padding:4px 2px;cursor:pointer}
+.rxwflip li span{display:grid}
+.rxwflip li b{font-size:14px}
+.rxwflip li em{font-style:normal;font-size:12px;color:var(--ink-3)}
+.rxwflip strong.up{color:var(--rise)}
+.rxwflip strong.dn{color:var(--fall)}
+.rxsm{font-size:11.5px;color:var(--ink-3);line-height:1.5;margin:6px 0 0}
+.rxsrcl{color:var(--steel);text-decoration:underline;text-underline-offset:2px}
+.rxfacts{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.rxfact{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:14px;display:grid;gap:6px;align-content:start;min-width:0}
+.rxfact>b{font-family:var(--f-display);font-weight:800;font-size:17px;line-height:1.2}
+.rxfact p{margin:0;font-size:13.5px;line-height:1.55;color:var(--ink-2)}
+.rxfact p.rxsm{font-size:11.5px;color:var(--ink-3)}
+.rxv{justify-self:start;font-family:var(--f-display);font-weight:900;font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:2px;color:#fff}
+.rxv.yes{background:var(--rise)}
+.rxv.no{background:var(--fall)}
+.rxv.mid{background:var(--sodium)}
+@media (max-width:860px){.rxpunch{grid-template-columns:repeat(2,minmax(0,1fr))}.rxwin,.rxfacts{grid-template-columns:1fr}}
+@media (max-width:560px){.rxp b{font-size:38px}.rxtiles{grid-template-columns:repeat(2,minmax(0,1fr))}.rxwrow{grid-template-columns:100px minmax(0,1fr) 40px}.rxlh .rxfrom,.rxlh .rxto{font-size:24px}}
 @media (max-width:560px){.ctf:not(.ctq){flex:1 1 40%}.ctf select{width:100%}}
 table.critable tr.up td.p{color:var(--rise);font-weight:700}
 table.critable tr.down td.p{color:var(--fall);font-weight:700}
@@ -10992,6 +11052,124 @@ nav.topbar ~ main.wrap{margin-top:20px}
     rxPick = hit;
     var box = document.getElementById("rxone"); if (box) box.innerHTML = criExample(hit);
   });
+  /* REALIGN-PUNCH-NOV10 */
+  var RXW = (RMETA.weights.football || [85, 8, 7]);
+  function rxSrc(label, url) {
+    return '<a class="rxsrcl" href="' + url + '" target="_blank" rel="noopener noreferrer">' + label + "</a>";
+  }
+  // Class a school lands in if our results estimate is added to its size+income score.
+  function rxWithResults(r) {
+    if (r.cri == null || r.res_z == null) return null;
+    var s = r.cri + RXW[2] / 100 * r.res_z;
+    for (var i = 0; i < CORD.length - 1; i++)
+      if (RCUT[CORD[i]] != null && s >= RCUT[CORD[i]]) return CORD[i];
+    return CORD[CORD.length - 1];
+  }
+  function rxFlips() {
+    return RJ.filter(function (r) { var c = rxWithResults(r); return c && c !== r.proj; })
+      .sort(function (a, b) { return CORD.indexOf(a.proj) - CORD.indexOf(b.proj) || a.school.localeCompare(b.school); });
+  }
+  function rxPlaysUp(school) {
+    return RN.filter(function (n) { return n.school === school && n.kind === "appeal"; })[0] || null;
+  }
+  function rxPunch() {
+    var up = RJ.filter(function (r) { return r.direction === "up"; }).length;
+    var dn = RJ.filter(function (r) { return r.direction === "down"; }).length;
+    var n6 = RJ.filter(function (r) { return r.cls === "6A"; }).length;
+    var scored = RJ.filter(function (r) { return r.cri != null; }).length;
+    var card = function (big, what, sub, tone) {
+      return '<div class="rxp ' + (tone || "") + '"><b>' + big + "</b><span>" + what + "</span><em>" + sub + "</em></div>";
+    };
+    return '<h3 class="divhead" style="margin-top:18px">The 30-second version<span>our projection on the state&rsquo;s Oct 1 count</span></h3>' +
+      '<div class="rxpunch">' +
+      card(RXW[0] + "%", "of the score is size", "Sophomores + juniors counted Oct 1, 2026", "gold") +
+      card(n6 + "<i>&rarr;</i>" + (RMETA.sizes["6A"] || 21), "schools in 6A", "UHSAA now requires at least 21", "") +
+      card(up + dn, "schools change class", up + " up &middot; " + dn + " down on size and income", "") +
+      card(rxFlips().length, "where winning could flip it", "of " + scored + " schools &middot; results are " + RXW[2] + "%", "") +
+      "</div>";
+  }
+  function rxMoves() {
+    var lanes = {};
+    RJ.forEach(function (r) {
+      if (r.direction === "hold") return;
+      var k = r.cls + ">" + r.proj;
+      (lanes[k] = lanes[k] || []).push(r);
+    });
+    var keys = Object.keys(lanes).sort(function (a, b) {
+      var A = a.split(">"), B = b.split(">");
+      return CORD.indexOf(A[1]) - CORD.indexOf(B[1]) || CORD.indexOf(A[0]) - CORD.indexOf(B[0]);
+    });
+    if (!keys.length) return "";
+    return '<h3 class="divhead" style="margin-top:22px">Who&rsquo;s moving<span>projected 2027&ndash;29 football classes &middot; tap a school</span></h3>' +
+      '<div class="rxlanes">' + keys.map(function (k) {
+        var p = k.split(">"), up = CORD.indexOf(p[1]) < CORD.indexOf(p[0]);
+        var L = lanes[k].sort(function (a, b) { return (b.cri || 0) - (a.cri || 0); });
+        return '<div class="rxlane ' + (up ? "up" : "dn") + '"><div class="rxlh"><span class="rxfrom">' + p[0] +
+          '</span><span class="rxarr">' + (up ? "&#9650;" : "&#9660;") + '</span><span class="rxto">' + p[1] +
+          "</span><em>" + L.length + (L.length === 1 ? " school" : " schools") + "</em></div>" +
+          '<div class="rxtiles">' + L.map(function (r) {
+            var nb = rxPlaysUp(r.school);
+            var tag = nb && !up ? '<span class="rxtag pu">Plays up today &middot; can ask to stay</span>'
+                    : nb && up ? '<span class="rxtag sf">Petitioned down last cycle</span>'
+                    : criclose(r) ? '<span class="rxtag cc">Close call</span>'
+                    : crisafe(r) ? '<span class="rxtag sf">Near the line, record helps</span>' : "";
+            return '<div class="rxtile" data-t="' + esc(r.school) + '">' + logo(r.school, "xl") +
+              "<b>" + esc(r.school) + "</b><span>" + crin(r.size) + " sophomores &amp; juniors</span>" + tag + "</div>";
+          }).join("") + "</div></div>";
+      }).join("") + "</div>";
+  }
+  function rxWinning() {
+    var zs = RJ.filter(function (r) { return r.zs != null; }).map(function (r) { return r.zs; });
+    var rz = RJ.filter(function (r) { return r.res_z != null; }).map(function (r) { return r.res_z; });
+    if (!zs.length || !rz.length) return "";
+    var sz = RXW[0] / 100 * (Math.max.apply(null, zs) - Math.min.apply(null, zs));
+    var rs = RXW[2] / 100 * (Math.max.apply(null, rz) - Math.min.apply(null, rz));
+    var F = rxFlips(), scored = RJ.filter(function (r) { return r.cri != null; }).length;
+    return '<h3 class="divhead" style="margin-top:22px">Does winning matter?<span>a little, and only near a line</span></h3>' +
+      '<div class="rxwin"><div class="rxwbars">' +
+      '<div class="rxwrow"><span>Size can move a score</span><div><i class="sz" style="width:100%"></i></div><b>' + sz.toFixed(2) + "</b></div>" +
+      '<div class="rxwrow"><span>Winning can move a score</span><div><i class="rs" style="width:' + Math.max(2, rs / sz * 100).toFixed(1) + '%"></i></div><b>' + rs.toFixed(2) + "</b></div>" +
+      '<p class="rxwsum">Size is worth about <strong>' + Math.round(sz / rs) + "&times;</strong> as much as a team&rsquo;s record. " +
+      "The gap between the biggest and smallest school on our list is " + sz.toFixed(2) +
+      " points; the gap between the best and worst record is " + rs.toFixed(2) + ".</p></div>" +
+      '<div class="rxwflip"><b>' + F.length + " of " + scored + " calls change when the record is added</b>" +
+      (F.length ? '<ul>' + F.map(function (r) {
+        var c = rxWithResults(r), up = CORD.indexOf(c) < CORD.indexOf(r.proj);
+        return '<li data-t="' + esc(r.school) + '">' + logo(r.school, "md") + "<span><b>" + esc(r.school) + "</b>" +
+          '<em>size says ' + esc(r.proj) + ', with its record <strong class="' + (up ? "up" : "dn") + '">' + esc(c) + "</strong></em></span></li>";
+      }).join("") + "</ul>" : "") +
+      '<p class="rxsm">Record = our estimate from three seasons of wins and the 2025 playoff finish, against each school&rsquo;s own class. ' +
+      "UHSAA scores results from a ranking it has not released, and calls all three weights provisional until the Board votes. " +
+      rxSrc("UHSAA CRI", "https://uhsaa.org/realignment/202729/UHSAA_CRI_How_It_Works.pdf") + "</p></div></div>";
+  }
+  function rxFacts() {
+    var F = rxFlips(), scored = RJ.filter(function (r) { return r.cri != null; }).length;
+    var n6 = RJ.filter(function (r) { return r.cls === "6A"; }).length;
+    var orem = RJ.filter(function (r) { return r.school === "Orem"; })[0];
+    var fact = function (claim, verdict, tone, body, src) {
+      return '<div class="rxfact"><span class="rxv ' + tone + '">' + verdict + "</span>" +
+        "<b>&ldquo;" + claim + "&rdquo;</b><p>" + body + '</p><p class="rxsm">Source: ' + src + "</p></div>";
+    };
+    return '<h3 class="divhead" style="margin-top:22px">Fact check<span>what people are saying, checked against UHSAA&rsquo;s rules</span></h3>' +
+      '<div class="rxfacts">' +
+      fact("Next year&rsquo;s enrollment projections will push schools up.", "False", "no",
+        "UHSAA uses one snapshot: sophomores and juniors enrolled on <strong>October 1, 2026</strong>. Projections and students who arrive later do not count.",
+        rxSrc("UHSAA Handbook Art. 5", "https://www.uhsaa.org/realignment/26-27realignment.pdf") + " &middot; " + rxSrc("UHSAA CRI", "https://uhsaa.org/realignment/202729/UHSAA_CRI_How_It_Works.pdf")) +
+      fact("It&rsquo;s going to come down to competition, not size.", "Mostly false", "mid",
+        "Results are " + RXW[2] + "% of the football score; size is " + RXW[0] + "%. Adding a team&rsquo;s record changes the call for " +
+        F.length + " of " + scored + " schools, all of them already sitting near a line.",
+        rxSrc("UHSAA CRI", "https://uhsaa.org/realignment/202729/UHSAA_CRI_How_It_Works.pdf")) +
+      fact("6A has to get bigger.", "True", "yes",
+        "UHSAA set a minimum of <strong>21</strong> schools in 6A, 5A and 4A. 6A has " + n6 + " today, so at least " +
+        Math.max(0, 21 - n6) + " schools have to come up.",
+        rxSrc("UHSAA Handbook Art. 5", "https://www.uhsaa.org/realignment/26-27realignment.pdf")) +
+      fact("A great program can&rsquo;t get moved down.", "False", "no",
+        "Size decides the class. A strong small school can ask to <strong>play up</strong> instead, by Dec 1." +
+        (orem && orem.direction === "down" ? " Orem is the example: " + crin(orem.size) +
+          " sophomores and juniors puts it in " + esc(orem.proj) + ", but it already plays up in football and can apply to stay " + esc(orem.cls) + "." : ""),
+        rxSrc("UHSAA Handbook Art. 5", "https://www.uhsaa.org/realignment/26-27realignment.pdf") + " &middot; " + rxSrc("UHSAA 2025&ndash;27 Alignment", "https://www.uhsaa.org/realignment/202527RealignmentFinal.pdf")) +
+      "</div>";
+  }
   function drawRealign() {
     var up = RJ.filter(function (r) { return r.direction === "up"; });
     var dn = RJ.filter(function (r) { return r.direction === "down"; });
@@ -11014,6 +11192,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="dn"><b>' + dn.length + '</b><span>moving down</span></div>' +
       '<div><b>' + n6 + '<i>&rarr;</i>' + (RMETA.sizes["6A"] || "?") + '</b><span>schools in 6A</span></div></div></div>' +
       "</div></section>" +
+      rxPunch() + rxMoves() +
 
       '<h3 class="divhead" style="margin-top:18px">How it works<span>six steps, Oct 1 to Dec 17</span></h3>' +
       '<ol class="rxsteps">' +
@@ -11036,6 +11215,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<p>Nearby schools become a league. Public hearing on Zoom <strong>Dec 8</strong>.</p></li>' +
       '<li><i class="rxic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l4 4 10-10"/><path d="M3 21h18"/></svg></i><span class="rxdate">Dec 17</span><b>Final vote</b>' +
       '<p>Locked in for two seasons. Kickoff <strong>August 2027</strong>.</p></li></ol>' +
+
+      rxWinning() + rxFacts() +
 
       '<h3 class="divhead" style="margin-top:22px">See it on one school<span>the formula, start to finish</span></h3>' +
       '<div class="rxfind"><label for="rxq">Find your school</label>' +
