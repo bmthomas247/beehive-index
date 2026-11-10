@@ -1891,7 +1891,7 @@ table.critable tbody tr{cursor:pointer}
 
 /* ---------- carousel board ---------- */
 /* 2026 carousel results (Nov 9 2026) */
-.c26{margin-top:26px;padding:0;overflow:hidden}
+.c26{margin:22px 0 26px;padding:0;overflow:hidden}
 .c26>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:16px 18px;
  background:linear-gradient(120deg,#0B1F3A,#14325C);color:#fff}
 .c26>summary::-webkit-details-marker{display:none}
@@ -3606,6 +3606,46 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .st-w .crest.lo,.st-tile.big .st-w .crest.lo{width:84px;height:84px}
 .st-l .crest.lo,.st-tile.big .st-l .crest.lo{width:48px;height:48px}
 @media (max-width:760px){.st-tile .st-w .crest.lo{width:70px;height:70px}.st-tile .st-l .crest.lo{width:36px;height:36px}}
+
+/* ---- full player page (Nov 9 2026) ---- */
+#v-player .pp{max-width:1180px;margin:0 auto}
+.pp-top{display:flex;align-items:center;flex-wrap:wrap;gap:10px 14px;margin:2px 0 12px;font-size:13px;color:var(--ink-3)}
+.pp-back{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;
+  padding:6px 14px;border-radius:999px;cursor:pointer}
+.pp-back:hover{border-color:var(--ink-3)}
+.pp-crumb [data-t]{cursor:pointer;text-decoration:underline;color:var(--ink-2)}
+.pp-hero{background:#0B1F3A;color:#fff;border-radius:6px;overflow:hidden;margin-bottom:18px;
+  border-bottom:4px solid var(--sodium-bright,#E8A33D)}
+.pp-hero .cband{margin:0;height:8px}
+.pp-hero .dhead{padding:24px 26px 26px;margin:0;border:0}
+.pp-hero .dhead.withcrest{grid-template-columns:104px minmax(0,1fr);gap:22px}
+.pp-hero .dhead.withcrest>.crest,.pp-hero .dhead.withcrest>img,.pp-hero .dhead.withcrest>span:first-child{
+  width:104px;height:104px;background:#fff;border-radius:50%;padding:10px;box-sizing:border-box;object-fit:contain}
+.pp-hero .dhead h3{color:#fff;font-family:var(--f-display);font-size:clamp(32px,5.4vw,58px);line-height:.98;
+  text-transform:uppercase;letter-spacing:.01em;margin:0 0 10px}
+.pp-hero .dsub{color:rgba(255,255,255,.84);font-size:16px;margin-top:4px}
+.pp-hero .dsub [data-t]{color:#fff}
+.pp-hero .tagline{color:rgba(255,255,255,.6)}
+.pp-hero .dlinks{margin-top:14px}
+.pp-hrow{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end}
+.pp-facts{display:flex;padding:0 26px 28px}
+.pp-facts>div{padding:0 18px;border-left:1px solid rgba(255,255,255,.18);min-width:70px}
+.pp-facts span{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.pp-facts b{display:block;font-family:var(--f-display);font-size:28px;line-height:1.1;color:#fff;white-space:nowrap}
+@media(max-width:940px){.pp-hrow{grid-template-columns:1fr}.pp-facts{padding:0 16px 18px;flex-wrap:wrap;row-gap:10px}.pp-facts>div:first-child{border-left:0;padding-left:0}}
+.pp-grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:20px;align-items:start}
+.pp-main,.pp-side{min-width:0;display:flex;flex-direction:column;gap:16px}
+.pp-card{background:var(--surface);border:1px solid var(--line-soft);border-radius:6px;padding:4px 20px 20px}
+.pp-card>.sect:first-child{margin-top:14px}
+.pp-card>.combine:first-child{margin-top:16px}
+.pp-side .fullpage{display:block;text-align:center}
+@media(max-width:940px){.pp-grid{grid-template-columns:1fr}}
+@media(max-width:640px){
+  .pp-hero .dhead{padding:16px}
+  .pp-hero .dhead.withcrest{grid-template-columns:64px minmax(0,1fr);gap:14px}
+  .pp-hero .dhead.withcrest>.crest,.pp-hero .dhead.withcrest>img,.pp-hero .dhead.withcrest>span:first-child{width:64px;height:64px;padding:6px}
+  .pp-card{padding:2px 14px 16px}
+}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -3789,6 +3829,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
   <section id="v-history" hidden></section>
   <section id="v-home" hidden></section>
+  <section id="v-player" hidden></section>
   <section id="v-breakdown" hidden></section>
   <section id="v-send" hidden></section>
   <section id="v-recruit101" hidden></section>
@@ -5115,7 +5156,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     return PRESS_PLAYER[(name + "|" + school).toLowerCase()] || [];
   }
 
-  function openPlayer(name, school) {
+  function openPlayer(name, school, asDrawer) {
     var p = PKEY[pkeyOf(name, school)];
     if (!p) return;
     lastFocus = document.activeElement;
@@ -5142,7 +5183,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       : "";
     var stat25Rows = yearRows(p.stats25);
     var stat24Rows = yearRows(p.stats24);
-    document.getElementById("drawer-in").innerHTML =
+    var PHTML =
       '<button class="dclose" id="dclose" aria-label="Close">Close ✕</button>' +
       colorBand(p.school) +
       '<div class="dhead withcrest">' + logo(p.school, "xl") +
@@ -5335,9 +5376,72 @@ nav.topbar ~ main.wrap{margin-top:20px}
             : "")
         : "") +
       contactBlock(t, true);
+    if (!asDrawer) {
+      // a player clicked inside an open card (a team card, say): close the card without
+      // its own history.back(), and let the page take over the card's history entry
+      var wasCard = drawer.classList.contains("open");
+      var rep = wasCard && history.state && history.state.card;
+      if (wasCard) { PP_SWAP = true; closeDrawer(); }
+      playerPage(p, PHTML, rep);
+      return;
+    }
+    document.getElementById("drawer-in").innerHTML = PHTML;
     drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden", "false");
     var c = document.getElementById("dclose");
     c.addEventListener("click", closeDrawer); c.focus();
+  }
+
+  /* ---- full player page (Brandon, Nov 9 2026: "actual pages instead of just the pop up window") ----
+     Same profile openPlayer() builds, laid out as a page: hero across the top, film and
+     production in the main column, measurables / recruiting / awards / contacts in the
+     sidebar. Lives at /?player=Name|School with its own history entry, so Back works and
+     the link can be shared. Sections are routed by their heading, so a new section added
+     to the profile lands in the main column without touching this. */
+  var PP_SWAP = false, PP_TITLE = document.title;
+  var PP_SIDE = /^(Committed|Offers|Recruiting|Awards|Ledger|Off the field|Also plays|Where else|Reaching him)/i;
+  function playerPage(p, html, replace) {
+    var host = document.getElementById("v-player");
+    if (!host) return;
+    var tmp = document.createElement("div");
+    tmp.innerHTML = html;
+    var x = tmp.querySelector(".dclose"); if (x) x.remove();
+    function take(sel) { var e = tmp.querySelector(sel); if (e && e.parentNode === tmp) { e.remove(); return e.outerHTML; } return ""; }
+    var band = take(".cband"), head = take(".dhead"), comb = take(".combine"), full = take(".fullpage");
+    var main = document.createElement("div"), side = document.createElement("div"), cur = main;
+    Array.prototype.slice.call(tmp.childNodes).forEach(function (n) {
+      if (n.nodeType === 1 && n.classList.contains("sect")) cur = PP_SIDE.test(n.textContent.trim()) ? side : main;
+      cur.appendChild(n);
+    });
+    // quick facts in the hero: only what the profile below already shows, from the same fields
+    var facts = [["Height", p.ht ? esc(p.ht) : ""], ["Weight", p.wt ? esc(p.wt) + " lb" : ""],
+      ["2026 games", p.games ? String(p.games) : ""],
+      p.commit ? ["Committed", esc(p.commit)] : ["Offers", (p.offers || []).length ? String(p.offers.length) : ""]]
+      .filter(function (f) { return f[1]; });
+    host.innerHTML = '<div class="pp">' +
+      '<div class="pp-top"><button type="button" class="pp-back" id="ppback">&larr; Back</button>' +
+      '<span class="pp-crumb">Player profile &middot; <span data-t="' + esc(p.school) + '">' + esc(p.school) + "</span></span></div>" +
+      '<div class="pp-hero">' + band + '<div class="pp-hrow">' + head.replace('loading="lazy"', 'loading="eager"') +
+      (facts.length ? '<div class="pp-facts">' + facts.map(function (f) {
+        return "<div><span>" + f[0] + "</span><b>" + f[1] + "</b></div>"; }).join("") + "</div>" : "") +
+      "</div></div>" +
+      '<div class="pp-grid"><div class="pp-main"><div class="pp-card">' + main.innerHTML + "</div></div>" +
+      '<aside class="pp-side">' + (comb || side.innerHTML ? '<div class="pp-card">' + comb + side.innerHTML + "</div>" : "") +
+      full + "</aside></div></div>";
+    VIEWS.forEach(function (v) { var el = document.getElementById("v-" + v); if (el) el.hidden = true; });
+    host.hidden = false;
+    document.title = p.name + " — " + p.school + " football | Utah High School Football";
+    window.scrollTo({ top: 0, behavior: "instant" });
+    document.getElementById("ppback").addEventListener("click", function () {
+      if (history.state && history.state.player) history.back();
+      else showView(lastSub[curGroup] || "home");
+    });
+    if (!NAV_QUIET) {
+      var u = location.pathname + "?player=" + encodeURIComponent(p.name + "|" + p.school);
+      try {
+        if (replace) history.replaceState({ player: true }, "", u);
+        else if (u !== location.pathname + location.search) history.pushState({ player: true }, "", u);
+      } catch (e) {}
+    }
   }
 
   document.addEventListener("click", function (e) {
@@ -8943,17 +9047,6 @@ nav.topbar ~ main.wrap{margin-top:20px}
     '<input type="search" id="cq" placeholder="Search coach, coordinator, or school" aria-label="Search coaches"></div>' +
     "</div><div id=\"coachgrid\"></div></div>" +
     '<div id="cview-caro" hidden>' + caroWar() +
-    '<div class="panel" style="margin-bottom:26px"><h2>Coordinators who have run a program</h2>' +
-    '<p class="lede">Coordinator win-loss records are not kept anywhere in Utah — nobody publishes them, so no ranking can honestly claim one. What <em>is</em> on the record is a coordinator who used to be a head coach somewhere, and that is a real number. These ' +
-    CHC.length + ' are the ones found across all 106 staffs; the combined record is his own, from his head-coaching stops, not his coordinator work. Two are documented stops whose records were never printed.</p>' +
-    '<div class="carogrid">' + CHC.map(function (c) {
-      return '<div class="caro"><div class="who">' + esc(c.coach) +
-        '<span class="tagline ' + (c.verified ? "rep" : "inf") + '">' +
-        (c.verified ? c.w + "–" + c.l : "record not verified") + "</span>" +
-        "<small>" + esc(c.role) + " at " + esc(c.school) + " · " + esc(c.cls) + " #" + c.rank + "</small></div>" +
-        '<div><div class="basis">' + esc(c.record) + "</div>" +
-        (c.background ? '<div class="dtl">' + esc(c.background) + "</div>" : "") + "</div></div>";
-    }).join("") + "</div></div>" +
     /* 2026 carousel results (Nov 9 2026) */
     (function () {
       var R = DATA.caro26 || [];
@@ -8987,7 +9080,19 @@ nav.topbar ~ main.wrap{margin-top:20px}
         }).join("") + "</div>" +
         '<p class="c26-note">Each line links its source. Where a departure reason was never reported we say so instead of guessing; ' +
         "&ldquo;Out&rdquo; uses the word the source used.</p></details>";
-    })() + "</div>";
+    })() +
+    '<div class="panel" style="margin-bottom:26px"><h2>Possible head coach candidates for 2027</h2>' +
+    '<p class="lede">Coordinators on Utah staffs right now who have already run a program. Nobody here has been reported as a candidate for any job &mdash; this is who has a head-coaching record to show when one opens. Coordinator win-loss records are not kept anywhere in Utah — nobody publishes them, so no ranking can honestly claim one. What <em>is</em> on the record is a coordinator who used to be a head coach somewhere, and that is a real number. These ' +
+    CHC.length + ' are the ones found across all 106 staffs; the combined record is his own, from his head-coaching stops, not his coordinator work. Two are documented stops whose records were never printed.</p>' +
+    '<div class="carogrid">' + CHC.map(function (c) {
+      return '<div class="caro"><div class="who">' + esc(c.coach) +
+        '<span class="tagline ' + (c.verified ? "rep" : "inf") + '">' +
+        (c.verified ? c.w + "–" + c.l : "record not verified") + "</span>" +
+        "<small>" + esc(c.role) + " at " + esc(c.school) + " · " + esc(c.cls) + " #" + c.rank + "</small></div>" +
+        '<div><div class="basis">' + esc(c.record) + "</div>" +
+        (c.background ? '<div class="dtl">' + esc(c.background) + "</div>" : "") + "</div></div>";
+    }).join("") + "</div></div>" +
+    "</div>";
 
   var cdiv = "ALL", csort = "car_pct", cdir = -1;
   var CSORTS = { car_pct: "Win %", car_w: "Wins", car_l: "Losses", coach_yrs: "Years", school: "Team" };
@@ -11117,6 +11222,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var g = groupOf(view, gid);
     curGroup = g.id;
     lastSub[g.id] = view;
+    var ppv = document.getElementById("v-player");
+    if (ppv && !ppv.hidden) { ppv.hidden = true; ppv.innerHTML = ""; document.title = PP_TITLE; }
     VIEWS.forEach(function (v) {
       var el = document.getElementById("v-" + v);
       if (el) el.hidden = (v !== view);
@@ -12201,13 +12308,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
         cardMine = true;
       } else if (!open && cardMine) {
         cardMine = false;
-        if (history.state && history.state.card) history.back();
-      } else if (!open && !NAV_QUIET && /[?&](player|team)=/.test(location.search)) {
+        if (!PP_SWAP && history.state && history.state.card) history.back();
+      } else if (!open && !NAV_QUIET && !PP_SWAP && /[?&](player|team)=/.test(location.search)) {
         // closed the card a shared link opened: drop it from the URL so Back
         // or a refresh does not pop it open again
         var cv = lastSub[curGroup] || "home";
         try { history.replaceState(null, "", location.pathname + (cv !== "home" ? "?view=" + encodeURIComponent(cv) : "")); } catch (e) {}
       }
+      PP_SWAP = false;
     });
     mo.observe(drawer, { attributes: true, attributeFilter: ["class"] });
     fromUrl();
