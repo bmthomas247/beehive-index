@@ -3778,7 +3778,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .pp-facts{flex-wrap:wrap;row-gap:12px;padding:16px 26px 22px !important;border-top:1px solid rgba(255,255,255,.12)}
 .pp-facts>div:first-child{border-left:0;padding-left:0}
 @media(max-width:640px){.pp-facts{padding:14px 16px 18px !important}.pp-facts>div{padding:0 12px}}
-.pp-facts em{display:block;font-style:normal;font-size:10.5px;color:rgba(255,255,255,.6);margin-top:2px;white-space:nowrap}
+.pp-facts em{display:block;font-style:normal;font-size:11px;line-height:1.35;color:rgba(255,255,255,.7);margin-top:3px;max-width:170px}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -5390,6 +5390,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (isLineman(p.pos) ? olBlock(p.school, true) : "") +
       '<div class="sect">Recruiting</div>' +
       (p.grade ? svcBoard(p)
+        : p.ranks && (p.ranks.s247 || p.ranks.rivals || p.ranks.espn)
+        ? "<p style='margin:0;font-size:13.5px;color:var(--ink-2)'>" +
+          [["247Sports", p.ranks.s247], ["Rivals", p.ranks.rivals], ["ESPN", p.ranks.espn]].filter(function (x) { return x[1]; })
+            .map(function (x) { return "<strong>" + x[0] + "</strong> ranks him #" + x[1].st + " in Utah" +
+              (p.ranks.cls ? " in the " + esc(p.ranks.cls) + " class" : ""); }).join("; ") +
+          ". No service grade is on file for him yet; the ranks above are as published on On3&rsquo;s Utah rankings.</p>"
         : "<p style='margin:0;font-size:13.5px;color:var(--ink-2)'>No recruiting service has graded him. That is a statement about who has been watching, not about how he plays &mdash; the season numbers below are the evidence that exists.</p>") +
       (p.seen && p.seen.length
         ? '<div class="sect">Seen in person</div>' +
@@ -5535,10 +5541,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
   /* Recruiting-service ranks in the player hero (Brandon, Nov 10 2026): 247, Rivals, ESPN. Not Prep Redzone. */
   // Nov 10: On3's Utah industry page carries each service's own Utah rank, national position rank and,
   // where nobody ranked ahead of him can be missing, a Utah position rank (see harvest_on3_ranks.py).
-  function rkCell(label, r) {
-    var pos = esc(r.pos || "");
-    var sub = r.pos_ut ? "#" + r.pos_ut + " " + pos + " in Utah"
-            : r.posn ? "#" + r.posn + " " + pos + " national" : "in Utah";
+  var RKPOS = { QB: "QB", RB: "running back", WR: "receiver", TE: "tight end", OT: "offensive tackle",
+    IOL: "interior OL", OL: "offensive lineman", EDGE: "edge rusher", DL: "defensive lineman", LB: "linebacker",
+    CB: "cornerback", S: "safety", DB: "defensive back", ATH: "athlete", K: "kicker", P: "punter", LS: "long snapper" };
+  function rkCell(label, r, cls) {
+    var pos = esc(RKPOS[r.pos] || r.pos || "");
+    var sub = (r.pos_ut ? "#" + r.pos_ut + " " + pos + " in Utah"
+            : r.posn ? "#" + r.posn + " " + pos + " nationally" : "") +
+            (cls ? (r.pos_ut || r.posn ? "<br>" : "") + esc(cls) + " class" : "");
     return [label + " &middot; Utah", "#" + r.st, sub, "rk",
             label + " ranking, as published by " + label + " and carried on On3's Utah rankings" +
             (DATA.svc_ranks_asof ? " (as of " + DATA.svc_ranks_asof + ")" : "") +
@@ -5548,9 +5558,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var R = p.ranks;
     if (R && (R.s247 || R.rivals || R.espn)) {
       var o = [];
-      if (R.s247) o.push(rkCell("247Sports", R.s247));
-      if (R.rivals) o.push(rkCell("Rivals", R.rivals));
-      if (R.espn) o.push(rkCell("ESPN", R.espn));
+      if (R.s247) o.push(rkCell("247Sports", R.s247, R.cls));
+      if (R.rivals) o.push(rkCell("Rivals", R.rivals, R.cls));
+      if (R.espn) o.push(rkCell("ESPN", R.espn, R.cls));
       return o;
     }
     var v = p.svc || {}, out = [];
@@ -11399,8 +11409,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
      assuming W + 1 labelled Saturday's games as next week's slate. */
   var NW = parseInt(DATA.next_week, 10) || (W + 1);
   // Brandon, Oct 11 2026: Scores includes Picks; "Players" not "Player Search";
-  // Players, Programs and Coaches each carry their own Rankings (the Rankings tab
-  // stays too, so a board shows in several spots); the Playoff Machine sits under
+  // Coaches carries its own Rankings too (Nov 10: Players and Schools no longer
+  // do -- their boards live only under the Rankings tab); the Playoff Machine sits under
   // both Scores and Standings. A view may live in several groups -- showView()
   // keeps you in the group you came from.
   var GROUPS = [
@@ -11413,11 +11423,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
     { id: "rank", label: "Rankings", views: [
         ["rank", "Schools"], ["prank", "Players"], ["crank", "Coaches"]] },
     { id: "people", label: "Players", views: [
-        ["prank", "Rankings"], ["players", "All Players"], ["recruit", "Commitments"]] },
+        ["players", "All Players"], ["recruit", "Commitments"]] },
     // Brandon, Nov 9 2026: one Highlights page with every player's Hudl reels.
     { id: "hl", label: "Highlights", views: [["hl", "Highlights"]] },
     { id: "programs", label: "Schools", views: [
-        ["rank", "Rankings"], ["breakdown", "All 106"], ["cpipe", "College Pipeline"],
+        ["breakdown", "All 106"], ["cpipe", "College Pipeline"],
         ["xfer", "Transfers"]] },
     { id: "coaches", label: "Coaches", views: [
         ["crank", "Rankings"], ["coach", "Coaches Stats"], ["seat", "Hot Seat"],
