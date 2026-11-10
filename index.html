@@ -5533,7 +5533,26 @@ nav.topbar ~ main.wrap{margin-top:20px}
      the link can be shared. Sections are routed by their heading, so a new section added
      to the profile lands in the main column without touching this. */
   /* Recruiting-service ranks in the player hero (Brandon, Nov 10 2026): 247, Rivals, ESPN. Not Prep Redzone. */
+  // Nov 10: On3's Utah industry page carries each service's own Utah rank, national position rank and,
+  // where nobody ranked ahead of him can be missing, a Utah position rank (see harvest_on3_ranks.py).
+  function rkCell(label, r) {
+    var pos = esc(r.pos || "");
+    var sub = r.pos_ut ? "#" + r.pos_ut + " " + pos + " in Utah"
+            : r.posn ? "#" + r.posn + " " + pos + " national" : "in Utah";
+    return [label + " &middot; Utah", "#" + r.st, sub, "rk",
+            label + " ranking, as published by " + label + " and carried on On3's Utah rankings" +
+            (DATA.svc_ranks_asof ? " (as of " + DATA.svc_ranks_asof + ")" : "") +
+            (r.pos_ut ? "" : r.posn ? ". Position rank is national." : "")];
+  }
   function svcRanks(p) {
+    var R = p.ranks;
+    if (R && (R.s247 || R.rivals || R.espn)) {
+      var o = [];
+      if (R.s247) o.push(rkCell("247Sports", R.s247));
+      if (R.rivals) o.push(rkCell("Rivals", R.rivals));
+      if (R.espn) o.push(rkCell("ESPN", R.espn));
+      return o;
+    }
     var v = p.svc || {}, out = [];
     function n(x) { return x !== undefined && x !== null && x !== "" && x !== "0"; }
     if (n(v.st247)) out.push(["247Sports", "#" + esc(v.st247), "in Utah" + (n(v.natl247) ? " &middot; #" + esc(v.natl247) + " national" : ""), "rk", "247Sports ranking"]);
