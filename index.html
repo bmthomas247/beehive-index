@@ -1890,6 +1890,32 @@ table.critable tbody tr{cursor:pointer}
 .pctbar i{position:absolute;inset:0 auto 0 0;background:var(--steel)}
 
 /* ---------- carousel board ---------- */
+/* 2026 carousel results (Nov 9 2026) */
+.c26{margin-top:26px;padding:0;overflow:hidden}
+.c26>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:14px;padding:16px 18px;
+ background:linear-gradient(120deg,#0B1F3A,#14325C);color:#fff}
+.c26>summary::-webkit-details-marker{display:none}
+.c26>summary h2{color:#fff;margin:2px 0 4px;border:0;padding:0}
+.c26>summary p{margin:0;font-size:13px;color:#C9D6E6}
+.c26-k{font-family:var(--f-display);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#FFC64B}
+.c26-chev{margin-left:auto;font-size:22px;transition:transform .2s;flex:none}
+.c26[open] .c26-chev{transform:rotate(180deg)}
+.c26-list{display:grid}
+.c26-row{display:grid;grid-template-columns:minmax(150px,1.1fr) 1.2fr 1.4fr auto;gap:14px;align-items:start;padding:12px 18px;border-top:1px solid var(--line-soft)}
+.c26-row:nth-child(even){background:color-mix(in srgb,var(--surface) 92%,var(--ink) 3%)}
+.c26-sc{display:flex;gap:9px;align-items:center;cursor:pointer}
+.c26-sc b{display:block;font-size:14px}
+.c26-row small{display:block;font-size:12px;color:var(--ink-3);margin-top:2px;line-height:1.35}
+.c26-in b,.c26-out b{font-size:14px}
+.c26-tag{display:inline-block;font-family:var(--f-display);font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:2px 6px;border-radius:3px;margin-right:6px;vertical-align:1px}
+.c26-tag.in{background:#3ED9A0;color:#062417}
+.c26-tag.out{background:#FF6A56;color:#2A0703}
+.c26-now{margin-top:4px;font-size:12.5px;font-weight:600}
+.c26-now span{font-family:var(--f-display);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#14325C;background:#FFC64B;padding:2px 6px;border-radius:3px;margin-right:6px}
+.c26-src{display:flex;flex-direction:column;gap:2px;font-size:11px;text-align:right}
+.c26-src a{color:var(--ink-3)}
+.c26-note{font-size:12px;color:var(--ink-3);margin:0;padding:10px 18px 14px;border-top:1px solid var(--line-soft)}
+@media(max-width:760px){.c26-row{grid-template-columns:1fr 1fr}.c26-sc{grid-column:1/-1}.c26-src{grid-column:1/-1;flex-direction:row;gap:10px;text-align:left}}
 .carogrid{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 .caro{display:grid;grid-template-columns:180px 1fr;gap:14px;background:var(--surface);padding:11px 13px;align-items:start}
 .caro .who{font-weight:600;font-size:14px}
@@ -1987,6 +2013,18 @@ table.critable tbody tr{cursor:pointer}
 .cw-und small{font-size:11px;color:var(--ink-3)}
 .cw-und span{font-weight:700;font-variant-numeric:tabular-nums}
 .cw-us{font-size:10.5px;color:var(--ink-3);margin-top:3px}
+/* carousel cards v2 (Nov 9 2026) */
+.cw-gh{display:flex;align-items:center;gap:8px;font-family:var(--f-display);font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin:4px 0 10px;color:var(--ink)}
+.cw-gh i{width:10px;height:10px;border-radius:50%;background:#FF3B30;display:inline-block}
+.cw-gh.hear i{background:#FFC64B}
+.cw-rec{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}
+.cw-rec>div:not(.cw-uh):not(.cw-us){padding:4px 0}
+.cw-rn{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:baseline;font-size:13px}
+.cw-rn small{font-size:11px;color:var(--ink-3)}
+.cw-rn span{font-weight:800;color:#0B6E4F}
+.cw-ro{font-size:11.5px;color:var(--ink-2);margin-top:1px}
+.cw-apply{display:block;margin-top:10px;text-align:center;font-weight:800;font-size:14px;text-decoration:none;color:#fff;background:#FF3B30;border-radius:4px;padding:10px 12px}
+.cw-apply:hover{filter:brightness(1.08)}
 .cw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-bottom:22px}
 .cw-job{position:relative;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:4px;overflow:hidden;
   transition:transform .15s ease,box-shadow .15s ease;cursor:pointer}
@@ -8807,7 +8845,22 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var nOpen = OPEN.filter(function (o) { return o.status === "open"; }).length,
         nHear = OPEN.filter(function (o) { return o.status === "hearing"; }).length,
         nFill = OPEN.filter(function (o) { return o.status === "filled"; }).length;
-    var cards = OPEN.map(function (o) {
+    /* carousel cards v2 (Nov 9 2026) */
+    var SRY = (function () { var d = new Date(); return d.getMonth() >= 6 ? d.getFullYear() + 1 : d.getFullYear(); })();
+    function cwRecruits(sc) {
+      var R = (DATA.pindex || []).filter(function (p) {
+        return p.school === sc && +p.cls > SRY && (p.offer_n || (p.offers || []).length);
+      }).sort(function (a, b) { return (b.offer_n || (b.offers || []).length) - (a.offer_n || (a.offers || []).length); }).slice(0, 3);
+      if (!R.length) return "";
+      var YR = { 1: "Junior", 2: "Sophomore", 3: "Freshman" };
+      return '<div class="cw-rec"><div class="cw-uh">Recruited underclassmen</div>' + R.map(function (p) {
+        var n = p.offer_n || (p.offers || []).length, off = (p.offers || []).slice(0, 4);
+        return '<div><div class="cw-rn"><b>' + esc(p.name) + '</b><small>' + (YR[+p.cls - SRY] || p.cls) +
+          (p.pos ? ' &middot; ' + esc(p.pos) : '') + '</small><span>' + n + ' offer' + (n === 1 ? '' : 's') + '</span></div>' +
+          (off.length ? '<div class="cw-ro">' + off.map(esc).join(', ') + (n > off.length ? ' + ' + (n - off.length) + ' more' : '') + '</div>' : '') + '</div>';
+      }).join('') + '<div class="cw-us">Offers: ' + esc(R[0].offers_source || '247Sports') + '</div></div>';
+    }
+    function cwCard(o) {
       var t = byName[o.school] || {};
       var c1 = t.c1 || "#14325C", c2 = t.c2 || c1;
       var pill = o.status === "open" ? "<i></i>Open" : o.status === "hearing" ? "<i></i>Hearing" : "Filled";
@@ -8829,6 +8882,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           "<div><b>" + esc(t.hired || "&mdash;") + "</b><span>" + (o.coach_out ? esc(o.coach_out.split(" ").slice(-1)[0]) + " hired" : "Hired") + "</span></div>" +
           "<div><b>" + esc(t.cls || "") + "</b><span>Class</span></div>" +
         "</div>" +
+        cwRecruits(o.school) +
         /* carousel underclassmen (Nov 9 2026) */
         ((o.under && o.under.length)
           ? '<div class="cw-und"><div class="cw-uh">Top underclassmen &middot; 2026</div>' +
@@ -8842,8 +8896,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
         (o.confirmed
           ? '<div class="cw-src">' + esc(o.source) + " &middot; " + cwDate(o.date) + "</div>"
           : '<div class="cw-src unc">Unconfirmed &middot; heard ' + cwDate(o.date) + "</div>") +
+        (o.apply && /^https?:\/\//.test(o.apply)
+          ? '<a class="cw-apply" href="' + esc(o.apply) + '" target="_blank" rel="noopener">Apply for this job &rarr;</a>' : "") +
         "</div></div>";
-    }).join("");
+    }
+    var cards = OPEN.map(cwCard).join(""),
+        cConf = OPEN.filter(function (o) { return o.status !== "hearing"; }).map(cwCard).join(""),
+        cHear = OPEN.filter(function (o) { return o.status === "hearing"; }).map(cwCard).join("");
     var nextUp = (HOT || []).filter(function (h) { return !JOBTAG[h.school]; }).slice(0, 5).map(function (h, i) {
       return '<div class="cw-hr" data-t="' + esc(h.school) + '"><span class="r">' + (i + 1) + "</span>" +
         "<div><strong>" + esc(h.school) + "</strong> <small>" + esc(h.cls) + " &middot; " + esc(h.coach) + " &middot; " + esc(h.cur) + "</small></div>" +
@@ -8858,7 +8917,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="h"><b>' + nHear + "</b><span>Hearing</span></div>" +
       "<div><b>" + nFill + "</b><span>Filled</span></div>" +
       "<div><b>29</b><span>Changes in 2026</span></div></div></div>" +
-      (cards ? '<div class="cw-grid">' + cards + "</div>"
+      (cards ? (cConf ? '<h3 class="cw-gh"><i></i>Confirmed</h3><div class="cw-grid">' + cConf + "</div>" : "") +
+               (cHear ? '<h3 class="cw-gh hear"><i></i>Hearing &middot; unconfirmed</h3><div class="cw-grid">' + cHear + "</div>" : "")
              : '<div class="panel" style="margin-bottom:22px"><p class="lede" style="margin:0">No openings yet this offseason.</p></div>') +
       (nextUp ? '<div class="cw-next"><h3>&#128293; Next to open? Hottest seats</h3>' + nextUp +
         '<button class="rmore" data-go="seat">Full Hot Seat &rsaquo;</button></div>' : "");
@@ -8894,18 +8954,40 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<div><div class="basis">' + esc(c.record) + "</div>" +
         (c.background ? '<div class="dtl">' + esc(c.background) + "</div>" : "") + "</div></div>";
     }).join("") + "</div></div>" +
-    '<div class="panel" style="margin-top:26px"><h2>The carousel board</h2>' +
-    '<p class="lede">Who was actually available the last time jobs opened. Utah made <strong>29 head coaching changes</strong> in the 2026 offseason and <strong>20 of them were internal promotions</strong> — an assistant or coordinator already in the building — so the first place to look when a job opens is that school\'s own staff, which is why every team card lists its coordinators.<br><br>' +
-    'Rows marked <span class="tagline rep">Reported</span> come from published news. Rows marked <span class="tagline inf">Unattached</span> are <strong>inference from the public record</strong>: a 2026 region preview named a different head coach, so the previous one is no longer there. No article says any of them was let go, and nobody here has been named a candidate for anything. This is a resume inventory, not reporting, and it is not a prediction about any job.</p>' +
-    '<div class="carogrid">' + CAND.map(function (c) {
-      var tag = GTAGS[c.group] || ["", "inf"];
-      var isRep = c.sourced === "reported";
-      return '<div class="caro"><div class="who">' + esc(c.name) +
-        '<span class="tagline ' + (isRep ? "rep" : "inf") + '">' + (isRep ? "Reported" : "Inferred") + "</span>" +
-        "<small>" + esc(tag[0]) + "</small></div>" +
-        '<div><div class="basis">' + esc(c.basis) + (c.record && c.record !== "—" ? " <em>" + esc(c.record) + "</em>" : "") + "</div>" +
-        (c.detail ? '<div class="dtl">' + esc(c.detail) + "</div>" : "") + "</div></div>";
-    }).join("") + "</div></div></div>";
+    /* 2026 carousel results (Nov 9 2026) */
+    (function () {
+      var R = DATA.caro26 || [];
+      if (!R.length) return "";
+      var left = R.filter(function (r) { return r.went_to; }).length;
+      function src(u, lab) {
+        if (!u) return "";
+        var host = String(u).replace(/^https?:\/\/(www\.)?/, "").split("/")[0];
+        return '<a href="' + esc(u) + '" target="_blank" rel="noopener" title="' + esc(lab) + '">' + esc(host) + "</a>";
+      }
+      return '<details class="panel c26"><summary><div><span class="c26-k">Last offseason</span>' +
+        "<h2>2026 carousel results</h2>" +
+        "<p>" + R.length + " of the programs we cover changed head coaches before the 2026 season" +
+        (left ? " &middot; " + left + " of the coaches who left are already somewhere new" : "") +
+        ". Who was hired, who left, and where they went.</p></div>" +
+        '<span class="c26-chev" aria-hidden="true">&#9662;</span></summary>' +
+        '<div class="c26-list">' + R.map(function (r) {
+          var t = byName[r.school] || {};
+          return '<div class="c26-row">' +
+            '<div class="c26-sc" data-t="' + esc(r.school) + '">' + logo(r.school, "sm") +
+              "<div><b>" + esc(r.school) + "</b><small>" + esc(t.cls || "") + (t.w != null ? " &middot; " + t.w + "&ndash;" + t.l + " in 2026" : "") + "</small></div></div>" +
+            '<div class="c26-in"><span class="c26-tag in">Hired</span><b>' + esc(r.new_coach) + "</b>" +
+              (r.new_from ? "<small>" + esc(r.new_from) + "</small>" : "") + "</div>" +
+            '<div class="c26-out">' + (r.out_coach
+              ? '<span class="c26-tag out">Out</span><b>' + esc(r.out_coach) + "</b>" +
+                "<small>" + (r.out_how ? esc(r.out_how) : "Reason not reported") + "</small>" +
+                (r.went_to ? '<div class="c26-now"><span>Now</span>' + esc(r.went_to) + "</div>" : "")
+              : '<span class="c26-tag out">Out</span><small>Not yet sourced</small>') + "</div>" +
+            '<div class="c26-src">' + src(r.src_new, "Hire") + (r.src_out && r.src_out !== r.src_new ? src(r.src_out, "Departure") : "") + "</div>" +
+            "</div>";
+        }).join("") + "</div>" +
+        '<p class="c26-note">Each line links its source. Where a departure reason was never reported we say so instead of guessing; ' +
+        "&ldquo;Out&rdquo; uses the word the source used.</p></details>";
+    })() + "</div>";
 
   var cdiv = "ALL", csort = "car_pct", cdir = -1;
   var CSORTS = { car_pct: "Win %", car_w: "Wins", car_l: "Losses", coach_yrs: "Years", school: "Team" };
