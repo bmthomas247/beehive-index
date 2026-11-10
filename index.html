@@ -3767,6 +3767,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .stile .sc b.txt{font-size:15px;line-height:1.3}
 .stile .sc span{display:block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
 @media(max-width:560px){.stile .sc b{font-size:24px}}
+
+/* ---- service ranks in the player hero (Nov 10 2026) ---- */
+.pp-facts b.rk{color:var(--sodium-bright,#E8A33D)}
+.pp-hrow{grid-template-columns:1fr !important}
+.pp-facts{flex-wrap:wrap;row-gap:12px;padding:16px 26px 22px !important;border-top:1px solid rgba(255,255,255,.12)}
+.pp-facts>div:first-child{border-left:0;padding-left:0}
+@media(max-width:640px){.pp-facts{padding:14px 16px 18px !important}.pp-facts>div{padding:0 12px}}
+.pp-facts em{display:block;font-style:normal;font-size:10.5px;color:rgba(255,255,255,.6);margin-top:2px;white-space:nowrap}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -5520,6 +5528,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
      sidebar. Lives at /?player=Name|School with its own history entry, so Back works and
      the link can be shared. Sections are routed by their heading, so a new section added
      to the profile lands in the main column without touching this. */
+  /* Recruiting-service ranks in the player hero (Brandon, Nov 10 2026): 247, Rivals, ESPN. Not Prep Redzone. */
+  function svcRanks(p) {
+    var v = p.svc || {}, out = [];
+    function n(x) { return x !== undefined && x !== null && x !== "" && x !== "0"; }
+    if (n(v.st247)) out.push(["247Sports", "#" + esc(v.st247), "in Utah" + (n(v.natl247) ? " &middot; #" + esc(v.natl247) + " national" : ""), "rk", "247Sports ranking"]);
+    if (n(v.st_rivals)) out.push(["Rivals", "#" + esc(v.st_rivals), "in Utah" + (n(v.natl_rivals) ? " &middot; #" + esc(v.natl_rivals) + " national" : ""), "rk", "Rivals ranking"]);
+    if (n(v.espn)) out.push(["ESPN", esc(v.espn), "grade", "rk", "ESPN grade (a rating, not a rank)"]);
+    return out;
+  }
   var PP_SWAP = false, PP_TITLE = document.title;
   var PP_SIDE = /^(Committed|Offers|Recruiting|Awards|Ledger|Off the field|Also plays|Where else|Reaching him)/i;
   function playerPage(p, html, replace) {
@@ -5545,16 +5562,19 @@ nav.topbar ~ main.wrap{margin-top:20px}
       return true;
     });
     // quick facts in the hero: only what the profile below already shows, from the same fields
-    var facts = [["Height", p.ht ? esc(p.ht) : ""], ["Weight", p.wt ? esc(p.wt) + " lb" : ""],
+    var facts = svcRanks(p)
+      .concat([["Height", p.ht ? esc(p.ht) : ""], ["Weight", p.wt ? esc(p.wt) + " lb" : ""],
       ["2026 games", p.games ? String(p.games) : ""],
-      p.commit ? ["Committed", esc(p.commit)] : ["Offers", (p.offers || []).length ? String(p.offers.length) : ""]]
+      p.commit ? ["Committed", esc(p.commit)] : ["Offers", (p.offers || []).length ? String(p.offers.length) : ""]])
       .filter(function (f) { return f[1]; });
     host.innerHTML = '<div class="pp">' +
       '<div class="pp-top"><button type="button" class="pp-back" id="ppback">&larr; Back</button>' +
       '<span class="pp-crumb">Player profile &middot; <span data-t="' + esc(p.school) + '">' + esc(p.school) + "</span></span></div>" +
       '<div class="pp-hero">' + band + '<div class="pp-hrow">' + head.replace('loading="lazy"', 'loading="eager"') +
       (facts.length ? '<div class="pp-facts">' + facts.map(function (f) {
-        return "<div><span>" + f[0] + "</span><b>" + f[1] + "</b></div>"; }).join("") + "</div>" : "") +
+        return "<div" + (f[4] ? ' title="' + f[4] + '"' : "") +
+          "><span>" + f[0] + "</span><b" + (f[3] ? ' class="' + f[3] + '"' : "") + ">" + f[1] + "</b>" +
+          (f[2] ? "<em>" + f[2] + "</em>" : "") + "</div>"; }).join("") + "</div>" : "") +
       "</div></div>" +
       '<div class="pp-grid"><div class="pp-main">' + (soHtml ? '<div class="pp-card pp-so">' + soHtml + "</div>" : "") +
       '<div class="pp-card">' + main.innerHTML + "</div></div>" +
