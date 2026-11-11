@@ -3204,6 +3204,11 @@ a.costcta{ margin-top:14px }
 #nwmodal h3{margin:0 0 10px;font-size:20px;line-height:1.25}
 #nwmodal p{margin:0 0 10px;font-size:15px;line-height:1.55}
 #nwmodal .nwsrc{font-size:12px;color:var(--ink-3,#666)}
+#nwmodal .nwh{margin:14px 0 6px;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-3,#666)}
+#nwmodal .nwul{margin:0 0 6px;padding:0;list-style:none;font-size:14px;line-height:1.55}
+#nwmodal .nwoff{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+#nwmodal .nwoff span{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;padding:4px 9px;border:1px solid var(--line,#ddd);border-radius:999px}
+#nwmodal .nwoff img,#nwmodal .nwoff svg{width:16px;height:16px;object-fit:contain}
 #nwmodal .nwbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 #nwmodal .nwbtns>*{font:inherit;font-size:13px;font-weight:800;text-decoration:none;padding:9px 14px;border-radius:8px;border:1px solid var(--line,#ddd);background:var(--surface,#fff);color:var(--ink,#111);cursor:pointer}
 #nwmodal .nwbtns>.pri{background:var(--accent,#C8102E);border-color:transparent;color:#fff}
@@ -6068,6 +6073,29 @@ nav.topbar ~ main.wrap{margin-top:20px}
   var NWYR = { "2027": "Senior", "2028": "Junior", "2029": "Sophomore", "2030": "Freshman" };
   function nwRec(sc) { var t = byName[sc]; return t ? esc(sc) + " (" + t.w + "-" + t.l + ")" : esc(sc); }
   function nwList(a) { return a.length < 3 ? a.join(" and ") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+  var NWSRC = { "247": "247Sports", X: "the player&rsquo;s posts on X", told: "the player&rsquo;s own posts" };
+  function nwPlayerBits(x) {
+    var p = PKEY[(x.player + "|" + x.school).toLowerCase()]; if (!p) return "";
+    var out = "", st = p.stats || {};
+    var lines = Object.keys(st).filter(function (k) { return st[k]; }).map(function (k) {
+      return "<li><b>" + esc(k === "defense" ? "Defense" : k.charAt(0).toUpperCase() + k.slice(1)) + ":</b> " + esc(st[k]) + "</li>";
+    });
+    if (lines.length) out += '<div class="nwh">2026 season' + (p.games ? " &middot; " + esc(p.games) + " games" : "") + "</div>" +
+      '<ul class="nwul">' + lines.join("") + '</ul><div class="nwsrc">Stats: MaxPreps box scores.</div>';
+    var oth = (p.offers || []).filter(function (o) { return o && o !== x.college; });
+    if (oth.length) {
+      var srcs = {};
+      oth.forEach(function (o) { ((p.offer_src || {})[o] || []).forEach(function (k) { srcs[NWSRC[k] || esc(k)] = 1; }); });
+      var more = p.offer_n && +p.offer_n > (p.offers || []).length ? +p.offer_n - (p.offers || []).length : 0;
+      out += '<div class="nwh">Other offers (' + (oth.length + more) + ")</div>" +
+        '<div class="nwoff">' + oth.map(function (o) {
+          return '<span>' + (typeof collegeMark === "function" ? collegeMark(o) : "") + esc(o) + "</span>";
+        }).join("") + "</div>" +
+        '<div class="nwsrc">Offers: ' + (Object.keys(srcs).join(", ") || esc(p.offers_source || "on file")) +
+        (more ? ". " + more + " more on file there, not named." : ".") + "</div>";
+    }
+    return out;
+  }
   function nwOpen(key) {
     var it = NWPOP[key]; if (!it) return false;
     var k = it.k, x = it.x, mark = "", kick = "", title = "", para = "", src = "", btns = "";
@@ -6077,7 +6105,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
       title = esc("Commitment: " + x.player + " (" + x.school + ") to " + x.college);
       para = esc(x.player) + (NWYR[String(x.cls)] ? ", a " + NWYR[String(x.cls)] : "") + " at " + esc(x.school) +
         ", has committed to " + esc(x.college) + ".";
-      src = "Source: " + (x.via === "X" ? "the player&rsquo;s post on X" : x.via === "247" ? "247Sports" : "reported") + ", " + esc(x.d) + ".";
+      src = "Source: " + (x.via === "X" ? "the player&rsquo;s post on X" : x.via === "247" ? "247Sports" : "reported") + ", " + esc(x.d) + "." +
+        "</div>" + nwPlayerBits(x) + '<div class="nwsrc" hidden>';
       btns = '<button class="pri" data-go="recruit">All Utah commitments &rarr;</button>' +
         (pAttr(x.player, x.school) ? "<button" + pAttr(x.player, x.school) + ">Player card</button>" : "") +
         (x.u ? '<a href="' + esc(x.u) + '" target="_blank" rel="noopener noreferrer">' + (x.via === "X" ? "See the post" : "Source") + " &#8599;</a>" : "");
