@@ -3864,6 +3864,91 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .pp-facts>div:first-child{border-left:0;padding-left:0}
 @media(max-width:640px){.pp-facts{padding:14px 16px 18px !important}.pp-facts>div{padding:0 12px}}
 .pp-facts em{display:block;font-style:normal;font-size:11px;line-height:1.35;color:rgba(255,255,255,.7);margin-top:3px;max-width:170px}
+
+/* ---- Commit hub (Nov 11 2026) ---- */
+.cx-band{background:linear-gradient(135deg,#0B1F3A 0%,#13305a 60%,#0B1F3A 100%);color:#fff;border-radius:14px;padding:18px 20px 14px;margin-bottom:14px;position:relative;overflow:hidden}
+.cx-band:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(232,163,61,.12)}
+.cx-band h2{color:#fff;margin:0 0 2px;font-family:var(--f-display);letter-spacing:.04em;text-transform:uppercase;font-size:20px}
+.cx-band .cx-sub{color:#b9c6d8;font-size:12.5px;margin-bottom:12px}
+.cx-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;position:relative;z-index:1}
+.cx-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 12px}
+.cx-stat b{display:block;font-family:var(--f-display);font-size:38px;line-height:1;color:var(--sodium-bright,#E8A33D)}
+.cx-stat span{display:block;font-size:12px;color:#dfe6ef;margin-top:4px;line-height:1.35}
+.cx-bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.15);margin-top:7px}
+.cx-bar i{display:block;background:var(--sodium-bright,#E8A33D)}
+.cx-lv{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.cx-lv em{font-style:normal;font-size:11px;padding:1px 7px;border-radius:99px;background:rgba(255,255,255,.12);color:#fff}
+.cx-src{font-size:11px;color:#8fa1b8;margin-top:10px;position:relative;z-index:1}
+.cx-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:18px 0 8px;border-bottom:2px solid var(--ink);padding-bottom:4px}
+.cx-h h3{margin:0;font-family:var(--f-display);text-transform:uppercase;letter-spacing:.05em;font-size:15px}
+.cx-h small{color:var(--ink-3);font-size:12px}
+.cx-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+.cx-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;position:relative;overflow:hidden}
+.cx-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sodium-bright,#E8A33D)}
+.cx-card.new:after{content:"NEW";position:absolute;right:10px;top:10px;font-size:10px;font-weight:700;letter-spacing:.08em;color:#fff;background:#C8102E;border-radius:4px;padding:1px 5px}
+.cx-flow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.cx-flow .crest{width:34px;height:34px}
+.cx-flow .cx-arr{color:var(--ink-3);font-size:16px}
+.cx-flow .cmark,.cx-flow .cmark img{width:42px;height:42px}
+.cx-card .cx-nm{font-weight:700;font-size:15px;line-height:1.2}
+.cx-card .cx-meta{font-size:12px;color:var(--ink-3);margin-top:2px}
+.cx-card .cx-col{font-family:var(--f-display);font-size:14px;margin-top:6px;text-transform:uppercase;letter-spacing:.03em}
+.cx-card .cx-ft{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--ink-3);margin-top:8px}
+.cx-card .cx-ft a{color:var(--ink-2)}
+.cx-more{display:block;margin:10px auto 0;border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 16px;font-size:13px;cursor:pointer;color:var(--ink)}
+.cx-wall{display:flex;flex-wrap:wrap;gap:8px}
+.cx-tile{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:8px 10px;display:flex;align-items:center;gap:8px;cursor:pointer;font:inherit;color:var(--ink)}
+.cx-tile .cmark,.cx-tile .cmark img{width:28px;height:28px}
+.cx-tile.s2 .cmark,.cx-tile.s2 .cmark img{width:38px;height:38px}
+.cx-tile.s3 .cmark,.cx-tile.s3 .cmark img{width:50px;height:50px}
+.cx-tile b{font-family:var(--f-display);font-size:18px}
+.cx-tile small{font-size:11.5px;color:var(--ink-3);display:block;line-height:1.1;text-align:left}
+.cx-tile.on{border-color:var(--ink);box-shadow:0 0 0 2px var(--sodium-bright,#E8A33D)}
+.cx-tl{display:flex;align-items:flex-end;gap:6px;height:150px;padding:8px 4px 0;border-bottom:1px solid var(--line)}
+.cx-tl div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+.cx-tl i{display:block;width:100%;max-width:38px;background:linear-gradient(180deg,var(--sodium-bright,#E8A33D),#c47f1c);border-radius:5px 5px 0 0;min-height:2px}
+.cx-tl b{font-size:12px;margin-bottom:3px}
+.cx-tlx{display:flex;gap:6px;padding:4px 4px 0}
+.cx-tlx span{flex:1;text-align:center;font-size:11px;color:var(--ink-3);min-width:0}
+.cx-two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.cx-list{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px 12px}
+.cx-row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+.cx-row:last-child{border-bottom:0}
+.cx-row .crest{width:28px;height:28px}
+.cx-row .cx-rt{flex:1;min-width:0}
+.cx-row .cx-rt b{display:block;font-size:14px}
+.cx-row .cx-rt span{display:block;font-size:12px;color:var(--ink-3)}
+.cx-row .cx-logos{display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end;max-width:130px}
+.cx-row .cx-logos .cmark,.cx-row .cx-logos .cmark img{width:22px;height:22px}
+.cx-plus{font-family:var(--f-display);font-size:20px;color:#1D7A4E;min-width:34px;text-align:right}
+.cx-f{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
+.cx-f button{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 11px;font-size:12.5px;cursor:pointer;color:var(--ink)}
+.cx-f button.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+.cx-f select{border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:12.5px;background:var(--surface);color:var(--ink)}
+.cx-ba{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cx-bar2{display:grid;grid-template-columns:40px 30px minmax(0,1fr) 64px minmax(0,150px);gap:10px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--line)}
+.cx-bar2:last-child{border-bottom:0}
+.cx-bar2 .cx-rk{font-family:var(--f-display);font-size:20px;color:var(--ink-3);text-align:center}
+.cx-bar2 .crest{width:30px;height:30px}
+.cx-bar2 .cx-rt b{display:block;font-size:14.5px}
+.cx-bar2 .cx-rt span{display:block;font-size:12px;color:var(--ink-3)}
+.cx-bar2 .cx-q{font-family:var(--f-display);font-size:22px;text-align:center;line-height:1}
+.cx-bar2 .cx-q small{display:block;font-family:inherit;font-size:10px;color:var(--ink-3);letter-spacing:.05em}
+.cx-bar2 .cx-of{font-size:12px;color:var(--ink-2);text-align:right}
+.cx-bar2 .cx-of .cx-logos{display:flex;gap:3px;justify-content:flex-end;margin-top:3px;flex-wrap:wrap}
+.cx-bar2 .cx-of .cmark,.cx-bar2 .cx-of .cmark img{width:20px;height:20px}
+.cx-hot{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;background:#1D7A4E;border-radius:4px;padding:0 5px;margin-left:6px;vertical-align:1px}
+.cx-note{font-size:11.5px;color:var(--ink-3);margin-top:6px;line-height:1.5}
+@media (max-width:720px){
+  .cx-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .cx-stat b{font-size:30px}
+  .cx-two{grid-template-columns:1fr}
+  .cx-bar2{grid-template-columns:28px 26px minmax(0,1fr) 46px;gap:8px}
+  .cx-bar2 .cx-of{grid-column:3 / 5;text-align:left}
+  .cx-bar2 .cx-of .cx-logos{justify-content:flex-start}
+  .cx-tl{height:120px}
+  .cx-tlx span{font-size:9.5px}
+}
 </style>
 
 <div class="tickwrap" id="tickwrap" hidden>
@@ -7602,8 +7687,188 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="lvn">' + (x.commits ? "<b>" + x.commits + " committed</b>" : "") +
       "</div></div>";
   }
-  document.getElementById("v-recruit").innerHTML =
-    '<div class="panel" style="margin-bottom:14px"><h2>Recruiting board</h2>' +
+
+  /* ---- Commit hub (Nov 11 2026) ---- */
+  var CXS = DATA.signings || {};
+  var CXC = CXS.commits_all || [];
+  var CXM = CXS.momentum || {};
+  var CXUT = { "Utah": 1, "BYU": 1, "Utah State": 1, "Utah Tech": 1, "Southern Utah": 1, "Weber State": 1, "Snow College": 1 };
+  var CXMON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var CXST = { col: "", all: false, cls: "", pos: "", sch: "", sort: "q", more: false };
+  function cxD(d) { if (!d) return ""; var p = d.split("-"); return CXMON[+p[1] - 1] + " " + (+p[2]) + (p[0] !== String(new Date().getFullYear()) ? ", " + p[0] : ""); }
+  function cxYr(c) { return c === "2027" ? "Senior" : c === "2028" ? "Junior" : c === "2029" ? "Sophomore" : c === "2030" ? "Freshman" : ""; }
+  function cxVia(via) { return via === "247" ? "247Sports" : via === "X" ? "Player&rsquo;s post" : "Reported"; }
+  function cxMom(n, s) { return CXM[(n + "|" + s).toLowerCase()] || null; }
+  function cxBand() {
+    var rated27 = OPENB.filter(function (p) { return p.cls === "2027"; }).length + COMMITTED.length;
+    var n27 = CXC.filter(function (c) { return c.c === "2027" || !c.c; }).length;
+    var home = CXC.filter(function (c) { return CXUT[c.col]; }).length;
+    var lv = {}; CXC.forEach(function (c) { var k = c.lv || "other"; lv[k] = (lv[k] || 0) + 1; });
+    var pct = rated27 ? Math.round(COMMITTED.length / rated27 * 100) : 0;
+    var cut = CXS.since30 || "";
+    var last30 = CXC.filter(function (c) { return c.d && c.d >= cut; }).length;
+    return '<div class="cx-band"><h2>Utah Commitment Tracker</h2>' +
+      '<div class="cx-sub">Class of 2027 &middot; every commitment we can source, newest first</div>' +
+      '<div class="cx-stats">' +
+      '<div class="cx-stat"><b>' + n27 + '</b><span>Seniors committed</span><div class="cx-lv">' +
+        ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO"].filter(function (k) { return lv[k]; }).map(function (k) {
+          return "<em>" + esc(LVNAME[k] || k) + " " + lv[k] + "</em>"; }).join("") + "</div></div>" +
+      '<div class="cx-stat"><b>' + pct + '%</b><span>of ' + rated27 + ' rated seniors are committed (' + COMMITTED.length + ")</span>" +
+        '<div class="cx-bar"><i style="width:' + pct + '%"></i></div></div>' +
+      '<div class="cx-stat"><b>' + home + '</b><span>staying home with a Utah college program</span></div>' +
+      '<div class="cx-stat"><b>' + last30 + '</b><span>commitments in the last 30 days</span></div>' +
+      "</div>" +
+      '<div class="cx-src">Sources: 247Sports Utah commit board (rated seniors), and players&rsquo; own posts on X. Rated = graded by at least one recruiting service.</div></div>';
+  }
+  function cxCard(c) {
+    var cut = CXS.since30 || "";
+    return '<div class="cx-card' + (c.d && c.d >= cut ? " new" : "") + '" data-col="' + esc(c.col) + '">' +
+      '<div class="cx-flow">' + logo(c.s, "sm") + '<span class="cx-arr">&rarr;</span>' + collegeMark(c.col, true) + "</div>" +
+      '<div class="cx-nm"' + pAttr(c.n, c.s) + ">" + esc(c.n) + "</div>" +
+      '<div class="cx-meta">' + [cxYr(c.c), c.p, c.s].filter(Boolean).map(esc).join(" &middot; ") + "</div>" +
+      '<div class="cx-col">' + esc(c.col) + (c.lv ? ' <small style="font-family:inherit;color:var(--ink-3);font-size:11px">' + esc(LVNAME[c.lv] || c.lv) + "</small>" : "") + "</div>" +
+      '<div class="cx-ft"><span>' + esc(cxD(c.d)) + "</span>" +
+      (c.u ? '<a href="' + esc(c.u) + '" target="_blank" rel="noopener noreferrer">' + cxVia(c.via) + "</a>" : "<span>" + cxVia(c.via) + "</span>") +
+      "</div></div>";
+  }
+  function cxCardsInner() {
+    var list = CXC.filter(function (c) { return !CXST.col || c.col === CXST.col; });
+    var show = CXST.all || CXST.col ? list : list.slice(0, 8);
+    return '<div class="cx-cards">' + show.map(cxCard).join("") + "</div>" +
+      (show.length < list.length ? '<button type="button" class="cx-more" data-cx="allc">Show all ' + list.length + " commitments</button>" : "");
+  }
+  function cxWall() {
+    var n = {}; CXC.forEach(function (c) { n[c.col] = (n[c.col] || 0) + 1; });
+    var cols = Object.keys(n).sort(function (a, b) { return n[b] - n[a] || a.localeCompare(b); });
+    return '<div class="cx-wall">' + cols.map(function (k) {
+      return '<button type="button" class="cx-tile ' + (n[k] >= 5 ? "s3" : n[k] >= 2 ? "s2" : "") + (CXST.col === k ? " on" : "") +
+        '" data-cx="col" data-v="' + esc(k) + '">' + collegeMark(k, true) + "<span><b>" + n[k] + "</b><small>" + esc(k) + "</small></span></button>";
+    }).join("") + "</div>";
+  }
+  function cxTimeline() {
+    var by = {}; CXC.forEach(function (c) { if (c.d) { var k = c.d.slice(0, 7); by[k] = (by[k] || 0) + 1; } });
+    var now = new Date(), months = [];
+    for (var i = 11; i >= 0; i--) {
+      var d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push(d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2));
+    }
+    var mx = Math.max.apply(null, months.map(function (m) { return by[m] || 0; }).concat([1]));
+    var older = CXC.filter(function (c) { return c.d && c.d < months[0]; }).length;
+    return '<div class="cx-tl">' + months.map(function (m) {
+      var v = by[m] || 0;
+      return "<div>" + (v ? "<b>" + v + "</b>" : "") + '<i style="height:' + Math.round(v / mx * 100) + '%"></i></div>';
+    }).join("") + '</div><div class="cx-tlx">' + months.map(function (m) {
+      return "<span>" + CXMON[+m.slice(5) - 1] + "</span>"; }).join("") + "</div>" +
+      (older ? '<p class="cx-note">Plus ' + older + " earlier commitment" + (older === 1 ? "" : "s") + ". Dates are the commit date 247Sports lists, or the date of the player&rsquo;s post.</p>" : "");
+  }
+  var CXPOS = [["", "All"], ["QB", "QB"], ["RB", "RB"], ["WR", "WR"], ["TE", "TE"], ["OL", "O-line"], ["DL", "D-line"], ["LB", "LB"], ["DB", "DB"], ["ATH", "ATH"]];
+  function cxPosGroup(p) {
+    var f = String(p || "").toUpperCase().split(/[\/ ]/)[0];
+    if (/^(OL|OT|OG|IOL|C|G|T)$/.test(f)) return "OL";
+    if (/^(DL|DT|DE|EDGE|NT)$/.test(f)) return "DL";
+    if (/^(DB|CB|S|SS|FS|SAF)$/.test(f)) return "DB";
+    if (/^(LB|ILB|OLB|MLB)$/.test(f)) return "LB";
+    if (/^(RB|HB|FB)$/.test(f)) return "RB";
+    return f;
+  }
+  function cxOpen() {
+    var done = {}; CXC.forEach(function (c) { done[(c.n + "|" + c.s).toLowerCase()] = 1; });
+    var pi = {}; (DATA.pindex || []).forEach(function (p) { pi[(p.name + "|" + p.school).toLowerCase()] = p; });
+    return OPENB.filter(function (p) { return !done[(p.name + "|" + p.school).toLowerCase()] && !p.commit; }).map(function (p) {
+      var x = pi[(p.name + "|" + p.school).toLowerCase()] || {};
+      var m = cxMom(p.name, p.school);
+      return { p: p, offers: x.offers || [], on: x.offer_n || (x.offers || []).length, mo: m ? m.o.length : 0 };
+    });
+  }
+  function cxBoardInner() {
+    var all = cxOpen();
+    var rows = all.filter(function (r) {
+      return (!CXST.cls || r.p.cls === CXST.cls) && (!CXST.pos || cxPosGroup(r.p.pos) === CXST.pos) && (!CXST.sch || r.p.school === CXST.sch);
+    }).sort(CXST.sort === "o" ? function (a, b) { return b.on - a.on || b.p.q - a.p.q; } : function (a, b) { return b.p.q - a.p.q || b.on - a.on; });
+    var show = CXST.more ? rows : rows.slice(0, 25);
+    return '<div class="cx-ba">' + (show.length ? show.map(function (r, i) {
+      var p = r.p;
+      return '<div class="cx-bar2"><div class="cx-rk">' + (i + 1) + "</div>" + logo(p.school, "sm") +
+        '<div class="cx-rt"><b' + pAttr(p.name, p.school) + ">" + esc(p.name) +
+        (r.mo ? '<span class="cx-hot">+' + r.mo + " new</span>" : "") + "</b><span>" +
+        [cxYr(p.cls), p.pos, p.school, p.team_cls].filter(Boolean).map(esc).join(" &middot; ") + "</span></div>" +
+        '<div class="cx-q">' + esc(String(p.q)) + "<small>GRADE</small></div>" +
+        '<div class="cx-of">' + (r.on ? r.on + " offer" + (r.on === 1 ? "" : "s") : "No offers listed") +
+        (r.offers.length ? '<div class="cx-logos">' + r.offers.slice(0, 5).map(function (c) { return collegeMark(c); }).join("") + "</div>" : "") +
+        "</div></div>";
+    }).join("") : '<div style="padding:14px" class="lede">No uncommitted rated players match.</div>') + "</div>" +
+      (show.length < rows.length ? '<button type="button" class="cx-more" data-cx="moreb">Show all ' + rows.length + "</button>" : "");
+  }
+  function cxFilters() {
+    var sch = Array.from(new Set(cxOpen().map(function (r) { return r.p.school; }))).sort();
+    function b(k, v, t) { return '<button type="button" data-cx="f" data-k="' + k + '" data-v="' + esc(v) + '"' + (CXST[k] === v ? ' class="on"' : "") + ">" + esc(t) + "</button>"; }
+    return '<div class="cx-f">' + b("cls", "", "All classes") + b("cls", "2027", "Seniors") + b("cls", "2028", "Juniors") + b("cls", "2029", "Sophomores") + "</div>" +
+      '<div class="cx-f">' + CXPOS.map(function (x) { return b("pos", x[0], x[1]); }).join("") + "</div>" +
+      '<div class="cx-f"><select data-cx="sch"><option value="">Every school</option>' + sch.map(function (s) {
+        return '<option' + (CXST.sch === s ? " selected" : "") + ">" + esc(s) + "</option>"; }).join("") + "</select>" +
+      b("sort", "q", "Sort: grade") + b("sort", "o", "Sort: offers") + "</div>";
+  }
+  function cxRise() {
+    var rows = Object.keys(CXM).map(function (k) { var m = CXM[k]; return [k, m]; }).filter(function (x) { return x[1].o.length; });
+    var done = {}; CXC.forEach(function (c) { done[(c.n + "|" + c.s).toLowerCase()] = 1; });
+    var pi = {}; (DATA.pindex || []).forEach(function (p) { pi[(p.name + "|" + p.school).toLowerCase()] = p; });
+    rows = rows.filter(function (x) { return !done[x[0]]; }).sort(function (a, b) { return b[1].o.length - a[1].o.length || (b[1].o[0][1] > a[1].o[0][1] ? 1 : -1); }).slice(0, 8);
+    return '<div class="cx-list">' + (rows.length ? rows.map(function (x) {
+      var p = pi[x[0]] || {}, nm = x[1].nm || p.name || x[0].split("|")[0], sc = x[1].sc || p.school || x[0].split("|")[1];
+      return '<div class="cx-row"><div class="cx-plus">+' + x[1].o.length + "</div>" + logo(sc, "sm") +
+        '<div class="cx-rt"><b' + pAttr(nm, sc) + ">" + esc(nm) + "</b><span>" + esc([cxYr(String(p.cls || "")), p.pos, sc].filter(Boolean).join(" · ")) +
+        " &middot; latest " + esc(cxD(x[1].o[0][1])) + "</span></div>" +
+        '<div class="cx-logos">' + x[1].o.slice(0, 6).map(function (o) { return collegeMark(o[0]); }).join("") + "</div></div>";
+    }).join("") : '<div class="cx-row"><div class="cx-rt"><span>No new offers in the last 30 days.</span></div></div>') + "</div>" +
+      '<p class="cx-note">New offers seen since ' + esc(cxD(CXS.since30 || "")) + ": players&rsquo; posts on X, and colleges that appeared on a player&rsquo;s 247Sports College List after we first pulled it (247 as of " + esc(cxD(CXS.s247_asof || "")) + ").</p>";
+  }
+  function cxWatch() {
+    var done = {}; CXC.forEach(function (c) { done[(c.n + "|" + c.s).toLowerCase()] = 1; });
+    var pi = {}; (DATA.pindex || []).forEach(function (p) { pi[(p.name + "|" + p.school).toLowerCase()] = p; });
+    var ev = [];
+    Object.keys(CXM).forEach(function (k) { if (done[k]) return; CXM[k].v.forEach(function (v) { ev.push([k, v]); }); });
+    ev.sort(function (a, b) { return a[1][2] < b[1][2] ? 1 : -1; });
+    return '<div class="cx-list">' + (ev.length ? ev.slice(0, 8).map(function (x) {
+      var p = pi[x[0]] || {}, m0 = CXM[x[0]] || {}, nm = m0.nm || p.name || x[0].split("|")[0], sc = m0.sc || p.school || x[0].split("|")[1], v = x[1];
+      return '<div class="cx-row">' + collegeMark(v[0], true) +
+        '<div class="cx-rt"><b' + pAttr(nm, sc) + ">" + esc(nm) + "</b><span>" + esc(v[1]) + " &middot; " + esc(v[0]) + " &middot; " + esc(cxD(v[2])) + "</span></div>" +
+        logo(sc, "sm") + (v[3] ? ' <a href="' + esc(v[3]) + '" target="_blank" rel="noopener noreferrer" style="font-size:12px">Post</a>' : "") + "</div>";
+    }).join("") : '<div class="cx-row"><div class="cx-rt"><span>No visits posted in the last 30 days.</span></div></div>') + "</div>" +
+      '<p class="cx-note">Visits and invites the players posted on X in the last 30 days. A visit is not an offer.</p>';
+  }
+  function cxHub() {
+    return cxBand() +
+      '<div class="cx-h"><h3>Latest commitments</h3><small>tap a college below to filter</small></div><div id="cxcards">' + cxCardsInner() + "</div>" +
+      '<div class="cx-h"><h3>Where Utah seniors are going</h3><small>' + Object.keys(CXC.reduce(function (a, c) { a[c.col] = 1; return a; }, {})).length + " colleges</small></div><div id=\"cxwall\">" + cxWall() + "</div>" +
+      '<div class="cx-h"><h3>Commitments by month</h3><small>last 12 months</small></div>' + cxTimeline() +
+      '<div class="cx-h"><h3>Still deciding</h3><small>rated players with no commitment published</small></div>' +
+      '<div class="cx-two"><div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">On the rise</h3><small>new offers, last 30 days</small></div>' + cxRise() + "</div>" +
+      '<div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">Decision watch</h3><small>visits &amp; invites</small></div>' + cxWatch() + "</div></div>" +
+      '<div class="cx-h"><h3>Best available</h3><small>uncommitted, graded by the recruiting services</small></div>' +
+      '<div id="cxbf">' + cxFilters() + '</div><div id="cxba">' + cxBoardInner() + "</div>" +
+      '<p class="cx-note">Grade = our blend of whichever of 247Sports, ESPN, Rivals and Prep Redzone rate the player, the same number on every player card. Offers are from each player&rsquo;s recruiting profile and their own posts.</p>';
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-cx]"); if (!t || !t.closest("#v-recruit")) return;
+    var k = t.getAttribute("data-cx");
+    if (k === "allc") { CXST.all = true; }
+    else if (k === "col") { CXST.col = CXST.col === t.getAttribute("data-v") ? "" : t.getAttribute("data-v"); }
+    else if (k === "moreb") { CXST.more = true; }
+    else if (k === "f") { CXST[t.getAttribute("data-k")] = t.getAttribute("data-v"); CXST.more = false; }
+    else return;
+    var a = document.getElementById("cxcards"); if (a) a.innerHTML = cxCardsInner();
+    var w = document.getElementById("cxwall"); if (w) w.innerHTML = cxWall();
+    var f = document.getElementById("cxbf"); if (f) f.innerHTML = cxFilters();
+    var bb = document.getElementById("cxba"); if (bb) bb.innerHTML = cxBoardInner();
+    if (k === "col") { var cc = document.getElementById("cxcards"); if (cc) cc.scrollIntoView({ block: "nearest" }); }
+  });
+  document.addEventListener("change", function (e) {
+    var t = e.target; if (!t.matches || !t.matches('select[data-cx="sch"]')) return;
+    CXST.sch = t.value; CXST.more = false;
+    var bb = document.getElementById("cxba"); if (bb) bb.innerHTML = cxBoardInner();
+  });
+  document.getElementById("v-recruit").innerHTML = cxHub() +
+    '<div class="panel" style="margin:18px 0 14px"><h2>Recruiting board</h2>' +
     '<p class="lede">There is a belief around high school football that if it is not Division I, you are not really being recruited. It is not true, and the numbers are not close. The NCAA counts about <strong>1,030,000</strong> high school football players and <strong>83,800</strong> playing in college. Division I takes <strong>3.4%</strong> of them. Division II and Division III together take <strong>4.7%</strong> &mdash; <strong>more players go on to play outside Division I than inside it</strong>, and that is before NAIA and junior college, which the NCAA does not count at all.</p>' +
     '<p class="lede">Of roughly 880 college football programs in this country, 138 are FBS. That is about one in six. The other five in six are FCS, Division II, Division III, NAIA and JUCO &mdash; and real scholarship money exists at most of them. Division II funds 36 scholarships a roster. NJCAA Division I junior colleges can offer a full ride, tuition and room and board included. Division III offers no athletic money but is often generous with academic and need-based aid.</p>' +
     '<p class="notbet">Read the commitments below with that in mind. They come from 247Sports\' Utah commit board, which lists a player whether or not anybody ranked him &mdash; that is why unrated kids appear here. What it still will not show you is Division II, NAIA or junior college, because the recruiting services do not cover those levels at all. So a thin list below the FBS line is a hole in the coverage, not a fact about where Utah kids play. <strong>If a player you know has signed anywhere, at any level, that belongs on this page.</strong></p></div>' +
@@ -7629,15 +7894,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
     }).join("") + "</div>" +
     offerBoard() +
     rumorMill() +
-    ["2027", "2028", "2029"].map(function (cl) {
-      var list = OPENB.filter(function (pl) { return pl.cls === cl; });
-      if (!list.length) return "";
-      return '<h3 class="divhead" style="margin-top:20px">Still open — class of ' + cl +
-        "<span>" + (CLSNAME[cl] || "") + " · " + list.length + " ranked, no commitment published</span></h3>" +
-        '<div class="plist" style="margin-bottom:6px">' +
-        list.slice(0, 60).map(function (pl) { return pchip(pl, true); }).join("") + "</div>" +
-        (list.length > 60 ? '<p class="lede" style="margin-top:4px">Showing the top 60 of ' + list.length + ".</p>" : "");
-    }).join("") +
+    /* Nov 11 2026: the per-class 'Still open' chips moved up into the Best available board (cxHub) */
+
     '<h3 class="divhead" style="margin-top:30px">Where you can play in Utah<span>every college football program in the state</span></h3>' +
     '<p class="lede" style="margin-bottom:10px">Seven programs, three levels. Three of them changed conference on July 1, 2026, so anything you read older than a year is out of date. <strong>Snow College is the only junior-college football program in Utah</strong> — and it is NJCAA Division I, which means a full ride is on the table there.</p>' +
     '<div class="lvgrid">' + PIPE.utah.map(pipeRow).join("") + "</div>" +
