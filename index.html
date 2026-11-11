@@ -7259,6 +7259,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     /* Nov 10 2026: no ESPN art; from each school's athletics site (msidemustangs.com, ouazspirit.com,
        mountmartyathletics.com, moorparkcollegeathletics.com) */
     "Morningside": "morningside", "Ottawa Arizona": "ottawa-arizona", "Mount Marty": "mount-marty", "Moorpark": "moorpark",
+    "Antelope Valley College": "antelope-valley", /* Nov 11 2026: gomarauders.avc.edu primary logo */
     "Linfield": "linfield", "Montana Western": "montana-western",
     "Air Force": "air-force",
     "Alabama": "alabama",
@@ -9398,7 +9399,18 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<aside class="frail">' +
       '<div class="panel rpanel nlist"><h2>Latest News</h2>' +
       '<p class="lede">Links go to the original story &mdash; this page does not reproduce ' +
-      "anyone else&rsquo;s writing.</p>" + (DATA.openings || []).filter(function (o) { return o.status !== "hearing"; }).map(function (o) { return '<div class="nl-it ours" data-go="caro" style="cursor:pointer">' + '<span class="nl-ic">' + logo(o.school, "sm") + '</span><div>' + '<span class="nl-t">' + esc((o.status === "filled" ? "Filled: " : "Coaching change: ") + o.school + " " + "\u2014 " + o.headline) + '</span>' + '<span class="nl-src">UHSFB Carousel &middot; ' + esc(o.source) + ' &middot; ' + esc(o.date) + '</span></div></div>'; }).join("") + /* latest-news articles (Nov 9 2026) */ (DATA.articles || []).filter(function (a) { if (!a.latest || !a.date) return false; var age = (Date.now() - new Date(a.date + "T12:00:00")) / 86400000; return age > -1 && age <= 14; }).map(function (a) { return '<div class="nl-it ours" data-art="' + esc(a.id) + '" style="cursor:pointer">' + '<span class="nl-ic">' + logo((a.teams || [])[0], "sm") + '</span><div>' + '<span class="nl-t">' + esc(a.title) + '</span>' + '<span class="nl-src">UHSFB &middot; ' + esc(a.kicker) + ' &middot; ' + esc(a.date) + '</span></div></div>'; }).join("") + newsHtml + "</div>" +
+      "anyone else&rsquo;s writing.</p>" + /* commitments in Latest News (Nov 11 2026) */ (function () {
+        var cut = new Date(Date.now() - 21 * 864e5).toISOString().slice(0, 10);
+        return (((DATA.signings || {}).feed) || []).filter(function (f) { return f.kind === "commit" && f.d >= cut && f.u; })
+          .slice(0, 5).map(function (f) {
+            var mk = typeof collegeMark === "function" ? collegeMark(f.college) : logo(f.school, "sm");
+            var via = f.via === "X" ? "player&rsquo;s post on X" : f.via === "247" ? "247Sports" : "reported";
+            return '<div class="nl-it ours" data-go="recruit101" style="cursor:pointer">' +
+              '<span class="nl-ic">' + mk + '</span><div>' +
+              '<span class="nl-t">' + esc("Commitment: " + f.player + " (" + f.school + ") to " + f.college) + '</span>' +
+              '<span class="nl-src">UHSFB Commitments &middot; ' + via + ' &middot; ' + esc(f.d) + '</span></div></div>';
+          }).join("");
+      })() + (DATA.openings || []).filter(function (o) { return o.status !== "hearing"; }).map(function (o) { return '<div class="nl-it ours" data-go="caro" style="cursor:pointer">' + '<span class="nl-ic">' + logo(o.school, "sm") + '</span><div>' + '<span class="nl-t">' + esc((o.status === "filled" ? "Filled: " : "Coaching change: ") + o.school + " " + "\u2014 " + o.headline) + '</span>' + '<span class="nl-src">UHSFB Carousel &middot; ' + esc(o.source) + ' &middot; ' + esc(o.date) + '</span></div></div>'; }).join("") + /* latest-news articles (Nov 9 2026) */ (DATA.articles || []).filter(function (a) { if (!a.latest || !a.date) return false; var age = (Date.now() - new Date(a.date + "T12:00:00")) / 86400000; return age > -1 && age <= 14; }).map(function (a) { return '<div class="nl-it ours" data-art="' + esc(a.id) + '" style="cursor:pointer">' + '<span class="nl-ic">' + logo((a.teams || [])[0], "sm") + '</span><div>' + '<span class="nl-t">' + esc(a.title) + '</span>' + '<span class="nl-src">UHSFB &middot; ' + esc(a.kicker) + ' &middot; ' + esc(a.date) + '</span></div></div>'; }).join("") + newsHtml + "</div>" +
       buzzBlock(null, 6) +
       '<div class="panel rpanel"><h2>Top 10</h2>' +
       '<p class="lede">' + (inPO ? "Through the " + lastDay + " playoff games" : "Through Week " + W) + ". Opponent-adjusted and blowout-capped.</p>" +
