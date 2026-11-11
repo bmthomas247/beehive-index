@@ -9218,7 +9218,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
             if (d > last) last = d;
             g.teams.forEach(function (t) { if (named(t)) nTeams[t.team] = 1; });
             if (g.bye || !real(g.teams[0]) || !real(g.teams[1])) return;
-            G.push({ c: c, rn: rn, d: d, ko: g.ko, a: g.teams[0], b: g.teams[1],
+            G.push({ c: c, rn: rn, d: d, ko: g.ko, a: g.teams[0], b: g.teams[1], id: g.id, /* tkhpo-drawer-nov11 */
                      f: FIN[[g.teams[0].team, g.teams[1].team].sort().join("|")] });
           });
         });
@@ -9236,14 +9236,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
       function side(t, sc, w) {
         var x = byName[t.team];
         return '<div class="hpo-t' + (w === false ? " l" : "") + '"><i>' + (t.seed || "") + "</i>" + logo(t.team, "sm") +
-          '<span class="hpo-n"' + (x ? ' data-t="' + esc(t.team) + '"' : "") + ">" + esc(t.team) + "</span>" +
+          '<span class="hpo-n">' + esc(t.team) + "</span>" +
           '<span class="hpo-r">' + (sc != null ? "<b>" + Math.round(sc) + "</b>" : x ? x.w + "&ndash;" + x.l : "") + "</span></div>";
       }
       function gameCard(g) {
         var f = g.f, sa = null, sb = null, wa = null, wb = null;
         if (f) { var s = {}; s[f.away] = f.away_score; s[f.home] = f.home_score; sa = s[g.a.team]; sb = s[g.b.team];
                  wa = f.winner === g.a.team; wb = f.winner === g.b.team; }
-        return '<div class="hpo-g" data-poc="' + g.c + '"><div class="hpo-k">' +
+        return '<div class="hpo-g" data-pbg="' + esc(g.c + "|" + g.id) + '" role="button" tabindex="0" style="cursor:pointer" title="' + (f ? "Game notes and summary" : "Game preview") + '"><div class="hpo-k">' +
           (f ? "Final &middot; " + esc(g.rn) : esc(day(g.d)) + (tm(g.ko) ? " &middot; " + tm(g.ko) : "")) + "</div>" +
           side(g.a, sa, wa) + side(g.b, sb, wb) + "</div>";
       }
@@ -9284,7 +9284,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           return '<div class="hpo-sd" data-poc="' + x.c + '">' + logo(x.t, "md") +
             "<span><b>" + x.c + "</b>" + esc(x.t) + "</span></div>";
         }).join("") + "</div></section>";
-      var note = "Seeds, pairings and kickoffs from the official UHSAA bracket; higher seed hosts through the quarterfinals. Click a game for the full bracket.";
+      var note = "Seeds, pairings and kickoffs from the official UHSAA bracket; higher seed hosts through the quarterfinals. Click a game for its preview, or once it is played, the summary and game notes.";
       var pDone = block(done, "Playoff results", "Final scores from the Deseret News.");
       var pNext = block(s1, (done.length ? "Next up" : "First up") + " &middot; " + esc(day(s1.length ? s1[0].d : nextD)), note);
       var pThen = block(s2, "Then &middot; " + esc(day(s2.length ? s2[0].d : nextD)), "");
@@ -13522,7 +13522,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
             var d = String(g.ko || r.date || "").slice(0, 10), a = g.teams[0], b = g.teams[1];
             var key = [a.team, b.team].sort().join("|"), f = FIN[key];
             if (f ? d < addD(today, -8) : (d < today || d > addD(today, 14))) return;
-            out.push({ c: c, ci: ci, rn: rn, d: d, ko: g.ko || "", a: a, b: b, f: f, key: key });
+            out.push({ c: c, ci: ci, rn: rn, d: d, ko: g.ko || "", a: a, b: b, f: f, key: key, id: g.id }); /* tkhpo-drawer-nov11 */
           });
         });
       });
@@ -13554,8 +13554,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var rk = f && RECAPBY[recapKey(f)] ? recapKey(f) : "";
       var gid = !f && TKID[p.key] && byGame[TKID[p.key]] ? TKID[p.key] : "";
       var go = '<div class="tkgo">' +
-        (rk ? '<button type="button" data-recap="' + esc(rk) + '">Game story</button>'
-            : gid ? '<button type="button" data-game="' + esc(gid) + '">Game preview</button>' : "") +
+        '<button type="button" data-pbg="' + esc(p.c + "|" + p.id) + '">' + (f ? "Game notes" : "Game preview") + "</button>" +
         '<button type="button" class="tkgo-bk" data-poc="' + p.c + '">' + esc(p.c) + " bracket</button></div>";
       return '<div class="tcard tkpo" tabindex="0" role="group" aria-label="' +
         esc(p.c + " playoffs: " + p.a.team + " vs " + p.b.team) + '">' + go +
