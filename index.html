@@ -3657,6 +3657,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .pb-m{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0}
 .pb-t{position:relative;display:flex;flex-direction:column;align-items:center;width:100%;cursor:pointer}
 .pb-t.tbd{cursor:default}
+/* pbgdrawer-nov11 */ .pb-m.pbg{cursor:pointer;border-radius:10px;transition:background .15s}.pb-m.pbg:hover,.pb-m.pbg:focus-visible{background:rgba(11,31,58,.06);outline:none}
 .pb-d{width:44px;height:44px;margin:9px 0 6px;transform:rotate(45deg);background:#fff;border:3px solid var(--tc);border-radius:5px;
   display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .pb-di{transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--ink-3)}
@@ -9698,10 +9699,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
         if (sa === sb) return null;
         return { w: sa > sb ? a.team : b.team, hi: Math.max(sa, sb), lo: Math.min(sa, sb) };
       }
-      function team(t, lost) {
+      var PBC = ""; /* pbgdrawer-nov11 */
+      function team(t, lost, game) {
         var nm = t && t.team;
         var c = nm && byName[nm] ? byName[nm].c1 : "#6C7883";
-        return '<div class="pb-t' + (lost ? " lost" : "") + (nm ? "" : " tbd") + '"' + (nm ? ' data-t="' + esc(nm) + '"' : "") + '>' +
+        return '<div class="pb-t' + (lost ? " lost" : "") + (nm ? "" : " tbd") + '"' + (nm && !game ? ' data-t="' + esc(nm) + '"' : "") + '>' +
           '<span class="pb-d" style="--tc:' + esc(c || "#6C7883") + '"><span class="pb-di">' + (nm ? logo(nm, "md") : "TBD") + "</span></span>" +
           (t && t.seed ? '<span class="pb-seed">' + t.seed + "</span>" : "") +
           '<span class="pb-nm">' + (nm ? esc(nm) : "&nbsp;") + "</span></div>";
@@ -9710,10 +9712,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
         if (!g) return '<div class="pb-m ' + cls + '"></div>';
         var r = result(g), a = g.teams[0] || {}, b = g.teams[1] || {};
         var note = r ? r.hi + "&ndash;" + r.lo : (a.team && b.team ? when(g.ko) : "");
-        return '<div class="pb-m ' + cls + '">' + team(a, r && r.w !== a.team) +
-          '<div class="pb-res">' + note + "</div>" + team(b, r && r.w !== b.team) + "</div>";
+        var both = !!(a.team && b.team);
+        return '<div class="pb-m ' + cls + (both ? " pbg" : "") + '"' + (both ? ' data-pbg="' + esc(PBC + "|" + g.id) + '" role="button" tabindex="0" title="' + (r ? "Game notes and summary" : "Game preview") + '"' : "") + '>' +
+          team(a, r && r.w !== a.team, both) +
+          '<div class="pb-res">' + note + "</div>" + team(b, r && r.w !== b.team, both) + "</div>";
       }
       function build(c) {
+        PBC = c;
         var rounds = PO[c].rounds, byId = {};
         rounds.forEach(function (r) { r.games.forEach(function (g) { byId[g.id] = g; g._r = r; }); });
         var last = rounds[rounds.length - 1], fin = last.games[0];
@@ -10529,6 +10534,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
       if (e.key !== "Enter" && e.key !== " ") return;
       var m = e.target.closest && e.target.closest("[data-pog]"); if (m) { e.preventDefault(); openPoGame(m.dataset.pog); }
     });
+    function openPoGameAt(cls, gid) { /* pbgdrawer-nov11 */
+      var C = PO[cls], hit = null; if (!C) return;
+      C.rounds.forEach(function (r) { r.games.forEach(function (x) { if (x.id === gid) hit = { g: x, r: r }; }); });
+      if (!hit || !real(hit.g.teams[0]) || !real(hit.g.teams[1])) return;
+      var keep = cur; cur = cls; POG[gid] = hit;
+      try { openPoGame(gid); } finally { cur = keep; }
+    }
+    function pbgGo(e) {
+      var m = e.target.closest && e.target.closest("[data-pbg]"); if (!m) return;
+      if (e.type === "keydown") { if (e.key !== "Enter" && e.key !== " ") return; e.preventDefault(); }
+      var p = m.dataset.pbg.split("|"); openPoGameAt(p[0], p.slice(1).join("|"));
+    }
+    document.addEventListener("click", pbgGo);
+    document.addEventListener("keydown", pbgGo);
     draw();
   })();
 
