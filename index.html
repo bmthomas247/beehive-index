@@ -3865,6 +3865,25 @@ nav.topbar ~ main.wrap{margin-top:20px}
 @media(max-width:640px){.pp-facts{padding:14px 16px 18px !important}.pp-facts>div{padding:0 12px}}
 .pp-facts em{display:block;font-style:normal;font-size:11px;line-height:1.35;color:rgba(255,255,255,.7);margin-top:3px;max-width:170px}
 
+
+/* ---- Commit radar (Nov 11 2026) ---- */
+.cx-sig{display:inline-flex;gap:2px;margin-left:4px;vertical-align:1px}
+.cx-sig i{font-style:normal;font-size:9.5px;font-weight:700;width:15px;height:15px;line-height:15px;text-align:center;border-radius:4px;color:#fff;display:inline-block}
+.cx-sig i.O{background:#0B1F3A}.cx-sig i.V{background:#1D7A4E}.cx-sig i.I{background:#C8102E}.cx-sig i.C{background:#7A5C1D}.cx-sig i.G{background:#B8860B}
+.cx-rad{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.cx-rad span{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:99px;padding:2px 8px 2px 3px;font-size:12px;background:var(--surface)}
+.cx-rad span.top{border-color:var(--sodium-bright,#E8A33D);box-shadow:0 0 0 1px var(--sodium-bright,#E8A33D)}
+.cx-rad .cmark,.cx-rad .cmark img{width:20px;height:20px}
+.cx-rad b{font-family:var(--f-display);font-size:13px}
+.cx-crow{padding:10px 0;border-bottom:1px solid var(--line)}
+.cx-crow:last-child{border-bottom:0}
+.cx-crow .cx-chd{display:flex;align-items:center;gap:8px}
+.cx-crow .cx-chd b{font-size:14.5px}
+.cx-crow .cx-chd small{color:var(--ink-3);font-size:12px;margin-left:auto;text-align:right}
+.cx-crow .cx-pl{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.cx-crow .cx-pl span{font-size:12px;border:1px solid var(--line);border-radius:99px;padding:2px 8px;background:var(--surface)}
+.cx-crow .cx-pl span.hot{border-color:#1D7A4E}
+.cx-legend{font-size:11.5px;color:var(--ink-3);margin:6px 0 2px;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
 /* ---- Commit hub (Nov 11 2026) ---- */
 .cx-band{background:linear-gradient(135deg,#0B1F3A 0%,#13305a 60%,#0B1F3A 100%);color:#fff;border-radius:14px;padding:18px 20px 14px;margin-bottom:14px;position:relative;overflow:hidden}
 .cx-band:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;border:28px solid rgba(232,163,61,.12)}
@@ -7834,16 +7853,47 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<div class="cx-rt"><b' + pAttr(nm, sc) + ">" + esc(nm) + "</b><span>" + esc(v[1]) + " &middot; " + esc(v[0]) + " &middot; " + esc(cxD(v[2])) + "</span></div>" +
         logo(sc, "sm") + (v[3] ? ' <a href="' + esc(v[3]) + '" target="_blank" rel="noopener noreferrer" style="font-size:12px">Post</a>' : "") + "</div>";
     }).join("") : '<div class="cx-row"><div class="cx-rt"><span>No visits posted in the last 30 days.</span></div></div>') + "</div>" +
-      '<p class="cx-note">Visits and invites the players posted on X in the last 30 days. A visit is not an offer.</p>';
+      '<p class="cx-note">Last 30 days, each linked to the post: visits and invites the players posted, and good-luck posts from college coaches who tagged them. A game-day invite is serious interest; neither is an offer.</p>';
+  }
+
+  /* ---- Commit radar (Nov 11 2026) ---- */
+  var CXR = CXS.radar || { p: [], c: [], w: {} };
+  var CXSIGN = { O: "Offer", V: "Visit", I: "Game-day invite", C: "Camp invite", G: "Coach good-luck post" };
+  function cxSig(k) { return '<span class="cx-sig">' + String(k || "").split("").map(function (x) { return '<i class="' + x + '" title="' + esc(CXSIGN[x] || x) + '">' + x + "</i>"; }).join("") + "</span>"; }
+  function cxLegend() {
+    var w = CXR.w || {};
+    return '<div class="cx-legend">' + ["O", "V", "I", "C", "G"].map(function (k) { return cxSig(k) + " " + esc(CXSIGN[k]) + (w[k] ? " = " + w[k] : ""); }).join("") + "</div>";
+  }
+  function cxPRadar() {
+    return '<div class="cx-list">' + (CXR.p.length ? CXR.p.slice(0, 12).map(function (r) {
+      return '<div class="cx-crow"><div class="cx-chd">' + logo(r[1], "sm") + '<b' + pAttr(r[0], r[1]) + ">" + esc(r[0]) + "</b>" +
+        "<small>" + esc([cxYr(r[2]), r[3], r[1]].filter(Boolean).join(" · ")) + "</small></div>" +
+        '<div class="cx-rad">' + r[4].map(function (c, i) {
+          return '<span class="' + (i === 0 ? "top" : "") + '">' + collegeMark(c[0]) + esc(c[0]) + " <b>" + c[1] + "</b>" + cxSig(c[2]) + "</span>";
+        }).join("") + "</div></div>";
+    }).join("") : '<div class="cx-crow"><span class="lede">No visits, invites or good-luck posts on file yet.</span></div>') + "</div>";
+  }
+  function cxCRadar() {
+    return '<div class="cx-list">' + (CXR.c.length ? CXR.c.slice(0, 10).map(function (c) {
+      return '<div class="cx-crow"><div class="cx-chd">' + collegeMark(c[0], true) + "<b>" + esc(c[0]) + "</b>" +
+        (c[1] ? ' <small style="margin-left:4px">' + esc(LVNAME[c[1]] || c[1]) + "</small>" : "") +
+        "<small>" + c[2] + " with a visit, invite or good-luck post &middot; " + c[3] + " on the radar</small></div>" +
+        '<div class="cx-pl">' + c[4].map(function (p) {
+          return '<span class="' + (/[VICG]/.test(p[3]) ? "hot" : "") + '"' + pAttr(p[0], p[1]) + ">" + esc(p[0]) + " &middot; " + esc(p[1]) + cxSig(p[3]) + "</span>";
+        }).join("") + "</div></div>";
+    }).join("") : '<div class="cx-crow"><span class="lede">Nothing yet.</span></div>') + "</div>";
   }
   function cxHub() {
     return cxBand() +
       '<div class="cx-h"><h3>Latest commitments</h3><small>tap a college below to filter</small></div><div id="cxcards">' + cxCardsInner() + "</div>" +
       '<div class="cx-h"><h3>Where Utah seniors are going</h3><small>' + Object.keys(CXC.reduce(function (a, c) { a[c.col] = 1; return a; }, {})).length + " colleges</small></div><div id=\"cxwall\">" + cxWall() + "</div>" +
-      '<div class="cx-h"><h3>Commitments by month</h3><small>last 12 months</small></div>' + cxTimeline() +
       '<div class="cx-h"><h3>Still deciding</h3><small>rated players with no commitment published</small></div>' +
       '<div class="cx-two"><div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">On the rise</h3><small>new offers, last 30 days</small></div>' + cxRise() + "</div>" +
-      '<div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">Decision watch</h3><small>visits &amp; invites</small></div>' + cxWatch() + "</div></div>" +
+      '<div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">Visit watch</h3><small>visits, game-day invites, coach good-luck posts</small></div>' + cxWatch() + "</div></div>" +
+      '<div class="cx-h"><h3>Recruiting radar</h3><small>where the interest is strongest</small></div>' + cxLegend() +
+      '<div class="cx-two"><div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">Player radar</h3><small>top colleges by signal score</small></div>' + cxPRadar() + "</div>" +
+      '<div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">College radar</h3><small>the Utah kids each school is chasing</small></div>' + cxCRadar() + "</div></div>" +
+      '<p class="cx-note">A signal score, not a prediction: each kind of interest a college has shown a player counts once, with the weights above. Players who have already committed are left off. Offers come from player cards (recruiting profiles and players&rsquo; posts); visits and invites from the players&rsquo; posts; good-luck posts from college coaches we follow on X.</p>' +
       '<div class="cx-h"><h3>Best available</h3><small>uncommitted, graded by the recruiting services</small></div>' +
       '<div id="cxbf">' + cxFilters() + '</div><div id="cxba">' + cxBoardInner() + "</div>" +
       '<p class="cx-note">Grade = our blend of whichever of 247Sports, ESPN, Rivals and Prep Redzone rate the player, the same number on every player card. Offers are from each player&rsquo;s recruiting profile and their own posts.</p>';
