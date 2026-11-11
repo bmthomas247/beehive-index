@@ -3196,6 +3196,17 @@ a.costcta{ margin-top:14px }
 .hdbtns a{display:block;text-align:center;font-size:13px;font-weight:800;text-decoration:none;padding:9px 12px;border-radius:8px}
 .hdgo{background:#FF6300;color:#fff}.hdall{background:#fff;color:#111}
 @media(max-width:860px){.hdbox{grid-template-columns:1fr;max-height:88vh;overflow-y:auto;margin-top:36px}.hdside{max-height:none}#hdmodal .ytx{position:fixed;top:10px;right:10px;z-index:3}.hl-filters{position:static}}
+/* ---- Latest News pop-up (Nov 11) ---- */
+#nwmodal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}
+#nwmodal .nwbox{position:relative;width:min(560px,100%);max-height:88vh;overflow-y:auto;background:var(--surface,#fff);color:var(--ink,#111);border-radius:12px;padding:22px 22px 18px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+#nwmodal .nwx{position:absolute;top:10px;right:10px;background:transparent;border:0;font-size:18px;font-weight:700;cursor:pointer;color:var(--ink-3,#666)}
+#nwmodal .nwk{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-3,#666);margin:0 28px 8px 0}
+#nwmodal h3{margin:0 0 10px;font-size:20px;line-height:1.25}
+#nwmodal p{margin:0 0 10px;font-size:15px;line-height:1.55}
+#nwmodal .nwsrc{font-size:12px;color:var(--ink-3,#666)}
+#nwmodal .nwbtns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#nwmodal .nwbtns>*{font:inherit;font-size:13px;font-weight:800;text-decoration:none;padding:9px 14px;border-radius:8px;border:1px solid var(--line,#ddd);background:var(--surface,#fff);color:var(--ink,#111);cursor:pointer}
+#nwmodal .nwbtns>.pri{background:var(--accent,#C8102E);border-color:transparent;color:#fff}
 /* ---- YouTube pop-up player (Oct 11) ---- */
 #ytmodal{ position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,.78); display:flex; align-items:center; justify-content:center; padding:16px }
 .ytbox{ position:relative; width:min(960px,100%) }
@@ -6041,8 +6052,78 @@ nav.topbar ~ main.wrap{margin-top:20px}
     d.querySelector(".ytx").focus();
     return true;
   }
+  var NWPOP = {};
+  var NWYR = { "2027": "Senior", "2028": "Junior", "2029": "Sophomore", "2030": "Freshman" };
+  function nwRec(sc) { var t = byName[sc]; return t ? esc(sc) + " (" + t.w + "-" + t.l + ")" : esc(sc); }
+  function nwList(a) { return a.length < 3 ? a.join(" and ") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+  function nwOpen(key) {
+    var it = NWPOP[key]; if (!it) return false;
+    var k = it.k, x = it.x, mark = "", kick = "", title = "", para = "", src = "", btns = "";
+    if (k === "c") {
+      mark = typeof collegeMark === "function" ? collegeMark(x.college) : logo(x.school, "sm");
+      kick = "UHSFB Commitments &middot; " + esc(x.d);
+      title = esc("Commitment: " + x.player + " (" + x.school + ") to " + x.college);
+      para = esc(x.player) + (NWYR[String(x.cls)] ? ", a " + NWYR[String(x.cls)] : "") + " at " + esc(x.school) +
+        ", has committed to " + esc(x.college) + ".";
+      src = "Source: " + (x.via === "X" ? "the player&rsquo;s post on X" : x.via === "247" ? "247Sports" : "reported") + ", " + esc(x.d) + ".";
+      btns = '<button class="pri" data-go="recruit">All Utah commitments &rarr;</button>' +
+        (pAttr(x.player, x.school) ? "<button" + pAttr(x.player, x.school) + ">Player card</button>" : "") +
+        (x.u ? '<a href="' + esc(x.u) + '" target="_blank" rel="noopener noreferrer">' + (x.via === "X" ? "See the post" : "Source") + " &#8599;</a>" : "");
+    } else if (k === "o") {
+      mark = logo(x.school, "sm");
+      kick = "UHSFB Carousel &middot; " + esc(x.date);
+      title = esc((x.status === "filled" ? "Filled: " : "Coaching change: ") + x.school + " — " + x.headline);
+      para = esc(x.headline) + "." + (x.detail ? " " + esc(x.detail) : "");
+      src = "Source: " + esc(x.source) + ", " + esc(x.date) + ".";
+      btns = '<button class="pri" data-go="caro">Coaching carousel &rarr;</button>' +
+        (byName[x.school] ? '<button data-t="' + esc(x.school) + '">' + esc(x.school) + " team card</button>" : "");
+    } else if (k === "a") {
+      mark = logo((x.teams || [])[0], "sm");
+      kick = "UHSFB &middot; " + esc(x.kicker) + " &middot; " + esc(x.date);
+      title = esc(x.title);
+      para = esc(x.dek || x.lede || "");
+      src = "Our story. Every number in it is sourced at the bottom.";
+      btns = '<button class="pri" data-art="' + esc(x.id) + '">Read the full story &rarr;</button>';
+    } else {
+      var sc = (x.schools || []).filter(function (s) { return byName[s]; });
+      var who = (x.who || []).map(function (w) { return esc(w.name) + " (" + esc(w.school) + ")"; });
+      mark = sc.length ? logo(sc[0], "sm") : srcChip(x.src);
+      kick = esc(x.src) + (x.d ? " &middot; " + esc(x.d) : "");
+      title = esc(titleCase(x.t));
+      para = "A " + esc(x.src) + " story" + (x.d ? " from " + esc(x.d) : "") + "." +
+        (sc.length ? " It covers " + nwList(sc.map(nwRec)) + "." : "") +
+        (who.length ? " Players named: " + nwList(who) + "." : "");
+      src = "The story is " + esc(x.src) + "&rsquo;s work and lives on their site; we do not reproduce it." +
+        (sc.length ? " Records are from our scoreboard." : "");
+      btns = '<a class="pri" href="' + esc(x.u) + '" target="_blank" rel="noopener noreferrer">Read the full story on ' + esc(x.src) + " &#8599;</a>" +
+        sc.map(function (s) { return '<button data-t="' + esc(s) + '">' + esc(s) + "</button>"; }).join("");
+    }
+    var old = document.getElementById("nwmodal"); if (old) old.remove();
+    var d = document.createElement("div");
+    d.id = "nwmodal"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true");
+    d.innerHTML = '<div class="nwbox"><button class="nwx" aria-label="Close">✕</button>' +
+      '<div class="nwk">' + mark + "<span>" + kick + "</span></div><h3>" + title + "</h3>" +
+      "<p>" + para + '</p><div class="nwsrc">' + src + '</div><div class="nwbtns">' + btns + "</div></div>";
+    var last = document.activeElement;
+    function close() { d.remove(); document.removeEventListener("keydown", onKey); if (last && last.focus) last.focus(); }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    d.addEventListener("click", function (e) {
+      if (e.target === d || e.target.closest(".nwx")) { close(); return; }
+      // the page's own handlers still see this click (it bubbles to document); just get out of the way
+      if (e.target.closest("[data-go],[data-t],[data-art],[data-p],a")) close();
+    });
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(d);
+    d.querySelector(".nwx").focus();
+    return true;
+  }
+  document.addEventListener("click", function (e) {
+    var r = e.target.closest && e.target.closest("[data-nw]");
+    if (r && nwOpen(r.dataset.nw)) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
   function openStory(url) {
-    var n = NEWSBY[url]; if (!n) { if (!ytModal(url)) window.open(url, "_blank", "noopener"); return; }
+    if (ytModal(url)) return;
+    var n = NEWSBY[url]; if (!n) { window.open(url, "_blank", "noopener"); return; }
     lastFocus = document.activeElement;
     var who = n.who || [];
     document.getElementById("drawer-in").innerHTML =
@@ -8973,6 +9054,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     }).slice(0, limit || 12);
   }
 
+  var hlOpen = null; // set by drawHighlights: hlOpen(name, school, reelUrl) -> true if it opened
   function freshBlock(limit, school) {
     var list = freshReels(limit, school);
     if (!list.length) return "";
@@ -8980,10 +9062,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (school ? " &mdash; " + esc(school) : "") + "</h2>" +
       '<p class="lede">The newest highlight reels cut by ' +
       (school ? "players on this roster" : "Utah players") +
-      ", newest first. Every one opens on Hudl, where the view goes to the kid who cut it.</p>" +
+      ", newest first. Tap one to watch it here in Hudl&rsquo;s own player &mdash; the view still counts for the kid who cut it.</p>" +
       '<div class="vrail tight freshrail">' +
       list.map(function (r) {
-        return '<a class="vcard fresh" href="' + esc(r.u) + '" target="_blank" rel="noopener">' +
+        return '<a class="vcard fresh" href="' + esc(r.u) + '" target="_blank" rel="noopener" data-fp="' +
+          esc(r.name + "|" + r.school) + '">' +
           '<span class="vthumb">' +
           (r.thumb ? '<img src="' + esc(r.thumb) + '" alt="" loading="lazy">' : "") +
           (r.d ? '<span class="vdur">' + esc(r.d) + "</span>" : "") +
@@ -9424,10 +9507,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
     /* ---- headline river ---- */
     var newsHtml = feed.length
-      ? feed.slice(0, 9).map(function (n) {
+      ? feed.slice(0, 9).map(function (n, i) {
           var sc = (n.schools || [])[0];
           var ic = sc ? logo(sc, "sm") : srcChip(n.src);
-          return '<div class="nl-it" data-story="' + esc(n.u) + '">' +
+          NWPOP["s" + i] = { k: "s", x: n };
+          return '<div class="nl-it" data-nw="s' + i + '">' +
             '<span class="nl-ic">' + ic + "</span><div>" +
             '<span class="nl-t">' + esc(titleCase(n.t)) + "</span>" +
             '<span class="nl-src">' + esc(n.src) + (n.d ? " &middot; " + esc(n.d) : "") +
@@ -9706,19 +9790,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
       '<aside class="frail">' +
       '<div class="panel rpanel nlist"><h2>Latest News</h2>' +
-      '<p class="lede">Links go to the original story &mdash; this page does not reproduce ' +
+      '<p class="lede">Tap a headline for the short version. Outside stories link to whoever wrote them &mdash; this page does not reproduce ' +
       "anyone else&rsquo;s writing.</p>" + /* commitments in Latest News (Nov 11 2026) */ (function () {
         var cut = new Date(Date.now() - 21 * 864e5).toISOString().slice(0, 10);
         return (((DATA.signings || {}).feed) || []).filter(function (f) { return f.kind === "commit" && f.d >= cut && f.u; })
-          .slice(0, 5).map(function (f) {
+          .slice(0, 5).map(function (f, i) {
+            NWPOP["c" + i] = { k: "c", x: f };
             var mk = typeof collegeMark === "function" ? collegeMark(f.college) : logo(f.school, "sm");
             var via = f.via === "X" ? "player&rsquo;s post on X" : f.via === "247" ? "247Sports" : "reported";
-            return '<div class="nl-it ours" data-go="recruit" style="cursor:pointer">' +
+            return '<div class="nl-it ours" data-nw="c' + i + '" style="cursor:pointer">' +
               '<span class="nl-ic">' + mk + '</span><div>' +
               '<span class="nl-t">' + esc("Commitment: " + f.player + " (" + f.school + ") to " + f.college) + '</span>' +
               '<span class="nl-src">UHSFB Commitments &middot; ' + via + ' &middot; ' + esc(f.d) + '</span></div></div>';
           }).join("");
-      })() + (DATA.openings || []).filter(function (o) { return o.status !== "hearing"; }).map(function (o) { return '<div class="nl-it ours" data-go="caro" style="cursor:pointer">' + '<span class="nl-ic">' + logo(o.school, "sm") + '</span><div>' + '<span class="nl-t">' + esc((o.status === "filled" ? "Filled: " : "Coaching change: ") + o.school + " " + "\u2014 " + o.headline) + '</span>' + '<span class="nl-src">UHSFB Carousel &middot; ' + esc(o.source) + ' &middot; ' + esc(o.date) + '</span></div></div>'; }).join("") + /* latest-news articles (Nov 9 2026) */ (DATA.articles || []).filter(function (a) { if (!a.latest || !a.date) return false; var age = (Date.now() - new Date(a.date + "T12:00:00")) / 86400000; return age > -1 && age <= 14; }).map(function (a) { return '<div class="nl-it ours" data-art="' + esc(a.id) + '" style="cursor:pointer">' + '<span class="nl-ic">' + logo((a.teams || [])[0], "sm") + '</span><div>' + '<span class="nl-t">' + esc(a.title) + '</span>' + '<span class="nl-src">UHSFB &middot; ' + esc(a.kicker) + ' &middot; ' + esc(a.date) + '</span></div></div>'; }).join("") + newsHtml + "</div>" +
+      })() + (DATA.openings || []).filter(function (o) { return o.status !== "hearing"; }).map(function (o, i) { NWPOP["o" + i] = { k: "o", x: o }; return '<div class="nl-it ours" data-nw="o' + i + '" style="cursor:pointer">' + '<span class="nl-ic">' + logo(o.school, "sm") + '</span><div>' + '<span class="nl-t">' + esc((o.status === "filled" ? "Filled: " : "Coaching change: ") + o.school + " " + "\u2014 " + o.headline) + '</span>' + '<span class="nl-src">UHSFB Carousel &middot; ' + esc(o.source) + ' &middot; ' + esc(o.date) + '</span></div></div>'; }).join("") + /* latest-news articles (Nov 9 2026) */ (DATA.articles || []).filter(function (a) { if (!a.latest || !a.date) return false; var age = (Date.now() - new Date(a.date + "T12:00:00")) / 86400000; return age > -1 && age <= 14; }).map(function (a) { NWPOP["a:" + a.id] = { k: "a", x: a }; return '<div class="nl-it ours" data-nw="a:' + esc(a.id) + '" style="cursor:pointer">' + '<span class="nl-ic">' + logo((a.teams || [])[0], "sm") + '</span><div>' + '<span class="nl-t">' + esc(a.title) + '</span>' + '<span class="nl-src">UHSFB &middot; ' + esc(a.kicker) + ' &middot; ' + esc(a.date) + '</span></div></div>'; }).join("") + newsHtml + "</div>" +
       buzzBlock(null, 6) +
       '<div class="panel rpanel"><h2>Top 10</h2>' +
       '<p class="lede">' + (inPO ? "Through the " + lastDay + " playoff games" : "Through Week " + W) + ". Opponent-adjusted and blowout-capped.</p>" +
@@ -13780,7 +13865,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     document.getElementById("hlmore").addEventListener("click", function () { shown += PAGE; apply(false); });
 
     function embed(u) { var m = /hudl\.com\/video\/(\d+\/\d+\/[0-9a-f]{24})/.exec(u || ""); return m ? "https://www.hudl.com/embed/video/" + m[1] : ""; }
-    function modal(x) {
+    function modal(x, start) {
       var reels = x.reels, p = x.p;
       if (!reels.length || !embed(reels[0].u)) return false;
       var old = document.getElementById("hdmodal"); if (old) old.remove();
@@ -13822,10 +13907,23 @@ nav.topbar ~ main.wrap{margin-top:20px}
       d.addEventListener("click", function (e) { if (e.target === d || e.target.closest(".ytx")) close(); });
       document.addEventListener("keydown", onKey);
       document.body.appendChild(d); document.body.style.overflow = "hidden";
-      play(0);
+      play(start || 0);
       d.querySelector(".ytx").focus();
       return true;
     }
+    hlOpen = function (name, school, u) {
+      var x = all.filter(function (y) { return y.p.name === name && y.p.school === school; })[0];
+      if (!x) return false;
+      var i = 0; x.reels.forEach(function (r, j) { if (r.u === u) i = j; });
+      return modal(x, i);
+    };
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest("a.vcard.fresh[data-fp]"); if (!a) return;
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      if (e.target.closest(".fr-n")) return;
+      var k = a.dataset.fp.split("|");
+      if (hlOpen && hlOpen(k[0], k[1], a.getAttribute("href"))) e.preventDefault();
+    });
     grid.addEventListener("click", function (e) {
       var c = e.target.closest(".hl"); if (!c) return;
       var x = list[+c.dataset.i]; if (!x) return;
