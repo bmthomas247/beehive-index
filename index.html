@@ -5224,6 +5224,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
         ? "<p class='ocommit' style='margin:0 0 6px;font-size:15px'>" + collegeMark(p.commit, true) + "<strong>" + esc(p.commit) + "</strong>" +
           (p.commit_level ? " <span style='color:var(--ink-3);font-size:13px'>" + esc(p.commit_level) + "</span>" : "") + "</p>"
         : "") +
+      (!p.commit && p.decommit && p.decommit.college
+        ? "<p style='margin:0 0 8px;font-size:13.5px;line-height:1.5'><strong>Recruitment reopened</strong>" +
+          (p.decommit.date ? " " + esc(mdy(p.decommit.date)) : "") + " &mdash; previously committed to " +
+          esc(p.decommit.college) + ". Source: " +
+          (p.decommit.url ? '<a href="' + esc(p.decommit.url) + '" target="_blank" rel="noopener">' + esc(p.decommit.src) + "</a>" : esc(p.decommit.src)) +
+          ".</p>"
+        : "") +
       (off.length
         ? '<div class="plist">' + off.map(function (o) {
             var sr = (p.offer_src || {})[o] || [];
