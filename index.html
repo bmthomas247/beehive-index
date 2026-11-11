@@ -3677,6 +3677,18 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .pb-src{margin:10px 0 0;font-size:12px}
 :root[data-theme="dark"] .pb-ttl b{color:#fff}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .pb-ttl b{color:#fff} }
+/* pogdrawer-nov11: clickable bracket games + drawer */
+.pof-m.pog{cursor:pointer;transition:box-shadow .15s,transform .15s}
+.pof-m.pog:hover,.pof-m.pog:focus-visible{box-shadow:0 0 0 2px var(--accent,#c8102e);outline:none}
+.pog-vs{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 4px}
+.pog-tm{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px;cursor:pointer}
+.pog-tm img,.pog-tm svg{width:56px;height:56px;object-fit:contain}
+.pog-tm b{font-size:15px}.pog-tm span{font-size:12px;color:var(--ink-3)}
+.pog-tm em{font-style:normal;font-size:28px;font-weight:800;font-variant-numeric:tabular-nums}
+.pog-tm.l b,.pog-tm.l em{color:var(--ink-3)}
+.pog-at{font-size:13px;color:var(--ink-3);font-weight:600}
+.pog-notes{margin:0;padding-left:18px;font-size:13.5px;line-height:1.6;color:var(--ink-2)}
+.pog-notes li{margin:2px 0}
 /* bracket: plain logos instead of diamonds (Nov 5 2026) */
 .pb-d{transform:none;background:none;border:0;box-shadow:none;border-radius:0;width:52px;height:52px;margin:8px 0 4px}
 .pb-di{transform:none}
@@ -10235,7 +10247,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<span class="pof-rc">' + esc(rec(t.team)) + "</span>" +
         (sc != null ? '<span class="pof-sc">' + Math.round(sc) + "</span>" : "") + "</div>";
     }
-    function card(g, adv) {
+    function card(g, adv, rd) { /* pogdrawer-nov11 */
       var ts = g.teams.filter(real);
       if (g.bye || (g.teams.some(function (t) { return /bye/i.test(t.res); }))) {
         var t = ts[0];
@@ -10245,7 +10257,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var s = score(a && a.team, b && b.team), wa = false, wb = false;
       if (s) { wa = s.win === a.team; wb = s.win === b.team; }
       else if (adv) { wa = real(a) && adv[a.team]; wb = real(b) && adv[b.team]; }
-      return '<div class="pof-m"><div class="pof-ko">' + (s ? "Final" : esc(ko(g.ko))) + "</div>" +
+      var click = real(a) && real(b);
+      if (click) POG[g.id] = { g: g, r: rd };
+      return '<div class="pof-m' + (click ? ' pog' : '') + '"' + (click ? ' data-pog="' + esc(g.id) + '" role="button" tabindex="0" title="' + (s ? "Game notes and summary" : "Game preview") + '"' : "") +
+        '><div class="pof-ko">' + (s ? "Final" : esc(ko(g.ko))) + "</div>" +
         side(a, wa, wb, s ? s.a : null) + side(b, wb, wa, s ? s.b : null) + "</div>";
     }
     function draw() {
@@ -10265,24 +10280,217 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<div class="pof-cls" id="pofcls">' + ORDER.map(function (c) {
           return '<button data-c="' + c + '" aria-pressed="' + (c === cur) + '">' + lab(c) + "</button>"; }).join("") + "</div></div>" +
         (pi.length ? '<div class="pof-pi"><span class="pof-lab">Play-in · ' + esc(ko(rdate(pi[0])).split(" · ")[0]) + "</span>" +
-          pi.map(function (r, k) { return r.games.map(function (g) { return card(g, advOf(k)); }).join(""); }).join("") + "</div>" : "") +
+          pi.map(function (r, k) { return r.games.map(function (g) { return card(g, advOf(k), r); }).join(""); }).join("") + "</div>" : "") +
         '<div class="pof-wrap"><div class="pof-br" style="grid-template-columns:repeat(' + cols + ',minmax(180px,1fr))">' +
         R.map(function (r) { return '<div class="pof-rh"><b>' + esc(r.name.replace(/ at Home Sites?| - Home Sites?/i, "")) + "</b>" +
           esc(ko(rdate(r)).split(" · ")[0]) + "</div>"; }).join("") + '<div class="pof-rh"><b>Champion</b>&nbsp;</div>' +
         R.map(function (r, k) { var ix = pi.length + k;
-          return '<div class="pof-col">' + r.games.map(function (g) { return card(g, advOf(ix)); }).join("") + "</div>"; }).join("") +
+          return '<div class="pof-col">' + r.games.map(function (g) { return card(g, advOf(ix), r); }).join("") + "</div>"; }).join("") +
         '<div class="pof-ch">' + TROPHY + '<div class="pof-cap">' + lab(cur) + " state champion</div>" +
         '<div class="pof-cn">' + esc(champ) + "</div></div></div></div>" +
         '<p class="pof-note">Bracket, seeds and kickoffs: UHSAA official bracket (<a href="' + esc(C.url) +
         '" target="_blank" rel="noopener">MaxPreps tournament page</a>, linked from uhsaa.org/football). ' +
         "Higher seed hosts through the quarterfinals. Final scores: Deseret News, the night they are played. " +
-        "Records are regular-season overall. Click a team for its card.</p></div>";
+        "Records are regular-season overall. Click a team for its card, or a game for its preview (or, once played, its summary and game notes).</p></div>";
     }
     el.addEventListener("click", function (e) {
       var b = e.target.closest("#pofcls button");
       if (b) { cur = b.dataset.c; draw(); return; }
       var n = e.target.closest("[data-pt]");
-      if (n && byName[n.dataset.pt]) openTeam(n.dataset.pt);
+      if (n && byName[n.dataset.pt]) { openTeam(n.dataset.pt); return; }
+      var m = e.target.closest("[data-pog]");
+      if (m) openPoGame(m.dataset.pog);
+    });
+    var POG = {};
+    function rname(r) { return String((r && r.name) || "").replace(/ at Home Sites?| - Home Sites?/i, "").trim(); }
+    function n0(x) { return Math.round(+x); }
+    function poStart() { var C = PO[cur]; return C && C.rounds[0] ? rdate(C.rounds[0]) : "2026-10-20"; }
+    function gamesOf(t, before, incl) {
+      return (DATA.recap || []).filter(function (r) {
+        return (r.away === t || r.home === t) && (!before || (incl ? r.date <= before : r.date < before));
+      }).sort(function (x, y) { return x.date < y.date ? -1 : 1; });
+    }
+    function wl(t, before, incl) {
+      var w = 0, l = 0, pf = 0, pa = 0, n = 0;
+      gamesOf(t, before, incl).forEach(function (r) {
+        var me = r.away === t ? +r.away_score : +r.home_score, op = r.away === t ? +r.home_score : +r.away_score;
+        if (isNaN(me) || isNaN(op)) return;
+        n++; pf += me; pa += op; if (r.winner === t) w++; else if (r.winner) l++;
+      });
+      return { w: w, l: l, pf: pf, pa: pa, n: n };
+    }
+    function opp(r, t) { return r.away === t ? r.home : r.away; }
+    function sc(r, t) { var me = r.away === t ? r.away_score : r.home_score, op = r.away === t ? r.home_score : r.away_score; return n0(me) + "-" + n0(op); }
+    function path(t, before) { // playoff games before this one
+      var st = poStart();
+      return gamesOf(t, before).filter(function (r) { return r.date >= st; });
+    }
+    function pathTxt(t, before) {
+      var p = path(t, before);
+      if (!p.length) return "";
+      return p.map(function (r) { return (r.winner === t ? "beat " : "lost to ") + esc(opp(r, t)) + " " + sc(r, t); }).join(", then ");
+    }
+    function meeting(a, b, before) {
+      return (DATA.recap || []).filter(function (r) {
+        return ((r.away === a && r.home === b) || (r.away === b && r.home === a)) && r.date < before;
+      });
+    }
+    function nextOf(g) {
+      if (!g.next) return null;
+      var C = PO[cur], hit = null;
+      C.rounds.forEach(function (r) { r.games.forEach(function (x) { if (x.id === g.next) hit = { g: x, r: r }; }); });
+      return hit;
+    }
+    function feederTxt(nx, me) { // who the winner meets next
+      var others = nx.g.teams.filter(function (t) { return real(t) && t.team !== me; });
+      if (others.length) return "No. " + (others[0].seed || "") + " " + esc(others[0].team);
+      // otherwise the winner of the other game feeding that slot
+      var C = PO[cur], f = [];
+      C.rounds.forEach(function (r) { r.games.forEach(function (x) {
+        if (x.next === nx.g.id && !x.teams.some(function (t) { return t.team === me; })) f.push(x); }); });
+      var ft = f.length ? f[0].teams.filter(real).map(function (t) { return esc(t.team); }) : [];
+      return ft.length === 2 ? "the winner of " + ft[0] + " and " + ft[1] : "the winner of the other semifinal";
+    }
+    function seedOf(g, t) { var x = g.teams.filter(function (y) { return y.team === t; })[0]; return x && x.seed ? x.seed : ""; }
+    function storyFor(r) {
+      return (DATA.stories || []).filter(function (s) {
+        return s.date === r.date && ((s.away === r.away && s.home === r.home) || (s.away === r.home && s.home === r.away));
+      })[0];
+    }
+    function tsRows(a, b) {
+      var TS = DATA.teamstats || {}, A = TS[a], B = TS[b];
+      if (!A || !B || !A.gp || !B.gp) return "";
+      var rows = [
+        ["Passing yards / game", function (x) { return (x.pass_yds || 0) / x.gp; }],
+        ["Rushing yards / game", function (x) { return (x.rush_yds || 0) / x.gp; }],
+        ["Passing touchdowns", function (x) { return x.pass_td || 0; }],
+        ["Sacks", function (x) { return x.sacks || 0; }],
+        ["Takeaways (INT + fumbles recovered)", function (x) { return (x.ints || 0) + (x.fumble_rec || 0); }]
+      ];
+      return '<div class="sect">Season stats</div><div class="cmprows">' +
+        '<div class="crow2 hdr"><div>' + esc(a) + "</div><div></div><div>" + esc(b) + "</div></div>" +
+        rows.map(function (rw) {
+          var va = rw[1](A), vb = rw[1](B), f = function (v) { return v % 1 ? v.toFixed(1) : String(v); };
+          return '<div class="crow2"><div class="mono">' + f(va) + '</div><div style="font-size:12px;color:var(--ink-3);text-align:center">' +
+            esc(rw[0]) + '</div><div class="mono">' + f(vb) + "</div></div>";
+        }).join("") + "</div>" +
+        "<p style='margin:6px 0 0;font-size:11.5px;color:var(--ink-3)'>Team stats: MaxPreps, as each team reported them (" + A.gp + " and " + B.gp + " games).</p>";
+    }
+    function commonTxt(a, b) {
+      var CM = DATA.common || {}, list = CM[a + "|" + b], flip = false;
+      if (!list) { list = CM[b + "|" + a]; flip = true; }
+      if (!list || !list.length) return "";
+      function one(team, m, s) {
+        var p = String(s || "").split("-").map(function (x) { return n0(x); }).sort(function (x, y) { return y - x; });
+        return esc(team) + (m > 0 ? " beat " : m < 0 ? " lost to " : " tied ") + "%O " + p.join("-");
+      }
+      return list.slice(0, 4).map(function (c) {
+        var am = flip ? c.b_margin : c.a_margin, bm = flip ? c.a_margin : c.b_margin;
+        var as_ = flip ? c.b_score : c.a_score, bs = flip ? c.a_score : c.b_score;
+        return (one(a, am, as_) + "; " + one(b, bm, bs)).replace(/%O/g, esc(c.opp));
+      }).join(". ") + ".";
+    }
+    function P(s) { return "<p>" + s + "</p>"; }
+    function lc1(s) { return String(s).replace(/^\w+/, function (w) { return w.toLowerCase(); }); }
+    function openPoGame(id) {
+      var it = POG[id]; if (!it) return;
+      var g = it.g, rd = it.r, a = g.teams[0].team, b = g.teams[1].team;
+      var sa = seedOf(g, a), sb = seedOf(g, b), rn = rname(rd), cl = cur === "8P" ? "8-Player" : cur;
+      var day = (g.ko || rdate(rd) || "").slice(0, 10);
+      var fin = FIN[[a, b].sort().join("|")];
+      if (fin && fin.date < day) fin = null; // an old regular-season meeting is not this game
+      var nx = nextOf(g);
+      lastFocus = document.activeElement;
+      var html = '<button class="dclose" id="dclose" aria-label="Close">Close ✕</button>';
+      var teamsLinks = '<div class="sect">Open a team card</div><div class="plist">' + [a, b].filter(function (n) { return byName[n]; }).map(function (n) {
+        return '<span class="pl" data-t="' + esc(n) + '" style="cursor:pointer"><b>' + esc(n) + "</b></span>"; }).join("") + "</div>";
+      var bsrc = (PO[cur] || {}).url;
+      if (!fin) {
+        // ---------------- PREVIEW ----------------
+        var ra = wl(a, day), rb = wl(b, day);
+        var meet = meeting(a, b, day).filter(function (r) { return r.date >= "2026-08-01"; });
+        var p1 = "No. " + sa + " <b>" + esc(a) + "</b> (" + ra.w + "-" + ra.l + ") and No. " + sb + " <b>" + esc(b) + "</b> (" + rb.w + "-" + rb.l +
+          ") meet in the " + esc(cl) + " " + esc(lc1(rn)) + (g.ko ? ", " + esc(ko(g.ko).replace(" · ", " at ")) : "") + ". " +
+          (nx ? "The winner plays " + feederTxt(nx, "") + " in the " + esc(lc1(rname(nx.r))) + "." : "The winner is the " + esc(cl) + " state champion.");
+        var pa = pathTxt(a, day), pb = pathTxt(b, day);
+        var p2 = (pa ? esc(a) + " " + pa + "." : "") + (pb ? " " + esc(b) + " " + pb + "." : "");
+        var p3 = [[a, ra], [b, rb]].map(function (x) {
+          return esc(x[0]) + " has scored " + x[1].pf + " points and allowed " + x[1].pa + " in " + x[1].n + " games (" +
+            (x[1].pf / Math.max(1, x[1].n)).toFixed(1) + " a game, " + (x[1].pa / Math.max(1, x[1].n)).toFixed(1) + " allowed)";
+        }).join("; ") + ".";
+        var p4 = "";
+        if (meet.length) {
+          p4 = "This is a rematch. " + meet.map(function (r) {
+            return "On " + mdy(r.date) + ", " + esc(r.winner || "nobody") + " won " + sc(r, r.winner || r.home) + " at " + esc(r.home);
+          }).join("; ") + ".";
+        } else {
+          var ct = commonTxt(a, b);
+          p4 = ct ? "They have not played this season. Common opponents: " + ct : "They have not played this season and have no common opponents.";
+        }
+        var TA = byName[a], TB = byName[b];
+        html += '<div class="dhead"><div class="dsub">' + esc(cl) + " " + esc(rn) + " · Preview</div>" +
+          '<h2 style="font-size:21px">' + esc(a) + " vs. " + esc(b) + "</h2>" +
+          '<div class="meta">' + (g.ko ? esc(ko(g.ko)) : "") + "</div></div>" +
+          '<div class="pog-vs">' + [[a, sa, ra], [b, sb, rb]].map(function (x) {
+            return '<div class="pog-tm" data-t="' + esc(x[0]) + '">' + logo(x[0]) + '<b>' + esc(x[0]) + "</b><span>No. " + x[1] + " seed · " + x[2].w + "-" + x[2].l + "</span></div>";
+          }).join('<div class="pog-at">vs.</div>') + "</div>" +
+          '<div class="sect">The preview</div><div class="article">' + P(p1) + (p2 ? P(p2) : "") + P(p3) + P(p4) + "</div>" +
+          (TA && TB ? '<div class="sect">Players to watch</div><div class="cmprows"><div class="crow2" style="grid-template-columns:1fr 1fr;gap:18px">' +
+            '<div style="font-size:12.5px;line-height:1.55"><b>' + esc(a) + "</b><br>" + starLine(TA) + "</div>" +
+            '<div style="font-size:12.5px;line-height:1.55"><b>' + esc(b) + "</b><br>" + starLine(TB) + "</div></div></div>" : "") +
+          tsRows(a, b) + teamsLinks +
+          "<p style='margin:14px 0 0;font-size:11.5px;color:var(--ink-3)'>Sources: pairing, seeds and kickoff from the UHSAA bracket" +
+          (bsrc ? " (<a href='" + esc(bsrc) + "' target='_blank' rel='noopener'>MaxPreps tournament page</a>)" : "") +
+          "; scores and records from Deseret News; player and team stats from MaxPreps.</p>";
+      } else {
+        // ---------------- FINAL: summary + game notes ----------------
+        var r = fin, W = r.winner, L = r.loser || (W === r.home ? r.away : r.home);
+        var ws = W === r.away ? r.away_score : r.home_score, ls = W === r.away ? r.home_score : r.away_score;
+        var sw = seedOf(g, W), sl = seedOf(g, L), mg = n0(ws) - n0(ls);
+        var st = storyFor(r);
+        var notes = [];
+        if (sw && sl && +sw > +sl) notes.push("Upset: No. " + sw + " seed " + esc(W) + " knocked out No. " + sl + " seed " + esc(L) + ".");
+        else if (sw && sl) notes.push("No. " + sw + " seed " + esc(W) + " held serve against No. " + sl + " seed " + esc(L) + ".");
+        if (n0(ls) === 0) notes.push(esc(W) + " pitched a shutout.");
+        if (mg <= 8) notes.push("One-possession game, decided by " + mg + ".");
+        else if (mg >= 28) notes.push(esc(W) + " won by " + mg + ".");
+        var rw = wl(W, r.date, true), rl = wl(L, r.date, true);
+        notes.push(esc(W) + " is now " + rw.w + "-" + rw.l + ". " + esc(L) + "’s season ends at " + rl.w + "-" + rl.l + ".");
+        var run = path(W, r.date).concat([r]);
+        if (run.length > 1) notes.push(esc(W) + "’s playoff run: " + run.map(function (x) { return "beat " + esc(opp(x, W)) + " " + sc(x, W); }).join(", ") + ".");
+        var prev = meeting(W, L, r.date).filter(function (x) { return x.date >= "2026-08-01"; });
+        prev.forEach(function (x) {
+          notes.push("Rematch of " + mdy(x.date) + ", when " + esc(x.winner) + " won " + sc(x, x.winner) + (x.winner === W ? "." : " — " + esc(W) + " flipped it."));
+        });
+        if (nx) notes.push("Up next: " + esc(W) + " plays " + feederTxt(nx, W) + " in the " + esc(cl) + " " + esc(lc1(rname(nx.r))) +
+          (nx.g.ko ? ", " + esc(ko(nx.g.ko).replace(" · ", " at ")) : "") + ".");
+        else notes.push(esc(W) + " is the " + esc(cl) + " state champion.");
+        var key = r.date + "|" + r.away + "|" + r.home;
+        var film = (DATA.videos_by_game || {})[key];
+        html += '<div class="dhead"><div class="dsub">' + esc(cl) + " " + esc(rn) + " · Final · " + mdy(r.date) + "</div>" +
+          '<h2 style="font-size:21px">' + esc(W) + " " + n0(ws) + ", " + esc(L) + " " + n0(ls) + "</h2></div>" +
+          '<div class="pog-vs">' + [[W, sw, ws, 1], [L, sl, ls, 0]].map(function (x) {
+            return '<div class="pog-tm' + (x[3] ? "" : " l") + '" data-t="' + esc(x[0]) + '">' + logo(x[0]) + '<b>' + esc(x[0]) + "</b><span>No. " + x[1] + " seed</span><em>" + n0(x[2]) + "</em></div>";
+          }).join('<div class="pog-at">–</div>') + "</div>" +
+          '<div class="sect">Summary</div><div class="article">' +
+          (st ? P("<b>" + esc(st.head) + "</b>") + (st.body || []).map(function (s) { return P(esc(s)); }).join("")
+              : (r.summary ? P(linkNames(esc(String(r.summary).replace(/\s*[^.]*\bis \d+-\d+\./g, "")), r.named || [])) : P("No write-up yet. The final score is in from Deseret News; the story follows once the box score posts."))) +
+          "</div>" +
+          '<div class="sect">Game notes</div><ul class="pog-notes">' + notes.map(function (n) { return "<li>" + n + "</li>"; }).join("") + "</ul>" +
+          gameFilm(film) +
+          (RECAPBY[key] ? '<div class="sect">Full box score</div><div class="plist"><span class="pl" data-recap="' + esc(key) + '" style="cursor:pointer"><b>Open the full game card</b></span></div>' : "") +
+          teamsLinks +
+          "<p style='margin:14px 0 0;font-size:11.5px;color:var(--ink-3)'>Sources: " +
+          (st && st.src && st.src.length ? st.src.map(function (s) { return "<a href='" + esc(s.u) + "' target='_blank' rel='noopener'>" + esc(s.t) + "</a>"; }).join(" · ")
+            : "final score from Deseret News; seeds and pairing from the UHSAA bracket" + (bsrc ? " (<a href='" + esc(bsrc) + "' target='_blank' rel='noopener'>MaxPreps tournament page</a>)" : "")) + ".</p>";
+      }
+      document.getElementById("drawer-in").innerHTML = html;
+      drawer.classList.add("open"); scrim.classList.add("open"); drawer.setAttribute("aria-hidden", "false");
+      var c = document.getElementById("dclose"); c.addEventListener("click", closeDrawer); c.focus();
+    }
+    el.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var m = e.target.closest && e.target.closest("[data-pog]"); if (m) { e.preventDefault(); openPoGame(m.dataset.pog); }
     });
     draw();
   })();
