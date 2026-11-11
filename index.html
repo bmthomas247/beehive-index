@@ -9405,7 +9405,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           .slice(0, 5).map(function (f) {
             var mk = typeof collegeMark === "function" ? collegeMark(f.college) : logo(f.school, "sm");
             var via = f.via === "X" ? "player&rsquo;s post on X" : f.via === "247" ? "247Sports" : "reported";
-            return '<div class="nl-it ours" data-go="recruit101" style="cursor:pointer">' +
+            return '<div class="nl-it ours" data-go="recruit" style="cursor:pointer">' +
               '<span class="nl-ic">' + mk + '</span><div>' +
               '<span class="nl-t">' + esc("Commitment: " + f.player + " (" + f.school + ") to " + f.college) + '</span>' +
               '<span class="nl-src">UHSFB Commitments &middot; ' + via + ' &middot; ' + esc(f.d) + '</span></div></div>';
