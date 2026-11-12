@@ -1,5 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Cloudflare Web Analytics: visitor counts, no cookies. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "fa8d71dafb1749f6aee6ee0602d33e5d"}'></script>
 <title>Utah High School Football &mdash; Rankings, Stats and Recruiting</title>
 <meta name="description" content="Independent power ratings, player index and recruiting profiles for all 106 Utah 11-man high school football programs. Every roster, not just the recruited.">
 <meta name="theme-color" content="#0e1116">
@@ -7494,7 +7496,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     /* Nov 10 2026: no ESPN art; from each school's athletics site (msidemustangs.com, ouazspirit.com,
        mountmartyathletics.com, moorparkcollegeathletics.com) */
     "Morningside": "morningside", "Ottawa Arizona": "ottawa-arizona", "Mount Marty": "mount-marty", "Moorpark": "moorpark",
-    "Antelope Valley College": "antelope-valley", /* Nov 11 2026: gomarauders.avc.edu primary logo */
+    "Antelope Valley College": "antelope-valley", "Salt Lake Yeti": "salt-lake-yeti", "Utah Islanders": "utah-islanders", /* Nov 12: each team's X avatar */ /* Nov 11 2026: gomarauders.avc.edu primary logo */
     "Linfield": "linfield", "Montana Western": "montana-western",
     "Air Force": "air-force",
     "Alabama": "alabama",
@@ -7824,7 +7826,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     return out;
   }
   var PIPE = DATA.pipeline || { utah: [], region: [] };
-  var LVNAME = { FBS: "FBS", FCS: "FCS", D2: "Division II", D3: "Division III", NAIA: "NAIA", JUCO: "JUCO" };
+  var LVNAME = { FBS: "FBS", FCS: "FCS", D2: "Division II", D3: "Division III", NAIA: "NAIA", JUCO: "JUCO", PREP: "Prep / post-grad" };
   function pipeRow(x) {
     // Brandon, Sep 15: "include logos here too". This is the page a kid reads
     // when he is working out where he could actually play, so the programmes
@@ -7861,7 +7863,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="cx-sub">Class of 2027 &middot; every commitment we can source, newest first</div>' +
       '<div class="cx-stats">' +
       '<div class="cx-stat"><b>' + n27 + '</b><span>Seniors committed</span><div class="cx-lv">' +
-        ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO"].filter(function (k) { return lv[k]; }).map(function (k) {
+        ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO", "PREP"].filter(function (k) { return lv[k]; }).map(function (k) {
           return "<em>" + esc(LVNAME[k] || k) + " " + lv[k] + "</em>"; }).join("") + "</div></div>" +
       '<div class="cx-stat"><b>' + pct + '%</b><span>of ' + rated27 + ' rated seniors are committed (' + COMMITTED.length + ")</span>" +
         '<div class="cx-bar"><i style="width:' + pct + '%"></i></div></div>' +
@@ -8056,7 +8058,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     (function () {
       var lv = {};
       COLLEGES.forEach(function (c) { lv[c.level || "unlisted"] = (lv[c.level || "unlisted"] || 0) + c.n; });
-      var order = ["FBS", "FCS", "D2", "NAIA", "JUCO", "D3", "unlisted"];
+      var order = ["FBS", "FCS", "D2", "NAIA", "JUCO", "D3", "PREP", "unlisted"];
       return '<div class="grid cards" style="margin-bottom:16px">' +
         order.filter(function (k) { return lv[k]; }).map(function (k) {
           return '<div class="card"><div class="k">' + esc(LVNAME[k] || k) + '</div><div class="v mono">' +
@@ -13179,8 +13181,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
         (S.s247_asof ? "247 lists as of " + md(S.s247_asof) + ". " : "") +
         "Commitments: 247Sports Utah commit board. Signings show here once a college or the player announces one.</p></div>";
     }
-    var LVORD = ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO"];
-    var LVTXT = { FBS: "FBS", FCS: "FCS", D2: "D-II", D3: "D-III", NAIA: "NAIA", JUCO: "JUCO" };
+    var LVORD = ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO", "PREP"];
+    var LVTXT = { FBS: "FBS", FCS: "FCS", D2: "D-II", D3: "D-III", NAIA: "NAIA", JUCO: "JUCO", PREP: "Prep / post-grad" };
     function lvOf(t) {
       t = String(t || "");
       if (/FBS/.test(t)) return "FBS";
