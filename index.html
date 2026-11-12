@@ -3196,7 +3196,7 @@ a.costcta{ margin-top:14px }
 .hdlist b{display:block;font-size:13px;line-height:1.3}.hdlist small{font-size:11px;opacity:.75}
 .hdbtns{display:flex;flex-direction:column;gap:6px;margin-top:12px}
 .hdbtns a{display:block;text-align:center;font-size:13px;font-weight:800;text-decoration:none;padding:9px 12px;border-radius:8px}
-.hdgo{background:#FF6300;color:#fff}.hdall{background:#fff;color:#111}
+.hdgo{background:#FF6300;color:#fff}.hdall{background:#fff;color:#111}.hdpp{background:#0B1F3A;color:#fff;border:1px solid #3A4A5C}.hdpp:hover{border-color:#FF6300}.hdwho a{color:inherit;text-decoration:none}.hdwho a:hover{color:#FF8A3D;text-decoration:underline}
 @media(max-width:860px){.hdbox{grid-template-columns:1fr;max-height:88vh;overflow-y:auto;margin-top:36px}.hdside{max-height:none}#hdmodal .ytx{position:fixed;top:10px;right:10px;z-index:3}.hl-filters{position:static}}
 /* ---- Latest News pop-up (Nov 11) ---- */
 #nwmodal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:16px}
@@ -3638,6 +3638,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
 @media (max-width:1700px){ .fa-crests .crest:nth-child(n+6){display:none} }
 @media (max-width:1100px){ .fa-crests .crest:nth-child(n+5){display:none} }
 @media (max-width:760px){ .fa-crests{order:3} }
+/* REALIGN-AD-NOV12 */
+.flagad.rlad{background:#0E2240}
+.flagad.rlad:before{background:repeating-linear-gradient(115deg,transparent 0 46px,rgba(255,255,255,.06) 46px 50px)}
+.flagad.rlad .fa-l small{color:#C8D3E3}
+.flagad.rlad .fa-crests .crest{border-color:#0E2240}
+.flagad.rlad .rl-up{color:#5FD08A;font-style:normal}
+.flagad.rlad .rl-dn{color:#FF8A7A;font-style:normal}
 .flagbtn2{margin-left:10px;background:transparent;border:2px solid currentColor}
 .rlvlogos{display:inline-flex;align-items:center;gap:8px;vertical-align:middle;margin-left:10px}
 .rlvlogo{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;
@@ -9840,6 +9847,21 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<span class="fa-r"><span class="fa-tag">Girls&rsquo; flag football</span>' +
         '<span class="fa-btn">Sign the petition</span></span></a>' +
       hlHtml +
+      /* REALIGN-AD-NOV12: realignment banner, numbers live from DATA.realign */ (function () {
+        var R = DATA.realign || [];
+        var up = R.filter(function (r) { return r.direction === "up"; });
+        var dn = R.filter(function (r) { return r.direction === "down"; });
+        if (!up.length && !dn.length) return "";
+        var cr = up.concat(dn).sort(function (a, b) { return (b.cri || 0) - (a.cri || 0); }).slice(0, 7);
+        return '<a class="flagad rlad" href="#" data-go="realign" aria-label="Realignment 2027-29: see who is moving">' +
+          '<span class="fa-l"><strong>Who plays who in 2027?</strong>' +
+          "<small>UHSAA re-sorts every school Nov 19 &middot; final vote Dec 17. " +
+          '<em><i class="rl-up">' + up.length + " up</i> &middot; " + '<i class="rl-dn">' + dn.length +
+          " down</i> &middot; our projection</em></small></span>" +
+          '<span class="fa-crests" title="Projected to change class (our projection on UHSAA&rsquo;s Oct 1 sophomore + junior count)">' +
+            cr.map(function (r) { return logo(r.school, "md"); }).join("") + "</span>" +
+          '<span class="fa-r"><span class="fa-btn">See who&rsquo;s moving</span></span></a>';
+      })() +
       vidHtml +
       freshBlock(16) +
       "</div>" +
@@ -14142,12 +14164,28 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<div class="hdnow"><b></b><span></span></div></div>' +
         '<aside class="hdside"><div class="hdwho"><b></b><span></span></div><div class="hdlist-h"></div><ol class="hdlist"></ol>' +
         '<div class="hdbtns"><a class="hdgo" target="_blank" rel="noopener noreferrer">Watch on Hudl ↗</a>' +
-        '<a class="hdall" target="_blank" rel="noopener noreferrer">All film on Hudl ↗</a></div></aside></div>';
+        '<a class="hdall" target="_blank" rel="noopener noreferrer">All film on Hudl ↗</a>' +
+        '<a class="hdpp">Visit player profile</a></div></aside></div>';
       d.querySelector(".hdwho b").textContent = p.name + (p.no ? " #" + p.no : "");
       d.querySelector(".hdwho span").textContent = [p.school, p.pos || "", YR[String(p.cls)] || ""].filter(Boolean).join(" · ");
       d.querySelector(".hdlist-h").textContent = reels.length + " reel" + (reels.length === 1 ? "" : "s");
       var allA = d.querySelector(".hdall");
       if (p.hudl) allA.href = p.hudl; else allA.remove();
+      // our player page (Brandon, Nov 12): button + the name, only if we have his card
+      var ppA = d.querySelector(".hdpp");
+      if (typeof PKEY !== "undefined" && PKEY[pkeyOf(p.name, p.school)]) {
+        var ppU = location.pathname + "?player=" + encodeURIComponent(p.name + "|" + p.school);
+        ppA.href = ppU;
+        var wb = d.querySelector(".hdwho b"), wa = document.createElement("a");
+        wa.href = ppU; wa.className = "hdppn"; wa.textContent = wb.textContent;
+        wb.textContent = ""; wb.appendChild(wa);
+        d.querySelectorAll(".hdpp,.hdppn").forEach(function (a) {
+          a.addEventListener("click", function (e) {
+            if (e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+            e.preventDefault(); close(); openPlayer(p.name, p.school);
+          });
+        });
+      } else ppA.remove();
       var ol = d.querySelector(".hdlist");
       reels.forEach(function (r, i) {
         var li = document.createElement("li"), b = document.createElement("button"); b.type = "button";
