@@ -6464,6 +6464,24 @@ nav.topbar ~ main.wrap{margin-top:20px}
   // Brandon: when somebody films a whole game, that film belongs on the summary
   // of THAT game as well as on the two program pages. A kid who just read what
   // happened is one click from watching it happen.
+  // Where to watch an upcoming game: videos the harvester tied to this game
+  // (KSL Sports posts its live-stream pages days ahead). Shorts are skipped.
+  function watchFor(day, a, b) {
+    var VG = DATA.videos_by_game || {};
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(day || "")) return "";
+    var list = (VG[day + "|" + a + "|" + b] || []).concat(VG[day + "|" + b + "|" + a] || [])
+      .filter(function (v) { return !/#shorts/i.test(v.t || ""); });
+    if (!list.length) return "";
+    return '<div class="sect">Where to watch</div>' +
+      '<div class="vrail tight">' + list.map(function (v) {
+        return '<div class="vcard" data-story="' + esc(v.u) + '">' +
+          '<span class="vthumb"><img src="' + esc(v.thumb || "") + '" alt="" loading="lazy">' +
+          '<i class="vplay" aria-hidden="true"></i></span>' +
+          '<span class="vmeta">' + esc(v.src) + " &middot; YouTube</span>" +
+          '<span class="vt">' + esc(v.t) + "</span></div>";
+      }).join("") + "</div>" +
+      "<p style='margin:6px 0 0;font-size:11.5px;color:var(--ink-3)'>Links go to the broadcaster's own YouTube page for this game.</p>";
+  }
   function gameFilm(list) {
     if (!list || !list.length) return "";
     var anyFull = list.some(function (v) { return v.full; });
@@ -7402,6 +7420,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="verdicttxt">The model has <strong>' + esc(p.fav) + "</strong> winning this " +
         '<span class="mono">' + p.wp + "%</span> of the time" +
         (p.toss ? " — close enough that it is a coin flip." : ".") + "</div></div>" +
+      (!p.final ? watchFor(p.date, p.away, p.home) : "") +
       (p.preview && !p.final ? '<div class="sect">The preview</div><div class="article"><p>' +
         esc(p.preview).replace(/\n+/g, "</p><p>") + "</p></div>" : "") +
       (p.rivalry && p.rivalry.note ? '<div class="sect">The rivalry</div>' +
@@ -10501,6 +10520,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '<div class="pog-vs">' + [[a, sa, ra], [b, sb, rb]].map(function (x) {
             return '<div class="pog-tm" data-t="' + esc(x[0]) + '">' + logo(x[0]) + '<b>' + esc(x[0]) + "</b><span>No. " + x[1] + " seed · " + x[2].w + "-" + x[2].l + "</span></div>";
           }).join('<div class="pog-at">vs.</div>') + "</div>" +
+          watchFor(day, a, b) +
           '<div class="sect">The preview</div><div class="article">' + P(p1) + (p2 ? P(p2) : "") + P(p3) + P(p4) + "</div>" +
           (TA && TB ? '<div class="sect">Players to watch</div><div class="cmprows"><div class="crow2" style="grid-template-columns:1fr 1fr;gap:18px">' +
             '<div style="font-size:12.5px;line-height:1.55"><b>' + esc(a) + "</b><br>" + starLine(TA) + "</div>" +
