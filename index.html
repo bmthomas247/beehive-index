@@ -11591,6 +11591,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var offs = (p.offers || []).filter(function (o) { return o !== p.commit; });
     var n = pOffN(p);
     if (!n && !p.commit) return '<div class="poff"><span class="pnone">—</span></div>';
+    /* PSEARCH-COMMITONLY-NOV13 */
+    if (p.commit) return '<div class="poff" title="Committed: ' + esc(p.commit) + '"><div class="pmk">' +
+      collegeMark(p.commit).replace('class="cmark', 'class="cmark cmt') + '</div><small>Committed · ' + esc(p.commit) + '</small></div>';
     var show = offs.slice(0, p.commit ? 5 : 6), more = (p.commit ? n - 1 : n) - show.length;
     var names = (p.commit ? ["Committed: " + p.commit] : []).concat(p.offers || []).join(", ");
     return '<div class="poff" title="' + esc(names) + '"><div class="pmk">' +
