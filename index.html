@@ -3195,6 +3195,9 @@ a.costcta{ margin-top:14px }
 .hl-pos button:hover{border-color:#FF6300;color:#FF6300}
 .hl-pos button[aria-pressed="true"]{background:#FF6300;border-color:#FF6300;color:#fff}
 .hl-count{font-size:13px;font-weight:700;color:var(--ink-3);margin-left:auto}
+/* PSEARCH-COLORS-NOV13 */
+.psbar .hl-pos button:hover{border-color:var(--ink);color:var(--ink)}
+.psbar .hl-pos button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
 .hl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
 .hl{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .18s,box-shadow .18s}
 .hl:hover{transform:translateY(-3px);box-shadow:0 16px 30px -14px rgba(0,0,0,.35)}
@@ -11659,19 +11662,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     PIDX.length.toLocaleString() + '</strong> of them, not just the ones a service noticed. <strong>' +
     PIDX.filter(function (p) { return p.has_stats && !p.grade; }).length.toLocaleString() +
     ' are producing this season with no recruiting grade anywhere.</strong> Filter to <em>Producing, unranked</em> to see only them, and click any column heading to sort.</p>' +
-    // Brandon did not like the standalone Recruiting Talent page and he was
-    // right: it led with three paragraphs about how a grade is computed, which
-    // is not what anybody opens a player page to find out. The one part worth
-    // keeping is the short list of players every service agrees on -- so it
-    // lives here, folded shut, next to the search people actually came for.
-    (multiRated.length
-      ? '<details class="foldout"><summary>Rated by more than one service (' +
-        multiRated.length + ')</summary><div class="foldbody">' +
-        '<p>The players every service agrees are real, best grade first. Amber is graded 86 or better, ' +
-        'a green outline means committed. Everyone else on this page is here on production alone.</p>' +
-        '<div class="plist">' + multiRated.slice(0, 60).map(function (p) { return pchip(p, true); }).join("") +
-        '</div></div></details>'
-      : "") +
+    /* PSEARCH-NORATED-NOV13 */
     '</div>' +
     /* PSEARCH-HUDL-NOV13 */
     '<div class="hl-filters psbar" id="psbar">' +
