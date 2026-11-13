@@ -2,6 +2,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Cloudflare Web Analytics: visitor counts, no cookies. -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "fa8d71dafb1749f6aee6ee0602d33e5d"}'></script>
+<script>/* Nov 13 2026: per-tab counts. Cloudflare drops ?view=, so a hidden
+   /t/<tab>.html page (same beacon) is loaded once a tab has been open 1s. */
+(function(){var last="",t=null,fr=null;
+window.uhsTrack=function(v,force){v=String(v||"").toLowerCase();
+if(!/^[a-z0-9]{1,24}$/.test(v)||(v===last&&!force))return;last=v;clearTimeout(t);
+t=setTimeout(function(){try{if(!document.body)return;if(fr&&fr.parentNode)fr.parentNode.removeChild(fr);
+fr=document.createElement("iframe");fr.setAttribute("aria-hidden","true");fr.tabIndex=-1;fr.title="";
+fr.style.cssText="position:absolute;left:-9999px;width:1px;height:1px;border:0;visibility:hidden";
+fr.src="/t/"+v+".html";document.body.appendChild(fr);}catch(e){}},1000);};})();</script>
 <title>Utah High School Football &mdash; Rankings, Stats and Recruiting</title>
 <meta name="description" content="Independent power ratings, player index and recruiting profiles for all 106 Utah 11-man high school football programs. Every roster, not just the recruited.">
 <meta name="theme-color" content="#0e1116">
@@ -5852,6 +5861,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     VIEWS.forEach(function (v) { var el = document.getElementById("v-" + v); if (el) el.hidden = true; });
     host.hidden = false;
     document.title = p.name + " — " + p.school + " football | Utah High School Football";
+    if (window.uhsTrack) window.uhsTrack("player", true);
     window.scrollTo({ top: 0, behavior: "instant" });
     document.getElementById("ppback").addEventListener("click", function () {
       if (history.state && history.state.player) history.back();
@@ -12619,6 +12629,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
   }
 
   function showView(view, scroll, gid) {
+    if (window.uhsTrack) window.uhsTrack(view);
     var g = groupOf(view, gid);
     curGroup = g.id;
     lastSub[g.id] = view;
