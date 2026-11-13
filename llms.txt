@@ -1,0 +1,27 @@
+# Utah High School Football
+
+> Independent power ratings, scores, stats, playoff brackets and recruiting profiles for all 106 Utah 11-man high school football programs (6A through 1A). Free, and not affiliated with any school, district or the UHSAA. Nothing here is for betting.
+
+Every program is rated on one scale (the Ledger Rating), so a 2A team and a 6A team can be compared directly. Ratings come from a weighted regression on capped, garbage-time-adjusted scoring margin, with a preseason prior that fades as games accumulate. Pages are rebuilt several times a day during the season.
+
+Sourcing: final scores and home/away follow the Deseret News, with conflicts resolved at the box score; player and team statistics come mainly from MaxPreps box scores; playoff brackets and the official RPI come from the UHSAA. Every number on the site traces to a source; when there's no source, the field is left blank. Corrections are made the same day.
+
+## Main pages
+
+- [Home](https://utahhighschoolfootball.com/): scores, playoffs, rankings, stats and recruiting in one app
+- [Rankings: all 106 teams](https://utahhighschoolfootball.com/utah-high-school-football-rankings): the full statewide power ranking with record and rating
+- [All 106 teams](https://utahhighschoolfootball.com/utah-high-school-football-teams): directory of every 11-man program
+- [State champions](https://utahhighschoolfootball.com/utah-high-school-football-state-champions): every state champion since 1898
+
+## School pages
+
+One page per program at https://utahhighschoolfootball.com/<school>-football (for example [Alta](https://utahhighschoolfootball.com/alta-football)): the season record, rating and statewide and class rank, schedule and results, team leaders, region standings, coaching staff and program records.
+
+## Rivalry pages
+
+80 rivalry pages at https://utahhighschoolfootball.com/<team-a>-<team-b>-rivalry, each with the series history and recent results.
+
+## Optional
+
+- [Sitemap](https://utahhighschoolfootball.com/sitemap.xml): every page, with its last-changed date
+- [X: @TheLedgerUT](https://x.com/TheLedgerUT)
