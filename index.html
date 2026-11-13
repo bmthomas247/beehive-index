@@ -11659,6 +11659,48 @@ nav.topbar ~ main.wrap{margin-top:20px}
     PIDX.length.toLocaleString() + '</strong> of them, not just the ones a service noticed. <strong>' +
     PIDX.filter(function (p) { return p.has_stats && !p.grade; }).length.toLocaleString() +
     ' are producing this season with no recruiting grade anywhere.</strong> Filter to <em>Producing, unranked</em> to see only them, and click any column heading to sort.</p>' +
+    // Brandon did not like the standalone Recruiting Talent page and he was
+    // right: it led with three paragraphs about how a grade is computed, which
+    // is not what anybody opens a player page to find out. The one part worth
+    // keeping is the short list of players every service agrees on -- so it
+    // lives here, folded shut, next to the search people actually came for.
+    (multiRated.length
+      ? '<details class="foldout"><summary>Rated by more than one service (' +
+        multiRated.length + ')</summary><div class="foldbody">' +
+        '<p>The players every service agrees are real, best grade first. Amber is graded 86 or better, ' +
+        'a green outline means committed. Everyone else on this page is here on production alone.</p>' +
+        '<div class="plist">' + multiRated.slice(0, 60).map(function (p) { return pchip(p, true); }).join("") +
+        '</div></div></details>'
+      : "") +
+    '</div>' +
+    /* PSEARCH-HUDL-NOV13 */
+    '<div class="hl-filters psbar" id="psbar">' +
+    '<input type="search" id="pq" placeholder="Search a player or a school" aria-label="Search players">' +
+    '<label>Classification<select id="pfcls"><option value="">All classifications</option>' +
+      DIVS.map(function (d) { return '<option value="' + d + '">' + d + "</option>"; }).join("") + "</select></label>" +
+    '<label>Class<select id="pfyr"><option value="">All classes</option>' +
+      ["2027|Seniors", "2028|Juniors", "2029|Sophomores", "2030|Freshmen"].map(function (o) {
+        var kv = o.split("|"); return '<option value="' + kv[0] + '">' + kv[1] + "</option>"; }).join("") + "</select></label>" +
+    '<label>Show<select id="pfonly"><option value="">Everyone</option>' +
+      '<option value="stats">Has 2026 stats</option>' +
+      '<option value="hidden">Producing, unranked</option>' +
+      '<option value="graded">Has a recruiting grade</option>' +
+      '<option value="open">Graded, uncommitted</option>' +
+      '<option value="committed">Committed</option>' +
+      '<option value="film">Has film</option>' +
+      '<option value="social">Has an X handle</option></select></label>' +
+    '<label>Sort<select id="pfsort"><option value="bee">Ledger</option>' +
+      '<option value="grade">Scouting grade</option>' +
+      '<option value="prod">Production</option></select></label>' +
+    '<span class="hl-count" id="pcount"></span>' +
+    '<input type="hidden" id="pfpos" value="">' +
+    '<div class="hl-pos" id="pfposb" role="group" aria-label="Position">' +
+      POSGROUPS.map(function (g) {
+        return '<button type="button" data-v="' + g[0] + '" aria-pressed="' + (g[0] ? "false" : "true") + '">' +
+          (g[0] ? (g[0] === "EDGE" ? "Edge" : g[0]) : "All positions") + "</button>"; }).join("") +
+    '</div></div>' +
+    '<div class="phead" id="phead"></div><div class="pgridr" id="pgridr"></div>' +
+    '<div class="panel" style="margin-top:18px"><h2>About the Ledger</h2>' +
     '<details class="foldout"><summary>How the Ledger works</summary><div class="foldbody">' +
     '<p>One question, answered in football: <strong>how much did he produce above a replacement-level player at his position?</strong> Not a percentile, not a blend. The number is in production points, so the distance between first and tenth is visible in the number itself.</p>' +
     '<p><strong>Four steps.</strong> Every play he is credited with is worth what it is worth &mdash; a touchdown six, a rushing yard a tenth, a sack four. That total is then:</p>' +
@@ -11674,44 +11716,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
     '<p><strong>X handles.</strong> A college coach gets a capped number of contact hours and a direct message on X does not spend one, which is why a public recruiting account is often the cheapest door into a player\'s own recruiting. Handles show on a profile when we have one &mdash; ' +
     PIDX.filter(function (p) { return p.twitter; }).length + ' so far. <strong>They are never guessed.</strong> Players and coaches can send theirs and they go on. Beyond that, only what is already published about a player as an athlete appears here &mdash; no phone, no email, no address, no personal accounts. To reach a player cold, go through his head coach; every staff is on the Coaches tab.</p>' +
     '</div></details>' +
-    // Brandon did not like the standalone Recruiting Talent page and he was
-    // right: it led with three paragraphs about how a grade is computed, which
-    // is not what anybody opens a player page to find out. The one part worth
-    // keeping is the short list of players every service agrees on -- so it
-    // lives here, folded shut, next to the search people actually came for.
-    (multiRated.length
-      ? '<details class="foldout"><summary>Rated by more than one service (' +
-        multiRated.length + ')</summary><div class="foldbody">' +
-        '<p>The players every service agrees are real, best grade first. Amber is graded 86 or better, ' +
-        'a green outline means committed. Everyone else on this page is here on production alone.</p>' +
-        '<div class="plist">' + multiRated.slice(0, 60).map(function (p) { return pchip(p, true); }).join("") +
-        '</div></div></details>'
-      : "") +
-    '</div>' +
-    '<div class="psearch"><input type="search" id="pq" placeholder="Search a player or a school…" aria-label="Search players">' +
-    '<div class="pfilters">' +
-    '<select id="pfpos" aria-label="Position">' + POSGROUPS.map(function (g) {
-      return '<option value="' + g[0] + '">' + g[1] + "</option>"; }).join("") + "</select>" +
-    '<select id="pfyr" aria-label="Class year"><option value="">All classes</option>' +
-      ["2027|Seniors", "2028|Juniors", "2029|Sophomores", "2030|Freshmen"].map(function (o) {
-        var kv = o.split("|"); return '<option value="' + kv[0] + '">' + kv[1] + "</option>"; }).join("") + "</select>" +
-    '<select id="pfcls" aria-label="Classification"><option value="">All classifications</option>' +
-      DIVS.map(function (d) { return '<option value="' + d + '">' + d + "</option>"; }).join("") + "</select>" +
-    '<select id="pfonly" aria-label="Show"><option value="">Everyone</option>' +
-      '<option value="stats">Has 2026 stats</option>' +
-      '<option value="hidden">Producing, unranked</option>' +
-      '<option value="graded">Has a recruiting grade</option>' +
-      '<option value="open">Graded, uncommitted</option>' +
-      '<option value="committed">Committed</option>' +
-      '<option value="film">Has film</option>' +
-      '<option value="social">Has an X handle</option></select>' +
-    '<select id="pfsort" aria-label="Sort"><option value="bee">Sort by Ledger</option>' +
-      '<option value="grade">Sort by scouting grade</option>' +
-      '<option value="prod">Sort by production</option></select>' +
-    '<span class="pcount" id="pcount"></span></div></div>' +
-    '<div class="phead" id="phead"></div><div class="pgridr" id="pgridr"></div>';
+    '</div>';
 
-  ["pq", "pfpos", "pfyr", "pfcls", "pfonly"].forEach(function (id) {
+  document.getElementById("pfposb").addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-v]"); if (!b) return;
+    document.getElementById("pfpos").value = b.dataset.v;
+    this.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+    pShown = 60; drawPlayers();
+  });
+  ["pq", "pfyr", "pfcls", "pfonly"].forEach(function (id) {
     document.getElementById(id).addEventListener("input", function () { pShown = 60; drawPlayers(); });
   });
   document.getElementById("pfsort").addEventListener("input", function () {
