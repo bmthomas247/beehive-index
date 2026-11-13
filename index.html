@@ -1061,7 +1061,7 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
 .pcount{font-size:12px;color:var(--ink-3);margin-left:auto}
 .pgridr{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft)}
 /* ---------- player search sort header ---------- */
-.phead{display:grid;grid-template-columns:1fr 74px 120px 64px;gap:12px;background:var(--surface-2);
+.phead{display:grid;grid-template-columns:1fr 74px 230px;gap:12px;background:var(--surface-2);
   border:1px solid var(--line-soft);border-bottom:none;padding:7px 12px;align-items:center}
 .phead .h{font-family:var(--f-display);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
   color:var(--ink-3);text-align:right;cursor:pointer;user-select:none;white-space:nowrap}
@@ -1069,7 +1069,7 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
 .phead .h:hover:not(:first-child){color:var(--ink)}
 .phead .h.on{color:var(--sodium)}
 .phead .h .cx{font-size:9px}
-.prow{display:grid;grid-template-columns:22px minmax(0,1fr) 74px 120px 64px;gap:12px;background:var(--surface);
+.prow{display:grid;grid-template-columns:22px minmax(0,1fr) 74px 230px;gap:12px;background:var(--surface);
   padding:9px 13px;align-items:center;cursor:pointer}
 .prow:hover{background:var(--surface-2)}
 .pname{font-size:14.5px;font-weight:600}
@@ -1084,6 +1084,13 @@ table.enrtab td img,table.enrtab td .lg{vertical-align:middle;margin-right:6px}
 .pnone{color:var(--ink-3);font-weight:400;font-size:12px}
 .pmore{text-align:center;padding:11px;background:var(--surface);font-size:13px;color:var(--steel);cursor:pointer}
 .pmore:hover{background:var(--surface-2)}
+/* PSEARCH-OFFERS-NOV13 */
+.poff{display:flex;flex-direction:column;align-items:flex-end;gap:3px;min-width:0}
+.poff .pmk{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px}
+.poff .pmk .cmark.cmt{box-shadow:0 0 0 2px var(--rise)}
+.poff .pmk .pplus{font-size:11px;font-weight:700;color:var(--ink-3);align-self:center}
+.poff small{font-size:10px;color:var(--ink-3);text-align:right}
+@media(max-width:620px){.prow .poff{grid-column:2/-1;align-items:flex-start}.poff .pmk{justify-content:flex-start}.poff small{text-align:left}}
 @media(max-width:620px){
   .prow{grid-template-columns:22px minmax(0,1fr) 58px;gap:8px;padding:9px 11px}
   .pgrade{grid-column:3}
@@ -11570,12 +11577,28 @@ nav.topbar ~ main.wrap{margin-top:20px}
   var pShown = 60, pSort = "bee", pDir = 1;      // pDir 1 = best first
   // Three here, not the board's five. This grid is already at five tracks and
   // drops to three on a phone; the full split lives on the rankings board.
-  var PCOLS = [["bee", "Ledger"], ["grade", "Scouting"], ["prod", "Prod"]];
+  var PCOLS = [["bee", "Ledger"], ["offers", "Offers"]];
   function pVal(p, k) {
     return k === "bee" ? (p.pav === null || p.pav === undefined ? -1e9 : p.pav)
          : k === "pergame" ? (p.pav_pg === null || p.pav_pg === undefined ? -1e9 : p.pav_pg)
          : k === "resume" ? (p.resume || 0)
+         : k === "offers" ? pOffN(p) + (p.commit ? 0.5 : 0)
          : k === "grade" ? (p.grade || 0) : (p.prod_adj || 0);
+  }
+  function pOffN(p) { return p.offer_n || (p.offers || []).length || 0; }
+  // Offers as listed by the source named under them; the commit (if any) goes first, ringed green.
+  function pOffers(p) {
+    var offs = (p.offers || []).filter(function (o) { return o !== p.commit; });
+    var n = pOffN(p);
+    if (!n && !p.commit) return '<div class="poff"><span class="pnone">—</span></div>';
+    var show = offs.slice(0, p.commit ? 5 : 6), more = (p.commit ? n - 1 : n) - show.length;
+    var names = (p.commit ? ["Committed: " + p.commit] : []).concat(p.offers || []).join(", ");
+    return '<div class="poff" title="' + esc(names) + '"><div class="pmk">' +
+      (p.commit ? collegeMark(p.commit).replace('class="cmark', 'class="cmark cmt') : "") +
+      show.map(function (o) { return collegeMark(o); }).join("") +
+      (more > 0 ? '<span class="pplus">+' + more + "</span>" : "") + "</div>" +
+      "<small>" + (n ? n + (n === 1 ? " offer" : " offers") + (p.offers_source ? " · " + esc(p.offers_source) : "") : "Committed") +
+      "</small></div>";
   }
   function drawPHead() {
     document.getElementById("phead").innerHTML =
@@ -11637,11 +11660,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<div class="pgrade">' + (p.pav !== null && p.pav !== undefined
             ? '<span style="color:var(--sodium)">' + sgn(p.pav, 0) + "</span><small>Ledger</small>"
             : '<span class="pnone">—</span>') + "</div>" +
-        '<div class="pgrade">' + (p.grade
-            ? p.grade + '<small>' + (p.services || []).map(function (s) { return SVCNAME[s] || s; }).join(" · ") + "</small>"
-            : '<span class="pnone">not ranked</span>') + "</div>" +
-        '<div class="pgrade">' + (p.prod_adj ? p.prod_adj.toFixed(0) : "—") +
-          "<small>" + (p.prod_adj ? "adj" : "prod") + "</small></div>" +
+        pOffers(p) +
 "</div>";
     }).join("") +
       (list.length > pShown
@@ -11682,7 +11701,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<option value="social">Has an X handle</option></select></label>' +
     '<label>Sort<select id="pfsort"><option value="bee">Ledger</option>' +
       '<option value="grade">Scouting grade</option>' +
-      '<option value="prod">Production</option></select></label>' +
+      '<option value="prod">Production</option>' +
+      '<option value="offers">Most offers</option></select></label>' +
     '<span class="hl-count" id="pcount"></span>' +
     '<input type="hidden" id="pfpos" value="">' +
     '<div class="hl-pos" id="pfposb" role="group" aria-label="Position">' +
@@ -12746,7 +12766,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
     navPush(view);
   }
 
-  document.getElementById("toptabs").innerHTML = GROUPS.filter(function (g) { return !g.hide; }).map(function (g, i) {
+  var NAV_ORDER = ["home", "recap", "stand", "leaders", "hl", "people", "coaches", "programs",
+    "rank", "records", "realign", "recruit101", "send"];
+  function navRank(g) { var k = NAV_ORDER.indexOf(g.id); return k < 0 ? 99 : k; }
+  document.getElementById("toptabs").innerHTML = GROUPS.filter(function (g) { return !g.hide; })
+    .sort(function (a, b) { return navRank(a) - navRank(b); }).map(function (g, i) {
     return '<button class="tab" role="tab" data-g="' + g.id + '" aria-selected="' +
       (i === 0) + '">' + esc(g.label) + "</button>";
   }).join("");
