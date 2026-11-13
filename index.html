@@ -12698,8 +12698,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         ["crank", "Rankings"], ["coach", "Coaches Stats"], ["seat", "Hot Seat"],
         ["caro", "Carousel"]] },
     { id: "leaders", label: "Stats", views: [
-        ["stats", "Player"], ["tstats", "Team"]] },
-    { id: "records", label: "Record Book", views: [["history", "Record Book"]] },
+        ["stats", "Player"], ["tstats", "Team"], ["history", "Record Book"]] },
     // Brandon, Sep 14: "we want a realignment tab as its own".
     { id: "realign", label: "Realignment", views: [["realign", "Realignment"]] },
     { id: "recruit101", label: "Recruiting Help", views: [["recruit101", "Recruiting Help"]] },
@@ -12767,7 +12766,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
   }
 
   var NAV_ORDER = ["home", "recap", "stand", "leaders", "hl", "people", "coaches", "programs",
-    "rank", "records", "realign", "recruit101", "send"];
+    "rank", "realign", "recruit101", "send"];
   function navRank(g) { var k = NAV_ORDER.indexOf(g.id); return k < 0 ? 99 : k; }
   document.getElementById("toptabs").innerHTML = GROUPS.filter(function (g) { return !g.hide; })
     .sort(function (a, b) { return navRank(a) - navRank(b); }).map(function (g, i) {
