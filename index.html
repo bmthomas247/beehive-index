@@ -572,6 +572,28 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .tlnote{font-size:12.5px;color:var(--ink-2);line-height:1.5;margin-top:2px}
 .openq{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2);line-height:1.6}
 .openq li{margin-bottom:5px}
+/* PW-STORY-NOV13: article face-off, comparison table, logo grid */
+.artface{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin:4px 0 18px;
+  padding:16px;border-radius:10px;background:#0B1F3A;color:#fff}
+.artface .af{display:grid;justify-items:center;gap:6px;text-align:center;min-width:0}
+.artface .af img{width:96px;height:96px;object-fit:contain;background:#fff;border-radius:50%;padding:8px;box-sizing:border-box}
+.artface .af b{font-family:var(--f-display);font-size:14px;text-transform:uppercase;letter-spacing:.02em;line-height:1.1}
+.artface .af small{font-size:11.5px;color:#C8D3E3}
+.artface .vs{font-family:var(--f-display);font-weight:800;font-size:30px;color:#E8A33D}
+.artcmp{overflow-x:auto;margin:6px 0 4px;border:1px solid var(--line);border-radius:10px}
+.artcmp table{border-collapse:collapse;width:100%;min-width:520px;font-size:13.5px}
+.artcmp th,.artcmp td{padding:9px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line-soft)}
+.artcmp thead th{background:#0B1F3A;color:#fff;font-family:var(--f-display);font-size:13px;text-transform:uppercase;letter-spacing:.03em}
+.artcmp thead th img{width:26px;height:26px;object-fit:contain;background:#fff;border-radius:50%;padding:2px;vertical-align:middle;margin-right:7px;box-sizing:border-box}
+.artcmp thead th:last-child{color:#E8A33D}
+.artcmp tbody th{font-family:var(--f-display);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--steel);width:22%}
+.artcmp tbody tr:nth-child(even){background:var(--surface-2)}
+.artcmp tbody tr:last-child th,.artcmp tbody tr:last-child td{border-bottom:0}
+.artlogos{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:10px;margin:6px 0 4px}
+.artlogos .al{display:grid;justify-items:center;gap:5px;text-align:center;font-size:11.5px;line-height:1.25;min-width:0}
+.artlogos .al img{width:64px;height:64px;object-fit:contain;background:#fff;border:1px solid var(--line-soft);border-radius:10px;padding:4px;box-sizing:border-box}
+.artlogos .al small{display:block;color:var(--ink-3);font-size:10.5px}
+.artnote{font-size:12px;color:var(--ink-3);margin:6px 0 0;line-height:1.5}
 .uplog div{font-size:13px;color:var(--ink-2);padding:7px 0;
   border-top:1px solid var(--line-soft);line-height:1.55}
 .uplog b{font-family:var(--f-num);font-size:11.5px;color:var(--ink-3);
@@ -3649,6 +3671,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
 @media (max-width:1100px){ .fa-crests .crest:nth-child(n+5){display:none} }
 @media (max-width:760px){ .fa-crests{order:3} }
 /* REALIGN-AD-NOV12 */
+/* PW-STORY-NOV13 banner */
+.flagad.pwad{background:#0B1F3A;cursor:pointer}
+.flagad.pwad .fa-l small{color:#C8D3E3}
+.flagad.pwad .fa-crests .crest{border-color:#0B1F3A}
+.flagad.pwad .pw-vs{font-family:var(--f-display);font-weight:800;color:#E8A33D;font-size:15px;margin:0 8px}
+.flagad.pwad .fa-crests.pwvs .crest{width:44px;height:44px;margin-left:0}
+.flagad.pwad .fa-btn{background:#E8A33D;color:#0B1F3A}
+.flagad.pwad:hover .fa-btn{background:#fff}
+/* PWAD-NARROW-NOV13 */
+@media (max-width:1100px){ .flagad.pwad .fa-crests:not(.pwvs){display:none} }
 .flagad.rlad{background:#0E2240}
 .flagad.rlad:before{background:repeating-linear-gradient(115deg,transparent 0 46px,rgba(255,255,255,.06) 46px 50px)}
 .flagad.rlad .fa-l small{color:#C8D3E3}
@@ -6308,6 +6340,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
       esc(a.kicker) + "</span><span>Utah High School Football &middot; " + esc(a.date) + "</span></div>" +
       '<h2 style="font-size:25px;text-transform:none;line-height:1.2">' + esc(a.title) + "</h2>" +
       '<p class="dek">' + esc(a.dek) + "</p></div>" +
+      /* PW-STORY-NOV13: logo VS logo header */
+      ((a.faceoff && a.faceoff.length === 2)
+        ? '<div class="artface">' + a.faceoff.map(function (f, i) {
+            return (i ? '<span class="vs">VS</span>' : "") +
+              '<div class="af"><img src="' + esc(f[1]) + '" alt="' + esc(f[0]) + ' logo">' +
+              "<b>" + esc(f[0]) + "</b>" + (f[2] ? "<small>" + esc(f[2]) + "</small>" : "") + "</div>";
+          }).join("") + "</div>"
+        : "") +
       '<div class="article longform">' +
       (a.lede ? "<p class=\"lede1\">" + md(a.lede) + "</p>" : "") +
       (a.body || []).map(function (p) {
@@ -6315,6 +6355,27 @@ nav.topbar ~ main.wrap{margin-top:20px}
           linkEntities(md(p), a.named, a.teams), a.games) + "</p>";
       }).join("") +
       "</div>" +
+      /* PW-STORY-NOV13: comparison table and logo grid */
+      (a.compare && a.compare.rows
+        ? '<div class="sect">' + esc(a.compare.title || "Side by side") + "</div>" +
+          '<div class="artcmp"><table><thead><tr><th></th>' +
+          (a.compare.cols || []).map(function (c) {
+            return "<th>" + (c[1] ? '<img src="' + esc(c[1]) + '" alt="">' : "") + esc(c[0]) + "</th>";
+          }).join("") + "</tr></thead><tbody>" +
+          a.compare.rows.map(function (r) {
+            return "<tr><th>" + esc(r[0]) + "</th>" + r.slice(1).map(function (v) {
+              return "<td>" + esc(v) + "</td>"; }).join("") + "</tr>";
+          }).join("") + "</tbody></table></div>" +
+          (a.compare.note ? '<p class="artnote">' + esc(a.compare.note) + "</p>" : "")
+        : "") +
+      (a.logos && a.logos.items
+        ? '<div class="sect">' + esc(a.logos.title || "") + "</div>" +
+          '<div class="artlogos">' + a.logos.items.map(function (t) {
+            return '<div class="al"><img src="' + esc(t[1]) + '" alt="' + esc(t[0]) + ' logo" loading="lazy">' +
+              "<span>" + esc(t[0]) + (t[2] ? "<small>" + esc(t[2]) + "</small>" : "") + "</span></div>";
+          }).join("") + "</div>" +
+          (a.logos.note ? '<p class="artnote">' + esc(a.logos.note) + "</p>" : "")
+        : "") +
       // A living story: the dates people need, what is still unanswered, and a
       // log of what changed since it went up.
       ((a.dates && a.dates.length)
@@ -9877,6 +9938,25 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<span class="fa-r"><span class="fa-tag">Girls&rsquo; flag football</span>' +
         '<span class="fa-btn">Sign the petition</span></span></a>' +
       hlHtml +
+      /* PW-STORY-NOV13: Pop Warner story banner; shows only if the article exists */ (function () {
+        var A = (DATA.articles || []).filter(function (x) { return x.id === "pop-warner-comes-to-utah"; })[0];
+        if (!A || !A.faceoff) return "";
+        var teams = ((A.logos && A.logos.items) || []).slice(0, 5);
+        return '<div class="flagad pwad" role="button" tabindex="0" data-art="' + esc(A.id) + '" ' +
+          'onkeydown="if(event.key===\'Enter\')this.click()" aria-label="Read: ' + esc(A.title) + '">' +
+          '<span class="fa-crests pwvs">' +
+            '<img class="crest" src="' + esc(A.faceoff[0][1]) + '" alt="' + esc(A.faceoff[0][0]) + '">' +
+            '<b class="pw-vs">VS</b>' +
+            '<img class="crest" src="' + esc(A.faceoff[1][1]) + '" alt="' + esc(A.faceoff[1][0]) + '"></span>' +
+          '<span class="fa-l"><strong>Pop Warner is coming to Utah</strong>' +
+          "<small>15 teams. No boundaries. First games Aug. 21, 2027. " +
+          "<em>How it stacks up against the Ute Conference</em></small></span>" +
+          '<span class="fa-crests" title="Some of Utah State Pop Warner&rsquo;s 15 teams">' +
+            teams.map(function (t) {
+              return '<img class="crest" src="' + esc(t[1]) + '" alt="' + esc(t[0]) + '" loading="lazy">';
+            }).join("") + "</span>" +
+          '<span class="fa-r"><span class="fa-btn">Read the story</span></span></div>';
+      })() +
       /* REALIGN-AD-NOV12: realignment banner, numbers live from DATA.realign */ (function () {
         var R = DATA.realign || [];
         var up = R.filter(function (r) { return r.direction === "up"; });
