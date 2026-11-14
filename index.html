@@ -2203,7 +2203,7 @@ table.critable tbody tr{cursor:pointer}
 .cw-src.unc{color:var(--sodium);font-weight:600}
 .cw-job.hearing{border:2px dashed var(--sodium)}
 .cw-job.hearing .cw-top{filter:saturate(.75)}
-/* ASSIST-JOBS-NOV13 */.cw-aj{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:12px 16px;margin:-6px 0 22px}.cw-aj h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px;color:var(--ink-2)}.cw-aj .r{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);font-size:13px}.cw-aj .r:first-of-type{border-top:0}.cw-aj .r strong{font-size:14px}.cw-aj .r small{color:var(--ink-3)}.cw-aj .r a{font-weight:600}/* ASSIST-JOBS-LOGO-NOV13 */.cw-aj .aj{display:grid;grid-template-columns:30px 1fr;gap:4px 12px;padding:10px 0;border-top:1px solid var(--line);font-size:13px}.cw-aj .aj:first-of-type{border-top:0}.cw-aj .aj .crest,.cw-aj .aj .swatch{grid-row:1/span 4;margin-top:2px}.cw-aj .aj .t strong{font-size:15px}.cw-aj .aj .t span{margin-left:6px}.cw-aj .aj small{color:var(--ink-3)}.cw-aj .aj .how{line-height:1.45}.cw-aj .aj .how b{color:var(--ink)}.cw-aj .aj .act{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:2px}.cw-aj .aj .go{display:inline-block;background:var(--navy,#13294b);color:#fff;font-weight:700;font-size:12px;padding:6px 12px;border-radius:3px;text-decoration:none}.cw-next{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:26px}
+/* ASSIST-JOBS-NOV13 */.cw-aj{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:12px 16px;margin:-6px 0 22px}.cw-aj h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px;color:var(--ink-2)}.cw-aj .r{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);font-size:13px}.cw-aj .r:first-of-type{border-top:0}.cw-aj .r strong{font-size:14px}.cw-aj .r small{color:var(--ink-3)}.cw-aj .r a{font-weight:600}/* ASSIST-JOBS-TILES-NOV13 */.cw-aj .ajg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:8px}.cw-aj .ajt{border:1px solid var(--line);border-radius:4px;padding:12px;display:flex;flex-direction:column;gap:6px;background:var(--bg,#fff)}.cw-aj .ajt .hd{display:flex;align-items:center;gap:10px}.cw-aj .ajt .hd strong{font-size:15px;display:block;line-height:1.1}.cw-aj .ajt .hd span{font-size:12px;color:var(--ink-2)}.cw-aj .ajt small{font-size:11px;color:var(--ink-3);line-height:1.35}.cw-aj .ajt .go{align-self:flex-start;display:inline-block;background:var(--navy,#13294b);color:#fff;font-weight:700;font-size:12px;padding:7px 12px;border-radius:3px;text-decoration:none;margin-top:auto}/* ASSIST-JOBS-LOGO-NOV13 */.cw-aj .aj{display:grid;grid-template-columns:30px 1fr;gap:4px 12px;padding:10px 0;border-top:1px solid var(--line);font-size:13px}.cw-aj .aj:first-of-type{border-top:0}.cw-aj .aj .crest,.cw-aj .aj .swatch{grid-row:1/span 4;margin-top:2px}.cw-aj .aj .t strong{font-size:15px}.cw-aj .aj .t span{margin-left:6px}.cw-aj .aj small{color:var(--ink-3)}.cw-aj .aj .how{line-height:1.45}.cw-aj .aj .how b{color:var(--ink)}.cw-aj .aj .act{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;margin-top:2px}.cw-aj .aj .go{display:inline-block;background:var(--navy,#13294b);color:#fff;font-weight:700;font-size:12px;padding:6px 12px;border-radius:3px;text-decoration:none}.cw-next{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:26px}
 .cw-next h3{font-family:var(--f-display);font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px}
 .cw-hr{display:grid;grid-template-columns:24px 1fr 120px 34px;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line-soft);cursor:pointer;font-size:13.5px}
 .cw-hr:first-of-type{border-top:0}
@@ -10108,14 +10108,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
         cHear = OPEN.filter(function (o) { return o.status === "hearing"; }).map(cwCard).join("");
     var AJ = DATA.assistant_jobs || [];
     var ajList = AJ.map(function (a) {
-      return '<div class="aj">' + logo(a.school, "md") +
-        '<div class="t"><strong>' + esc(a.school) + "</strong><span>" + esc(a.role) + (a.count ? " &times; " + a.count : "") + "</span></div>" +
+      var href = a.apply || a.source_url;
+      return '<div class="ajt"><div class="hd">' + logo(a.school, "md") +
+        "<div><strong>" + esc(a.school) + "</strong><span>" + esc(a.role) + (a.count ? " &times; " + a.count : "") + "</span></div></div>" +
         (a.detail ? "<small>" + esc(a.detail) + "</small>" : "") +
-        (a.how ? '<div class="how"><b>How to apply:</b> ' + esc(a.how) + "</div>"
-               : (a.apply_text ? '<div class="how"><b>How to apply:</b> ' + esc(a.apply_text) + "</div>" : "")) +
-        '<div class="act">' +
-          (a.apply ? '<a class="go" href="' + esc(a.apply) + '" target="_blank" rel="noopener">Apply for this job &rarr;</a>' : "") +
-          '<small>Source: <a href="' + esc(a.source_url) + '" target="_blank" rel="noopener">' + esc(a.source) + "</a> &middot; " + cwDate(a.date) + "</small></div>" +
+        '<a class="go" href="' + esc(href) + '" target="_blank" rel="noopener">Apply here &rarr;</a>' +
+        '<small>Source: <a href="' + esc(a.source_url) + '" target="_blank" rel="noopener">' + esc(a.source) + "</a> &middot; " + cwDate(a.date) + "</small>" +
         "</div>";
     }).join("");
     var nextUp = (HOT || []).filter(function (h) { return !JOBTAG[h.school]; }).slice(0, 5).map(function (h, i) {
@@ -10135,7 +10133,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (cards ? (cConf ? '<h3 class="cw-gh"><i></i>Confirmed</h3><div class="cw-grid">' + cConf + "</div>" : "") +
                (cHear ? '<h3 class="cw-gh hear"><i></i>Hearing &middot; unconfirmed</h3><div class="cw-grid">' + cHear + "</div>" : "")
              : '<div class="panel" style="margin-bottom:22px"><p class="lede" style="margin:0">No openings yet this offseason.</p></div>') +
-      (ajList ? '<div class="cw-aj"><h3>Assistant jobs</h3>' + ajList + "</div>" : "") +
+      (ajList ? '<div class="cw-aj"><h3>Assistant jobs</h3><div class="ajg">' + ajList + "</div></div>" : "") +
       (nextUp ? '<div class="cw-next"><h3>&#128293; Next to open? Hottest seats</h3>' + nextUp +
         '<button class="rmore" data-go="seat">Full Hot Seat &rsaquo;</button></div>' : "");
   }
