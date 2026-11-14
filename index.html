@@ -2203,7 +2203,7 @@ table.critable tbody tr{cursor:pointer}
 .cw-src.unc{color:var(--sodium);font-weight:600}
 .cw-job.hearing{border:2px dashed var(--sodium)}
 .cw-job.hearing .cw-top{filter:saturate(.75)}
-.cw-next{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:26px}
+/* ASSIST-JOBS-NOV13 */.cw-aj{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:12px 16px;margin:-6px 0 22px}.cw-aj h3{font-size:12px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 6px;color:var(--ink-2)}.cw-aj .r{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;padding:8px 0;border-top:1px solid var(--line);font-size:13px}.cw-aj .r:first-of-type{border-top:0}.cw-aj .r strong{font-size:14px}.cw-aj .r small{color:var(--ink-3)}.cw-aj .r a{font-weight:600}.cw-next{background:var(--surface);border:1px solid var(--line);border-radius:4px;padding:14px 16px;margin-bottom:26px}
 .cw-next h3{font-family:var(--f-display);font-size:13px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px}
 .cw-hr{display:grid;grid-template-columns:24px 1fr 120px 34px;gap:10px;align-items:center;padding:6px 0;border-top:1px solid var(--line-soft);cursor:pointer;font-size:13.5px}
 .cw-hr:first-of-type{border-top:0}
@@ -10106,6 +10106,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var cards = OPEN.map(cwCard).join(""),
         cConf = OPEN.filter(function (o) { return o.status !== "hearing"; }).map(cwCard).join(""),
         cHear = OPEN.filter(function (o) { return o.status === "hearing"; }).map(cwCard).join("");
+    var AJ = DATA.assistant_jobs || [];
+    var ajList = AJ.map(function (a) {
+      return '<div class="r"><strong>' + esc(a.school) + "</strong>" +
+        "<span>" + esc(a.role) + (a.count ? " &times; " + a.count : "") + "</span>" +
+        (a.detail ? "<small>" + esc(a.detail) + "</small>" : "") +
+        (a.apply ? '<a href="' + esc(a.apply) + '" target="_blank" rel="noopener">Apply &rarr;</a>'
+                 : (a.apply_text ? "<small>Apply: " + esc(a.apply_text) + "</small>" : "")) +
+        '<small>Source: <a href="' + esc(a.source_url) + '" target="_blank" rel="noopener">' + esc(a.source) + "</a> &middot; " + cwDate(a.date) + "</small></div>";
+    }).join("");
     var nextUp = (HOT || []).filter(function (h) { return !JOBTAG[h.school]; }).slice(0, 5).map(function (h, i) {
       return '<div class="cw-hr" data-t="' + esc(h.school) + '"><span class="r">' + (i + 1) + "</span>" +
         "<div><strong>" + esc(h.school) + "</strong> <small>" + esc(h.cls) + " &middot; " + esc(h.coach) + " &middot; " + esc(h.cur) + "</small></div>" +
@@ -10123,6 +10132,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (cards ? (cConf ? '<h3 class="cw-gh"><i></i>Confirmed</h3><div class="cw-grid">' + cConf + "</div>" : "") +
                (cHear ? '<h3 class="cw-gh hear"><i></i>Hearing &middot; unconfirmed</h3><div class="cw-grid">' + cHear + "</div>" : "")
              : '<div class="panel" style="margin-bottom:22px"><p class="lede" style="margin:0">No openings yet this offseason.</p></div>') +
+      (ajList ? '<div class="cw-aj"><h3>Assistant jobs</h3>' + ajList + "</div>" : "") +
       (nextUp ? '<div class="cw-next"><h3>&#128293; Next to open? Hottest seats</h3>' + nextUp +
         '<button class="rmore" data-go="seat">Full Hot Seat &rsaquo;</button></div>' : "");
   }
