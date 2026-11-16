@@ -7341,8 +7341,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
     ['<div class="card"><div class="k">Games</div><div class="v mono">' + PW.length + '</div><div class="sub">involving a ranked Utah team</div></div>',
      '<div class="card"><div class="k">Coin flips</div><div class="v mono">' + tossN + '</div><div class="sub">inside three points</div></div>',
      '<div class="card"><div class="k">Upset watch</div><div class="v mono">' + upsetN + '</div><div class="sub">favorite has the worse record</div></div>',
-     '<div class="card"><div class="k">Widest line</div><div class="v mono">' + biggest.spread.toFixed(0) +
-       '</div><div class="sub">' + esc(biggest.fav) + " over " + esc(biggest.dog) + "</div></div>"
+     (biggest ? '<div class="card"><div class="k">Widest line</div><div class="v mono">' + biggest.spread.toFixed(0) +
+       '</div><div class="sub">' + esc(biggest.fav) + " over " + esc(biggest.dog) + "</div></div>" : "")
     ].join("") + "</div>" +
     PRED_FOOTNOTE;
 
