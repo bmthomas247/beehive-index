@@ -1801,6 +1801,24 @@ td.ctnone{text-align:center;color:var(--ink-3);padding:18px}
 .rxwflip strong.dn{color:var(--fall)}
 .rxsm{font-size:11.5px;color:var(--ink-3);line-height:1.5;margin:6px 0 0}
 .rxsrcl{color:var(--steel);text-decoration:underline;text-underline-offset:2px}
+/* REALIGN-MEETING-NOV17 */
+.rxmeet{background:var(--surface);border:1px solid var(--line);border-left:5px solid #E8A33D;border-radius:6px;box-shadow:var(--shadow);padding:16px 18px;margin:12px 0 16px}
+.rxmhead .rxkick{color:#B5781F}
+.rxmhead h3{margin:4px 0 12px;font-size:22px;line-height:1.2}
+.rxmgrid{display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.rxmcol{min-width:0}
+.rxmcol h4{margin:0 0 8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--steel)}
+.rxmcol ul{margin:0;padding-left:18px;display:grid;gap:6px;font-size:14px;line-height:1.4}
+.rxmrow{display:grid;grid-template-columns:96px minmax(0,1fr);gap:8px;align-items:start;padding:6px 0;border-top:1px solid var(--line-soft)}
+.rxmlab{font-size:12px;font-weight:700;color:var(--steel);padding-top:4px}
+.rxmrow>div{display:flex;flex-wrap:wrap;gap:6px}
+.rxmchip{display:inline-flex;align-items:center;gap:5px;background:color-mix(in srgb,var(--steel) 8%,transparent);border-radius:14px;padding:2px 9px 2px 3px;font-size:13px}
+.rxmnone{font-size:13px;color:var(--steel)}
+.rxmnote{font-size:13px;line-height:1.45;margin:8px 0 0}
+.rxmsrc{font-size:12px;margin:8px 0 0}
+.rxmnext{margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:14px;line-height:1.35}
+.rxmnext b{display:block;font-size:13px;color:#B5781F}
+@media (max-width:860px){.rxmgrid{grid-template-columns:1fr}}
 .rxfacts{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr))}
 .rxfact{background:var(--surface);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:14px;display:grid;gap:6px;align-content:start;min-width:0}
 .rxfact>b{font-family:var(--f-display);font-weight:800;font-size:17px;line-height:1.2}
@@ -12101,6 +12119,51 @@ nav.topbar ~ main.wrap{margin-top:20px}
         rxSrc("UHSAA Handbook Art. 5", "https://www.uhsaa.org/realignment/26-27realignment.pdf") + " &middot; " + rxSrc("UHSAA 2025&ndash;27 Alignment", "https://www.uhsaa.org/realignment/202527RealignmentFinal.pdf")) +
       "</div>";
   }
+  /* REALIGN-MEETING-NOV17 */
+  /* Deseret News, Nov 16 2026, James Edward, "Crystal balling the CRI" football table:
+     5A -> 6A moves, giving 23 in 6A. Source: "https://www.deseret.com/sports/2026/11/16/high-school-uhsaa-realignment-predictions/" */
+  var RX_DES6 = ["Brighton", "Timpview", "Maple Mountain", "Pleasant Grove", "Bountiful", "Olympus"];
+  function rxMeeting() {
+    var met = Date.now() >= new Date("2026-11-19T09:00:00-07:00").getTime();
+    var ours = RJ.filter(function (r) { return r.cls !== "6A" && r.proj === "6A"; }).map(function (r) { return r.school; });
+    var n6 = RJ.filter(function (r) { return r.cls === "6A"; }).length;
+    var both = ours.filter(function (s) { return RX_DES6.indexOf(s) >= 0; });
+    var onlyU = ours.filter(function (s) { return RX_DES6.indexOf(s) < 0; });
+    var onlyD = RX_DES6.filter(function (s) { return ours.indexOf(s) < 0; });
+    function chips(list) {
+      return list.length ? list.map(function (s) {
+        return '<span class="rxmchip">' + logo(s, "sm") + "<b>" + esc(s) + "</b></span>";
+      }).join("") : '<span class="rxmnone">none</span>';
+    }
+    var src = rxSrc("UHSAA timeline", "https://uhsaa.org/realignment-timeline/") + " &middot; " + rxSrc("Deseret News preview, Nov 16", "https://www.deseret.com/sports/2026/11/16/uhsaa-high-school-sports-realignment-preview-2026-27/");
+    return '<section class="rxmeet">' +
+      '<div class="rxmhead"><span class="rxkick">' + (met ? "UHSAA met Thursday" : "This Thursday &middot; Nov 19 &middot; 9:00 a.m.") + "</span>" +
+      "<h3>" + (met ? "The first cut is in. Official placements replace every projection as soon as UHSAA posts them."
+                    : "The first cut: UHSAA draws the new class lines") + "</h3></div>" +
+      '<div class="rxmgrid">' +
+      '<div class="rxmcol"><h4>What happens Thursday</h4><ul>' +
+      "<li>UHSAA&rsquo;s board makes the <b>first placement</b> of every school into a class.</li>" +
+      "<li>Members see the scores <b>with school names hidden</b>, then draw each line where the scores leave a gap. No class has a set size.</li>" +
+      "<li>6A, 5A and 4A need at least <b>21</b> schools. 6A has " + n6 + " today, so at least " + Math.max(0, 21 - n6) + " move up.</li>" +
+      "<li>The exact index scores become public Thursday.</li>" +
+      '</ul><p class="rxmsrc">' + src + "</p></div>" +
+      '<div class="rxmcol"><h4>Two projections for 6A</h4>' +
+      '<div class="rxmrow"><span class="rxmlab">Both have</span><div>' + chips(both) + "</div></div>" +
+      '<div class="rxmrow"><span class="rxmlab">Only ours</span><div>' + chips(onlyU) + "</div></div>" +
+      '<div class="rxmrow"><span class="rxmlab">Only Deseret&rsquo;s</span><div>' + chips(onlyD) + "</div></div>" +
+      '<p class="rxmnote">Ours: ' + (n6 + ours.length) + " in 6A. Deseret&rsquo;s: " + (n6 + RX_DES6.length) +
+      ". Ours uses the state&rsquo;s Oct 1, 2026 count of sophomores and juniors. Deseret says its model was built before the exact Oct 1 counts were public. " +
+      "Neither of us has UHSAA&rsquo;s results scores, so schools close to a line could go either way.</p>" +
+      '<p class="rxmsrc">' + rxSrc("Deseret News projection, Nov 16", "https://www.deseret.com/sports/2026/11/16/high-school-uhsaa-realignment-predictions/") + " &middot; " +
+      rxSrc("USBE Oct 1, 2026 enrollment", "https://www.schools.utah.gov/datastatistics/_datastatisticsfiles_/_reports_/_enrollmentmembership_/2027FallEnrollmentGradeLevelDemographics.xlsx") + "</p></div>" +
+      '<div class="rxmcol"><h4>After Thursday</h4><ol class="rxmnext">' +
+      "<li><b>Tue Dec 1</b>Schools ask to play up or for a geography exception. Second look at classes, first look at regions.</li>" +
+      "<li><b>Tue Dec 8 &middot; 6:30 p.m.</b>Public hearing on Zoom.</li>" +
+      "<li><b>Wed Dec 9</b>Second look at regions.</li>" +
+      "<li><b>Thu Dec 17</b>Final vote. New classes start August 2027.</li>" +
+      '</ol><p class="rxmsrc">' + rxSrc("UHSAA timeline", "https://uhsaa.org/realignment-timeline/") + " &middot; " + rxSrc("Deseret News preview", "https://www.deseret.com/sports/2026/11/16/uhsaa-high-school-sports-realignment-preview-2026-27/") + "</p></div>" +
+      "</div></section>";
+  }
   function drawRealign() {
     var up = RJ.filter(function (r) { return r.direction === "up"; });
     var dn = RJ.filter(function (r) { return r.direction === "down"; });
@@ -12123,6 +12186,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="dn"><b>' + dn.length + '</b><span>moving down</span></div>' +
       '<div><b>' + n6 + '<i>&rarr;</i>' + (RMETA.sizes["6A"] || "?") + '</b><span>schools in 6A</span></div></div></div>' +
       "</div></section>" +
+      rxMeeting() +
       rxPunch() + rxMoves() +
 
       '<h3 class="divhead" style="margin-top:18px">How it works<span>six steps, Oct 1 to Dec 17</span></h3>' +
