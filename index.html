@@ -6227,6 +6227,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
       src = "Source: " + esc(x.source) + ", " + esc(x.date) + ".";
       btns = '<button class="pri" data-go="caro">Coaching carousel &rarr;</button>' +
         (byName[x.school] ? '<button data-t="' + esc(x.school) + '">' + esc(x.school) + " team card</button>" : "");
+    } else if (k === "j") { /* AJ-NEWS-NOV19 */
+      mark = logo(x.school, "sm");
+      kick = "UHSFB Carousel &middot; Assistant jobs &middot; " + esc(x.date);
+      title = esc(x.school + " is hiring: " + x.role + (x.count ? " (" + x.count + ")" : ""));
+      para = (x.detail ? esc(x.detail) : "") + (x.how ? " <b>How to apply:</b> " + esc(x.how) : "");
+      src = "Source: " + esc(x.source) + ", " + esc(x.date) + ".";
+      btns = '<a class="pri" href="' + esc(x.apply && /^https?:/.test(x.apply) ? x.apply : x.source_url) + '" target="_blank" rel="noopener noreferrer">Apply here &#8599;</a>' +
+        '<button data-go="caro">Coaching carousel &rarr;</button>' +
+        '<a href="' + esc(x.source_url) + '" target="_blank" rel="noopener noreferrer">Source &#8599;</a>';
     } else if (k === "a") {
       mark = '<img class="crest c-sm" src="/logo-uhsfb.webp" alt="Utah High School Football" loading="lazy">';
       kick = "UHSFB &middot; " + esc(x.kicker) + " &middot; " + esc(x.date);
@@ -10043,7 +10052,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
               '<span class="nl-t">' + esc("Commitment: " + f.player + " (" + f.school + ") to " + f.college) + '</span>' +
               '<span class="nl-src">UHSFB Commitments &middot; ' + via + ' &middot; ' + esc(f.d) + '</span></div></div>';
           }).join("");
-      })() + (DATA.openings || []).filter(function (o) { return o.status !== "hearing"; }).map(function (o, i) { NWPOP["o" + i] = { k: "o", x: o }; return '<div class="nl-it ours" data-nw="o' + i + '" style="cursor:pointer">' + '<span class="nl-ic">' + logo(o.school, "sm") + '</span><div>' + '<span class="nl-t">' + esc((o.status === "filled" ? "Filled: " : "Coaching change: ") + o.school + " " + "\u2014 " + o.headline) + '</span>' + '<span class="nl-src">UHSFB Carousel &middot; ' + esc(o.source) + ' &middot; ' + esc(o.date) + '</span></div></div>'; }).join("") + newsHtml + "</div>" +
+      })() + (DATA.openings || []).filter(function (o) { return o.status !== "hearing"; }).map(function (o, i) { NWPOP["o" + i] = { k: "o", x: o }; return '<div class="nl-it ours" data-nw="o' + i + '" style="cursor:pointer">' + '<span class="nl-ic">' + logo(o.school, "sm") + '</span><div>' + '<span class="nl-t">' + esc((o.status === "filled" ? "Filled: " : "Coaching change: ") + o.school + " " + "\u2014 " + o.headline) + '</span>' + '<span class="nl-src">UHSFB Carousel &middot; ' + esc(o.source) + ' &middot; ' + esc(o.date) + '</span></div></div>'; }).join("") + /* AJ-NEWS-NOV19: assistant jobs in Latest News */ (DATA.assistant_jobs || []).map(function (a, i) { NWPOP["j" + i] = { k: "j", x: a }; return '<div class="nl-it ours" data-nw="j' + i + '" style="cursor:pointer">' + '<span class="nl-ic">' + logo(a.school, "sm") + '</span><div>' + '<span class="nl-t">' + esc("Assistant jobs: " + a.school + " — " + a.role + (a.count ? " (" + a.count + ")" : "")) + '</span>' + '<span class="nl-src">UHSFB Carousel &middot; ' + esc(a.source) + ' &middot; ' + esc(a.date) + '</span></div></div>'; }).join("") + newsHtml + "</div>" +
       buzzBlock(null, 6) +
       '<div class="panel rpanel"><h2>Top 10</h2>' +
       '<p class="lede">' + (inPO ? "Through the " + lastDay + " playoff games" : "Through Week " + W) + ". Opponent-adjusted and blowout-capped.</p>" +
