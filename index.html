@@ -9997,14 +9997,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     document.getElementById("v-home").innerHTML =
       '<div class="frontgrid">' +
       '<div class="fmain">' +
-      (HGS && HGS.weekend
-        ? HGS.html + (POH ? PBR + POH.next + POH.then : "")
-        : (HGS && !HGS.monday ? HGS.html : "") +
-          (POH ? PBR + POH.next + POH.then + POH.done : heroHtml +
-          artHtml +
-          (heroHtml ? "" : leadHtml) +
-          (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
-          (HGS && HGS.monday ? HGS.html : "")) +
+      /* BREAKING-TOP-NOV19: moved to the top */
       /* REALIGN-BREAKING-NOV19: breaking-news banner -> opens the realignment story */ (function () {
         var A = (DATA.articles || []).filter(function (x) { return x.id === "uhsaa-realignment-vote-nov19"; })[0];
         if (!A) return "";
@@ -10020,6 +10013,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
             cr.map(function (r) { return logo(r.school, "md"); }).join("") + "</span>" +
           '<span class="fa-r"><span class="fa-btn">Read the story</span></span></div>';
       })() +
+      (HGS && HGS.weekend
+        ? HGS.html + (POH ? PBR + POH.next + POH.then : "")
+        : (HGS && !HGS.monday ? HGS.html : "") +
+          (POH ? PBR + POH.next + POH.then + POH.done : heroHtml +
+          artHtml +
+          (heroHtml ? "" : leadHtml) +
+          (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
+          (HGS && HGS.monday ? HGS.html : "")) +
       '<a class="flagad" href="#" data-go="flag" aria-label="Girls flag football in Utah: sign the petition">' +
         '<span class="fa-l"><strong>Utah girls are already playing football.</strong>' +
         "<small>The state just doesn&rsquo;t count it yet. <em>17 states sanction it &middot; Olympic debut, LA 2028</em></small></span>" +
