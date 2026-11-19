@@ -3735,6 +3735,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .flagad.rlad .fa-crests .crest{border-color:#0E2240}
 .flagad.rlad .rl-up{color:#5FD08A;font-style:normal}
 .flagad.rlad .rl-dn{color:#FF8A7A;font-style:normal}
+/* REALIGN-BREAKING-NOV19 */
+.flagad.brkad{background:#B00D22}
+.flagad.brkad:before{background:repeating-linear-gradient(115deg,transparent 0 46px,rgba(255,255,255,.08) 46px 50px)}
+.flagad.brkad .fa-l small{color:#FCE3E6}
+.flagad.brkad .fa-crests .crest{border-color:#B00D22}
+.brk-pill{display:inline-flex;align-items:center;background:#fff;color:#B00D22;font-weight:800;font-size:11px;letter-spacing:.08em;border-radius:4px;padding:2px 8px;margin-right:9px}
+.brk-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#B00D22;margin-right:6px;animation:brkblink 1.2s steps(2,start) infinite}
+@keyframes brkblink{50%{opacity:.2}}
 .flagbtn2{margin-left:10px;background:transparent;border:2px solid currentColor}
 .rlvlogos{display:inline-flex;align-items:center;gap:8px;vertical-align:middle;margin-left:10px}
 .rlvlogo{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;
@@ -9997,6 +10005,21 @@ nav.topbar ~ main.wrap{margin-top:20px}
           (heroHtml ? "" : leadHtml) +
           (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
           (HGS && HGS.monday ? HGS.html : "")) +
+      /* REALIGN-BREAKING-NOV19: breaking-news banner -> opens the realignment story */ (function () {
+        var A = (DATA.articles || []).filter(function (x) { return x.id === "uhsaa-realignment-vote-nov19"; })[0];
+        if (!A) return "";
+        var R = DATA.realign || [];
+        var cr = R.filter(function (r) { return r.direction !== "hold"; })
+                  .sort(function (a, b) { return (b.cri || 0) - (a.cri || 0); }).slice(0, 7);
+        return '<div class="flagad brkad" role="button" tabindex="0" data-art="' + esc(A.id) + '" ' +
+          'onkeydown="if(event.key===\'Enter\')this.click()" aria-label="Breaking: ' + esc(A.title) + '">' +
+          '<span class="fa-l"><strong><span class="brk-pill"><i class="brk-dot"></i>BREAKING</span>New 2027&ndash;29 football classes are set</strong>' +
+          "<small>UHSAA approved the new formula today &mdash; winning now counts 22%. Crimson Cliffs &amp; Ridgeline jump to 6A. " +
+          "<em>The classes, the movers, and what coaches are saying</em></small></span>" +
+          '<span class="fa-crests" title="Some of the schools changing class">' +
+            cr.map(function (r) { return logo(r.school, "md"); }).join("") + "</span>" +
+          '<span class="fa-r"><span class="fa-btn">Read the story</span></span></div>';
+      })() +
       '<a class="flagad" href="#" data-go="flag" aria-label="Girls flag football in Utah: sign the petition">' +
         '<span class="fa-l"><strong>Utah girls are already playing football.</strong>' +
         "<small>The state just doesn&rsquo;t count it yet. <em>17 states sanction it &middot; Olympic debut, LA 2028</em></small></span>" +
@@ -10025,22 +10048,6 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '<span class="fa-r"><span class="fa-btn">Read the story</span></span></div>';
       })() +
       vidHtml +
-      /* LATEST-NEWS-NOV13B: realignment ad moved below Watch */
-      /* REALIGN-AD-NOV12: realignment banner, numbers live from DATA.realign */ (function () {
-        var R = DATA.realign || [];
-        var up = R.filter(function (r) { return r.direction === "up"; });
-        var dn = R.filter(function (r) { return r.direction === "down"; });
-        if (!up.length && !dn.length) return "";
-        var cr = up.concat(dn).sort(function (a, b) { return (b.cri || 0) - (a.cri || 0); }).slice(0, 7);
-        return '<a class="flagad rlad" href="#" data-go="realign" aria-label="Realignment 2027-29: see who is moving">' +
-          '<span class="fa-l"><strong>Who plays who in 2027?</strong>' +
-          "<small>UHSAA re-sorts every school Nov 19 &middot; final vote Dec 17. " +
-          '<em><i class="rl-up">' + up.length + " up</i> &middot; " + '<i class="rl-dn">' + dn.length +
-          " down</i> &middot; approved formula</em></small></span>" +
-          '<span class="fa-crests" title="Projected to change class (our projection on UHSAA&rsquo;s Oct 1 sophomore + junior count)">' +
-            cr.map(function (r) { return logo(r.school, "md"); }).join("") + "</span>" +
-          '<span class="fa-r"><span class="fa-btn">See who&rsquo;s moving</span></span></a>';
-      })() +
       freshBlock(16) +
       "</div>" +
 
