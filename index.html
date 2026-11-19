@@ -6237,6 +6237,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<button data-go="caro">Coaching carousel &rarr;</button>' +
         '<a href="' + esc(x.source_url) + '" target="_blank" rel="noopener noreferrer">Source &#8599;</a>';
     } else if (k === "a") {
+      /* NEWS-OPEN-FULL-NOV19 */ if (typeof openArticle === "function") { openArticle(x.id); return true; }
       mark = '<img class="crest c-sm" src="/logo-uhsfb.webp" alt="Utah High School Football" loading="lazy">';
       kick = "UHSFB &middot; " + esc(x.kicker) + " &middot; " + esc(x.date);
       title = esc(x.title);
