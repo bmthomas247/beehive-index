@@ -12142,19 +12142,22 @@ nav.topbar ~ main.wrap{margin-top:20px}
       return '<div class="rxlcell"><b>' + c[1] + "</b><span>" + c[0] + "</span></div>";
     }).join("");
     return '<section class="rxlive">' +
-      '<div class="rxlhead"><span class="rxlkick"><i class="rxldot"></i>Live from today&rsquo;s meeting &middot; Thu Nov 19 &middot; updated 1:00 p.m.</span>' +
-      "<h3>Classes for every sport but football are set. Football is next.</h3></div>" +
+      '<div class="rxlhead"><span class="rxlkick"><i class="rxldot"></i>Live from today&rsquo;s meeting &middot; Thu Nov 19 &middot; updated 1:30 p.m.</span>' +
+      "<h3>New classes are set: every sport but football 14-0, football 12-2. School names come next.</h3></div>" +
       '<div class="rxlgrid">' +
       '<div class="rxlcol"><h4>All sports except football &middot; approved 14-0</h4>' +
       '<div class="rxlcells">' + cells + "</div>" +
       '<p class="rxlnote">Schools per class. The board re-voted after a first 11-3 vote. <b>No school names have been released yet.</b></p>' +
       '<p class="rxmsrc">' + rxSrc("James Edward, Deseret News, live on X", "https://x.com/JamesEdward_HS/status/2123479961080340756") + "</p></div>" +
-      '<div class="rxlcol"><h4>Football &middot; being decided now</h4><ul>' +
-      "<li>Football gets its own vote. The proposed football formula was 85% enrollment, 8% economics and 7% competitiveness.</li>" +
-      "<li>The board is testing far more weight on <b>competitiveness</b>: 70-20-10 and 60-13-27 (27% competitiveness) have both been on the table.</li>" +
-      "<li>UHSAA will name schools after the football vote. Its agenda lists a press release.</li>" +
-      "<li>Our projection below uses the proposed 85-8-7 weights. If competitiveness counts for more, it will change.</li>" +
-      '</ul><p class="rxmsrc">' + rxSrc("James Edward, 60-13-27", "https://x.com/JamesEdward_HS/status/2123503994073170415") + " &middot; " + rxSrc("his live feed", "https://x.com/JamesEdward_HS") +
+      '<div class="rxlcol"><h4>Football &middot; approved 12-2</h4>' + /* REALIGN-LIVE2-NOV19 */
+      '<div class="rxlcells">' + [["6A", 22], ["5A", 24], ["4A", 23], ["3A", 16], ["2A", 11], ["1A", 11]].map(function (c) {
+        return '<div class="rxlcell"><b>' + c[1] + "</b><span>" + c[0] + "</span></div>";
+      }).join("") + "</div><ul>" +
+      "<li>New football formula: <b>65% enrollment, 13% economics, 22% competitiveness</b>. The original proposal was 85-8-7, so winning now counts about three times as much.</li>" +
+      "<li>The board tested several mixes first, with competitiveness as high as 27%.</li>" +
+      "<li>UHSAA has not named schools yet. Its agenda lists a press release.</li>" +
+      "<li>Our projection below still uses the original 85-8-7 weights. It will be updated to the approved formula.</li>" +
+      '</ul><p class="rxmsrc">' + rxSrc("James Edward, football 12-2", "https://x.com/JamesEdward_HS/status/2123512568983769527") + " &middot; " + rxSrc("his live feed", "https://x.com/JamesEdward_HS") +
       " &middot; " + rxSrc("UHSAA Nov 19 agenda", "https://uhsaa.org/bot/2026-27/BOTAgenda11.19.26.pdf") + "</p></div>" +
       "</div></section>";
   }
