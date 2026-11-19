@@ -6252,10 +6252,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
       mark = sc.length ? logo(sc[0], "sm") : srcChip(x.src);
       kick = esc(x.src) + (x.d ? " &middot; " + esc(x.d) : "");
       title = esc(titleCase(x.t));
-      para = "A " + esc(x.src) + " story" + (x.d ? " from " + esc(x.d) : "") + "." +
+      para = /* NEWS-SUMMARY-NOV19 */ (x.sum ? '<span class="nwlede">&ldquo;' + esc(x.sum) + '&rdquo;</span><br><br>' : "") +
+        "A " + esc(x.src) + " story" + (x.d ? " from " + esc(x.d) : "") + "." +
         (sc.length ? " It covers " + nwList(sc.map(nwRec)) + "." : "") +
         (who.length ? " Players named: " + nwList(who) + "." : "");
-      src = "The story is " + esc(x.src) + "&rsquo;s work and lives on their site; we do not reproduce it." +
+      src = (x.sum ? "Summary as " + esc(x.src) + " shares it. " : "") + "The story is " + esc(x.src) +
+        "&rsquo;s work and lives on their site; we do not reproduce it." +
         (sc.length ? " Records are from our scoreboard." : "");
       btns = '<a class="pri" href="' + esc(x.u) + '" target="_blank" rel="noopener noreferrer">Read the full story on ' + esc(x.src) + " &#8599;</a>" +
         /* NEWS-PREVIEW-BUTTONS-NOV19 */
