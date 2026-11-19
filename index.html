@@ -6258,7 +6258,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
       src = "The story is " + esc(x.src) + "&rsquo;s work and lives on their site; we do not reproduce it." +
         (sc.length ? " Records are from our scoreboard." : "");
       btns = '<a class="pri" href="' + esc(x.u) + '" target="_blank" rel="noopener noreferrer">Read the full story on ' + esc(x.src) + " &#8599;</a>" +
-        sc.map(function (s) { return '<button data-t="' + esc(s) + '">' + esc(s) + "</button>"; }).join("");
+        /* NEWS-PREVIEW-BUTTONS-NOV19 */
+        (x.who || []).filter(function (w) { return PKEY[pkeyOf(w.name, w.school)]; }).map(function (w) {
+          return '<button' + pAttr(w.name, w.school) + '>' + esc(w.name) + ' profile</button>'; }).join("") +
+        sc.map(function (s) { return '<a href="/' + s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") +
+          '-football">' + esc(s) + ' program</a>'; }).join("");
     }
     var old = document.getElementById("nwmodal"); if (old) old.remove();
     var d = document.createElement("div");
