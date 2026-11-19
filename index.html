@@ -10018,7 +10018,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '<span class="fa-l"><strong>Who plays who in 2027?</strong>' +
           "<small>UHSAA re-sorts every school Nov 19 &middot; final vote Dec 17. " +
           '<em><i class="rl-up">' + up.length + " up</i> &middot; " + '<i class="rl-dn">' + dn.length +
-          " down</i> &middot; our projection</em></small></span>" +
+          " down</i> &middot; approved formula</em></small></span>" +
           '<span class="fa-crests" title="Projected to change class (our projection on UHSAA&rsquo;s Oct 1 sophomore + junior count)">' +
             cr.map(function (r) { return logo(r.school, "md"); }).join("") + "</span>" +
           '<span class="fa-r"><span class="fa-btn">See who&rsquo;s moving</span></span></a>';
@@ -12045,7 +12045,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var card = function (big, what, sub, tone) {
       return '<div class="rxp ' + (tone || "") + '"><b>' + big + "</b><span>" + what + "</span><em>" + sub + "</em></div>";
     };
-    return '<h3 class="divhead" style="margin-top:18px">The 30-second version<span>our projection on the state&rsquo;s Oct 1 count</span></h3>' +
+    return '<h3 class="divhead" style="margin-top:18px">The 30-second version<span>the approved 65-13-22 formula, via UHSAA&rsquo;s CRI tool</span></h3>' +
       '<div class="rxpunch">' +
       card(RXW[0] + "%", "of the score is size", "Sophomores + juniors counted Oct 1, 2026", "gold") +
       card(n6 + "<i>&rarr;</i>" + (RMETA.sizes["6A"] || 21), "schools in 6A", "UHSAA now requires at least 21", "") +
@@ -12104,7 +12104,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '<em>size says ' + esc(r.proj) + ', with its record <strong class="' + (up ? "up" : "dn") + '">' + esc(c) + "</strong></em></span></li>";
       }).join("") + "</ul>" : "") +
       '<p class="rxsm">Record = our estimate from three seasons of wins and the 2025 playoff finish, against each school&rsquo;s own class. ' +
-      "UHSAA scores results from a ranking it has not released, and calls all three weights provisional until the Board votes. " +
+      "The Board approved these weights 12-2 on Nov 19. UHSAA scores results from a ranking it has not released. " +
       rxSrc("UHSAA CRI", "https://uhsaa.org/realignment/202729/UHSAA_CRI_How_It_Works.pdf") + "</p></div></div>";
   }
   function rxFacts() {
@@ -12156,7 +12156,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       "<li>New football formula: <b>65% enrollment, 13% economics, 22% competitiveness</b>. The original proposal was 85-8-7, so winning now counts about three times as much.</li>" +
       "<li>The board tested several mixes first, with competitiveness as high as 27%.</li>" +
       "<li>UHSAA has not named schools yet. Its agenda lists a press release.</li>" +
-      "<li>Our projection below still uses the original 85-8-7 weights. It will be updated to the approved formula.</li>" +
+      "<li>The classes below use the approved 65-13-22 formula, from UHSAA&rsquo;s own CRI tool.</li>" +
       '</ul><p class="rxmsrc">' + rxSrc("James Edward, football 12-2", "https://x.com/JamesEdward_HS/status/2123512568983769527") + " &middot; " + rxSrc("his live feed", "https://x.com/JamesEdward_HS") +
       " &middot; " + rxSrc("UHSAA Nov 19 agenda", "https://uhsaa.org/bot/2026-27/BOTAgenda11.19.26.pdf") + "</p></div>" +
       "</div></section>";
