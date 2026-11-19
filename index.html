@@ -686,6 +686,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .dhead .dek{font-size:15px;color:var(--ink-2);margin:6px 0 0;line-height:1.5}
 .article.longform p{font-size:15.5px;line-height:1.72;margin:0 0 15px}
 .article.longform .lede1{font-size:17px;line-height:1.62}
+.artphoto{margin:4px 0 16px}.artphoto img{display:block;width:100%;height:auto;border-radius:4px}.artphoto figcaption{font-size:11px;color:var(--ink-3);margin-top:5px}
 .srclist a{display:block;font-size:12.5px;padding:6px 0;border-top:1px solid var(--line-soft);
   color:var(--steel);text-decoration:none;line-height:1.45}
 .srclist a:hover{color:var(--sodium)}
@@ -6397,6 +6398,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
               "<b>" + esc(f[0]) + "</b>" + (f[2] ? "<small>" + esc(f[2]) + "</small>" : "") + "</div>";
           }).join("") + "</div>"
         : "") +
+      /* STORY-PHOTO-NOV19 */ (a.photo && a.photo[0] ? '<figure class="artphoto"><img src="' + esc(a.photo[0]) + '" alt="' + esc(a.photo[1] || "") + '" loading="lazy">' + (a.photo[2] ? '<figcaption>' + esc(a.photo[2]) + '</figcaption>' : '') + '</figure>' : "") +
       '<div class="article longform">' +
       (a.lede ? "<p class=\"lede1\">" + md(a.lede) + "</p>" : "") +
       (a.body || []).map(function (p) {
