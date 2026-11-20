@@ -49,7 +49,7 @@ fr.src="/t/"+v+".html";document.body.appendChild(fr);}catch(e){}},1000);};})();<
  "name":"Utah High School Football","url":"https://utahhighschoolfootball.com/",
  "description":"Independent power ratings, player index and recruiting profiles for all 106 Utah 11-man high school football programs.",
  "publisher":{"@type":"Organization","name":"Utah High School Football",
-  "sameAs":["https://x.com/TheLedgerUT"]}}
+  "sameAs":["https://x.com/TheLedgerUT","https://www.facebook.com/TheLedgerUT"]}}
 </script>
 
 <!-- The mark. The hand-drawn hexagon that used to live here as a data:
@@ -3672,6 +3672,7 @@ nav.tabs.topbar{background:#0B1F3A;backdrop-filter:none;border-bottom:3px solid 
 .tb-right{display:flex;align-items:center;gap:4px;flex:none}
 .tb-x,.tb-search{color:#C9D3E0;background:none;border:0;cursor:pointer;font-family:var(--f-display);font-weight:800;
   font-size:15px;text-decoration:none;display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%}
+.tb-fb{font-size:19px;font-family:Arial,Helvetica,sans-serif}
 .tb-x:hover,.tb-search:hover,.tb-search[aria-expanded="true"]{background:#132C4F;color:#fff}
 .gsearch[hidden],.stamp[hidden]{display:none}
 @media (max-width:1480px){ .tb-brand span{display:none} }
@@ -4120,6 +4121,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     <div class="tabs-in" role="tablist" id="toptabs"></div>
     <div class="tb-right">
       <a class="tb-x" href="https://x.com/TheLedgerUT" target="_blank" rel="noopener" aria-label="Follow @TheLedgerUT on X">X</a>
+      <a class="tb-x tb-fb" href="https://www.facebook.com/TheLedgerUT" target="_blank" rel="noopener" aria-label="Follow The Ledger Utah on Facebook">f</a>
       <button class="tb-search" id="tbsearch" type="button" aria-label="Search players and programs"
         aria-controls="gsearch" aria-expanded="false"><svg viewBox="0 0 24 24" width="19" height="19" fill="none"
         stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg></button>
@@ -9323,7 +9325,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (school
         ? "The program, its coaches and its players. Handles the players put on their own profiles; football posts only."
         : "What Utah football is saying right now &mdash; programs, coaches, media and the players themselves.") +
-      ' <a class="xfollow" href="https://x.com/TheLedgerUT" target="_blank" rel="noopener">Follow @TheLedgerUT</a></p>' +
+      ' <a class="xfollow" href="https://x.com/TheLedgerUT" target="_blank" rel="noopener">Follow @TheLedgerUT</a> &middot; <a class="xfollow" href="https://www.facebook.com/TheLedgerUT" target="_blank" rel="noopener">Facebook</a></p>' +
       '<div class="xfeed">' +
       posts.map(function (o) {
         var href = o.u || ("https://x.com/" + String(o.h || "").replace(/^@/, ""));
