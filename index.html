@@ -3722,6 +3722,28 @@ nav.topbar ~ main.wrap{margin-top:20px}
 /* REALIGN-AD-NOV12 */
 /* PW-STORY-NOV13 banner */
 .flagad.pwad{background:#0B1F3A;cursor:pointer}
+/* CHAMPS-BANNER-NOV21 */
+.chpanel{position:relative;overflow:hidden;margin:0 0 16px;padding:20px 22px 14px;border-radius:12px;
+  background:radial-gradient(120% 90% at 50% 0%,#1d2f52 0%,#0B1F3A 55%,#071427 100%);border:2px solid #E8A33D;color:#fff}
+.chpanel:before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 46px,rgba(232,163,61,.07) 46px 50px);pointer-events:none}
+.chpanel > *{position:relative}
+.ch-hd{text-align:center;margin:0 0 14px}
+.ch-kick{display:block;font:800 12px/1 var(--f-display);letter-spacing:.22em;color:#E8A33D;text-transform:uppercase}
+.ch-hd h2{margin:6px 0 4px;font:800 30px/1.05 var(--f-display);color:#fff;letter-spacing:.02em;text-transform:uppercase}
+.ch-hd p{margin:0;color:#C8D3E3;font-size:14px}
+.ch-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:10px}
+.ch-c{display:flex;align-items:center;gap:12px;padding:12px;border-radius:9px;background:rgba(255,255,255,.06);
+  border:1px solid rgba(232,163,61,.35);border-top:4px solid var(--tc,#E8A33D);cursor:pointer;transition:background .15s,transform .15s}
+.ch-c:hover,.ch-c:focus{background:rgba(232,163,61,.14);transform:translateY(-1px);outline:none}
+.ch-c .crest{width:58px;height:58px;flex:0 0 58px;object-fit:contain;filter:drop-shadow(0 2px 6px rgba(0,0,0,.5))}
+.ch-c .swatch{width:58px;height:58px;flex:0 0 58px;border-radius:50%}
+.ch-t{min-width:0}
+.ch-cls{display:block;font:800 13px/1 var(--f-display);color:#E8A33D;letter-spacing:.12em}
+.ch-nm{display:block;font:800 20px/1.1 var(--f-display);color:#fff;text-transform:uppercase;margin:3px 0 2px;overflow-wrap:anywhere}
+.ch-sc{display:block;font-size:13px;color:#E6ECF5}
+.ch-wh{display:block;font-size:12px;color:#9FB0C8;margin-top:1px}
+.ch-src{margin:10px 0 0;text-align:center;font-size:11.5px;color:#9FB0C8}
+@media (max-width:760px){ .ch-g{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))} .ch-hd h2{font-size:23px} .ch-nm{font-size:17px} .ch-c{gap:9px;padding:10px} .ch-c .crest,.ch-c .swatch{width:44px;height:44px;flex-basis:44px} }
 .flagad.pwad .fa-l small{color:#C8D3E3}
 .flagad.pwad .fa-crests .crest{border-color:#0B1F3A}
 .flagad.pwad .pw-vs{font-family:var(--f-display);font-weight:800;color:#E8A33D;font-size:15px;margin:0 8px}
@@ -9999,6 +10021,35 @@ nav.topbar ~ main.wrap{margin-top:20px}
     document.getElementById("v-home").innerHTML =
       '<div class="frontgrid">' +
       '<div class="fmain">' +
+      /* CHAMPS-BANNER-NOV21: congratulate the 2026 state champions. A class shows only when the UHSAA
+         bracket final and the Deseret recap row agree on winner and score. */ (function () {
+        var C = (DATA.po_official || {}).classes || {}, RC = DATA.recap || [];
+        var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+        var out = ["6A", "5A", "4A", "3A", "2A", "1A"].map(function (c) {
+          var R = (C[c] || {}).rounds || []; if (!R.length) return null;
+          var last = R[R.length - 1], g = (last.games || [])[0]; if (!g || (g.teams || []).length !== 2) return null;
+          var a = g.teams[0], b = g.teams[1];
+          if (!a.team || !b.team || a.res === "" || b.res === "" || isNaN(+a.res) || isNaN(+b.res) || +a.res === +b.res) return null;
+          var w = +a.res > +b.res ? a : b, l = w === a ? b : a;
+          var d = RC.filter(function (r) { return r.date === last.date && [r.away, r.home].sort().join("|") === [a.team, b.team].sort().join("|"); })[0];
+          if (!d || d.winner !== w.team || Math.max(d.away_score, d.home_score) !== +w.res || Math.min(d.away_score, d.home_score) !== +l.res) return null;
+          var m = /^(\d{4})-(\d\d)-(\d\d)/.exec(last.date || ""), dt = m ? MON[+m[2] - 1] + " " + (+m[3]) : "";
+          var nm = last.name || "", ven = /Southern Utah/.test(nm) ? "Eccles Coliseum, SUU" : /U of U/.test(nm) ? "Rice-Eccles Stadium" : "";
+          var tc = byName[w.team] ? byName[w.team].c1 : "#E8A33D";
+          return '<div class="ch-c" role="button" tabindex="0" data-t="' + esc(w.team) + '" style="--tc:' + esc(tc || "#E8A33D") + '" ' +
+            'onkeydown="if(event.key===\'Enter\')this.click()" aria-label="' + esc(c + " state champion " + w.team) + '">' +
+            logo(w.team, "xl") + '<span class="ch-t"><span class="ch-cls">' + c + ' CHAMPIONS</span>' +
+            '<span class="ch-nm">' + esc(w.team) + '</span>' +
+            '<span class="ch-sc">def. ' + esc(l.team) + " " + (+w.res) + "&ndash;" + (+l.res) + "</span>" +
+            '<span class="ch-wh">' + esc(dt + (ven ? " \u00b7 " + ven : "")) + "</span></span></div>";
+        }).filter(Boolean);
+        if (!out.length) return "";
+        return '<div class="chpanel"><div class="ch-hd"><span class="ch-kick">&#127942; UHSAA State Champions &middot; 2026</span>' +
+          "<h2>Congratulations, Champions</h2>" +
+          "<p>Six classes, six titles. Hats off to every player, coach and family who made this season.</p></div>" +
+          '<div class="ch-g">' + out.join("") + "</div>" +
+          '<p class="ch-src">Final scores: Deseret News, checked against the official UHSAA brackets. Tap a champion for its season.</p></div>';
+      })() +
       /* BREAKING-TOP-NOV19: moved to the top */
       /* REALIGN-BREAKING-NOV19: breaking-news banner -> opens the realignment story */ (function () {
         var A = (DATA.articles || []).filter(function (x) { return x.id === "uhsaa-realignment-vote-nov19"; })[0];
