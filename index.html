@@ -9757,7 +9757,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
     /* ---- headline river ---- */
     var newsHtml = feed.length
-      ? /* NEWS-PIN-NOV22 */ feed.filter(function (n) { return n.pin; }).concat(feed.filter(function (n) { return !n.pin; })).slice(0, 9).map(function (n, i) {
+      ? /* NEWS-ADDED-NOV22: a story we added late ranks by the day we added it; any story dated that day or later still goes above it */ feed.map(function (n, i) { return [n, i]; }).sort(function (a, b) { var ka = a[0].added || a[0].d || "", kb = b[0].added || b[0].d || ""; if (ka !== kb) return ka < kb ? 1 : -1; return (a[0].added ? 1 : 0) - (b[0].added ? 1 : 0) || a[1] - b[1]; }).map(function (p) { return p[0]; }).slice(0, 9).map(function (n, i) {
           var sc = (n.schools || [])[0];
           var ic = sc ? logo(sc, "sm") : srcChip(n.src);
           NWPOP["s" + i] = { k: "s", x: n };
