@@ -9755,9 +9755,18 @@ nav.topbar ~ main.wrap{margin-top:20px}
           teamPages(p) + "</div>");
       });
 
+    /* NEWS-LATE-TOP-NOV22: a story we added late leads Latest News until something newer arrives */
+    function nwLateTop(n) {
+      if (!n || !n.added) return false;
+      var newest = "";
+      (DATA.articles || []).forEach(function (a) { if (a.latest && a.date > newest) newest = a.date; });
+      (((DATA.signings || {}).feed) || []).forEach(function (f) { if (f.kind === "commit" && f.d > newest) newest = f.d; });
+      (DATA.news_feed || []).forEach(function (m) { if (!m.added && m.d > newest) newest = m.d; });
+      return n.added >= newest;
+    }
     /* ---- headline river ---- */
     var newsHtml = feed.length
-      ? /* NEWS-ADDED-NOV22: a story we added late ranks by the day we added it; any story dated that day or later still goes above it */ feed.map(function (n, i) { return [n, i]; }).sort(function (a, b) { var ka = a[0].added || a[0].d || "", kb = b[0].added || b[0].d || ""; if (ka !== kb) return ka < kb ? 1 : -1; return (a[0].added ? 1 : 0) - (b[0].added ? 1 : 0) || a[1] - b[1]; }).map(function (p) { return p[0]; }).slice(0, 9).map(function (n, i) {
+      ? /* NEWS-ADDED-NOV22: a story we added late ranks by the day we added it; any story dated that day or later still goes above it */ /* NEWS-LATE-TOP-NOV22: shown at the top instead */ feed.filter(function (n) { return !nwLateTop(n); }).map(function (n, i) { return [n, i]; }).sort(function (a, b) { var ka = a[0].added || a[0].d || "", kb = b[0].added || b[0].d || ""; if (ka !== kb) return ka < kb ? 1 : -1; return (a[0].added ? 1 : 0) - (b[0].added ? 1 : 0) || a[1] - b[1]; }).map(function (p) { return p[0]; }).slice(0, 9).map(function (n, i) {
           var sc = (n.schools || [])[0];
           var ic = sc ? logo(sc, "sm") : srcChip(n.src);
           NWPOP["s" + i] = { k: "s", x: n };
@@ -10109,7 +10118,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<aside class="frail">' +
       '<div class="panel rpanel nlist"><h2>Latest News</h2>' +
       '<p class="lede">Tap a headline for the short version. Outside stories link to whoever wrote them &mdash; this page does not reproduce ' +
-      "anyone else&rsquo;s writing.</p>" + /* LATEST-NEWS-NOV13B: our stories first */ /* latest-news articles (Nov 9 2026) */ (DATA.articles || []).filter(function (a) { if (!a.latest || !a.date) return false; var age = (Date.now() - new Date(a.date + "T12:00:00")) / 86400000; return age > -1 && age <= 14; }).sort(function (p, q) { return p.date < q.date ? 1 : p.date > q.date ? -1 : 0; }).map(function (a) { NWPOP["a:" + a.id] = { k: "a", x: a }; return '<div class="nl-it ours" data-nw="a:' + esc(a.id) + '" style="cursor:pointer">' + '<span class="nl-ic">' + /* STORY-CREST-NOV19 */ (a.crest && LOGOS[a.crest] ? logo(a.crest, "sm") : '<img class="crest c-sm" src="/logo-uhsfb.webp" alt="Utah High School Football" loading="lazy">') + '</span><div>' + '<span class="nl-t">' + esc(a.title) + '</span>' + '<span class="nl-src">UHSFB &middot; ' + esc(a.kicker) + ' &middot; ' + esc(a.date) + '</span></div></div>'; }).join("") + /* commitments in Latest News (Nov 11 2026) */ (function () {
+      "anyone else&rsquo;s writing.</p>" + /* NEWS-LATE-TOP-NOV22 */ (DATA.news_feed || []).filter(nwLateTop).map(function (n, i) {
+        NWPOP["L" + i] = { k: "s", x: n };
+        var sc = (n.schools || []).length === 1 ? n.schools[0] : null;
+        return '<div class="nl-it" data-nw="L' + i + '" style="cursor:pointer"><span class="nl-ic">' + (sc ? logo(sc, "sm") : srcChip(n.src)) +
+          '</span><div><span class="nl-t">' + esc(titleCase(n.t)) + '</span><span class="nl-src">' + esc(n.src) +
+          (n.d ? " &middot; " + esc(n.d) : "") + "</span></div></div>";
+      }).join("") + /* LATEST-NEWS-NOV13B: our stories first */ /* latest-news articles (Nov 9 2026) */ (DATA.articles || []).filter(function (a) { if (!a.latest || !a.date) return false; var age = (Date.now() - new Date(a.date + "T12:00:00")) / 86400000; return age > -1 && age <= 14; }).sort(function (p, q) { return p.date < q.date ? 1 : p.date > q.date ? -1 : 0; }).map(function (a) { NWPOP["a:" + a.id] = { k: "a", x: a }; return '<div class="nl-it ours" data-nw="a:' + esc(a.id) + '" style="cursor:pointer">' + '<span class="nl-ic">' + /* STORY-CREST-NOV19 */ (a.crest && LOGOS[a.crest] ? logo(a.crest, "sm") : '<img class="crest c-sm" src="/logo-uhsfb.webp" alt="Utah High School Football" loading="lazy">') + '</span><div>' + '<span class="nl-t">' + esc(a.title) + '</span>' + '<span class="nl-src">UHSFB &middot; ' + esc(a.kicker) + ' &middot; ' + esc(a.date) + '</span></div></div>'; }).join("") + /* commitments in Latest News (Nov 11 2026) */ (function () {
         var cut = new Date(Date.now() - 21 * 864e5).toISOString().slice(0, 10);
         return (((DATA.signings || {}).feed) || []).filter(function (f) { return f.kind === "commit" && f.d >= cut && f.u; })
           .slice(0, 5).map(function (f, i) {
