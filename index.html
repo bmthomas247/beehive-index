@@ -6290,7 +6290,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         (who.length ? " Players named: " + nwList(who) + "." : "");
       src = (x.sum ? "Summary as " + esc(x.src) + " shares it. " : "") + "The story is " + esc(x.src) +
         "&rsquo;s work and lives on their site; we do not reproduce it." +
-        (sc.length ? " Records are from our scoreboard." : "");
+        (sc.length && sc.length <= 6 ? " Records are from our scoreboard." : "");
       btns = '<a class="pri" href="' + esc(x.u) + '" target="_blank" rel="noopener noreferrer">Read the full story on ' + esc(x.src) + " &#8599;</a>" +
         /* NEWS-PREVIEW-BUTTONS-NOV19 */
         (x.who || []).filter(function (w) { return PKEY[pkeyOf(w.name, w.school)]; }).map(function (w) {
