@@ -6286,7 +6286,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       title = esc(titleCase(x.t));
       para = /* NEWS-SUMMARY-NOV19 */ (x.sum ? '<span class="nwlede">&ldquo;' + esc(x.sum) + '&rdquo;</span><br><br>' : "") +
         "A " + esc(x.src) + " story" + (x.d ? " from " + esc(x.d) : "") + "." +
-        (sc.length ? " It covers " + nwList(sc.map(nwRec)) + "." : "") +
+        (sc.length > 6 ? " It covers programs across the state." : sc.length ? " It covers " + nwList(sc.map(nwRec)) + "." : "") +
         (who.length ? " Players named: " + nwList(who) + "." : "");
       src = (x.sum ? "Summary as " + esc(x.src) + " shares it. " : "") + "The story is " + esc(x.src) +
         "&rsquo;s work and lives on their site; we do not reproduce it." +
@@ -6295,7 +6295,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
         /* NEWS-PREVIEW-BUTTONS-NOV19 */
         (x.who || []).filter(function (w) { return PKEY[pkeyOf(w.name, w.school)]; }).map(function (w) {
           return '<button' + pAttr(w.name, w.school) + '>' + esc(w.name) + ' profile</button>'; }).join("") +
-        sc.map(function (s) { return '<a href="/' + s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") +
+        (x.rel || []).map(function (r) { return r.art ? '<button data-art="' + esc(r.art) + '">' + esc(r.label) + ' &rarr;</button>' : '<button data-go="' + esc(r.go) + '">' + esc(r.label) + ' &rarr;</button>'; }).join("") +
+        (sc.length > 6 ? [] : sc).map(function (s) { return '<a href="/' + s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") +
           '-football">' + esc(s) + ' program</a>'; }).join("");
     }
     var old = document.getElementById("nwmodal"); if (old) old.remove();
@@ -9756,7 +9757,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
     /* ---- headline river ---- */
     var newsHtml = feed.length
-      ? feed.slice(0, 9).map(function (n, i) {
+      ? /* NEWS-PIN-NOV22 */ feed.filter(function (n) { return n.pin; }).concat(feed.filter(function (n) { return !n.pin; })).slice(0, 9).map(function (n, i) {
           var sc = (n.schools || [])[0];
           var ic = sc ? logo(sc, "sm") : srcChip(n.src);
           NWPOP["s" + i] = { k: "s", x: n };
