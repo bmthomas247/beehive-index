@@ -1,0 +1,40 @@
+/* The Ledger · brand tokens (Utah mark, black and gold, Nov 2026).
+   Contrast (WCAG): gold on ink 8.77:1 · chalk on ink 17.15:1 ·
+   ink on paper 18.4:1 · gold-deep on paper 4.95:1 ·
+   slate on paper 7.4:1 · slate-bright on ink 8.46:1 ·
+   ink on gold 8.77:1. Gold on paper is only 2.1:1, so on light backgrounds
+   FOOTBALL in the logo uses gold-light (3.26:1) and small text uses gold-deep. */
+:root{
+  /* fixed brand colors */
+  --ledger-ink:#0e1116;          /* Ledger Black: dark base; the state on light backgrounds */
+  --ledger-gold:#E8A33D;         /* Ledger Gold: the mark on dark, the lace, accents on black */
+  --ledger-gold-light:#C97A12;   /* FOOTBALL in the logo, big gold type on light backgrounds */
+  --ledger-gold-deep:#9A6206;    /* small gold text on light backgrounds */
+  --ledger-chalk:#F2F4F6;        /* type on dark */
+  --ledger-paper:#FBFCFC;        /* light base */
+  --ledger-slate:#4A5560;        /* quiet type, on light */
+  --ledger-slate-bright:#A3AFB9; /* quiet type, on dark */
+  --ledger-line-dark:#25282E;    /* ledger lines and hairlines on black */
+
+  /* roles that follow light / dark mode */
+  --ledger-bg:var(--ledger-paper);
+  --ledger-fg:var(--ledger-ink);
+  --ledger-accent:var(--ledger-gold-deep);
+  --ledger-muted:var(--ledger-slate);
+
+  /* type */
+  --ledger-font-display:"Saira Condensed","Arial Narrow",sans-serif;
+  --ledger-weight-display:800;
+  --ledger-weight-text:700;
+  --ledger-tracking-display:.01em;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ledger-bg:var(--ledger-ink); --ledger-fg:var(--ledger-chalk);
+    --ledger-accent:var(--ledger-gold); --ledger-muted:var(--ledger-slate-bright);
+  }
+}
+:root[data-theme="dark"]{
+  --ledger-bg:var(--ledger-ink); --ledger-fg:var(--ledger-chalk);
+  --ledger-accent:var(--ledger-gold); --ledger-muted:var(--ledger-slate-bright);
+}
