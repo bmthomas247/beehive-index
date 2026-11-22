@@ -6179,7 +6179,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
     "Deseret News": ["DESERET", "#12395B"],
     "Slingin' the Pill": ["STP", "#5B3A8E"]
   };
+  /* SRC-LOGO-NOV22: real outlet icons, same files and map as the program pages (program_page.py SRCLOGO) */
+  var SRCLOGO = {"KSL Sports": "ksl", "KSL.com": "ksl", "sports.ksl.com": "ksl", "Deseret News": "deseret",
+    "On3": "on3", "On3 / Rivals": "on3", "MaxPreps": "maxpreps", "maxpreps.com": "maxpreps",
+    "KUTV 2News": "kutv", "KUTV 2 News Salt Lake City": "kutv", "FOX 13 News Utah": "fox13",
+    "247Sports": "247", "Yahoo Sports": "yahoo", "sports.yahoo.com": "yahoo", "USA Today": "usatoday",
+    "Sports Illustrated": "si", "si.com": "si", "Park Record": "parkrecord", "Greg Biggins (Rivals)": "rivals",
+    "Rivals": "rivals", "YouTube": "youtube", "Fubo": "fubo"};
   function srcChip(src) {
+    if (SRCLOGO[src]) return '<img class="crest c-sm" src="/src-logo-' + SRCLOGO[src] + '.png" alt="' + esc(src) + '" loading="lazy">';
     var m = SRCMARK[src] || [(src || "?").slice(0, 3).toUpperCase(), "#6C7883"];
     return '<span class="srcchip" style="background:' + m[1] + '">' + esc(m[0]) + "</span>";
   }
