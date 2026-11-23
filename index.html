@@ -6023,8 +6023,17 @@ nav.topbar ~ main.wrap{margin-top:20px}
     }
     var el = e.target.closest("[data-t]");
     if (el && byName[el.dataset.t]) openTeam(el.dataset.t);
+    else if (el && e8page(el.dataset.t)) location.href = e8page(el.dataset.t); /* E8-LINKS-NOV23 */
   });
 
+  /* E8-LINKS-NOV23: 8-player program pages (eightman.py, data/teams_8p.csv). Keys: UHSAA bracket and site names. */
+  function e8page(n) {
+    var M = { "Rich": "rich", "Milford": "milford", "Monticello": "monticello", "Water Canyon": "water-canyon",
+      "Whitehorse": "whitehorse", "Utah Military Academy - Camp Williams": "uma-camp-williams", "UMA Camp Williams": "uma-camp-williams",
+      "Utah Military Academy - Hill Field": "uma-hill-field", "UMA Hill Field": "uma-hill-field", "St. Joseph": "st-joseph",
+      "Altamont": "altamont", "Panguitch": "panguitch", "Monument Valley": "monument-valley", "Grand County": "grand-county" };
+    return M[n] ? "/" + M[n] + "-football" : "";
+  }
   /* ================= LAST WEEK ================= */
   /* ---- slate filtering: division and region --------------------------------
      Both weekly boards are the full state on one page, which is right for a
@@ -9313,7 +9322,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
                   '<span class="br ' + cls(t.rating) + '">' + sgn(t.rating) + "</span></div>";
               }).join("") + "</div>";
           }).join("") + "</div></div>";
-      }).join("");
+      }).join("") +
+      /* E8-LINKS-NOV23 */ '<div class="panel" style="margin-top:16px"><h2>8-Player programs</h2>' +
+      '<p class="lede">We are starting to add 8-player football. These 12 schools played 8-player in 2026. Each page has the full 2026 schedule and scores (Deseret News) and the playoff results (UHSAA). They are not in our ratings or rankings.</p>' +
+      '<div class="breg">' + ["Altamont", "Grand County", "Milford", "Monticello", "Monument Valley", "Panguitch", "Rich", "St. Joseph", "Utah Military Academy - Camp Williams", "Utah Military Academy - Hill Field", "Water Canyon", "Whitehorse"].map(function (n) {
+        return '<a class="bschool" href="' + e8page(n) + '">' + logo(n, "sm") + '<span>' + esc(n.replace("Utah Military Academy - ", "UMA ")) + '</span></a>';
+      }).join("") + '</div></div>';
   }
 
   /* ================= HOME ================= */
@@ -10128,7 +10142,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           var tc = byName[w.team] ? byName[w.team].c1 : "#E8A33D";
           var e8 = c === "8P", cl = e8 ? "8-PLAYER" : c;
           return '<div class="ch-c' + (e8 ? ' ch-8p' : '') + '" role="button" tabindex="0" ' +
-            (e8 || !byName[w.team] ? 'data-art="rich-moves-up-11-player-nov19"' : 'data-t="' + esc(w.team) + '"') + ' style="--tc:' + esc(tc || "#E8A33D") + '" ' +
+            (!e8 && !byName[w.team] ? 'data-art="rich-moves-up-11-player-nov19"' : 'data-t="' + esc(w.team) + '"') /* E8-LINKS-NOV23 */ + ' style="--tc:' + esc(tc || "#E8A33D") + '" ' +
             'onkeydown="if(event.key===\'Enter\')this.click()" aria-label="' + esc(cl + " state champion " + w.team) + '">' +
             logo(w.team, "xl") + '<span class="ch-t"><span class="ch-cls">' + cl + ' CHAMPIONS</span>' +
             '<span class="ch-nm">' + esc(w.team) + '</span>' +
@@ -10713,6 +10727,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       if (b) { cur = b.dataset.c; draw(); return; }
       var n = e.target.closest("[data-pt]");
       if (n && byName[n.dataset.pt]) { openTeam(n.dataset.pt); return; }
+      if (n && e8page(n.dataset.pt)) { location.href = e8page(n.dataset.pt); return; } /* E8-LINKS-NOV23 */
       var m = e.target.closest("[data-pog]");
       if (m) openPoGame(m.dataset.pog);
     });
@@ -10817,7 +10832,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var nx = nextOf(g);
       lastFocus = document.activeElement;
       var html = '<button class="dclose" id="dclose" aria-label="Close">Close ✕</button>';
-      var teamsLinks = '<div class="sect">Open a team card</div><div class="plist">' + [a, b].filter(function (n) { return byName[n]; }).map(function (n) {
+      var teamsLinks = '<div class="sect">Open a team card</div><div class="plist">' + [a, b].filter(function (n) { return byName[n] || e8page(n); }).map(function (n) { /* E8-LINKS-NOV23 */
         return '<span class="pl" data-t="' + esc(n) + '" style="cursor:pointer"><b>' + esc(n) + "</b></span>"; }).join("") + "</div>";
       var bsrc = (PO[cur] || {}).url;
       if (!fin) {
