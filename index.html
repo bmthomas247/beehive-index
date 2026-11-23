@@ -12,7 +12,7 @@ fr=document.createElement("iframe");fr.setAttribute("aria-hidden","true");fr.tab
 fr.style.cssText="position:absolute;left:-9999px;width:1px;height:1px;border:0;visibility:hidden";
 fr.src="/t/"+v+".html";document.body.appendChild(fr);}catch(e){}},1000);};})();</script>
 <title>Utah High School Football &mdash; Rankings, Stats and Recruiting</title>
-<meta name="description" content="Independent power ratings, player index and recruiting profiles for all 106 Utah 11-man high school football programs. Every roster, not just the recruited.">
+<meta name="description" content="Independent power ratings, player index and recruiting profiles for all 106 Utah 11-man high school football programs, now adding 8-player. Every roster, not just the recruited.">
 <meta name="theme-color" content="#0e1116">
 <meta name="color-scheme" content="light dark">
 
@@ -21,7 +21,7 @@ fr.src="/t/"+v+".html";document.body.appendChild(fr);}catch(e){}},1000);};})();<
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Utah High School Football">
 <meta property="og:title" content="Utah High School Football &mdash; Rankings, Stats and Recruiting">
-<meta property="og:description" content="Power ratings, player index and recruiting profiles for all 106 Utah 11-man programs. Every roster, not just the recruited.">
+<meta property="og:description" content="Power ratings, player index and recruiting profiles for all 106 Utah 11-man programs, now adding 8-player. Every roster, not just the recruited.">
 <meta property="og:image" content="https://utahhighschoolfootball.com/share.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -34,7 +34,7 @@ fr.src="/t/"+v+".html";document.body.appendChild(fr);}catch(e){}},1000);};})();<
 <meta name="twitter:site" content="@TheLedgerUT">
 <meta name="twitter:creator" content="@TheLedgerUT">
 <meta name="twitter:title" content="Utah High School Football &mdash; Rankings, Stats and Recruiting">
-<meta name="twitter:description" content="Power ratings, player index and recruiting profiles for all 106 Utah 11-man programs. Every roster, not just the recruited.">
+<meta name="twitter:description" content="Power ratings, player index and recruiting profiles for all 106 Utah 11-man programs, now adding 8-player. Every roster, not just the recruited.">
 <meta name="twitter:image" content="https://utahhighschoolfootball.com/share.png">
 <meta name="twitter:image:alt" content="Utah High School Football &mdash; The Ledger. Power ratings, the player index and every roster in the state.">
 <meta property="og:url" content="https://utahhighschoolfootball.com/">
@@ -47,7 +47,7 @@ fr.src="/t/"+v+".html";document.body.appendChild(fr);}catch(e){}},1000);};})();<
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite",
  "name":"Utah High School Football","url":"https://utahhighschoolfootball.com/",
- "description":"Independent power ratings, player index and recruiting profiles for all 106 Utah 11-man high school football programs.",
+ "description":"Independent power ratings, player index and recruiting profiles for all 106 Utah 11-man high school football programs, now adding 8-player.",
  "publisher":{"@type":"Organization","name":"Utah High School Football",
   "sameAs":["https://x.com/TheLedgerUT","https://www.facebook.com/TheLedgerUT"]}}
 </script>
@@ -4556,7 +4556,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     <h4>Program pages</h4>
     <p>Every school also has a plain page with its record, schedule, roster and history.</p>
     <div id="footteams"></div>
-    <p><a href="/utah-high-school-football-teams">All 106 team pages</a> &middot;
+    <p><!-- E8-COPY-NOV23 --><a href="/utah-high-school-football-teams">All team pages, 11-man and 8-player</a> &middot;
        <a href="/utah-high-school-football-rankings">Rankings</a> &middot;
        <a href="/utah-high-school-football-state-champions">State champions since 1898</a></p>
   </nav>
@@ -7717,6 +7717,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
      a mark we were not given, every other program gets a monogram in its own
      colours. Colours identify a school; they are not its logo. */
   var CLOGO = {
+    /* CLOGO-NOV23: hosted logos, sources in data/college_logo_sources.csv */
+    "Adams State": "adams-state", "Black Hills State": "black-hills-state", "Bucknell": "bucknell", "CSU Pueblo": "csu-pueblo", "Chadron State": "chadron-state", "Clemson": "clemson", "Davidson": "davidson", "Eastern Washington": "eastern-washington", "Fort Lewis": "fort-lewis", "Georgetown": "georgetown", "New Mexico Highlands": "new-mexico-highlands", "South Dakota Mines": "south-dakota-mines", "Southern Oregon": "southern-oregon", "Virginia": "virginia", "Wyoming": "wyoming", "Hamline": "hamline", "Lake Forest": "lake-forest", "North Dakota State College of Science": "ndscs", "Victor Valley College": "victor-valley", "Arizona Christian": "arizona-christian", "Eastern Oregon": "eastern-oregon", "New Mexico Military Institute": "nmmi", "San Bernardino Valley College": "san-bernardino-valley",
     /* Nov 9 2026: hosted copies of ESPN team art for the commit colleges (no hot-link) */
     "Michigan": "michigan", "Arizona": "arizona", "Oklahoma": "oklahoma", "Oregon State": "oregon-state",
     "Colorado": "colorado", "Iowa State": "iowa-state", "Nebraska": "nebraska", "Oregon": "oregon",
@@ -9300,7 +9302,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="panel" style="margin-bottom:16px"><h2>Every program, by classification and region</h2>' +
       '<p class="lede">All ' + T.length + ' eleven-man programs in Utah, grouped the way the UHSAA groups them. ' +
       'The number beside each school is its rank inside that region and the figure on the right is its rating. ' +
-      'Click any school for the full card.</p></div>' +
+      'Click any school for the full card. We are now adding 8-player football: the 8-player schools are listed at the bottom.</p></div>' +
       order.map(function (c) {
         var teams = byCls[c], byReg = {};
         teams.forEach(function (t) { (byReg[t.region || "No region"] = byReg[t.region || "No region"] || []).push(t); });
