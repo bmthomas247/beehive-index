@@ -3972,6 +3972,65 @@ nav.topbar ~ main.wrap{margin-top:20px}
   .pp-card{padding:2px 14px 16px}
 }
 
+/* ---- PP-IG-NOV23: Duke-style player infographic ---- */
+.pp-hero.ppx{position:relative;border-bottom:0;
+  background:radial-gradient(ellipse at 75% 30%,color-mix(in srgb,var(--tc) 92%,#fff) 0%,var(--tc) 38%,color-mix(in srgb,var(--tc) 45%,#000) 100%);
+  background-color:#0B1F3A}
+.pp-hero.ppx::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 28px,transparent 28px 56px),
+  linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,.35) 100%)}
+.pp-hero.ppx>*{position:relative}
+.pp-hero.ppx .ppx-no{position:absolute;right:-6px;top:-34px;font-family:var(--f-display);font-weight:700;
+  font-size:clamp(200px,30vw,340px);line-height:1;color:rgba(255,255,255,.10);letter-spacing:-.04em;pointer-events:none;user-select:none}
+.pp-hero.ppx .dhead h3{text-shadow:0 6px 18px rgba(0,0,0,.35)}
+.ppx-fn{display:block;font-size:.42em;letter-spacing:.38em;font-weight:500;opacity:.92;margin-bottom:.1em}
+.ppx-ln{display:inline;letter-spacing:.12em}
+.ppi{background:linear-gradient(180deg,color-mix(in srgb,var(--tc) 38%,#0b0d10) 0%,#0b0d10 100%);background-color:#12151a;
+  color:#fff;border-radius:6px;margin:-10px 0 18px;padding:26px 26px 8px;overflow:hidden}
+.ppi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 34px}
+.ppi-blk{padding-bottom:22px}
+.ppi-h{display:block;width:max-content;max-width:100%;margin:0 auto 16px;border:2px solid rgba(255,255,255,.55);
+  font-family:var(--f-display);font-size:14px;letter-spacing:.16em;text-transform:uppercase;padding:6px 18px;text-align:center}
+.ppi-big{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.ppi-big b{display:block;font-family:var(--f-display);font-size:clamp(34px,4.6vw,58px);line-height:1}
+.ppi-big span{display:block;margin-top:6px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.ppi-game{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;text-align:center;gap:8px}
+.ppi-game .sc{font-family:var(--f-display);font-size:clamp(46px,6vw,74px);line-height:1}
+.ppi-game .opp .sc{color:#c3c7cd}
+.ppi-game .tm{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;font-family:var(--f-display);
+  font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.85)}
+.ppi-game .tm img,.ppi-game .tm .crest{width:22px;height:22px;background:#fff;border-radius:50%;padding:2px;object-fit:contain}
+.ppi-game .fin{border:2px solid rgba(255,255,255,.55);font-family:var(--f-display);font-size:13px;letter-spacing:.14em;padding:4px 10px}
+.ppi-line{text-align:center;margin-top:12px;font-size:15px;font-weight:600}
+.ppi-line small{display:block;margin-top:5px;font-size:12.5px;font-weight:400;color:rgba(255,255,255,.72);line-height:1.5}
+.ppi-cmp{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:12px;margin:0 0 4px}
+.ppi-cmp .v{font-family:var(--f-display);font-size:26px;min-width:54px}
+.ppi-cmp .v.r{text-align:right;color:#c3c7cd}
+.ppi-cmp .tr{height:24px;border:2px solid rgba(255,255,255,.7);padding:3px;display:flex}
+.ppi-cmp .a{background:#fff}.ppi-cmp .b{background:#8d939a}
+.ppi-k{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.6);margin-bottom:16px}
+.ppi-rings{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;text-align:center}
+.ppi-rings.one{grid-template-columns:1fr}
+.ppi-ring{position:relative;width:132px;height:132px;margin:0 auto}
+.ppi-ring svg{transform:rotate(-90deg);display:block}
+.ppi-ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:34px}
+.ppi-rings small{display:block;margin-top:8px;font-size:12.5px;color:rgba(255,255,255,.78)}
+.ppi-mid{border:2px solid rgba(255,255,255,.55);font-family:var(--f-display);font-size:12px;letter-spacing:.14em;padding:6px 10px;text-transform:uppercase}
+.ppi-duo{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.ppi-duo.one{grid-template-columns:1fr}
+.ppi-bh{border:2px solid rgba(255,255,255,.55);text-align:center;font-family:var(--f-display);font-size:13px;letter-spacing:.14em;padding:5px;text-transform:uppercase}
+.ppi-bs{background:#fff;color:#111;font-family:var(--f-display);font-size:11px;letter-spacing:.16em;text-align:center;width:70%;margin:0 auto 10px;padding:2px;text-transform:uppercase}
+.ppi-hon{font-size:14px;font-weight:600;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.12)}
+.ppi-hon small{display:block;font-size:11.5px;font-weight:400;color:rgba(255,255,255,.62)}
+.ppi-huge{font-family:var(--f-display);font-size:68px;line-height:1;text-align:center;margin-top:4px}
+.ppi-huge+small{display:block;text-align:center;font-size:12px;color:rgba(255,255,255,.7);margin-top:4px}
+.ppi-blk.full{grid-column:1/-1}
+.pp-hero.ppx .capbadge{color:#fff;border-color:rgba(255,255,255,.7);background:rgba(0,0,0,.18)}
+.ppi-src{grid-column:1/-1;border-top:1px solid rgba(255,255,255,.12);padding:10px 0 14px;font-size:11.5px;line-height:1.5;color:rgba(255,255,255,.55)}
+@media(max-width:940px){.ppi-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.ppi{padding:20px 14px 6px}.ppi-duo{grid-template-columns:1fr}.ppi-ring{width:110px;height:110px}.ppi-ring svg{width:110px;height:110px}
+  .ppi-ring b{font-size:28px}.pp-hero.ppx .ppx-no{font-size:200px}}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -5954,6 +6013,129 @@ nav.topbar ~ main.wrap{margin-top:20px}
     if (n(v.espn)) out.push(["ESPN", esc(v.espn), "grade", "rk", "ESPN grade (a rating, not a rank)"]);
     return out;
   }
+  /* PP-IG-NOV23: Duke-style infographic band under the player hero (Brandon, Nov 23 2026).
+     Every figure is read from the profile's own fields (p.stats / p.stats25 / p.best_game / awards).
+     Positive figures only: interceptions thrown never appear here. */
+  var PPI_LBL = {
+    passing: { yds: "Passing yards", TD: "Passing TDs", comp: "Completions" },
+    rushing: { yds: "Rushing yards", TD: "Rushing TDs", car: "Carries", ypc: "Yards per carry" },
+    receiving: { yds: "Receiving yards", rec: "Catches", TD: "Receiving TDs" },
+    defense: { tkl: "Tackles", sack: "Sacks", TFL: "Tackles for loss", INT: "Interceptions", PD: "Pass breakups",
+               FF: "Forced fumbles", FR: "Fumble recoveries" }
+  };
+  function ppiFigs(str) {
+    var o = {};
+    String(str || "").split(/\s*,\s*/).forEach(function (x) {
+      var m = /^(-?[\d.,]+)(?:\/([\d.,]+))?\s*(.*)$/.exec(x);
+      if (!m) return;
+      var a = parseFloat(m[1].replace(/,/g, ""));
+      if (m[2] !== undefined) { o.comp = a; o.att = parseFloat(m[2].replace(/,/g, "")); return; }
+      if (m[3] && !(m[3] in o)) o[m[3]] = a;
+    });
+    return o;
+  }
+  function ppiNum(v) { return Math.round(v) === v ? v.toLocaleString("en-US") : String(v); }
+  var PPI_DEF = /^(LB|ILB|OLB|MLB|DL|DE|DT|NT|EDGE|CB|S|SS|FS|DB|SAF)$/i;
+  function ppInfo(p) {
+    var S = p.stats || {}, F = {}, k;
+    for (k in S) F[k] = ppiFigs(S[k]);
+    var pos1 = String(p.pos || "").split(/[,\/\s]+/)[0];
+    var pri = "";
+    var y = function (c) { return (F[c] && F[c].yds) || 0; };
+    if (F.passing && (/QB/i.test(pos1) || y("passing") >= Math.max(y("rushing"), y("receiving")))) pri = "passing";
+    else if (F.defense && (PPI_DEF.test(pos1) || !(y("rushing") > 0 || y("receiving") > 0))) pri = "defense";
+    else if (y("rushing") > 0 || y("receiving") > 0) pri = y("rushing") >= y("receiving") ? "rushing" : "receiving";
+    else if (F.defense) pri = "defense";
+    var f = F[pri] || {}, big = [];
+    function add(c, u, v) { if (v > 0 && big.length < 3) big.push([ppiNum(v), PPI_LBL[c][u]]); }
+    if (pri === "passing") {
+      add("passing", "yds", f.yds); add("passing", "TD", f.TD);
+      if (F.rushing && F.rushing.yds > 0) add("rushing", "yds", F.rushing.yds); else add("passing", "comp", f.comp);
+    } else if (pri === "rushing") {
+      add("rushing", "yds", f.yds); add("rushing", "TD", f.TD);
+      if (f.car >= 20 && f.yds > 0) add("rushing", "ypc", Math.round(f.yds / f.car * 10) / 10); else add("rushing", "car", f.car);
+    } else if (pri === "receiving") {
+      add("receiving", "yds", f.yds); add("receiving", "rec", f.rec); add("receiving", "TD", f.TD);
+    } else if (pri === "defense") {
+      ["tkl", "sack", "TFL", "INT", "PD", "FF", "FR"].forEach(function (u) { add("defense", u, f[u]); });
+    }
+    var blocks = [];
+    if (big.length) blocks.push('<div class="ppi-blk"><span class="ppi-h">2026 season</span><div class="ppi-big"' +
+      (big.length < 3 ? ' style="grid-template-columns:repeat(' + big.length + ',1fr)"' : "") + ">" +
+      big.map(function (b) { return "<div><b>" + b[0] + "</b><span>" + esc(b[1]) + "</span></div>"; }).join("") + "</div></div>");
+    var g = p.best_game, game = false;
+    if (g && g.pts !== null && g.pts !== undefined && g.opp_pts !== null && g.opp_pts !== undefined) {
+      game = true;
+      blocks.push('<div class="ppi-blk"><span class="ppi-h">Standout game' + (g.d ? " &middot; " + esc(mdy(g.d)) : "") + "</span>" +
+        '<div class="ppi-game"><div><div class="sc">' + g.pts + '</div><div class="tm">' + logo(p.school, "md") + esc(p.school) + "</div></div>" +
+        '<div class="fin">FINAL</div>' +
+        '<div class="opp"><div class="sc">' + g.opp_pts + '</div><div class="tm">' + logo(g.opp, "md") + esc(g.opp) + "</div></div></div>" +
+        '<div class="ppi-line">' + esc(String(g.line || "").replace(/,\s*\d+\s*INT\b/g, "")) + (p.standout ? "<small>" + esc(p.standout) + "</small>" : "") + "</div></div>");
+    }
+    // 2026 vs 2025, same category, both years on file
+    var F25 = p.stats25 && p.stats25[pri] ? ppiFigs(p.stats25[pri]) : null, cmps = [];
+    if (F25) {
+      (pri === "defense" ? ["tkl", "sack"] : ["yds", "TD"]).forEach(function (u) {
+        var a = f[u], b = F25[u];
+        if (!(a > 0 && b > 0)) return;
+        var pa = Math.round(a / (a + b) * 1000) / 10;
+        cmps.push('<span class="ppi-h">' + esc(PPI_LBL[pri][u]) + " &middot; 2026 vs 2025</span>" +
+          '<div class="ppi-cmp"><div class="v">' + ppiNum(a) + '</div><div class="tr"><div class="a" style="width:' + pa +
+          '%"></div><div class="b" style="width:' + (100 - pa) + '%"></div></div><div class="v r">' + ppiNum(b) + "</div></div>" +
+          '<div class="ppi-k"><span>2026</span><span>2025</span></div>');
+      });
+    }
+    if (cmps.length) blocks.push('<div class="ppi-blk">' + cmps.join("") + "</div>");
+    // completion rings for passers
+    function ring(c, a, col) {
+      var pct = c / a * 100, L = 2 * Math.PI * 56;
+      return '<div class="ppi-ring"><svg width="132" height="132" viewBox="0 0 132 132"><circle cx="66" cy="66" r="56" stroke="rgba(255,255,255,.15)" stroke-width="10" fill="none"/>' +
+        '<circle cx="66" cy="66" r="56" stroke="' + col + '" stroke-width="10" fill="none" stroke-dasharray="' + (L * pct / 100).toFixed(1) + " " + L.toFixed(1) + '"/></svg>' +
+        "<b>" + Math.round(pct) + "%</b></div>";
+    }
+    if (pri === "passing" && f.att > 0 && f.comp > 0) {
+      var two = F25 && F25.att > 0 && F25.comp > 0;
+      blocks.push('<div class="ppi-blk"><div class="ppi-rings' + (two ? "" : " one") + '">' +
+        "<div>" + ring(f.comp, f.att, "#fff") + "<small>2026 &middot; " + ppiNum(f.comp) + " of " + ppiNum(f.att) + "</small></div>" +
+        (two ? '<div class="ppi-mid">Completion<br>percentage</div><div>' + ring(F25.comp, F25.att, "#9aa0a6") +
+               "<small>2025 &middot; " + ppiNum(F25.comp) + " of " + ppiNum(F25.att) + "</small></div>"
+             : '<div class="ppi-mid" style="width:max-content;margin:10px auto 0">Completion percentage</div>') +
+        "</div></div>");
+    }
+    // per game + honors
+    var main = pri === "defense" ? "tkl" : "yds", pg = "";
+    if (p.games > 0 && f[main] > 0) {
+      var v = f[main] / p.games;
+      pg = '<div><div class="ppi-bh">' + (pri === "defense" ? "Tackles" : "Yards") + ' per game</div><div class="ppi-bs">' +
+        esc(pri === "defense" ? "Defense" : pri) + '</div><div class="ppi-huge">' + (v >= 10 ? Math.round(v) : Math.round(v * 10) / 10) +
+        "</div><small>" + ppiNum(f[main]) + " in " + p.games + " game" + (p.games === 1 ? "" : "s") + "</small></div>";
+    }
+    var hon = (p.honors_ext || []).map(function (h) { return [h.t, h.y || ""]; })
+      .concat((p.awards || []).map(function (a) { return [a, ""]; })).slice(0, 4);
+    var hb = hon.length ? '<div><div class="ppi-bh">Honors</div><div class="ppi-bs">Career</div>' +
+      hon.map(function (h) { return '<div class="ppi-hon">' + esc(h[0]) + (h[1] ? "<small>" + esc(h[1]) + "</small>" : "") + "</div>"; }).join("") + "</div>" : "";
+    if (pg || hb) blocks.push('<div class="ppi-blk full"><div class="ppi-duo' + (pg && hb ? "" : " one") + '">' + hb + pg + "</div></div>");
+    if (!blocks.length) return { html: "", game: false };
+    var src = (p.stats_src === "box scores"
+      ? "Season figures added up from his box scores"
+      : "Season figures as published on MaxPreps (Deseret News for schools that file none)") +
+      (game ? "; final score from Deseret News" : "") + (F25 ? "; 2025 is his full 2025 season line" : "") +
+      (hon.length ? "; honors as listed under Awards and notes" : "") + ".";
+    return { html: '<div class="ppi" style="--tc:' + esc((byName[p.school] || {}).c1 || "#0B1F3A") + '"><div class="ppi-grid">' +
+      blocks.join("") + '<div class="ppi-src">Sources: ' + esc(src) + "</div></div></div>", game: game };
+  }
+  function ppSplitName(h3, name) {
+    if (!h3) return;
+    var t = h3.firstChild;
+    if (!t || t.nodeType !== 3 || t.nodeValue !== name) return;
+    var w = name.split(" ");
+    if (w.length < 2) return;
+    var cut = w.length - 1;
+    if (cut > 1 && /^(Jr\.?|Sr\.?|II|III|IV|V)$/i.test(w[cut])) cut--;
+    var fn = document.createElement("span"); fn.className = "ppx-fn"; fn.textContent = w.slice(0, cut).join(" ");
+    var ln = document.createElement("span"); ln.className = "ppx-ln"; ln.textContent = w.slice(cut).join(" ");
+    h3.replaceChild(ln, t); h3.insertBefore(fn, ln);
+  }
   var PP_SWAP = false, PP_TITLE = document.title;
   var PP_SIDE = /^(Committed|Offers|Recruiting|Awards|Ledger|Off the field|Also plays|Where else|Reaching him)/i;
   function playerPage(p, html, replace) {
@@ -5984,21 +6166,24 @@ nav.topbar ~ main.wrap{margin-top:20px}
       ["2026 games", p.games ? String(p.games) : ""],
       p.commit ? ["Committed", esc(p.commit)] : ["Offers", (p.offers || []).length ? String(p.offers.length) : ""]])
       .filter(function (f) { return f[1]; });
+    var IG = ppInfo(p); /* PP-IG-NOV23 */
     host.innerHTML = '<div class="pp">' +
       '<div class="pp-top"><button type="button" class="pp-back" id="ppback">&larr; Back</button>' +
       '<span class="pp-crumb">Player profile &middot; <span data-t="' + esc(p.school) + '">' + esc(p.school) + "</span></span></div>" +
-      '<div class="pp-hero">' + band + '<div class="pp-hrow">' + head.replace('loading="lazy"', 'loading="eager"') +
+      '<div class="pp-hero ppx" style="--tc:' + esc((byName[p.school] || {}).c1 || "#0B1F3A") + '">' +
+      (p.no ? '<span class="ppx-no" aria-hidden="true">' + esc(p.no) + "</span>" : "") + band + '<div class="pp-hrow">' + head.replace('loading="lazy"', 'loading="eager"') +
       (facts.length ? '<div class="pp-facts">' + facts.map(function (f) {
         return "<div" + (f[4] ? ' title="' + f[4] + '"' : "") +
           "><span>" + f[0] + "</span><b" + (f[3] ? ' class="' + f[3] + '"' : "") + ">" + f[1] + "</b>" +
           (f[2] ? "<em>" + f[2] + "</em>" : "") + "</div>"; }).join("") + "</div>" : "") +
-      "</div></div>" +
-      '<div class="pp-grid"><div class="pp-main">' + (soHtml ? '<div class="pp-card pp-so">' + soHtml + "</div>" : "") +
+      "</div></div>" + IG.html +
+      '<div class="pp-grid"><div class="pp-main">' + (soHtml && !IG.game ? '<div class="pp-card pp-so">' + soHtml + "</div>" : "") +
       '<div class="pp-card">' + main.innerHTML + "</div></div>" +
       '<aside class="pp-side">' + (comb || side.innerHTML ? '<div class="pp-card">' + comb + side.innerHTML + "</div>" : "") +
       full + "</aside></div></div>";
     VIEWS.forEach(function (v) { var el = document.getElementById("v-" + v); if (el) el.hidden = true; });
     host.hidden = false;
+    ppSplitName(host.querySelector(".pp-hero h3"), p.name);
     document.title = p.name + " — " + p.school + " football | Utah High School Football";
     if (window.uhsTrack) window.uhsTrack("player", true);
     window.scrollTo({ top: 0, behavior: "instant" });
