@@ -9512,7 +9512,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           }).join("") + "</div></div>";
       }).join("") +
       /* E8-LINKS-NOV23 */ '<div class="panel" style="margin-top:16px"><h2>8-Player programs</h2>' +
-      '<p class="lede">We are starting to add 8-player football. These 12 schools played 8-player in 2026. Each page has the full 2026 schedule and scores (Deseret News) and the playoff results (UHSAA). They are not in our ratings or rankings.</p>' +
+      '<p class="lede">We are starting to add 8-player football. These 12 schools played 8-player in 2026. Each page has the full 2026 schedule and scores (Deseret News) and the playoff results (UHSAA). They are not in our ratings or rankings. <a href="/utah-8-player-football-stats">8-player stat leaders</a> (MaxPreps season totals).</p>' + /* E8-STATS-NOV23 */
       '<div class="breg">' + ["Altamont", "Grand County", "Milford", "Monticello", "Monument Valley", "Panguitch", "Rich", "St. Joseph", "Utah Military Academy - Camp Williams", "Utah Military Academy - Hill Field", "Water Canyon", "Whitehorse"].map(function (n) {
         return '<a class="bschool" href="' + e8page(n) + '">' + logo(n, "sm") + '<span>' + esc(n.replace("Utah Military Academy - ", "UMA ")) + '</span></a>';
       }).join("") + '</div></div>';
@@ -11097,7 +11097,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           }).join('<div class="pog-at">–</div>') + "</div>" +
           '<div class="sect">Summary</div><div class="article">' +
           (st ? P("<b>" + esc(st.head) + "</b>") + (st.body || []).map(function (s) { return P(esc(s)); }).join("")
-              : (r.summary ? P(linkNames(esc(String(r.summary).replace(/\s*[^.]*\bis \d+-\d+\./g, "")), r.named || [])) : P("No write-up yet. The final score is in from Deseret News; the story follows once the box score posts."))) +
+              : (r.summary ? P(linkNames(esc(String(r.summary).replace(/\s*[^.]*\bis \d+-\d+\./g, "")), r.named || [])) : (cur === "8P" ? P("Final score from Deseret News. There are no 8-player box scores, so there is no game story.") /* E8-NOTE-NOV23 */ : P("No write-up yet. The final score is in from Deseret News; the story follows once the box score posts.")))) +
           "</div>" +
           '<div class="sect">Game notes</div><ul class="pog-notes">' + notes.map(function (n) { return "<li>" + n + "</li>"; }).join("") + "</ul>" +
           gameFilm(film) +
