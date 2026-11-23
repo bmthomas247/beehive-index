@@ -4108,6 +4108,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .clfine{font-size:12px;color:var(--ink-3);margin-top:10px}
 @media(max-width:640px){.clgrid{grid-template-columns:1fr}.clbox{padding:18px 14px}}
 
+/* ---- RKLOGO-NOV23: service logos + links on hero rank cells ---- */
+.rkm{display:inline-block;width:22px;height:22px;vertical-align:-6px;margin-right:6px;border-radius:3px;background:#fff;padding:1px;object-fit:contain}
+.pp-facts span.rkespn,.rkespn{display:inline-block;text-transform:none;vertical-align:-3px;margin-right:6px;padding:1px 4px;border-radius:3px;background:#fff;color:#CC0000;
+  font:italic 900 11px/1.2 Arial,Helvetica,sans-serif;letter-spacing:-.02em}
+.pp-facts>a.rkl{color:inherit;text-decoration:none;padding:0 18px;border-left:1px solid rgba(255,255,255,.18);min-width:70px;border-radius:4px}
+.pp-facts>a.rkl:hover{background:rgba(255,255,255,.08)}
+.pp-facts>a.rkl:hover b{text-decoration:underline}
+.pp-facts>a.rkl .rkgo{font-style:normal;font-size:10.5px;color:rgba(255,255,255,.6);display:block;margin-top:3px}
+@media(max-width:940px){.pp-facts>a.rkl:first-child{border-left:0;padding-left:0}}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6073,30 +6083,37 @@ nav.topbar ~ main.wrap{margin-top:20px}
   var RKPOS = { QB: "QB", RB: "running back", WR: "receiver", TE: "tight end", OT: "offensive tackle",
     IOL: "interior OL", OL: "offensive lineman", EDGE: "edge rusher", DL: "defensive lineman", LB: "linebacker",
     CB: "cornerback", S: "safety", DB: "defensive back", ATH: "athlete", K: "kicker", P: "punter", LS: "long snapper" };
-  function rkCell(label, r, cls) {
+  function rkMark(label) { /* RKLOGO-NOV23 */
+    if (label === "247Sports") return '<img class="rkm" src="src-logo-247.png" alt="">';
+    if (label === "Rivals") return '<img class="rkm" src="src-logo-rivals.png" alt="">';
+    if (label === "ESPN") return '<span class="rkespn" aria-hidden="true">ESPN</span>';
+    return "";
+  }
+  function rkCell(label, r, cls, url) {
     var pos = esc(RKPOS[r.pos] || r.pos || "");
     var sub = (r.pos_ut ? "#" + r.pos_ut + " " + pos + " in Utah"
             : r.posn ? "#" + r.posn + " " + pos + " nationally" : "") +
             (cls ? (r.pos_ut || r.posn ? "<br>" : "") + esc(cls) + " class" : "");
-    return [label + " &middot; Utah", "#" + r.st, sub, "rk",
+    return [rkMark(label) + label + " &middot; Utah", "#" + r.st, sub, "rk",
             label + " ranking, as published by " + label + " and carried on On3's Utah rankings" +
             (DATA.svc_ranks_asof ? " (as of " + DATA.svc_ranks_asof + ")" : "") +
-            (r.pos_ut ? "" : r.posn ? ". Position rank is national." : "")];
+            (r.pos_ut ? "" : r.posn ? ". Position rank is national." : "") +
+            (url ? ". Opens his " + label + " page." : ""), url || ""];
   }
   function svcRanks(p) {
     var R = p.ranks;
     if (R && (R.s247 || R.rivals || R.espn)) {
       var o = [];
-      if (R.s247) o.push(rkCell("247Sports", R.s247, R.cls));
-      if (R.rivals) o.push(rkCell("Rivals", R.rivals, R.cls));
-      if (R.espn) o.push(rkCell("ESPN", R.espn, R.cls));
+      if (R.s247) o.push(rkCell("247Sports", R.s247, R.cls, R.s247.link));
+      if (R.rivals) o.push(rkCell("Rivals", R.rivals, R.cls, R.rivals.link || (/on3\.com\/rivals\//.test(R.url || "") ? R.url : "")));
+      if (R.espn) o.push(rkCell("ESPN", R.espn, R.cls, R.espn.link));
       return o;
     }
     var v = p.svc || {}, out = [];
     function n(x) { return x !== undefined && x !== null && x !== "" && x !== "0"; }
-    if (n(v.st247)) out.push(["247Sports", "#" + esc(v.st247), "in Utah" + (n(v.natl247) ? " &middot; #" + esc(v.natl247) + " national" : ""), "rk", "247Sports ranking"]);
-    if (n(v.st_rivals)) out.push(["Rivals", "#" + esc(v.st_rivals), "in Utah" + (n(v.natl_rivals) ? " &middot; #" + esc(v.natl_rivals) + " national" : ""), "rk", "Rivals ranking"]);
-    if (n(v.espn)) out.push(["ESPN", esc(v.espn), "grade", "rk", "ESPN grade (a rating, not a rank)"]);
+    if (n(v.st247)) out.push([rkMark("247Sports") + "247Sports", "#" + esc(v.st247), "in Utah" + (n(v.natl247) ? " &middot; #" + esc(v.natl247) + " national" : ""), "rk", "247Sports ranking"]);
+    if (n(v.st_rivals)) out.push([rkMark("Rivals") + "Rivals", "#" + esc(v.st_rivals), "in Utah" + (n(v.natl_rivals) ? " &middot; #" + esc(v.natl_rivals) + " national" : ""), "rk", "Rivals ranking"]);
+    if (n(v.espn)) out.push([rkMark("ESPN") + "ESPN", esc(v.espn), "grade", "rk", "ESPN grade (a rating, not a rank)"]);
     return out;
   }
   /* PP-IG-NOV23: Duke-style infographic band under the player hero (Brandon, Nov 23 2026).
@@ -6433,9 +6450,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="pp-hero ppx" style="--tc:' + esc((byName[p.school] || {}).c1 || "#0B1F3A") + '">' +
       (p.no ? '<span class="ppx-no" aria-hidden="true">' + esc(p.no) + "</span>" : "") + band + '<div class="pp-hrow">' + head.replace('loading="lazy"', 'loading="eager"') +
       (facts.length ? '<div class="pp-facts">' + facts.map(function (f) {
-        return "<div" + (f[4] ? ' title="' + f[4] + '"' : "") +
+        var u = f[5] && /^https:\/\//.test(f[5]) ? f[5] : "";
+        return (u ? '<a class="rkl" href="' + esc(u) + '" target="_blank" rel="noopener"' : "<div") + (f[4] ? ' title="' + f[4] + '"' : "") +
           "><span>" + f[0] + "</span><b" + (f[3] ? ' class="' + f[3] + '"' : "") + ">" + f[1] + "</b>" +
-          (f[2] ? "<em>" + f[2] + "</em>" : "") + "</div>"; }).join("") + ppOffLogos(p) + "</div>" : "") +
+          (f[2] ? "<em>" + f[2] + "</em>" : "") + (u ? '<i class="rkgo">View profile \u2197</i></a>' : "</div>"); }).join("") + ppOffLogos(p) + "</div>" : "") +
       "</div></div>" + IG.html +
       '<div class="pp-grid"><div class="pp-main">' + (soHtml && !IG.game ? '<div class="pp-card pp-so">' + soHtml + "</div>" : "") +
       '<div class="pp-card">' + main.innerHTML + "</div></div>" +
