@@ -4296,7 +4296,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .pp-hero.ppx .ppx-cut{position:absolute;right:2%;bottom:0;height:100%;max-height:420px;width:auto;object-fit:contain;
   filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));pointer-events:none;z-index:0}
 .pp-hero.ppx.hascut .pp-hrow{position:relative;z-index:1}
-@media(max-width:700px){.pp-hero.ppx .ppx-cut{display:none}}
+@media(max-width:999px){.pp-hero.ppx .ppx-cut{display:none}} /* HEROCUT-SIZE-NOV23 */
+@media(min-width:1000px) and (max-width:1200px){.pp-hero.ppx .ppx-cut{height:88%;right:0}}
 
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
