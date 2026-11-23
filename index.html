@@ -9493,7 +9493,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
             "<span><b>" + x.c + "</b>" + esc(x.t) + "</span></div>";
         }).join("") + "</div></section>";
       var note = "Seeds, pairings and kickoffs from the official UHSAA bracket; higher seed hosts through the quarterfinals. Click a game for its preview, or once it is played, the summary and game notes.";
-      var pDone = block(done, "Playoff results", "Final scores from the Deseret News.");
+      var pDone = ""; /* TICK-FINALS-NOV23: Brandon "remove this part for now" -- was block(done, "Playoff results", ...) */
       var pNext = block(s1, (done.length ? "Next up" : "First up") + " &middot; " + esc(day(s1.length ? s1[0].d : nextD)), note);
       var pThen = block(s2, "Then &middot; " + esc(day(s2.length ? s2[0].d : nextD)), "");
       var html = hero + pDone + pNext + pThen;
@@ -13913,7 +13913,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
             if (g.bye || !real(g.teams[0]) || !real(g.teams[1])) return;
             var d = String(g.ko || r.date || "").slice(0, 10), a = g.teams[0], b = g.teams[1];
             var key = [a.team, b.team].sort().join("|"), f = FIN[key];
-            if (f ? d < addD(today, -8) : (d < today || d > addD(today, 14))) return;
+            /* TICK-FINALS-NOV23: championship finals stay */
+            if (f ? (k !== R.length - 1 && d < addD(today, -8)) : (d < today || d > addD(today, 14))) return;
             out.push({ c: c, ci: ci, rn: rn, d: d, ko: g.ko || "", a: a, b: b, f: f, key: key, id: g.id }); /* tkhpo-drawer-nov11 */
           });
         });
