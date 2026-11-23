@@ -4075,6 +4075,15 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .hmcx-wall b{font-weight:700;color:var(--ink)}
 .hmcx-ft{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-top:10px}
 .hmcx-ft small{color:var(--ink-3);font-size:11px}
+/* HOME-COMMIT-LEVELS-NOV23 */
+.hmcx-lad{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;position:relative;z-index:1}
+.hmcx-lad em{font-style:normal;font-size:12px;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.hmcx-lad em b{color:var(--sodium-bright,#E8A33D);margin-left:5px}
+.hmcx-lad em.z{background:transparent;color:#8fa1b8;border-style:dashed}
+.hmcx-lad em.z b{color:#8fa1b8}
+.hmcx-cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:12px;padding:10px 12px;border-radius:10px;border:1px dashed var(--sodium-bright,#E8A33D);background:rgba(232,163,61,.08)}
+.hmcx-cta span{font-size:13px;line-height:1.35}
+.hmcx-cta button{font-weight:700}
 .cx-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:18px 0 8px;border-bottom:2px solid var(--ink);padding-bottom:4px}
 .cx-h h3{margin:0;font-family:var(--f-display);text-transform:uppercase;letter-spacing:.05em;font-size:15px}
 .cx-h small{color:var(--ink-3);font-size:12px}
@@ -8136,11 +8145,23 @@ nav.topbar ~ main.wrap{margin-top:20px}
         '<div class="cx-bar"><i style="width:' + pct + '%"></i></div></div>' +
       '<div class="cx-stat"><b>' + home + '</b><span>staying home at a Utah college</span></div>' +
       '<div class="cx-stat"><b>' + last30 + '</b><span>in the last 30 days</span></div>' +
-      '</div></div>' +
+      '</div>' +
+      /* HOME-COMMIT-LEVELS-NOV23: every level, zero shown */ (function () {
+        var lv = {}; sr.forEach(function (c) { var k = c.lv || ""; if (k) lv[k] = (lv[k] || 0) + 1; });
+        return '<div class="hmcx-lad" aria-label="Commitments by level">' +
+          [["FBS", "FBS"], ["FCS", "FCS"], ["D2", "D2"], ["D3", "D3"], ["NAIA", "NAIA"], ["JUCO", "JUCO"], ["PREP", "Prep"]].map(function (x) {
+            return '<em' + (lv[x[0]] ? '' : ' class="z"') + '>' + x[1] + '<b>' + (lv[x[0]] || 0) + '</b></em>';
+          }).join("") + '</div>';
+      })() +
+      '</div>' +
       '<div class="hmcx-in"><div class="cx-cards">' + sr.slice(0, 4).map(cxCard).join("") + '</div>' +
       '<div class="hmcx-wall">' + cols.slice(0, 10).map(function (k) {
         return '<span title="' + esc(k) + '">' + collegeMark(k, true) + '<b>' + n[k] + '</b> ' + esc(k) + '</span>';
       }).join("") + (cols.length > 10 ? '<span>+' + (cols.length - 10) + ' more</span>' : '') + '</div>' +
+      '<div class="hmcx-cta"><span><b>Every level counts.</b> Committed to a D2, D3, NAIA, junior college or prep program? ' +
+        'Send us the post and we&rsquo;ll add it.</span>' +
+        '<button type="button" class="cx-more" data-go="send" onclick="setTimeout(function(){var s=document.querySelector(\'#sendform select\');' +
+        'if(s){s.value=\'Offer or commitment\';}},60)">Send a commitment &rsaquo;</button></div>' +
       '<div class="hmcx-ft"><small>Sources: 247Sports Utah commit board and players&rsquo; own posts on X; each card links its source. ' +
         'Rated = graded by at least one recruiting service.</small>' +
       '<button type="button" class="cx-more" data-go="recruit">Full tracker &amp; best available &rsaquo;</button></div>' +
