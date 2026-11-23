@@ -4267,6 +4267,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .clcamp input{width:100%;min-width:0;box-sizing:border-box}
 @media(max-width:640px){.clcamp{grid-template-columns:1fr 1fr}}
 
+/* ---- RCARD-PHOTO-NOV23 ---- */
+.rc-top.hasph{grid-template-columns:118px 1fr auto}
+.rc-photo{position:relative;width:118px;height:146px;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.rc-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block}
+.rc-pcrest{position:absolute;right:4px;bottom:4px;width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.rc-pcrest img,.rc-pcrest .crest{width:26px;height:26px;object-fit:contain}
+.rc-credit a{color:#0B5ED7}
+@media(max-width:700px){.rc-top.hasph{grid-template-columns:84px 1fr}.rc-photo{width:84px;height:104px}}
+@media print{.rc-top.hasph{grid-template-columns:118px 1fr auto!important}}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6819,8 +6829,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
     d.id = "rcwrap"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Recruit card");
     d.innerHTML = '<div class="rcbar"><button type="button" class="pri" id="rcprint">Print / Save as PDF</button><button type="button" id="rcx" style="background:#000;color:#fff">Share on X</button><button type="button" id="rccopy">Copy link</button><button type="button" id="rcclose">Close ✕</button></div>' +
       '<div class="rc" style="--tc:' + esc(tc) + '">' +
-      '<div class="rc-top">' + (p.no ? '<span class="no" aria-hidden="true">' + esc(p.no) + "</span>" : "") +
-        '<div class="rc-crest">' + logo(p.school, "xl").replace('loading="lazy"', 'loading="eager"') + "</div>" +
+      '<div class="rc-top' + (p.photo ? ' hasph' : '') + '">' + /* RCARD-PHOTO-NOV23 */ (p.no ? '<span class="no" aria-hidden="true">' + esc(p.no) + "</span>" : "") +
+        (p.photo ? '<div class="rc-photo"><img src="' + esc(p.photo.src) + '" alt="' + esc(p.name) + '"><span class="rc-pcrest">' +
+          logo(p.school, "md").replace('loading="lazy"', 'loading="eager"') + '</span></div>'
+          : '<div class="rc-crest">' + logo(p.school, "xl").replace('loading="lazy"', 'loading="eager"') + "</div>") +
         '<div><div class="rc-fn">' + esc(fn) + '</div><div class="rc-ln">' + esc(ln) + "</div>" +
         '<div class="rc-sub">' + esc(p.school) + " " + esc(t.mascot || "") + " · " + esc(regLbl(p.team_cls, p.region)) + (t.w != null ? " · " + t.w + "-" + t.l + " in 2026" : "") +
         (cls ? "<br>" + esc(cls) : "") + "</div></div>" +
@@ -6834,7 +6846,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         (rks ? '<div class="rc-h">Recruiting rankings</div><div class="rc-rk">' + rks + "</div>" : "") +
         offers + film + contact +
       "</div></div>" +
-      '<div class="rc-foot"><div>Stats: MaxPreps box scores (Deseret News for schools that file none) · scores: Deseret News · ranks as published by each service · offers: 247Sports or the player’s own post on X · height/weight as listed on the roster or Hudl · items marked player-reported are not verified by us.</div><b>UTAHHIGHSCHOOLFOOTBALL.COM</b></div>' +
+      '<div class="rc-foot"><div>' + (p.photo ? '<span class="rc-credit">Photo: ' + (p.photo.link ? '<a href="' + esc(p.photo.link) + '">' + esc(p.photo.by) + '</a>' : esc(p.photo.by)) + ', used with permission. </span>' : '') + 'Stats: MaxPreps box scores (Deseret News for schools that file none) · scores: Deseret News · ranks as published by each service · offers: 247Sports or the player’s own post on X · height/weight as listed on the roster or Hudl · items marked player-reported are not verified by us.</div><b>UTAHHIGHSCHOOLFOOTBALL.COM</b></div>' +
       "</div>";
     function close() { d.remove(); document.removeEventListener("keydown", onKey); }
     function onKey(e) { if (e.key === "Escape") close(); }
