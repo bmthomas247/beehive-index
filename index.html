@@ -3746,6 +3746,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .ch-sc{display:block;font-size:13px;color:#E6ECF5}
 .ch-wh{display:block;font-size:12px;color:#9FB0C8;margin-top:1px}
 .ch-src{margin:10px 0 0;text-align:center;font-size:11.5px;color:#9FB0C8}
+/* EIGHT-CHAMP-NOV23: the 8-player champion takes the whole last row */
+.ch-c.ch-8p{grid-column:1/-1;justify-content:center}
 @media (max-width:760px){ .ch-g{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))} .ch-hd h2{font-size:23px} .ch-nm{font-size:17px} .ch-c{gap:9px;padding:10px} .ch-c .crest,.ch-c .swatch{width:44px;height:44px;flex-basis:44px} }
 .flagad.pwad .fa-l small{color:#C8D3E3}
 .flagad.pwad .fa-crests .crest{border-color:#0B1F3A}
@@ -4061,6 +4063,18 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .cx-lv{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
 .cx-lv em{font-style:normal;font-size:11px;padding:1px 7px;border-radius:99px;background:rgba(255,255,255,.12);color:#fff}
 .cx-src{font-size:11px;color:#8fa1b8;margin-top:10px;position:relative;z-index:1}
+/* HOME-COMMIT-NOV23 */
+.hmcx{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden}
+.hmcx .cx-band{border-radius:0;margin:0;cursor:pointer}
+.hmcx .cx-band .hmcx-k{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--sodium-bright,#E8A33D);font-weight:700;margin-bottom:2px}
+.hmcx-in{padding:12px 14px 14px}
+.hmcx-in .cx-cards{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.hmcx-wall{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 4px}
+.hmcx-wall span{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--ink-2);background:var(--surface-2,rgba(0,0,0,.03));border:1px solid var(--line);border-radius:99px;padding:3px 9px 3px 4px}
+.hmcx-wall .cmark,.hmcx-wall .cmark img{width:24px;height:24px}
+.hmcx-wall b{font-weight:700;color:var(--ink)}
+.hmcx-ft{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-top:10px}
+.hmcx-ft small{color:var(--ink-3);font-size:11px}
 .cx-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:18px 0 8px;border-bottom:2px solid var(--ink);padding-bottom:4px}
 .cx-h h3{margin:0;font-family:var(--f-display);text-transform:uppercase;letter-spacing:.05em;font-size:15px}
 .cx-h small{color:var(--ink-3);font-size:12px}
@@ -8051,7 +8065,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
   /* ---- Commit hub (Nov 11 2026) ---- */
   var CXS = DATA.signings || {};
-  var CXC = CXS.commits_all || [];
+  /* CXJUCO-NOV23: junior-college players are not Utah high school seniors */
+  var CXJ = {}; COMMITTED.forEach(function (p) { if (p.juco) CXJ[(p.name + "|" + p.school).toLowerCase()] = 1; });
+  var CXCOM = COMMITTED.filter(function (p) { return !p.juco; });
+  var CXC = (CXS.commits_all || []).filter(function (c) { return !CXJ[(c.n + "|" + c.s).toLowerCase()]; });
   var CXM = CXS.momentum || {};
   var CXUT = { "Utah": 1, "BYU": 1, "Utah State": 1, "Utah Tech": 1, "Southern Utah": 1, "Weber State": 1, "Snow College": 1 };
   var CXMON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -8061,11 +8078,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
   function cxVia(via) { return via === "247" ? "247Sports" : via === "X" ? "Player&rsquo;s post" : "Reported"; }
   function cxMom(n, s) { return CXM[(n + "|" + s).toLowerCase()] || null; }
   function cxBand() {
-    var rated27 = OPENB.filter(function (p) { return p.cls === "2027"; }).length + COMMITTED.length;
+    var rated27 = OPENB.filter(function (p) { return p.cls === "2027"; }).length + CXCOM.length;
     var n27 = CXC.filter(function (c) { return c.c === "2027" || !c.c; }).length;
     var home = CXC.filter(function (c) { return CXUT[c.col]; }).length;
     var lv = {}; CXC.forEach(function (c) { var k = c.lv || "other"; lv[k] = (lv[k] || 0) + 1; });
-    var pct = rated27 ? Math.round(COMMITTED.length / rated27 * 100) : 0;
+    var pct = rated27 ? Math.round(CXCOM.length / rated27 * 100) : 0;
     var cut = CXS.since30 || "";
     var last30 = CXC.filter(function (c) { return c.d && c.d >= cut; }).length;
     return '<div class="cx-band"><h2>Utah Commitment Tracker</h2>' +
@@ -8074,7 +8091,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="cx-stat"><b>' + n27 + '</b><span>Seniors committed</span><div class="cx-lv">' +
         ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO", "PREP"].filter(function (k) { return lv[k]; }).map(function (k) {
           return "<em>" + esc(LVNAME[k] || k) + " " + lv[k] + "</em>"; }).join("") + "</div></div>" +
-      '<div class="cx-stat"><b>' + pct + '%</b><span>of ' + rated27 + ' rated seniors are committed (' + COMMITTED.length + ")</span>" +
+      '<div class="cx-stat"><b>' + pct + '%</b><span>of ' + rated27 + ' rated seniors are committed (' + CXCOM.length + ")</span>" +
         '<div class="cx-bar"><i style="width:' + pct + '%"></i></div></div>' +
       '<div class="cx-stat"><b>' + home + '</b><span>staying home with a Utah college program</span></div>' +
       '<div class="cx-stat"><b>' + last30 + '</b><span>commitments in the last 30 days</span></div>' +
@@ -8097,6 +8114,37 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var show = CXST.all || CXST.col ? list : list.slice(0, 8);
     return '<div class="cx-cards">' + show.map(cxCard).join("") + "</div>" +
       (show.length < list.length ? '<button type="button" class="cx-more" data-cx="allc">Show all ' + list.length + " commitments</button>" : "");
+  }
+  /* HOME-COMMIT-NOV23: front-page Senior Commitment Tracker. Same sources as the Commitments page. */
+  function hmCommit() {
+    var sr = CXC.filter(function (c) { return c.c === "2027"; });
+    if (!sr.length) return "";
+    var rated = OPENB.filter(function (p) { return p.cls === "2027"; }).length + CXCOM.length;
+    var pct = rated ? Math.round(CXCOM.length / rated * 100) : 0;
+    var home = sr.filter(function (c) { return CXUT[c.col]; }).length;
+    var cut = CXS.since30 || "";
+    var last30 = sr.filter(function (c) { return c.d && c.d >= cut; }).length;
+    var n = {}; sr.forEach(function (c) { n[c.col] = (n[c.col] || 0) + 1; });
+    var cols = Object.keys(n).sort(function (a, b) { return n[b] - n[a] || a.localeCompare(b); });
+    return '<div class="hmcx"><div class="cx-band" data-go="recruit" role="button" tabindex="0" ' +
+      'onkeydown="if(event.key===\'Enter\')this.click()" aria-label="Open the Senior Commitment Tracker">' +
+      '<span class="hmcx-k">Class of 2027</span><h2>Senior Commitment Tracker</h2>' +
+      '<div class="cx-sub">Where Utah&rsquo;s seniors are playing college football &mdash; every commitment we can source</div>' +
+      '<div class="cx-stats">' +
+      '<div class="cx-stat"><b>' + sr.length + '</b><span>seniors committed</span></div>' +
+      '<div class="cx-stat"><b>' + pct + '%</b><span>of ' + rated + ' rated seniors committed</span>' +
+        '<div class="cx-bar"><i style="width:' + pct + '%"></i></div></div>' +
+      '<div class="cx-stat"><b>' + home + '</b><span>staying home at a Utah college</span></div>' +
+      '<div class="cx-stat"><b>' + last30 + '</b><span>in the last 30 days</span></div>' +
+      '</div></div>' +
+      '<div class="hmcx-in"><div class="cx-cards">' + sr.slice(0, 4).map(cxCard).join("") + '</div>' +
+      '<div class="hmcx-wall">' + cols.slice(0, 10).map(function (k) {
+        return '<span title="' + esc(k) + '">' + collegeMark(k, true) + '<b>' + n[k] + '</b> ' + esc(k) + '</span>';
+      }).join("") + (cols.length > 10 ? '<span>+' + (cols.length - 10) + ' more</span>' : '') + '</div>' +
+      '<div class="hmcx-ft"><small>Sources: 247Sports Utah commit board and players&rsquo; own posts on X; each card links its source. ' +
+        'Rated = graded by at least one recruiting service.</small>' +
+      '<button type="button" class="cx-more" data-go="recruit">Full tracker &amp; best available &rsaquo;</button></div>' +
+      '</div></div>';
   }
   function cxWall() {
     var n = {}; CXC.forEach(function (c) { n[c.col] = (n[c.col] || 0) + 1; });
@@ -10044,9 +10092,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="fmain">' +
       /* CHAMPS-BANNER-NOV21: congratulate the 2026 state champions. A class shows only when the UHSAA
          bracket final and the Deseret recap row agree on winner and score. */ (function () {
-        var C = (DATA.po_official || {}).classes || {}, RC = DATA.recap || [];
+        var C = (DATA.po_official || {}).classes || {}, RC = (DATA.recap || []).concat(dn8pFinals()); /* EIGHT-CHAMP-NOV23 */
         var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-        var out = ["6A", "5A", "4A", "3A", "2A", "1A"].map(function (c) {
+        var out = ["6A", "5A", "4A", "3A", "2A", "1A", "8P"].map(function (c) {
           var R = (C[c] || {}).rounds || []; if (!R.length) return null;
           var last = R[R.length - 1], g = (last.games || [])[0]; if (!g || (g.teams || []).length !== 2) return null;
           var a = g.teams[0], b = g.teams[1];
@@ -10057,9 +10105,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
           var m = /^(\d{4})-(\d\d)-(\d\d)/.exec(last.date || ""), dt = m ? MON[+m[2] - 1] + " " + (+m[3]) : "";
           var nm = last.name || "", ven = /Southern Utah/.test(nm) ? "Eccles Coliseum, SUU" : /U of U/.test(nm) ? "Rice-Eccles Stadium" : "";
           var tc = byName[w.team] ? byName[w.team].c1 : "#E8A33D";
-          return '<div class="ch-c" role="button" tabindex="0" data-t="' + esc(w.team) + '" style="--tc:' + esc(tc || "#E8A33D") + '" ' +
-            'onkeydown="if(event.key===\'Enter\')this.click()" aria-label="' + esc(c + " state champion " + w.team) + '">' +
-            logo(w.team, "xl") + '<span class="ch-t"><span class="ch-cls">' + c + ' CHAMPIONS</span>' +
+          var e8 = c === "8P", cl = e8 ? "8-PLAYER" : c;
+          return '<div class="ch-c' + (e8 ? ' ch-8p' : '') + '" role="button" tabindex="0" ' +
+            (e8 || !byName[w.team] ? 'data-art="rich-moves-up-11-player-nov19"' : 'data-t="' + esc(w.team) + '"') + ' style="--tc:' + esc(tc || "#E8A33D") + '" ' +
+            'onkeydown="if(event.key===\'Enter\')this.click()" aria-label="' + esc(cl + " state champion " + w.team) + '">' +
+            logo(w.team, "xl") + '<span class="ch-t"><span class="ch-cls">' + cl + ' CHAMPIONS</span>' +
             '<span class="ch-nm">' + esc(w.team) + '</span>' +
             '<span class="ch-sc">def. ' + esc(l.team) + " " + (+w.res) + "&ndash;" + (+l.res) + "</span>" +
             '<span class="ch-wh">' + esc(dt + (ven ? " \u00b7 " + ven : "")) + "</span></span></div>";
@@ -10067,7 +10117,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         if (!out.length) return "";
         return '<div class="chpanel"><div class="ch-hd"><span class="ch-kick">&#127942; UHSAA State Champions &middot; 2026</span>' +
           "<h2>Congratulations, Champions</h2>" +
-          "<p>Six classes, six titles. Hats off to every player, coach and family who made this season.</p></div>" +
+          "<p>" + (out.length === 7 ? "Seven state titles, 11-man and 8-player." : "Six classes, six titles.") + " Hats off to every player, coach and family who made this season.</p></div>" +
           '<div class="ch-g">' + out.join("") + "</div>" +
           '<p class="ch-src">Final scores: Deseret News, checked against the official UHSAA brackets. Tap a champion for its season.</p></div>';
       })() +
@@ -10095,6 +10145,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           (heroHtml ? "" : leadHtml) +
           (subs.length ? '<div class="scards">' + subs.join("") + "</div>" : "")) +
           (HGS && HGS.monday ? HGS.html : "")) +
+      /* HOME-COMMIT-NOV23 */ hmCommit() +
       '<a class="flagad" href="#" data-go="flag" aria-label="Girls flag football in Utah: sign the petition">' +
         '<span class="fa-l"><strong>Utah girls are already playing football.</strong>' +
         "<small>The state just doesn&rsquo;t count it yet. <em>17 states sanction it &middot; Olympic debut, LA 2028</em></small></span>" +
@@ -13888,6 +13939,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<a href="#" class="fullpage" data-go="send">Go to the form &rarr;</a></div>';
     bindV2();
   }
+  /* EIGHT-CHAMP-NOV23: 8-player finals are not in DATA.recap (Deseret harvest is 11-man). Score from the Deseret
+     News game story, Nov 14 2026: https://www.deseret.com/sports/2026/11/14/high-school-football-1a-8-player-championship-rich-milford/
+     It is the same as the UHSAA bracket result. */
+  function dn8pFinals() {
+    return [{ date: "2026-11-14", away: "Milford", home: "Rich", away_score: 35, home_score: 69, winner: "Rich", loser: "Milford" }];
+  }
   function drawTicker() {
     var TK = DATA.ticker || [];
     var wrap = document.getElementById("tickwrap");
@@ -13899,12 +13956,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
        same as the home page. Click opens that class's bracket. ---- */
     var POTK = (function () {
       var PO = (DATA.po_official || {}).classes || {};
-      var ORD = ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) { return PO[c] && PO[c].rounds; });
+      var ORD = ["6A", "5A", "4A", "3A", "2A", "1A", "8P"].filter(function (c) { return PO[c] && PO[c].rounds; }); /* EIGHT-CHAMP-NOV23 */
       function iso(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
       function addD(x, n) { var q = x.split("-"); return iso(new Date(+q[0], +q[1] - 1, +q[2] + n)); }
       var today = iso(new Date());
       var FIN = {};
-      (DATA.recap || []).forEach(function (g) { if (g.date && g.date >= "2026-10-20") FIN[[g.away, g.home].sort().join("|")] = g; });
+      (DATA.recap || []).concat(dn8pFinals()).forEach(function (g) { if (g.date && g.date >= "2026-10-20") FIN[[g.away, g.home].sort().join("|")] = g; });
       function real(t) { return t && t.team && !/^Winner\b/i.test(t.team) && !/bye/i.test(t.res || ""); }
       var out = [];
       ORD.forEach(function (c, ci) {
@@ -13951,14 +14008,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var gid = !f && TKID[p.key] && byGame[TKID[p.key]] ? TKID[p.key] : "";
       var go = '<div class="tkgo">' +
         '<button type="button" data-pbg="' + esc(p.c + "|" + p.id) + '">' + (f ? "Game notes" : "Game preview") + "</button>" +
-        '<button type="button" class="tkgo-bk" data-poc="' + p.c + '">' + esc(p.c) + " bracket</button></div>";
+        '<button type="button" class="tkgo-bk" data-poc="' + p.c + '">' + esc(p.c === "8P" ? "8-Player" : p.c) + " bracket</button></div>";
       return '<div class="tcard tkpo" tabindex="0" role="group" aria-label="' +
         esc(p.c + " playoffs: " + p.a.team + " vs " + p.b.team) + '">' + go +
         '<div class="tbars"><i style="background:' + esc(ca) + '"></i><i style="background:' + esc(cb) + '"></i></div>' +
         '<div class="tbody"><div class="tmeta"><span class="tstat">' + (f ? "Final" : esc(p.c) + " playoffs") + "</span>" +
         "<span>" + esc(mdy(p.d)) + "</span></div>" +
         pside(p.a, f && f.winner === p.b.team) + pside(p.b, f && f.winner === p.a.team) +
-        '<div class="tfoot"><span class="tkpo-tag">' + esc(p.c) + " &middot; " + esc(p.rn) + "</span>" +
+        '<div class="tfoot"><span class="tkpo-tag">' + esc(p.c === "8P" ? "8-Player" : p.c) + " &middot; " + esc(p.rn) + "</span>" +
         (!f && tm(p.ko) ? " &middot; " + tm(p.ko) : "") + "</div></div></div>";
     }
 
