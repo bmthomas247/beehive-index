@@ -4148,6 +4148,27 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .clbox input[type=text],.clbox input[type=email],.clbox input[type=tel],.clbox select,.clbox textarea{width:100%;min-width:0;box-sizing:border-box}
 .clbox input[type=tel]{font:inherit;font-weight:400;padding:8px 10px;border:1px solid var(--line,#ccc);border-radius:4px;background:var(--bg,#fff);color:inherit}
 
+/* ---- CLAIM-SCROLL-NOV23 ---- */
+.clterms{max-height:340px;overflow-y:auto;border:1px solid var(--line,#ccc);border-radius:6px;padding:4px 14px;background:var(--bg,#fafafa)}
+.clterms .clt{padding:9px 0;border-bottom:1px solid var(--line-soft,#eee)}
+.clterms .clt:last-child{border-bottom:0}
+.clterms .clt b{display:block}
+.clterms .clend{padding:10px 0 6px;text-align:center;font-size:12px;color:var(--ink-3)}
+.clagree{display:flex;align-items:center;gap:12px;margin-top:12px;padding:14px 16px;border-radius:6px;background:#0B1F3A;color:#fff;
+  font-family:var(--f-display);font-size:16px;letter-spacing:.04em;cursor:pointer}
+.clagree input{width:24px;height:24px;flex:none;accent-color:#E8A33D}
+.clagree.locked{background:#6C7883;cursor:not-allowed}
+.clagree small{display:block;font-family:inherit;font-size:12px;letter-spacing:0;opacity:.8;margin-top:2px}
+
+/* ---- CLAIM-REELS-NOV23 ---- */
+.clreels{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:6px}
+.clreel{display:flex;flex-direction:column;gap:4px;font-size:12px;font-weight:400;cursor:pointer;border:1px solid var(--line,#ddd);border-radius:6px;padding:6px}
+.clreel img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:4px;background:#222}
+.clreel .t{line-height:1.3;max-height:2.6em;overflow:hidden}
+.clreel .h{display:flex;align-items:center;gap:6px;font-weight:600}
+.clreel.off{opacity:.45}
+.clreel.off img{filter:grayscale(1)}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6331,10 +6352,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<label>Relationship<select name="prel"><option value="">Choose…</option><option>Mother</option><option>Father</option><option>Legal guardian</option></select></label>' +
       '<label>Parent/guardian email<input type="email" name="pmail" autocomplete="off"></label>' +
       '<label>Parent/guardian phone<input type="tel" name="pphone" autocomplete="off" placeholder="801-555-0123"></label></div>' +
-      '<div class="clh">2. Terms (tick each one)</div>' +
-      CLAIM_TERMS.map(function (t, i) {
-        return '<label class="clterm"><input type="checkbox" name="t' + i + '" required><span><b>' + (i + 1) + ". " + esc(t[0]) + "</b>" + esc(t[1]) + "</span></label>";
-      }).join("") +
+      '<div class="clh">2. Terms</div>' + /* CLAIM-SCROLL-NOV23 */
+      '<div class="clterms" id="clterms" tabindex="0">' + CLAIM_TERMS.map(function (t, i) {
+        return '<div class="clt"><b>' + (i + 1) + ". " + esc(t[0]) + "</b>" + esc(t[1]) + "</div>";
+      }).join("") + '<div class="clend">End of terms (version ' + CLAIM_TV + ")</div></div>" +
+      '<label class="clagree locked" id="clagree"><input type="checkbox" name="tall" disabled>' +
+      '<span>I have read and agree to all ' + CLAIM_TERMS.length + ' terms<small id="clagreeh">Scroll to the bottom of the terms to accept</small></span></label>' +
       '<div class="clh">3. How we verify it is him</div>' +
       "<p style='margin:0 0 8px'>Your code: <span class='clcode'>" + code + "</span></p>" +
       '<div class="clgrid"><label>Verify by<select name="verify" required><option value="">Choose one…</option>' +
@@ -6357,6 +6380,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
         .map(function (x) { return '<label><input type="checkbox" class="clspc" value="' + x + '"> ' + x + "</label>"; }).join("") +
       '<label style="grid-column:1/-1">Other <input type="text" name="sportsother" placeholder="Any other sport" style="flex:1"></label></div></details></div>' +
       '<label class="w">In his own words (up to 400 characters)<textarea name="bio" rows="3" maxlength="400"></textarea></label></div>' +
+      ((p.reels || []).length ? '<div class="clrow" style="margin-top:12px">Hide any highlights <span style="font-weight:400;color:var(--ink-3)">(they stay on Hudl; they just won’t show on this profile)</span>' + /* CLAIM-REELS-NOV23 */
+        '<div class="clreels">' + p.reels.map(function (r) {
+          var id = (/\/([0-9a-f]{16,})\/?$/.exec(r.u || "") || [])[1] || "";
+          return id ? '<label class="clreel">' + (r.thumb ? '<img src="' + esc(r.thumb) + '" alt="" loading="lazy">' : "") +
+            '<span class="t">' + esc(r.t || "Highlight") + (r.s ? " · " + esc(r.s) : "") + '</span>' +
+            '<span class="h"><input type="checkbox" class="clhide" value="' + esc(id) + '"> Hide</span></label>' : "";
+        }).join("") + "</div></div>" : "") +
       '<div class="clh">5. Sign</div><div class="clgrid">' +
       '<label class="w">Type your full name to sign. You agree to all ' + CLAIM_TERMS.length + ' terms above (version ' + CLAIM_TV + ').<input type="text" name="sig" required></label></div>' +
       '<div class="clerr" id="clerr" hidden></div>' +
@@ -6369,6 +6399,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
     document.addEventListener("keydown", onKey);
     document.body.appendChild(d);
     var f = d.querySelector("#clform"), err = d.querySelector("#clerr");
+    d.addEventListener("change", function (e) { /* CLAIM-REELS-NOV23 */
+      if (e.target.classList && e.target.classList.contains("clhide")) e.target.closest(".clreel").classList.toggle("off", e.target.checked);
+    });
+    (function () { /* CLAIM-SCROLL-NOV23: unlock the tick only after the terms are scrolled to the end */
+      var box = d.querySelector("#clterms"), ag = d.querySelector("#clagree");
+      function chk() {
+        if (box.scrollTop + box.clientHeight >= box.scrollHeight - 6) {
+          f.elements.tall.disabled = false; ag.classList.remove("locked");
+          d.querySelector("#clagreeh").textContent = "Tick to accept";
+          box.removeEventListener("scroll", chk);
+        }
+      }
+      box.addEventListener("scroll", chk); setTimeout(chk, 50);
+    })();
     var CLHL = { code_x: ["His X handle", "@handle"], code_xpost: ["His X handle", "@handle"], /* CLAIM-VERIFY-NOV23 */
       code_hudl: ["His Hudl profile link", "https://www.hudl.com/profile/..."], code_ig: ["His Instagram handle", "@handle"],
       code_tiktok: ["His TikTok handle", "@handle"], code_fb: ["Name on the Facebook account sending it", "First Last"],
@@ -6433,7 +6477,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       else if (v("role") === "Player under 18" && v("pmail").toLowerCase() === v("semail").toLowerCase()) bad = "Use your parent’s own email, not yours.";
       else if (v("role") !== "Player" && !v("prel")) bad = "Choose the parent or guardian’s relationship to the player.";
       else if (v("role") !== "Player" && v("pphone").replace(/\D/g, "").length < 10) bad = "Enter a parent or guardian phone number with area code.";
-      else if (CLAIM_TERMS.some(function (t, i) { return !v("t" + i); })) bad = "Tick every one of the " + CLAIM_TERMS.length + " terms.";
+      else if (!v("tall")) bad = f.elements.tall.disabled ? "Scroll to the bottom of the terms, then tick “I have read and agree”." : "Tick “I have read and agree” to accept the terms.";
       else if (!v("verify")) bad = "Choose how we verify it is him.";
       else if (!v("handle")) bad = "Fill in: " + d.querySelector("#clhl").textContent + ".";
       else if (v("showemail") && !/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/.test(v("pemail"))) bad = "Enter his email, or untick “show his email”.";
@@ -6443,7 +6487,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var now = new Date();
       var minor = v("role") !== "Player", ppar = v("role") === "Parent or guardian"; /* CLAIM-V1B-NOV23 */
       var pn = ppar ? v("signer") : v("pname"), pm = ppar ? v("semail") : v("pmail");
-      var detail = ["PROFILE CLAIM v1", "terms " + CLAIM_TV + " (all " + CLAIM_TERMS.length + " ticked; public-content warning shown on each show tick)",
+      var detail = ["PROFILE CLAIM v1", "terms " + CLAIM_TV + " (all " + CLAIM_TERMS.length + ", scrolled to the end and accepted with one tick; public-content warning shown on each show tick)",
         "signed by: " + v("signer") + " (" + v("role") + "), " + now.toISOString(),
         "player 13+: yes",
         "under 18: " + (minor ? "yes | parent/guardian: " + pn + " (" + v("prel") + "), " + pm + ", " + v("pphone") +
@@ -6453,6 +6497,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         "GPA: " + (v("gpa") || "-") + " | show: " + (v("showgpa") ? "yes" : "no"),
         "other sports: " + (clSports() || "-"),
         "bio: " + (v("bio") || "-"),
+        "hide reels: " + ([].map.call(d.querySelectorAll(".clhide:checked"), function (c) { return c.value; }).join("; ") || "-"),
         "page: " + location.origin + "/?player=" + encodeURIComponent(p.name + "|" + p.school)].join("\n");
       var sink = document.getElementById("clsink");
       if (!sink) { sink = document.createElement("iframe"); sink.name = sink.id = "clsink"; sink.style.display = "none"; sink.title = "submit"; document.body.appendChild(sink); }
