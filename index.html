@@ -4278,6 +4278,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
 @media(max-width:700px){.rc-top.hasph{grid-template-columns:84px 1fr}.rc-photo{width:84px;height:104px}}
 @media print{.rc-top.hasph{grid-template-columns:118px 1fr auto!important}}
 
+/* ---- PLIST-CARD-NOV23 ---- */
+.pcardbtn{display:inline-flex;align-items:center;gap:5px;margin-left:8px;padding:2px 9px;border-radius:999px;border:1px solid var(--line,#ccc);
+  background:var(--surface,#fff);color:var(--ink,#111);font-family:inherit;font-size:11px!important;font-weight:600;line-height:1.6;letter-spacing:0;text-transform:none;cursor:pointer;vertical-align:2px;white-space:nowrap}
+.pcardbtn::before{content:"";width:9px;height:11px;border:1.5px solid currentColor;border-radius:2px;box-sizing:border-box}
+.pcardbtn:hover{background:#0B1F3A;color:#fff;border-color:#0B1F3A}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6788,6 +6794,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
         s.past.slice(0, 3).map(function (c) { return esc(cmpTitle(c)) + (c.results ? " (" + esc(c.results) + ")" : ""); }).join("; ") + "</div>" : "") +
       '<div class="rc-pr">Camp schedule is player-reported, not verified by us.</div>';
   }
+  document.addEventListener("click", function (e) { /* PLIST-CARD-NOV23: before the row's own player click */
+    var b = e.target.closest && e.target.closest(".pcardbtn");
+    if (!b) return;
+    e.preventDefault(); e.stopPropagation();
+    var p = PKEY[pkeyOf(b.dataset.cn, b.dataset.cs)];
+    if (p) openCard(p);
+  }, true);
   function openCard(p) {
     var old = document.getElementById("rcwrap"); if (old) old.remove();
     var t = byName[p.school] || {}, c = t.contact || {}, tc = t.c1 || "#0B1F3A";
@@ -12900,6 +12913,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           (p.transfer_from ? '<span class="badge xf">from ' + esc(p.transfer_from) + "</span>" : "") +
           (p.twitter ? '<span class="badge cm">@' + esc(p.twitter) + "</span>" : "") +
           (p.hudl ? '<span class="badge">film</span>' : "") +
+          '<button type="button" class="pcardbtn" data-cn="' + esc(p.name) + '" data-cs="' + esc(p.school) + '" title="Open the one-page recruit card">Recruit card</button>' + /* PLIST-CARD-NOV23 */
         "</div>" +
         '<div class="pmeta">' + [(p.no ? "#" + esc(p.no) : ""),
             esc(p.school) + " " + esc(p.team_cls),
