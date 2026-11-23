@@ -4031,6 +4031,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
 @media(max-width:640px){.ppi{padding:20px 14px 6px}.ppi-duo{grid-template-columns:1fr}.ppi-ring{width:110px;height:110px}.ppi-ring svg{width:110px;height:110px}
   .ppi-ring b{font-size:28px}.pp-hero.ppx .ppx-no{font-size:200px}}
 
+/* ---- CAPC-NOV23: captain C patch ---- */
+.capc{display:inline-grid;place-items:center;vertical-align:.12em;margin-left:.28em;width:.92em;height:1.04em;
+  font-family:var(--f-display);font-weight:800;font-size:.74em;line-height:1;letter-spacing:0;text-transform:none;
+  color:var(--tc,#0B1F3A);background:#fff;border-radius:.16em .16em .38em .38em;
+  box-shadow:inset 0 0 0 .07em #fff,inset 0 0 0 .11em var(--tc,#0B1F3A),0 .05em .18em rgba(0,0,0,.35);
+  cursor:help;text-shadow:none;position:relative}
+.capc::after{content:"";position:absolute;inset:.16em;border:1px dashed var(--tc,#0B1F3A);border-radius:.1em .1em .3em .3em;opacity:.45}
+.capc .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pp-hero.ppx .capc{vertical-align:.32em}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -5766,9 +5776,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div><h3>' + esc(p.name) +
       // Voted by his teammates. It is the one line on a profile that is not a
       // number and not a measurement, and college staffs ask about it.
-      (p.captain ? '<span class="capbadge" title="' +
-        esc(p.captain.src || "reported by the program") + '">' +
-        esc(p.captain.note ? p.captain.note : "team captain") + "</span>" : "") +
+      (p.captain ? (function (cn) { /* CAPC-NOV23 */
+        cn = cn.charAt(0).toUpperCase() + cn.slice(1);
+        return '<span class="capc" style="--tc:' + esc((byName[p.school] || {}).c1 || "#0B1F3A") + '" title="' +
+          esc(cn + " \u2014 " + (p.captain.src || "reported by the program")) + '">C<span class="vh">' + esc(cn) + "</span></span>";
+      })(p.captain.note ? p.captain.note : "team captain") : "") +
       "</h3>" +
       '<div class="dsub">' + (line || "—") + "</div>" +
       '<div class="dsub"><span data-t="' + esc(p.school) + '" style="cursor:pointer;text-decoration:underline">' +
