@@ -1493,6 +1493,7 @@ table.tstab .tsteam > *:first-child{flex:none}
 .osrc{font-style:normal;font-size:9px;font-weight:700;letter-spacing:.03em;margin-left:5px;padding:1px 4px;border-radius:3px;vertical-align:1px}
 .osrc.s247{background:var(--surface-2);color:var(--ink-3);border:1px solid var(--line)}
 .osrc.sx{background:#111;color:#fff}
+.osrc.spwo{background:#FFF4E0;color:#8A5A00;border:1px solid #E8A33D} /* PWO-NOV23 */
 /* college pipeline (Oct 10 2026) */
 .cp-sum{font-size:13px;color:var(--muted);margin:4px 0 12px}
 .cp-tbl td,.cp-tbl th{vertical-align:middle} .cp-tbl th.cp-sk{cursor:pointer;user-select:none;white-space:nowrap} .cp-tbl th.cp-sk:hover{color:var(--ink)}
@@ -5711,11 +5712,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
             var tg = sr.indexOf("247") >= 0 ? '<i class="osrc s247" title="Listed on 247Sports">247</i>' : "";
             if (sr.indexOf("X") >= 0 && sr.indexOf("247") < 0)
               tg += '<i class="osrc sx" title="Player-reported on X, not confirmed by a recruiting service">X</i>';
+            if ((p.pwo || []).indexOf(o) >= 0)
+              tg += '<i class="osrc spwo" title="Preferred walk-on offer, in the player&rsquo;s own words">PWO</i>';
             return '<span class="pl commit withmark">' + collegeMark(o) + '<b>' + esc(o) + "</b>" + tg + "</span>"; }).join("") + "</div>" +
           ((p.offers_x || []).filter(function (x) { return ((p.offer_src || {})[x.college] || []).indexOf("247") < 0; }).length ? "<p style='margin:7px 0 0;font-size:12px;color:var(--ink-3);line-height:1.55'>" +
             "<strong>Player-reported on X</strong> (announced by the player himself, not yet confirmed by a recruiting service): " +
             p.offers_x.filter(function (x) { return ((p.offer_src || {})[x.college] || []).indexOf("247") < 0; }).map(function (x) {
               return '<a href="' + esc(x.url) + '" target="_blank" rel="noopener">' + esc(x.college) + "</a>" +
+                ((p.pwo || []).indexOf(x.college) >= 0 ? " (preferred walk-on)" : "") +
                 (x.date ? " " + mdy(x.date) : ""); }).join(", ") + ".</p>" : "") +
           "<p style='margin:7px 0 0;font-size:12px;color:var(--ink-3);line-height:1.55'>" +
           (p.offer_n && p.offer_n > off.length
@@ -6409,7 +6413,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (!p.commit && p.prep && p.prep.school ? (no ? " &middot; " : "") + "Committed to " + esc(p.prep.school) + " (prep year)" : "") + "</div>" + L.slice(0, MAX).map(function (o, i) {
       var cm = p.commit && i === 0;
       return '<span class="ppo' + (cm ? " cm" : "") + '" title="' + esc(o) + (cm ? " (committed)" : " (offer)") + '">' +
-        collegeMark(o, true).replace(' loading="lazy"', "") + "<em>" + esc(cm ? "Committed" : o) + "</em></span>";
+        collegeMark(o, true).replace(' loading="lazy"', "") + "<em>" + esc(cm ? "Committed" : o) + ((!cm && (p.pwo || []).indexOf(o) >= 0) ? " (PWO)" : "") + "</em></span>";
     }).join("") + (more > 0 ? '<span class="ppo-more">+' + more + "</span>" : "") + "</div>";
   }
   /* ---- CLAIM-V1-NOV23: claim your profile (Brandon, Nov 23 2026) ----
