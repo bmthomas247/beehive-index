@@ -4284,6 +4284,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .pcardbtn::before{content:"";width:9px;height:11px;border:1.5px solid currentColor;border-radius:2px;box-sizing:border-box}
 .pcardbtn:hover{background:#0B1F3A;color:#fff;border-color:#0B1F3A}
 
+/* ---- PPPHOTOS-NOV23 ---- */
+.pp-photos .phg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.pp-photos figure{margin:0}
+.pp-photos a.phi{display:block;border-radius:6px;overflow:hidden;background:#0B1F3A;aspect-ratio:4/5}
+.pp-photos a.phi img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+.pp-photos a.phi:hover img{transform:scale(1.03)}
+.pp-photos figcaption{font-size:12.5px;margin-top:6px;line-height:1.4}
+.pp-photos figcaption span{display:block;color:var(--ink-3);font-size:11.5px}
+.pp-photos small{display:block;margin-top:10px;font-size:12px;color:var(--ink-3)}
+.pp-hero.ppx .ppx-cut{position:absolute;right:2%;bottom:0;height:100%;max-height:420px;width:auto;object-fit:contain;
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));pointer-events:none;z-index:0}
+.pp-hero.ppx.hascut .pp-hrow{position:relative;z-index:1}
+@media(max-width:700px){.pp-hero.ppx .ppx-cut{display:none}}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6833,6 +6847,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var film = p.hudl ? '<div class="rc-h">Film</div><div class="rc-film rc-line">Hudl: <a href="' + esc(p.hudl) + '">' + esc(p.hudl.replace(/^https?:\/\/(www\.)?/, "")) + "</a>" +
       ((p.reels || []).length ? "<br>" + p.reels.length + " highlight reel" + (p.reels.length === 1 ? "" : "s") + " on the profile" : "") + "</div>" : "";
     var self = [];
+    if (p.claimed && p.testing) self.push('<div class="rc-line"><b>Testing</b>' + esc(p.testing) + ' <span class="rc-pr">player-reported</span></div>'); /* PPPHOTOS-NOV23 */
     if (p.claimed && p.gpa) self.push('<div class="rc-line"><b>GPA</b>' + esc(Number(p.gpa).toFixed(2)) + ' <span class="rc-pr">player-reported</span></div>');
     if (p.claimed && p.email_pub) self.push('<div class="rc-line"><b>Player email</b><a href="mailto:' + esc(p.email_pub) + '">' + esc(p.email_pub) + '</a> <span class="rc-pr">player-reported</span></div>');
     if (p.claimed && p.bio_self) self.push('<div class="rc-line">' + esc(p.bio_self) + ' <span class="rc-pr">player-reported</span></div>');
@@ -6888,6 +6903,38 @@ nav.topbar ~ main.wrap{margin-top:20px}
     });
     rcLoadQR(function () { try { new QRCode(d.querySelector("#rcqr"), { text: url, width: 84, height: 84, correctLevel: QRCode.CorrectLevel.M }); } catch (e) {} });
     if (window.uhsTrack) window.uhsTrack("card", true);
+  }
+  function ppPhotos(host, p) { /* PPPHOTOS-NOV23 */
+    function credit(ph) {
+      return "Photo: " + (ph.link ? '<a href="' + esc(ph.link) + '" target="_blank" rel="noopener">' + esc(ph.by) + "</a>" : esc(ph.by));
+    }
+    var hero = host.querySelector(".pp-hero.ppx");
+    if (hero && p.photo_hero && p.photo_hero.src) {
+      var im = document.createElement("img"); im.className = "ppx-cut"; im.alt = p.name; im.src = p.photo_hero.src;
+      hero.insertBefore(im, hero.firstChild); hero.classList.add("hascut");
+    }
+    var list = (p.photos || []).length ? p.photos : (p.photo ? [p.photo] : []);
+    var main = host.querySelector(".pp-main");
+    if (!list.length || !main) return;
+    var c = document.createElement("div"); c.className = "pp-card pp-photos";
+    c.innerHTML = '<div class="sect">Photos</div><div class="phg">' + list.map(function (ph) {
+      return '<figure><a class="phi" href="' + esc(ph.src) + '" target="_blank" rel="noopener"><img src="' + esc(ph.src) +
+        '" alt="' + esc(p.name + (ph.caption ? " — " + ph.caption : "")) + '" loading="lazy"></a>' +
+        "<figcaption>" + (ph.caption ? esc(ph.caption) : "") + "<span>" + credit(ph) + "</span></figcaption></figure>";
+    }).join("") + "</div>" +
+      (p.photo_hero && !p.photo ? "<small>Header photo: " + credit(p.photo_hero) + ".</small>" : "") +
+      "<small>Used with permission. Any photo comes down the same day on request.</small>";
+    // after his film: just before the main card that holds the "2026 season" heading
+    var sec = [].filter.call(main.querySelectorAll(".pp-card > .sect"), function (x) { return /^2026 season/.test(x.textContent.trim()); })[0];
+    var box = sec && sec.parentNode;
+    if (box && sec.previousElementSibling) {
+      // the film sits at the top of the same card: split so Photos lands between film and season
+      var mv = document.createElement("div"); mv.className = "pp-card";
+      while (sec) { var nx = sec.nextSibling; mv.appendChild(sec); sec = nx; }
+      box.parentNode.insertBefore(mv, box.nextSibling); box.parentNode.insertBefore(c, mv); return;
+    }
+    if (box) { box.parentNode.insertBefore(c, box); return; }
+    main.appendChild(c);
   }
   function ppSplitName(h3, name) {
     if (!h3) return;
@@ -6956,6 +7003,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     host.hidden = false;
     ppSplitName(host.querySelector(".pp-hero h3"), p.name);
     ppClaimBits(host, p); /* CLAIM-V1-NOV23 */
+    ppPhotos(host, p); /* PPPHOTOS-NOV23 */
     var d1 = host.querySelector(".pp-hero .dhead .dsub"); /* HEROLINES-NOV23: #/pos/class now in the bio line */
     if (d1 && !d1.querySelector(".tagline") && !d1.querySelector("[data-t]")) d1.remove();
     document.title = p.name + " — " + p.school + " football | Utah High School Football";
