@@ -4175,6 +4175,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .glhl::before{content:"";width:0;height:0;border-left:8px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent}
 .glhl:hover{background:#e65a00}
 
+/* ---- CLAIM-SOCIAL-NOV23 ---- */
+.clsoc{display:grid;grid-template-columns:170px 1fr;gap:8px 10px;margin-bottom:8px}
+.cladd{border:1px dashed var(--line,#bbb);background:none;border-radius:4px;padding:7px 12px;cursor:pointer;font:inherit;font-size:13px;color:var(--ink-2)}
+@media(max-width:640px){.clsoc{grid-template-columns:1fr 1.4fr}}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6309,22 +6314,22 @@ nav.topbar ~ main.wrap{margin-top:20px}
   var CLAIM_GF = { url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeHb-2loZL8toGEOHxouDRRV3GdbRiWvjT0T_ZVAZG-g-BKOA/formResponse",
     kind: "entry.1345249320", who: "entry.1103206860", school: "entry.1901515078", detail: "entry.577315448",
     proof: "entry.1287554218", name: "entry.25450899", email: "entry.1307921896", role: "entry.155683173" };
-  var CLAIM_TERMS = [
+  /* CLAIM-NEUTRAL-NOV23 */ var CLAIM_TERMS = [
     ["What this site is", "Utah High School Football is a public website about Utah high school football: scores, stats, rankings, recruiting and news. A player profile can be seen by anyone, including college coaches, media and the public."],
-    ["Who can claim", "A player can claim his own profile, and so can his parent or legal guardian. If the player is under 18, we need his parent or legal guardian’s name, email and phone, and nothing changes on his profile until that parent confirms to us that they consent. Nobody under 13 can claim a profile. The person filling this in promises everything in it is true and that they are the player or his parent or legal guardian."],
+    ["Who can claim", "A player can claim their own profile, and so can the player\u2019s parent or legal guardian. If the player is under 18, we need the player\u2019s parent or legal guardian’s name, email and phone, and nothing changes on the player\u2019s profile until that parent confirms to us that they consent. Nobody under 13 can claim a profile. The person filling this in promises everything in it is true and that they are the player or the player\u2019s parent or legal guardian."],
     ["Your own profile only", "You may claim only the player's own profile. No claiming someone else's profile, no pretending to be someone else, and no false information. A false claim is removed and blocked."],
-    ["You choose what shows", "Only the items you tick “show” are published. His email stays hidden unless you tick it. We never publish a phone number, home address or date of birth."],
+    ["You choose what shows", "Only the items you tick “show” are published. The player\u2019s email stays hidden unless you tick it. We never publish a phone number, home address or date of birth."],
     ["Self-reported is labelled", "GPA, height, weight, testing numbers and anything else you send are shown as self-reported. You agree they are true to the best of your knowledge. We may ask for proof and may decline to show anything."],
     ["Our stats come from sources", "Game stats, scores, rankings and ratings come from published sources (MaxPreps, Deseret News, UHSAA). A claim does not let you change them. If one is wrong, report it and we check it against the source."],
     ["Photos", "This claim does not collect photos. Any photo added later must be one the player owns or has the photographer’s written permission to use, and it will be credited."],
-    ["The rights you give us", "Anything you send us (information, numbers, photos, video, his bio, anything) you give Utah High School Football the right to use, free of charge and anywhere in the world: on this site, in our posts on X, Facebook and our other accounts, and in our graphics, stories, rankings, newsletters and any other part of Utah High School Football, now or later. We can edit, crop, format and combine it with other information. You still own what you send; this is permission, not a sale. You promise you have the right to give it to us: for a photo, you took it or have the photographer’s written permission. We never sell your personal information."], /* CLAIM-RIGHTS-NOV23 */
+    ["The rights you give us", "Anything you send us (information, numbers, photos, video, the player\u2019s bio, anything) you give Utah High School Football the right to use, free of charge and anywhere in the world: on this site, in our posts on X, Facebook and our other accounts, and in our graphics, stories, rankings, newsletters and any other part of Utah High School Football, now or later. We can edit, crop, format and combine it with other information. You still own what you send; this is permission, not a sale. You promise you have the right to give it to us: for a photo, you took it or have the photographer’s written permission. We never sell your personal information."], /* CLAIM-RIGHTS-NOV23 */
     ["We review everything", "Every claim and every change is checked by a person before it shows. We can correct, decline or remove anything that is inaccurate or breaks these terms."],
-    ["Take it down any time", "You can remove any item, or the whole claim, at any time through Send us something (“Take my profile down”). We take it off his profile the same day and delete personal details (email, phone numbers, photos, his bio) from our records within 30 days. Football facts such as measurements and testing numbers may stay in our records but come off his profile. His published game stats stay on the site, as they do for every player."],
+    ["Take it down any time", "You can remove any item, or the whole claim, at any time through Send us something (“Take my profile down”). We take it off the player\u2019s profile the same day and delete personal details (email, phone numbers, photos, the player\u2019s bio) from our records within 30 days. Football facts such as measurements and testing numbers may stay in our records but come off the player\u2019s profile. The player\u2019s published game stats stay on the site, as they do for every player."],
     ["We never sell your information", "We never sell or rent your information. Claim details are stored in our Google form responses; published items are hosted with the rest of the site. A parent’s contact information is used only to confirm consent and is never published. We share them with no one else unless the law requires it."],
     ["If these terms change", "We will email the parent (or the player, if 18+) before a change takes effect. If you do not agree, we remove the claimed items."],
     ["Utah", "These terms are governed by Utah law. Questions go through Send us something; a person reads every one."]
   ];
-  var CLAIM_PUBWARN = "Public means public.\n\nAnything you choose to show on his profile can be seen, copied, screenshotted and shared by anyone. Search engines and other sites may keep copies that we cannot delete, even after you take it down here.\n\nShow it anyway?"; /* CLAIM-PUBWARN-NOV23: also for photo uploads (v2) */
+  var CLAIM_PUBWARN = "Public means public.\n\nAnything you choose to show on the player\u2019s profile can be seen, copied, screenshotted and shared by anyone. Search engines and other sites may keep copies that we cannot delete, even after you take it down here.\n\nShow it anyway?"; /* CLAIM-PUBWARN-NOV23: also for photo uploads (v2) */
   function claimCode() {
     var a = "ABCDEFGHJKMNPQRSTUVWXYZ23456789", c = "";
     try { var r = new Uint32Array(6); crypto.getRandomValues(r); for (var i = 0; i < 6; i++) c += a[r[i] % a.length]; }
@@ -6335,12 +6340,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var old = document.getElementById("clmodal"); if (old) old.remove();
     var code = claimCode();
     var d = document.createElement("div");
-    d.id = "clmodal"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true"); d.setAttribute("aria-label", "Claim this profile");
+    d.id = "clmodal"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true"); d.setAttribute("aria-label", "Claim tthe player\u2019s profile");
     d.innerHTML = '<div class="clbox"><button class="clx" type="button" aria-label="Close">✕</button>' +
       "<h2>Claim " + esc(p.name) + "’s profile</h2><div style='color:var(--ink-3)'>" + esc(p.school) +
       (p.cls ? " &middot; " + esc(yr2(p.cls)) : "") + "</div>" +
       '<div class="clsum"><b>The short version</b><ul>' +
-      "<li>His profile is public. You choose what extra goes on it.</li>" +
+      "<li>The player\u2019s profile is public. You choose what extra goes on it.</li>" +
       "<li>A person checks every claim and every change before it shows.</li>" +
       "<li>We never sell your information and never publish a phone number or address.</li>" +
       "<li>Under 18? You can fill this in yourself. Add your parent’s contact info and we confirm with them before anything changes.</li>" +
@@ -6348,7 +6353,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<form id="clform" novalidate>' +
       '<div class="clh">1. Who is filling this in</div><div class="clgrid">' +
       '<label>I am<select name="role" required><option value="">Choose one…</option>' +
-      '<option value="Player under 18">The player (under 18)</option><option value="Player">The player (18 or older)</option><option value="Parent or guardian">His parent or legal guardian</option></select></label>' +
+      '<option value="Player under 18">The player (under 18)</option><option value="Player">The player (18 or older)</option><option value="Parent or guardian">The player\u2019s parent or legal guardian</option></select></label>' +
       '<label>Is the player 13 or older?<select name="age13" required><option value="">Choose…</option><option value="yes">Yes</option><option value="no">No</option></select></label>' +
       '<label>Your full name<input type="text" name="signer" required autocomplete="name"></label>' +
       '<label>Your email<input type="email" name="semail" required autocomplete="email"></label></div>' +
@@ -6363,43 +6368,37 @@ nav.topbar ~ main.wrap{margin-top:20px}
         return '<div class="clt"><b>' + (i + 1) + ". " + esc(t[0]) + "</b>" + esc(t[1]) + "</div>";
       }).join("") + '<div class="clend">End of terms (version ' + CLAIM_TV + ")</div></div>" +
       '<label class="clagree locked" id="clagree"><input type="checkbox" name="tall" disabled>' +
-      '<span>I have read and agree to all ' + CLAIM_TERMS.length + ' terms<small id="clagreeh">Scroll to the bottom of the terms to accept</small></span></label>' +
-      '<div class="clh">3. How we verify it is him</div>' +
+      '<span>I have read and agree to all terms<small id="clagreeh">' + /* CLAIM-ALLTERMS-NOV23 */ 'Scroll to the bottom of the terms to accept</small></span></label>' +
+      '<div class="clh">3. How we verify the player</div>' +
       "<p style='margin:0 0 8px'>Your code: <span class='clcode'>" + code + "</span></p>" +
       '<div class="clgrid"><label>Verify by<select name="verify" required><option value="">Choose one…</option>' +
-      '<option value="code_x">X: DM the code to @TheLedgerUT from his own X account</option>' + /* CLAIM-VERIFY-NOV23 */
-      '<option value="code_xpost">X: one-tap post from here announcing he claimed his profile (includes the code)</option>' +
-      '<option value="code_hudl">Hudl: put the code in his Hudl profile bio for 24 hours</option>' +
-      '<option value="code_ig">Instagram: put the code in his Instagram bio for 24 hours</option>' +
-      '<option value="code_tiktok">TikTok: put the code in his TikTok bio for 24 hours</option>' +
+      '<option value="code_x">X: DM the code to @TheLedgerUT from the player\u2019s own X account</option>' + /* CLAIM-VERIFY-NOV23 */
+      '<option value="code_xpost">X: one-tap post from here announcing the player claimed the profile (includes the code)</option>' +
+      '<option value="code_hudl">Hudl: put the code in the player\u2019s Hudl profile bio for 24 hours</option>' +
       '<option value="code_fb">Facebook: message the code to our Facebook Page, The Ledger Utah</option>' +
-      '<option value="coach">School: his head coach, an assistant coach or the athletic director confirms by school email</option></select></label>' +
-      '<label><span id="clhl">His X handle</span><input type="text" name="handle" placeholder="@handle"' +
+      '<option value="coach">School: the player\u2019s head coach, an assistant coach or the athletic director confirms by school email</option></select></label>' +
+      '<label><span id="clhl">Player X handle</span><input type="text" name="handle" placeholder="@handle"' +
       (p.twitter ? ' value="@' + esc(p.twitter) + '"' : "") + "></label></div>" +
-      '<div class="clh">4. What to show on his profile (optional)</div><div class="clgrid">' +
-      '<label>His email<input type="email" name="pemail" placeholder="his own email"></label>' +
-      '<label class="clchk"><input type="checkbox" name="showemail"> Show his email on his profile</label>' +
-      '<label>Instagram handle<input type="text" name="pig" placeholder="@handle (shown as a button)"></label>' + /* CLAIM-CONTACT-NOV23 */
-      '<label>TikTok handle<input type="text" name="ptt" placeholder="@handle (shown as a button)"></label>' +
+      '<div class="clh">4. What to show on the player profile (optional)</div><div class="clgrid">' +
+      '<label>Player email<input type="email" name="pemail" placeholder="the player\u2019s own email"></label>' +
+      '<label class="clchk"><input type="checkbox" name="showemail"> Show player email on profile</label>' +
+      /* CLAIM-TRIM-NOV23: Instagram/TikTok handle boxes removed (Brandon: no instagram or tiktok for now) */
       '<label>GPA<input type="text" name="gpa" inputmode="decimal" placeholder="e.g. 3.6"></label>' +
       '<label class="clchk"><input type="checkbox" name="showgpa"> Show GPA (labelled self-reported)</label>' +
-      '<div class="w clrow">Other sports he plays<details class="clsp"><summary id="clsps">Choose any…</summary><div class="clspl">' + /* CLAIM-SPORTS-NOV23 */
+      '<div class="w clrow">Other sports the player plays<details class="clsp"><summary id="clsps">Choose any…</summary><div class="clspl">' + /* CLAIM-SPORTS-NOV23 */
       ["Baseball", "Basketball", "Cross country", "Golf", "Lacrosse", "Soccer", "Swimming and diving", "Tennis", "Track and field", "Volleyball", "Wrestling", "Rugby"]
         .map(function (x) { return '<label><input type="checkbox" class="clspc" value="' + x + '"> ' + x + "</label>"; }).join("") +
       '<label style="grid-column:1/-1">Other <input type="text" name="sportsother" placeholder="Any other sport" style="flex:1"></label></div></details></div>' +
-      '<label class="w">In his own words (up to 400 characters)<textarea name="bio" rows="3" maxlength="400"></textarea></label></div>' +
-      ((p.reels || []).length ? '<div class="clrow" style="margin-top:12px">Hide any highlights <span style="font-weight:400;color:var(--ink-3)">(they stay on Hudl; they just won’t show on this profile)</span>' + /* CLAIM-REELS-NOV23 */
-        '<div class="clreels">' + p.reels.map(function (r) {
-          var id = (/\/([0-9a-f]{16,})\/?$/.exec(r.u || "") || [])[1] || "";
-          return id ? '<label class="clreel">' + (r.thumb ? '<img src="' + esc(r.thumb) + '" alt="" loading="lazy">' : "") +
-            '<span class="t">' + esc(r.t || "Highlight") + (r.s ? " · " + esc(r.s) : "") + '</span>' +
-            '<span class="h"><input type="checkbox" class="clhide" value="' + esc(id) + '"> Hide</span></label>' : "";
-        }).join("") + "</div></div>" : "") +
-      '<div class="clh">5. Sign</div><div class="clgrid">' +
-      '<label class="w">Type your full name to sign. You agree to all ' + CLAIM_TERMS.length + ' terms above (version ' + CLAIM_TV + ').<input type="text" name="sig" required></label></div>' +
+      '<label class="w">Bio (up to 400 characters)<textarea name="bio" rows="3" maxlength="400"></textarea></label></div>' +
+      /* CLAIM-NOHIDE-NOV23: hide-highlights moved to the logged-in profile (v2) */
+      '<div class="clh">5. Social media (optional)</div>' + /* CLAIM-SOCIAL-NOV23 */
+      "<p style='margin:0 0 8px;color:var(--ink-3);font-size:13px'>Handles you add show as buttons on the player profile once it is verified.</p>" +
+      '<div id="clsocs"></div><button type="button" class="cladd" id="cladd">+ Add a social media account</button>' +
+      '<div class="clh">6. Sign</div><div class="clgrid">' +
+      '<label class="w">Type your full name to sign. You agree to all terms above (version ' + CLAIM_TV + ').<input type="text" name="sig" required></label></div>' +
       '<div class="clerr" id="clerr" hidden></div>' +
       '<button class="clsend" type="submit">Send my claim</button>' +
-      "<p class='clfine'>Nothing changes on his profile until a person has verified this claim. Never send a password or a home address. The only phone number we ask for is a parent’s, and it is never published.</p>" +
+      "<p class='clfine'>Nothing changes on the player\u2019s profile until a person has verified this claim. Never send a password or a home address. The only phone number we ask for is a parent’s, and it is never published.</p>" +
       "</form></div>";
     function close() { d.remove(); document.removeEventListener("keydown", onKey); }
     function onKey(e) { if (e.key === "Escape") close(); }
@@ -6407,6 +6406,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
     document.addEventListener("keydown", onKey);
     document.body.appendChild(d);
     var f = d.querySelector("#clform"), err = d.querySelector("#clerr");
+    (function () { /* CLAIM-SOCIAL-NOV23 */
+      var box = d.querySelector("#clsocs"), add = d.querySelector("#cladd");
+      var PL = ["Instagram", "TikTok", "YouTube", "Snapchat", "Facebook", "Threads"];
+      function row() {
+        var r = document.createElement("div"); r.className = "clsoc";
+        var used = [].map.call(box.querySelectorAll("select"), function (x) { return x.value; });
+        var first = PL.filter(function (x) { return used.indexOf(x) < 0; })[0] || PL[0];
+        r.innerHTML = '<select aria-label="Platform">' + PL.map(function (x) { return "<option" + (x === first ? " selected" : "") + ">" + x + "</option>"; }).join("") + "</select>" +
+          '<input type="text" placeholder="@handle" aria-label="Handle" maxlength="40">';
+        box.appendChild(r);
+        add.hidden = box.children.length >= PL.length;
+      }
+      add.addEventListener("click", row); row();
+    })();
     d.addEventListener("change", function (e) { /* CLAIM-REELS-NOV23 */
       if (e.target.classList && e.target.classList.contains("clhide")) e.target.closest(".clreel").classList.toggle("off", e.target.checked);
     });
@@ -6421,12 +6434,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
       }
       box.addEventListener("scroll", chk); setTimeout(chk, 50);
     })();
-    var CLHL = { code_x: ["His X handle", "@handle"], code_xpost: ["His X handle", "@handle"], /* CLAIM-VERIFY-NOV23 */
-      code_hudl: ["His Hudl profile link", "https://www.hudl.com/profile/..."], code_ig: ["His Instagram handle", "@handle"],
-      code_tiktok: ["His TikTok handle", "@handle"], code_fb: ["Name on the Facebook account sending it", "First Last"],
+    var CLHL = { code_x: ["Player X handle", "@handle"], code_xpost: ["Player X handle", "@handle"], /* CLAIM-VERIFY-NOV23 */
+      code_hudl: ["Player Hudl profile link", "https://www.hudl.com/profile/..."], code_ig: ["Player Instagram handle", "@handle"],
+      code_tiktok: ["Player TikTok handle", "@handle"], code_fb: ["Name on the Facebook account sending it", "First Last"],
       coach: ["Coach or athletic director’s name", "Coach Smith"] };
     f.elements.verify.addEventListener("change", function () {
-      var h = CLHL[f.elements.verify.value] || ["His X handle", "@handle"];
+      var h = CLHL[f.elements.verify.value] || ["Player X handle", "@handle"];
       d.querySelector("#clhl").textContent = h[0]; f.elements.handle.placeholder = h[1];
       var mv = f.elements.verify.value;
       f.elements.handle.value = mv === "code_hudl" ? (p.hudl || "") : /^code_x/.test(mv) && p.twitter ? "@" + p.twitter : "";
@@ -6445,20 +6458,20 @@ nav.topbar ~ main.wrap{margin-top:20px}
       });
     });
     var CLYOU = [ /* CLAIM-UX-NOV23: [selector, his-text, your-text] */
-      [".clh:nth-of-type(3)", "3. How we verify it is him", "3. How we verify it is you"],
-      [".clh:nth-of-type(4)", "4. What to show on his profile (optional)", "4. What to show on your profile (optional)"]];
+      [".clh:nth-of-type(3)", "3. How we verify the player", "3. How we verify the player"],
+      [".clh:nth-of-type(4)", "4. What to show on the player profile (optional)", "4. What to show on the player profile (optional)"]];
     function clYou() {
       var me = /^Player/.test(f.elements.role.value);
       var hs = d.querySelectorAll(".clh");
-      if (hs[2]) hs[2].textContent = me ? "3. How we verify it is you" : "3. How we verify it is him";
-      if (hs[3]) hs[3].textContent = me ? "4. What to show on your profile (optional)" : "4. What to show on his profile (optional)";
-      [["pemail", "His email", "Your email"], ["bio", "In his own words (up to 400 characters)", "In your own words (up to 400 characters)"]].forEach(function (x) {
+      if (hs[2]) hs[2].textContent = me ? "3. How we verify the player" : "3. How we verify the player";
+      if (hs[3]) hs[3].textContent = me ? "4. What to show on the player profile (optional)" : "4. What to show on the player profile (optional)";
+      [["pemail", "Player email", "Player email"], ["bio", "Bio (up to 400 characters)", "Bio (up to 400 characters)"]].forEach(function (x) {
         var el = f.elements[x[0]]; if (el && el.previousSibling && el.previousSibling.nodeType === 3) el.previousSibling.nodeValue = me ? x[2] : x[1];
       });
-      [["showemail", " Show his email on his profile", " Show my email on my profile"], ["showgpa", " Show GPA (labelled self-reported)", " Show my GPA (labelled self-reported)"]].forEach(function (x) {
+      [["showemail", " Show player email on profile", " Show player email on profile"], ["showgpa", " Show GPA (labelled self-reported)", " Show GPA (labelled self-reported)"]].forEach(function (x) {
         var el = f.elements[x[0]]; if (el && el.nextSibling && el.nextSibling.nodeType === 3) el.nextSibling.nodeValue = me ? x[2] : x[1];
       });
-      var sp = d.querySelector(".clsp"); if (sp && sp.parentNode.firstChild.nodeType === 3) sp.parentNode.firstChild.nodeValue = me ? "Other sports I play" : "Other sports he plays";
+      var sp = d.querySelector(".clsp"); if (sp && sp.parentNode.firstChild.nodeType === 3) sp.parentNode.firstChild.nodeValue = me ? "Other sports the player plays" : "Other sports the player plays";
       var vo = f.elements.verify.options;
       for (var i = 1; i < vo.length; i++) vo[i].textContent = me ? vo[i].textContent.replace(/\bhis\b/g, "your") : vo[i].textContent.replace(/\byour\b/g, "his");
       var hl = d.querySelector("#clhl"); if (hl) hl.textContent = me ? hl.textContent.replace(/^His\b/, "Your") : hl.textContent.replace(/^Your\b/, "His");
@@ -6486,9 +6499,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
       else if (v("role") !== "Player" && !v("prel")) bad = "Choose the parent or guardian’s relationship to the player.";
       else if (v("role") !== "Player" && v("pphone").replace(/\D/g, "").length < 10) bad = "Enter a parent or guardian phone number with area code.";
       else if (!v("tall")) bad = f.elements.tall.disabled ? "Scroll to the bottom of the terms, then tick “I have read and agree”." : "Tick “I have read and agree” to accept the terms.";
-      else if (!v("verify")) bad = "Choose how we verify it is him.";
+      else if (!v("verify")) bad = "Choose how we verify the player.";
       else if (!v("handle")) bad = "Fill in: " + d.querySelector("#clhl").textContent + ".";
-      else if (v("showemail") && !/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/.test(v("pemail"))) bad = "Enter his email, or untick “show his email”.";
+      else if (v("showemail") && !/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/.test(v("pemail"))) bad = "Enter the player\u2019s email, or untick “show player email”.";
       else if (v("sig").toLowerCase() !== v("signer").toLowerCase()) bad = "Type your full name exactly as above to sign.";
       if (bad) { err.textContent = bad; err.hidden = false; return; }
       err.hidden = true;
@@ -6501,12 +6514,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
         "under 18: " + (minor ? "yes | parent/guardian: " + pn + " (" + v("prel") + "), " + pm + ", " + v("pphone") +
           (ppar ? " | parent filled this in" : " | PARENT CONSENT TO CONFIRM") : "no (player 18+)"),
         "verify: " + v("verify") + " " + v("handle") + " code " + code,
-        "his email: " + (v("pemail") || "-") + " | show: " + (v("showemail") ? "yes" : "no"),
+        "player email: " + (v("pemail") || "-") + " | show: " + (v("showemail") ? "yes" : "no"),
         "GPA: " + (v("gpa") || "-") + " | show: " + (v("showgpa") ? "yes" : "no"),
-        "instagram: " + (v("pig") || "-") + " | tiktok: " + (v("ptt") || "-"),
         "other sports: " + (clSports() || "-"),
         "bio: " + (v("bio") || "-"),
-        "hide reels: " + ([].map.call(d.querySelectorAll(".clhide:checked"), function (c) { return c.value; }).join("; ") || "-"),
+        "social: " + ([].map.call(d.querySelectorAll(".clsoc"), function (r) { var h = r.querySelector("input").value.trim(); return h ? r.querySelector("select").value + ":" + h.replace(/^@/, "") : ""; }).filter(Boolean).join("; ") || "-"),
         "page: " + location.origin + "/?player=" + encodeURIComponent(p.name + "|" + p.school)].join("\n");
       var sink = document.getElementById("clsink");
       if (!sink) { sink = document.createElement("iframe"); sink.name = sink.id = "clsink"; sink.style.display = "none"; sink.title = "submit"; document.body.appendChild(sink); }
@@ -6520,26 +6532,26 @@ nav.topbar ~ main.wrap{margin-top:20px}
       document.body.appendChild(pf); pf.submit(); pf.remove();
       var me = /^Player/.test(v("role"));
       var how = v("verify") === "code_x"
-        ? (me ? "Send" : "Have him send") + " <span class='clcode'>" + code + "</span> in a DM to <a href='https://x.com/TheLedgerUT' target='_blank' rel='noopener'>@TheLedgerUT</a> from " + esc(v("handle")) + "."
+        ? (me ? "Send" : "Have the player send") + " <span class='clcode'>" + code + "</span> in a DM to <a href='https://x.com/TheLedgerUT' target='_blank' rel='noopener'>@TheLedgerUT</a> from " + esc(v("handle")) + "."
         : v("verify") === "code_xpost"
-        ? "Tap <strong>Post on X</strong> below" + (me ? "" : " (or send him this page)") + " and post it from " + esc(v("handle")) + ". It already has the code <span class='clcode'>" + code + "</span> and tags @TheLedgerUT."
+        ? "Tap <strong>Post on X</strong> below" + (me ? "" : " (or send the player this page)") + " and post it from " + esc(v("handle")) + ". It already has the code <span class='clcode'>" + code + "</span> and tags @TheLedgerUT."
         : v("verify") === "code_hudl"
-        ? (me ? "Put" : "Have him put") + " <span class='clcode'>" + code + "</span> in the bio of " + (me ? "your" : "his") + " Hudl profile for the next 24 hours."
+        ? (me ? "Put" : "Have the player put") + " <span class='clcode'>" + code + "</span> in the bio of " + (me ? "your" : "his") + " Hudl profile for the next 24 hours."
         : v("verify") === "code_tiktok"
-        ? (me ? "Put" : "Have him put") + " <span class='clcode'>" + code + "</span> in " + (me ? "your" : "his") + " TikTok bio (" + esc(v("handle")) + ") for the next 24 hours."
+        ? (me ? "Put" : "Have the player put") + " <span class='clcode'>" + code + "</span> in " + (me ? "your" : "his") + " TikTok bio (" + esc(v("handle")) + ") for the next 24 hours."
         : v("verify") === "code_fb"
         ? "Message <span class='clcode'>" + code + "</span> to our Facebook Page, <a href='https://www.facebook.com/TheLedgerUT' target='_blank' rel='noopener'>The Ledger Utah</a>, from " + esc(v("handle")) + "’s Facebook account."
         : v("verify") === "code_ig"
-        ? (me ? "Put" : "Have him put") + " <span class='clcode'>" + code + "</span> in " + (me ? "your" : "his") + " Instagram bio (" + esc(v("handle")) + ") for the next 24 hours."
+        ? (me ? "Put" : "Have the player put") + " <span class='clcode'>" + code + "</span> in " + (me ? "your" : "his") + " Instagram bio (" + esc(v("handle")) + ") for the next 24 hours."
         : "We will email " + esc(v("handle")) + " at their school address to confirm. Your reference: <span class='clcode'>" + code + "</span>";
       d.querySelector(".clbox").innerHTML = '<button class="clx" type="button" aria-label="Close">✕</button>' +
         "<h2>Claim received</h2><p>Thank you. <strong>One more step:</strong> " + how + "</p>" +
         (minor && !ppar ? "<p><strong>We will also contact your parent or guardian (" + esc(pn) + ") to confirm they consent.</strong> Let them know it is coming.</p>" : "") +
-        "<p>We will email " + esc(v("semail")) + " when his profile is verified. Nothing changes on his profile before then.</p>" +
+        "<p>We will email " + esc(v("semail")) + " when the player\u2019s profile is verified. Nothing changes on the player\u2019s profile before then.</p>" +
         "<p class='clfine'>Write the code down; it is not shown again.</p>";
       (function () { /* CLAIM-VERIFY-NOV23: one-tap X post (Brandon: "letting the public know they have claimed their profile") */
         var xp = v("verify") === "code_xpost";
-        var txt = (me ? "I just claimed my player profile" : p.name + " just claimed his player profile") +
+        var txt = (me ? "I just claimed my player profile" : p.name + " just claimed a player profile") +
           " on Utah High School Football \ud83c\udfc8 @TheLedgerUT" + (xp ? "\nVerification: " + code : "") +
           "\n#UtahHighSchoolFootball #UHSAA";
         var url = "https://utahhighschoolfootball.com/?player=" + encodeURIComponent(p.name + "|" + p.school);
@@ -6548,7 +6560,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         a.href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(txt) + "&url=" + encodeURIComponent(url);
         a.target = "_blank"; a.rel = "noopener"; a.textContent = "Post on X";
         var note = document.createElement("p"); note.className = "clfine";
-        note.textContent = xp ? "This post is how we verify him, so post it from " + v("handle") + "." : "Optional: let people know his profile is claimed.";
+        note.textContent = xp ? "This post is how we verify the player, so post it from " + v("handle") + "." : "Optional: let people know the player\u2019s profile is claimed.";
         var box = d.querySelector(".clbox"); box.appendChild(a); box.appendChild(note);
       })();
       if (window.uhsTrack) window.uhsTrack("claim", true);
@@ -6571,6 +6583,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
         var a = document.createElement("a"); a.className = "dlink"; a.href = x[2] + h; a.target = "_blank"; a.rel = "noopener";
         a.textContent = x[1]; a.title = "@" + h + " — added by him on his verified profile"; links.appendChild(a);
       });
+      var SOCURL = { Instagram: "https://www.instagram.com/", TikTok: "https://www.tiktok.com/@", YouTube: "https://www.youtube.com/@", /* CLAIM-SOCIAL-NOV23 */
+        Snapchat: "https://www.snapchat.com/add/", Facebook: "https://www.facebook.com/", Threads: "https://www.threads.net/@" };
+      (p.social_pub || []).forEach(function (x) {
+        var h = String(x[1] || "").replace(/^@/, "");
+        if (!SOCURL[x[0]] || !/^[A-Za-z0-9._-]{1,40}$/.test(h)) return;
+        var a = document.createElement("a"); a.className = "dlink"; a.href = SOCURL[x[0]] + h; a.target = "_blank"; a.rel = "noopener";
+        a.textContent = x[0]; a.title = "@" + h + " \u2014 added on the verified profile"; links.appendChild(a);
+      });
       if (p.email_pub) {
         var a = document.createElement("a"); a.className = "dlink"; a.href = "mailto:" + p.email_pub;
         a.textContent = "Email"; a.title = "His own email, shown because he chose to on his verified profile";
@@ -6581,7 +6601,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       var main = host.querySelector(".pp-main");
       if (p.bio_self && main) {
         var c = document.createElement("div"); c.className = "pp-card pp-bio";
-        c.innerHTML = '<div class="sect">In his own words</div><p>' + esc(p.bio_self) + "</p><small>Written by the player on his verified profile.</small>";
+        c.innerHTML = '<div class="sect">Bio</div><p>' + esc(p.bio_self) + "</p><small>Written by the player on his verified profile.</small>";
         main.insertBefore(c, main.firstChild);
       }
     } else {
@@ -7308,11 +7328,19 @@ nav.topbar ~ main.wrap{margin-top:20px}
     document.querySelectorAll("#v-player .vcard[data-hu]").forEach(function (c) { if (c.dataset.hu === b.dataset.glhu) card = c; });
     if (card && card.dataset.hudl) playReel(card); else window.open(b.dataset.glhu, "_blank", "noopener");
   });
+  function otherSportReel(v) { /* OTHERSPORT-REELS-NOV23 */
+    var t = String((v && v.t) || "");
+    return /pointers?\b|3[- ]?pt\b|\bdunks?\b|\blayups?\b|\brebounds?\b|\bassists?\b|\bsaves?\b|\bkills?\b|\bdigs?\b|\baces?\b|\bsteals?\b|\bfree throws?\b|\bbasketball\b|\bhoops?\b|\bsoccer\b|\bbaseball\b|\bsoftball\b|\bwrestl|\bvolleyball\b|\bhome runs?\b|\bstrikeouts?\b|\bbuzzer|\bswish|\brugby\b|\blacrosse\b|\btrack\b|\bnba\b|\baau\b/i.test(t) || (/\bgoals?\b/i.test(t) && !/field goal|goal[- ]?line|goal to go/i.test(t));
+  }
   function reelBlock(p) {
-    var list = p.reels || [];
+    var all = p.reels || [];
+    return reelRail(all.filter(function (v) { return !otherSportReel(v); }), "His highlights") +
+      reelRail(all.filter(otherSportReel), "Other sports highlights");
+  }
+  function reelRail(list, head) {
     if (!list.length) return "";
     var anyEmbed = list.some(function (v) { return hudlEmbed(v.u); });
-    return '<div class="sect">His highlights</div>' +
+    return '<div class="sect">' + head + '</div>' +
       '<p class="lede" style="margin:-2px 0 8px">' +
       (anyEmbed ? "He cut these himself. Tap one to watch it here, in Hudl&rsquo;s own player."
                 : "He cut these himself. Each one opens on his Hudl profile.") + "</p>" +
