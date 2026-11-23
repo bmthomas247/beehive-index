@@ -7336,7 +7336,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="dhead"><div class="storysrc"><span class="kick own">' +
       esc(a.kicker) + "</span><span>Utah High School Football &middot; " + esc(a.date) + "</span></div>" +
       '<h2 style="font-size:25px;text-transform:none;line-height:1.2">' + esc(a.title) + "</h2>" +
-      '<p class="dek">' + esc(a.dek) + "</p></div>" +
+      '<p class="dek">' + esc(a.dek) + "</p>" +
+      ((a.named || []).filter(function (n) { return n && n[0] && pAttr(n[0], n[1]); }).map(function (n) {
+        return '<button type="button" class="cx-more" style="margin:2px 6px 0 0"' + pAttr(n[0], n[1]) + ">" +
+          logo(n[1], "sm") + " " + esc(n[0]) + "&rsquo;s player profile &rsaquo;</button>";
+      }).join("")) + "</div>" +
       /* PW-STORY-NOV13: logo VS logo header */
       ((a.faceoff && a.faceoff.length === 2)
         ? '<div class="artface">' + a.faceoff.map(function (f, i) {
@@ -7347,7 +7351,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
         : "") +
       /* STORY-PHOTO-NOV19 */ (a.photo && a.photo[0] ? '<figure class="artphoto"><img src="' + esc(a.photo[0]) + '" alt="' + esc(a.photo[1] || "") + '" loading="lazy">' + (a.photo[2] ? '<figcaption>' + esc(a.photo[2]) + '</figcaption>' : '') + '</figure>' : "") +
       '<div class="article longform">' +
-      (a.lede ? "<p class=\"lede1\">" + md(a.lede) + "</p>" : "") +
+      /* STORY-PLINK-NOV23: named players are linked in the lede too, and get a profile button */
+      (a.lede ? "<p class=\"lede1\">" + linkEntities(md(a.lede), a.named, a.teams) + "</p>" : "") +
       (a.body || []).map(function (p) {
         return "<p>" + gameCrests(
           linkEntities(md(p), a.named, a.teams), a.games) + "</p>";
@@ -10964,7 +10969,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var GRAD = { Sr: "2027", Jr: "2028", So: "2029", Fr: "2030" };   // 2026 season
     /* hlsplit Nov 10: same cards, built once per phase (playoffs / regular / full). */
     function hlBuild(HL) { return [["pass_yds", "Yards"], ["rush_yds", "Yards"], ["rec_yds", "Yards"],
-                   ["tackles", "Tackles"]].map(function (c) {
+                   ["tackles", "Tackles"], ["sacks", "Sacks"], ["ints", "INTs"] /* HOME-SACKS-NOV23 */].map(function (c) {
       var b = HL[c[0]], all = (b && b.players) || [];
       if (!all.length) return "";
       var top = all[0];
