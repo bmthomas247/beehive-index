@@ -7338,7 +7338,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<h2 style="font-size:25px;text-transform:none;line-height:1.2">' + esc(a.title) + "</h2>" +
       '<p class="dek">' + esc(a.dek) + "</p>" +
       ((a.named || []).filter(function (n) { return n && n[0] && pAttr(n[0], n[1]); }).map(function (n) {
-        return '<button type="button" class="cx-more" style="margin:2px 6px 0 0"' + pAttr(n[0], n[1]) + ">" +
+        return '<button type="button" class="cx-more" style="margin:4px 6px 2px 0;display:inline-flex;align-items:center;gap:6px"' + pAttr(n[0], n[1]) + ">" +
           logo(n[1], "sm") + " " + esc(n[0]) + "&rsquo;s player profile &rsaquo;</button>";
       }).join("")) + "</div>" +
       /* PW-STORY-NOV13: logo VS logo header */
