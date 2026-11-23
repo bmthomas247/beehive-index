@@ -4299,6 +4299,13 @@ nav.topbar ~ main.wrap{margin-top:20px}
 @media(max-width:999px){.pp-hero.ppx .ppx-cut{display:none}} /* HEROCUT-SIZE-NOV23 */
 @media(min-width:1000px) and (max-width:1200px){.pp-hero.ppx .ppx-cut{height:88%;right:0}}
 
+/* ---- RCARD-CUTOUT-NOV23 ---- */
+.rc-top .rc-cut{position:absolute;right:118px;bottom:0;height:96%;max-height:190px;width:auto;object-fit:contain;
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.45));pointer-events:none}
+.rc-top.hascut .no{right:150px}
+.rc-top.hascut>div{position:relative}
+@media(max-width:700px){.rc-top .rc-cut{right:0;height:100%;opacity:.9}}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6862,8 +6869,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
     d.id = "rcwrap"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Recruit card");
     d.innerHTML = '<div class="rcbar"><button type="button" class="pri" id="rcprint">Print / Save as PDF</button><button type="button" id="rcx" style="background:#000;color:#fff">Share on X</button><button type="button" id="rccopy">Copy link</button><button type="button" id="rcclose">Close ✕</button></div>' +
       '<div class="rc" style="--tc:' + esc(tc) + '">' +
-      '<div class="rc-top' + (p.photo ? ' hasph' : '') + '">' + /* RCARD-PHOTO-NOV23 */ (p.no ? '<span class="no" aria-hidden="true">' + esc(p.no) + "</span>" : "") +
-        (p.photo ? '<div class="rc-photo"><img src="' + esc(p.photo.src) + '" alt="' + esc(p.name) + '"><span class="rc-pcrest">' +
+      '<div class="rc-top' + (p.photo_hero ? ' hascut' : (p.photo ? ' hasph' : '')) + '">' + /* RCARD-PHOTO-NOV23 RCARD-CUTOUT-NOV23 */
+      (p.photo_hero ? '<img class="rc-cut" src="' + esc(p.photo_hero.src) + '" alt="' + esc(p.name) + '">' : '') + (p.no ? '<span class="no" aria-hidden="true">' + esc(p.no) + "</span>" : "") +
+        (p.photo && !p.photo_hero ? '<div class="rc-photo"><img src="' + esc(p.photo.src) + '" alt="' + esc(p.name) + '"><span class="rc-pcrest">' +
           logo(p.school, "md").replace('loading="lazy"', 'loading="eager"') + '</span></div>'
           : '<div class="rc-crest">' + logo(p.school, "xl").replace('loading="lazy"', 'loading="eager"') + "</div>") +
         '<div><div class="rc-fn">' + esc(fn) + '</div><div class="rc-ln">' + esc(ln) + "</div>" +
@@ -6879,7 +6887,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         (rks ? '<div class="rc-h">Recruiting rankings</div><div class="rc-rk">' + rks + "</div>" : "") +
         offers + film + contact +
       "</div></div>" +
-      '<div class="rc-foot"><div>' + (p.photo ? '<span class="rc-credit">Photo: ' + (p.photo.link ? '<a href="' + esc(p.photo.link) + '">' + esc(p.photo.by) + '</a>' : esc(p.photo.by)) + ', used with permission. </span>' : '') + 'Stats: MaxPreps box scores (Deseret News for schools that file none) · scores: Deseret News · ranks as published by each service · offers: 247Sports or the player’s own post on X · height/weight as listed on the roster or Hudl · items marked player-reported are not verified by us.</div><b>UTAHHIGHSCHOOLFOOTBALL.COM</b></div>' +
+      '<div class="rc-foot"><div>' + (function (ph) { return ph ? '<span class="rc-credit">Photo: ' + (ph.link ? '<a href="' + esc(ph.link) + '">' + esc(ph.by) + '</a>' : esc(ph.by)) + ', used with permission. </span>' : ''; })(p.photo_hero || p.photo) + 'Stats: MaxPreps box scores (Deseret News for schools that file none) · scores: Deseret News · ranks as published by each service · offers: 247Sports or the player’s own post on X · height/weight as listed on the roster or Hudl · items marked player-reported are not verified by us.</div><b>UTAHHIGHSCHOOLFOOTBALL.COM</b></div>' +
       "</div>";
     function close() { d.remove(); document.removeEventListener("keydown", onKey); }
     function onKey(e) { if (e.key === "Escape") close(); }
