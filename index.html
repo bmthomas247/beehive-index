@@ -653,6 +653,7 @@ select:focus-visible{outline:2px solid var(--steel);outline-offset:-1px}
 .vthumb{display:block;position:relative;aspect-ratio:16/9;background:var(--surface-2);
   border:1px solid var(--line);border-radius:3px;overflow:hidden}
 .vthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.vby{display:block;margin-top:4px;font-size:12px;font-weight:600;color:var(--sodium);text-decoration:none} .vby:hover{text-decoration:underline} /* WATCH-STATEWIDE-NOV23 */
 .vplay{position:absolute;inset:0;margin:auto;width:38px;height:38px;border-radius:50%;
   background:rgba(13,19,25,.72);border:1.5px solid rgba(255,255,255,.85)}
 .vplay::after{content:"";position:absolute;top:50%;left:53%;transform:translate(-50%,-50%);
@@ -9960,7 +9961,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
 
     /* Video from the people filming these games. We link out and embed nothing --
        the video plays on their channel and the creator keeps the view. */
-    var VID = (DATA.videos || []).filter(function (v) { return v.schools.length; });
+    var VID = (DATA.videos || []).filter(function (v) { return v.schools.length || v.statewide; }) /* WATCH-STATEWIDE-NOV23 */
+      .map(function (v, i) { return [v, i]; }).sort(function (a, b) { var x = a[0].added || a[0].d || "", y = b[0].added || b[0].d || ""; return x < y ? 1 : x > y ? -1 : a[1] - b[1]; })
+      .map(function (p) { return p[0]; });
     var vidHtml = VID.length
       ? '<div class="panel"><h2>Watch</h2>' +
         '<p class="lede">Highlights and coverage from the people filming Utah high ' +
@@ -9975,7 +9978,9 @@ nav.topbar ~ main.wrap{margin-top:20px}
               ? '<span class="vsch">' + v.schools.slice(0, 2).map(function (sc) {
                   return logo(sc, "sm");
                 }).join("") + esc(v.schools.slice(0, 2).join(" · ")) + "</span>"
-              : "") + "</div>";
+              : v.statewide ? '<span class="vsch">Statewide' + (v.plat ? " &middot; " + esc(v.plat) : "") + "</span>" : "") +
+            /* WATCH-STATEWIDE-NOV23: link the creator's profile (Brandon: "make sure we link to his profile") */
+            (v.pu ? '<a class="vby" href="' + esc(v.pu) + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">More from ' + esc(v.src) + " &rsaquo;</a>" : "") + "</div>";
         }).join("") + "</div></div>"
       : "";
 
