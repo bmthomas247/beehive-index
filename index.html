@@ -2406,6 +2406,16 @@ details.foldout .foldbody p{margin:0 0 10px}
 .xhead .ct{font-family:var(--f-display);font-size:13px;font-weight:600}
 .xhead .ct.in{color:var(--rise)} .xhead .ct.out{color:var(--fall)}
 .xplayers{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+
+/* W27-LINKS-NOV23: Players to Watch 2027 banners */
+.w27b{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;background:#14213D;color:#fff;border-radius:6px;border-top:4px solid #E8A33D;padding:14px 16px;margin:0 0 14px}
+.w27b .w27b-t{flex:1 1 260px;min-width:0}
+.w27b .w27b-k{font-family:var(--f-display);font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#E8A33D}
+.w27b h2,.w27b .w27b-h{margin:2px 0 2px;font-family:var(--f-display);font-weight:900;font-size:24px;line-height:1.05;color:#fff;text-transform:uppercase}
+.w27b p{margin:0;font-size:13px;color:rgba(255,255,255,.78)}
+.w27b .w27b-l{display:flex;flex-wrap:wrap;gap:8px}
+.w27b .w27b-l a,.w27b .w27b-l button{font:inherit;font-weight:700;font-size:13px;padding:7px 12px;border-radius:5px;background:#E8A33D;color:#14213D;text-decoration:none;border:0;cursor:pointer}
+.w27b .w27b-l .w27b-g{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
 .xp{font-size:12px;background:var(--surface-2);border:1px solid var(--line-soft);padding:3px 8px;border-radius:2px}
 .xp b{font-weight:600}
 .xp span{color:var(--ink-3)}
@@ -10891,6 +10901,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '<div class="ch-g">' + out.join("") + "</div>" +
           '<p class="ch-src">Final scores: Deseret News, checked against the official UHSAA brackets. Tap a champion for its season.</p></div>';
       })() +
+      /* W27-LINKS-NOV23 */ ((DATA.articles || []).some(function (x) { return x.id === "players-to-watch-2027-nov23"; })
+        ? '<div class="w27b"><div class="w27b-t"><div class="w27b-k">New &middot; Players to Watch 2027</div>' +
+          '<h2>Utah\u2019s next wave</h2><p>A top 10 at every position for the classes of 2028, 2029 and 2030.</p></div>' +
+          '<div class="w27b-l">' + ['2028','2029','2030'].map(function (c) { return '<a href="https://utahhighschoolfootball.com/utah-high-school-football-players-to-watch-2027-class-of-' + c + '">Class of ' + c + '</a>'; }).join('') +  '<button type="button" class="w27b-g" data-art="players-to-watch-2027-nov23">Read the story</button></div></div>'
+        : "") +
       /* BREAKING-TOP-NOV19: moved to the top */
       /* REALIGN-BREAKING-NOV19: breaking-news banner -> opens the realignment story */ (function () {
         var A = (DATA.articles || []).filter(function (x) { return x.id === "uhsaa-realignment-vote-nov19"; })[0];
@@ -12659,6 +12674,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
     ' are producing this season with no recruiting grade anywhere.</strong> Filter to <em>Producing, unranked</em> to see only them, and click any column heading to sort.</p>' +
     /* PSEARCH-NORATED-NOV13 */
     '</div>' +
+    /* W27-LINKS-NOV23 */ '<div class="w27b"><div class="w27b-t"><div class="w27b-k">New &middot; Players to Watch 2027</div>' +
+    '<div class="w27b-h">The best juniors, sophomores and freshmen</div>' +
+    '<p>A top 10 at every position for each class, plus the players on our radar.</p></div>' +
+    '<div class="w27b-l">' + ['2028','2029','2030'].map(function (c) { return '<a href="https://utahhighschoolfootball.com/utah-high-school-football-players-to-watch-2027-class-of-' + c + '">Class of ' + c + '</a>'; }).join('') +  '<a class="w27b-g" href="https://utahhighschoolfootball.com/utah-high-school-football-players-to-watch-2027">All classes</a></div></div>' +
     /* PSEARCH-HUDL-NOV13 */
     '<div class="hl-filters psbar" id="psbar">' +
     '<input type="search" id="pq" placeholder="Search a player or a school" aria-label="Search players">' +
