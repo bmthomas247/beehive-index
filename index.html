@@ -4143,6 +4143,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .clsp .clspl label{display:flex;flex-direction:row;align-items:center;gap:6px;font-weight:400}
 @media(max-width:640px){.clsp .clspl{grid-template-columns:1fr 1fr}}
 
+/* ---- CLAIM-UX-NOV23 ---- */
+#clmodal [hidden]{display:none !important}
+.clbox input[type=text],.clbox input[type=email],.clbox input[type=tel],.clbox select,.clbox textarea{width:100%;min-width:0;box-sizing:border-box}
+.clbox input[type=tel]{font:inherit;font-weight:400;padding:8px 10px;border:1px solid var(--line,#ccc);border-radius:4px;background:var(--bg,#fff);color:inherit}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6356,7 +6361,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<label class="w">Type your full name to sign. You agree to all ' + CLAIM_TERMS.length + ' terms above (version ' + CLAIM_TV + ').<input type="text" name="sig" required></label></div>' +
       '<div class="clerr" id="clerr" hidden></div>' +
       '<button class="clsend" type="submit">Send my claim</button>' +
-      "<p class='clfine'>Nothing changes on his profile until a person has verified this claim. Never send a password, phone number or home address.</p>" +
+      "<p class='clfine'>Nothing changes on his profile until a person has verified this claim. Never send a password or a home address. The only phone number we ask for is a parent’s, and it is never published.</p>" +
       "</form></div>";
     function close() { d.remove(); document.removeEventListener("keydown", onKey); }
     function onKey(e) { if (e.key === "Escape") close(); }
@@ -6387,6 +6392,27 @@ nav.topbar ~ main.wrap{margin-top:20px}
         if (e.target.checked && !window.confirm(CLAIM_PUBWARN)) e.target.checked = false;
       });
     });
+    var CLYOU = [ /* CLAIM-UX-NOV23: [selector, his-text, your-text] */
+      [".clh:nth-of-type(3)", "3. How we verify it is him", "3. How we verify it is you"],
+      [".clh:nth-of-type(4)", "4. What to show on his profile (optional)", "4. What to show on your profile (optional)"]];
+    function clYou() {
+      var me = /^Player/.test(f.elements.role.value);
+      var hs = d.querySelectorAll(".clh");
+      if (hs[2]) hs[2].textContent = me ? "3. How we verify it is you" : "3. How we verify it is him";
+      if (hs[3]) hs[3].textContent = me ? "4. What to show on your profile (optional)" : "4. What to show on his profile (optional)";
+      [["pemail", "His email", "Your email"], ["bio", "In his own words (up to 400 characters)", "In your own words (up to 400 characters)"]].forEach(function (x) {
+        var el = f.elements[x[0]]; if (el && el.previousSibling && el.previousSibling.nodeType === 3) el.previousSibling.nodeValue = me ? x[2] : x[1];
+      });
+      [["showemail", " Show his email on his profile", " Show my email on my profile"], ["showgpa", " Show GPA (labelled self-reported)", " Show my GPA (labelled self-reported)"]].forEach(function (x) {
+        var el = f.elements[x[0]]; if (el && el.nextSibling && el.nextSibling.nodeType === 3) el.nextSibling.nodeValue = me ? x[2] : x[1];
+      });
+      var sp = d.querySelector(".clsp"); if (sp && sp.parentNode.firstChild.nodeType === 3) sp.parentNode.firstChild.nodeValue = me ? "Other sports I play" : "Other sports he plays";
+      var vo = f.elements.verify.options;
+      for (var i = 1; i < vo.length; i++) vo[i].textContent = me ? vo[i].textContent.replace(/\bhis\b/g, "your") : vo[i].textContent.replace(/\byour\b/g, "his");
+      var hl = d.querySelector("#clhl"); if (hl) hl.textContent = me ? hl.textContent.replace(/^His\b/, "Your") : hl.textContent.replace(/^Your\b/, "His");
+    }
+    f.elements.role.addEventListener("change", clYou);
+    f.elements.verify.addEventListener("change", function () { setTimeout(clYou, 0); });
     f.elements.role.addEventListener("change", function () { /* CLAIM-V1B-NOV23 */
       var r = f.elements.role.value, box = d.querySelector("#clpar");
       box.hidden = !(r === "Player under 18" || r === "Parent or guardian");
