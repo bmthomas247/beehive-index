@@ -4254,6 +4254,19 @@ nav.topbar ~ main.wrap{margin-top:20px}
   .rc-col+.rc-col{border-left:1px solid #e3e5e8!important;border-top:0!important}
 }
 
+/* ---- CAMPS-NOV23 ---- */
+.rc-camp{font-size:12px;margin:3px 0;line-height:1.35}
+.rc-camp b{display:inline-block;min-width:70px;color:var(--tc,#0B1F3A)}
+.rc-camp i{font-style:normal;color:#777;font-size:10.5px}
+.pp-camps .cmp{display:grid;grid-template-columns:96px 1fr auto;gap:10px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line-soft,#eee);font-size:14px}
+.pp-camps .cmp:last-child{border-bottom:0}
+.pp-camps .cmp b{font-family:var(--f-display);font-size:15px}
+.pp-camps .cmp em{font-style:normal;font-size:11px;padding:2px 7px;border-radius:999px;background:var(--surface-2,#eef1f4);color:var(--ink-2)}
+.pp-camps small{display:block;margin-top:8px;font-size:12px;color:var(--ink-3)}
+.clcamp{display:grid;grid-template-columns:140px 140px 1fr;gap:8px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--line,#ddd)}
+.clcamp input{width:100%;min-width:0;box-sizing:border-box}
+@media(max-width:640px){.clcamp{grid-template-columns:1fr 1fr}}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6477,7 +6490,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="clh">5. Social media (optional)</div>' + /* CLAIM-SOCIAL-NOV23 */
       "<p style='margin:0 0 8px;color:var(--ink-3);font-size:13px'>Handles you add show as buttons on the player profile once it is verified.</p>" +
       '<div id="clsocs"></div><button type="button" class="cladd" id="cladd">+ Add a social media account</button>' +
-      '<div class="clh">6. Sign</div><div class="clgrid">' +
+      '<div class="clh">6. Offseason camps (optional)</div>' + /* CAMPS-NOV23 */
+      "<p style='margin:0 0 8px;color:var(--ink-3);font-size:13px'>Camps and combines the player plans to attend. They show on the profile and recruit card once verified, marked player-reported.</p>" +
+      '<div id="clcamps"></div><button type="button" class="cladd" id="cladc">+ Add a camp</button>' +
+      '<div class="clh">7. Sign</div><div class="clgrid">' +
       '<label class="w">Type your full name to sign. You agree to all terms above (version ' + CLAIM_TV + ').<input type="text" name="sig" required></label></div>' +
       '<div class="clerr" id="clerr" hidden></div>' +
       '<button class="clsend" type="submit">Send my claim</button>' +
@@ -6489,6 +6505,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
     document.addEventListener("keydown", onKey);
     document.body.appendChild(d);
     var f = d.querySelector("#clform"), err = d.querySelector("#clerr");
+    (function () { /* CAMPS-NOV23 */
+      var box = d.querySelector("#clcamps"), add = d.querySelector("#cladc");
+      add.addEventListener("click", function () {
+        var r = document.createElement("div"); r.className = "clcamp";
+        r.innerHTML = '<input type="date" aria-label="Start date" class="cs"><input type="date" aria-label="End date (optional)" class="ce" title="End date (optional)">' +
+          '<input type="text" class="ch" placeholder="College or camp (e.g. BYU Mega Camp)" maxlength="120">' +
+          '<input type="text" class="cc" placeholder="City" maxlength="60"><input type="text" class="cu" placeholder="Camp link (optional)" maxlength="300" style="grid-column:span 2">';
+        box.appendChild(r); add.hidden = box.children.length >= 8;
+      });
+    })();
     (function () { /* CLAIM-SOCIAL-NOV23 */
       var box = d.querySelector("#clsocs"), add = d.querySelector("#cladd");
       var PL = ["Instagram", "TikTok", "YouTube", "Snapchat", "Facebook", "Threads"];
@@ -6601,6 +6627,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
         "GPA: " + (v("gpa") || "-") + " | show: " + (v("showgpa") ? "yes" : "no"),
         "other sports: " + (clSports() || "-"),
         "bio: " + (v("bio") || "-"),
+        "camps: " + ([].map.call(d.querySelectorAll(".clcamp"), function (r) { /* CAMPS-NOV23 */
+          var q = function (c) { return r.querySelector(c).value.trim(); };
+          return q(".cs") && q(".ch") ? q(".cs") + (q(".ce") ? ".." + q(".ce") : "") + " | " + q(".ch") + " | " + q(".cc") + " | " + q(".cu") : "";
+        }).filter(Boolean).join(" ; ") || "-"),
         "social: " + ([].map.call(d.querySelectorAll(".clsoc"), function (r) { var h = r.querySelector("input").value.trim(); return h ? r.querySelector("select").value + ":" + h.replace(/^@/, "") : ""; }).filter(Boolean).join("; ") || "-"),
         "page: " + location.origin + "/?player=" + encodeURIComponent(p.name + "|" + p.school)].join("\n");
       var sink = document.getElementById("clsink");
@@ -6689,6 +6719,17 @@ nav.topbar ~ main.wrap{margin-top:20px}
       vn.textContent = "Verified profile · claimed " + mdy(p.claimed.on) +
         (((p.social_pub || []).length || p.email_pub) ? " · links added by the player are player-reported, not verified by us" : ""); dh.appendChild(vn);
       var main = host.querySelector(".pp-main");
+      if ((p.camps || []).length && main) { /* CAMPS-NOV23 */
+        var cs = cmpSplit(p), cc = document.createElement("div"); cc.className = "pp-card pp-camps";
+        cc.innerHTML = '<div class="sect">Offseason camps</div>' +
+          (cs.up.length ? cs.up.map(function (c) {
+            return '<div class="cmp"><b>' + esc(cmpDates(c)) + '</b><span>' + (c.url ? '<a href="' + esc(c.url) + '" target="_blank" rel="noopener nofollow">' + esc(cmpTitle(c)) + '</a>' : esc(cmpTitle(c))) +
+              (c.city ? ' \u00b7 ' + esc(c.city) : '') + '</span><em>' + esc(CMP_ST[c.status] || '') + '</em></div>'; }).join('') : '') +
+          (cs.past.length ? '<div class="sect" style="margin-top:12px">Camps attended</div>' + cs.past.map(function (c) {
+            return '<div class="cmp"><b>' + esc(cmpDates(c)) + '</b><span>' + esc(cmpTitle(c)) + (c.results ? ' \u00b7 ' + esc(c.results) : '') + '</span><em>Attended</em></div>'; }).join('') : '') +
+          '<small><strong>Player-reported, not verified by us.</strong> Where to see the player this offseason, as the player listed it.</small>';
+        main.insertBefore(cc, main.firstChild);
+      }
       if (p.bio_self && main) {
         var c = document.createElement("div"); c.className = "pp-card pp-bio";
         c.innerHTML = '<div class="sect">Bio</div><p>' + esc(p.bio_self) + "</p><small><strong>Player-reported, not verified by us.</strong> Written by the player on the verified profile. A college staff will check it for themselves.</small>";
@@ -6707,6 +6748,31 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var sc = document.createElement("script");
     sc.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
     sc.onload = cb; sc.onerror = function () {}; document.head.appendChild(sc);
+  }
+  /* ---- CAMPS-NOV23 ---- */
+  var CMP_ST = { planning: "Planning to attend", registered: "Registered", attended: "Attended" };
+  function cmpDates(c) {
+    var a = mdy(c.start), b = c.end && c.end !== c.start ? mdy(c.end) : "";
+    if (b && c.end.slice(0, 7) === c.start.slice(0, 7)) b = String(Number(c.end.slice(8)));
+    return a + (b ? "–" + b : "");
+  }
+  function cmpSplit(p) {
+    var today = new Date(), iso = today.getFullYear() + "-" + ("0" + (today.getMonth() + 1)).slice(-2) + "-" + ("0" + today.getDate()).slice(-2);
+    var all = p.camps || [];
+    return { up: all.filter(function (c) { return (c.end || c.start) >= iso && c.status !== "attended"; }),
+             past: all.filter(function (c) { return (c.end || c.start) < iso || c.status === "attended"; }).reverse() };
+  }
+  function cmpTitle(c) { return [c.host, c.name].filter(Boolean).join(" — "); }
+  function rcCamps(p) {
+    if (!(p.camps || []).length) return "";
+    var s = cmpSplit(p);
+    return '<div class="rc-h">Offseason camps</div>' +
+      s.up.slice(0, 6).map(function (c) {
+        return '<div class="rc-camp"><b>' + esc(cmpDates(c)) + "</b>" + esc(cmpTitle(c)) + (c.city ? " · " + esc(c.city) : "") +
+          ' <i>' + esc(CMP_ST[c.status] || "") + "</i></div>"; }).join("") +
+      (s.past.length ? '<div class="rc-camp" style="margin-top:5px;color:#555"><b style="color:#555">Attended</b>' +
+        s.past.slice(0, 3).map(function (c) { return esc(cmpTitle(c)) + (c.results ? " (" + esc(c.results) + ")" : ""); }).join("; ") + "</div>" : "") +
+      '<div class="rc-pr">Camp schedule is player-reported, not verified by us.</div>';
   }
   function openCard(p) {
     var old = document.getElementById("rcwrap"); if (old) old.remove();
@@ -6751,7 +6817,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       "</div>";
     var d = document.createElement("div");
     d.id = "rcwrap"; d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Recruit card");
-    d.innerHTML = '<div class="rcbar"><button type="button" class="pri" id="rcprint">Print / Save as PDF</button><button type="button" id="rccopy">Copy link</button><button type="button" id="rcclose">Close ✕</button></div>' +
+    d.innerHTML = '<div class="rcbar"><button type="button" class="pri" id="rcprint">Print / Save as PDF</button><button type="button" id="rcx" style="background:#000;color:#fff">Share on X</button><button type="button" id="rccopy">Copy link</button><button type="button" id="rcclose">Close ✕</button></div>' +
       '<div class="rc" style="--tc:' + esc(tc) + '">' +
       '<div class="rc-top">' + (p.no ? '<span class="no" aria-hidden="true">' + esc(p.no) + "</span>" : "") +
         '<div class="rc-crest">' + logo(p.school, "xl").replace('loading="lazy"', 'loading="eager"') + "</div>" +
@@ -6762,7 +6828,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="rc-facts">' + facts.map(function (f) { return "<div><span>" + f[0] + "</span><b>" + f[1] + "</b></div>"; }).join("") + "</div>" +
       '<div class="rc-body"><div class="rc-col">' +
         (big.length ? '<div class="rc-h">2026 season</div><div class="rc-big">' + big.map(function (b) { return "<div><b>" + esc(b[0]) + "</b><span>" + esc(b[1]) + "</span></div>"; }).join("") + "</div>" : "") +
-        (lines ? '<div style="margin-top:8px">' + lines + "</div>" : "") + game + honors +
+        (lines ? '<div style="margin-top:8px">' + lines + "</div>" : "") + game + honors + rcCamps(p) + /* CAMPS-NOV23 */
         (self.length ? '<div class="rc-h">From the player</div>' + self.join("") : "") +
       '</div><div class="rc-col">' +
         (rks ? '<div class="rc-h">Recruiting rankings</div><div class="rc-rk">' + rks + "</div>" : "") +
@@ -6777,6 +6843,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
     document.body.appendChild(d);
     d.querySelector("#rcclose").addEventListener("click", close);
     d.querySelector("#rcprint").addEventListener("click", function () { window.print(); });
+    d.querySelector("#rcx").addEventListener("click", function () { /* RCARD-XSHARE-NOV23 */
+      var who = [p.cls ? (NWYR[p.cls] || "") : "", p.pos || ""].filter(Boolean).join(" ");
+      var st = big.slice(0, 2).map(function (b) { return b[0] + " " + b[1].replace(/\b([A-Z][a-z]+)\b/g, function (w) { return w.toLowerCase(); }); }).join(" \u00b7 ");
+      var txt = "Recruit card: " + p.name + (who ? ", " + who : "") + ", " + p.school + " \ud83c\udfc8" +
+        (st ? "\n2026: " + st : "") +
+        "\n" + (p.twitter ? "@" + p.twitter + " " : "") + "@TheLedgerUT" +
+        "\n#UtahHighSchoolFootball #UHSAA";
+      window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(txt) + "&url=" + encodeURIComponent(url + "&card=1"), "_blank", "noopener");
+      if (window.uhsTrack) window.uhsTrack("cardx", true);
+    });
     d.querySelector("#rccopy").addEventListener("click", function () {
       var u = url + "&card=1", b = this;
       try { navigator.clipboard.writeText(u).then(function () { b.textContent = "Link copied"; }); } catch (e) { window.prompt("Copy this link", u); }
