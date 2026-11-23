@@ -9988,10 +9988,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
     /* ---- MLB-style playoff picture (Nov 5 2026) ---- */
     var PBR = (function () {
       var PO = (DATA.po_official || {}).classes || {};
-      var CL = ["6A", "5A", "4A", "3A", "2A", "1A"].filter(function (c) { return PO[c] && PO[c].rounds && PO[c].rounds.length; });
+      var CL = ["6A", "5A", "4A", "3A", "2A", "1A", "8P"].filter(function (c) { return PO[c] && PO[c].rounds && PO[c].rounds.length; }); /* E8-PBR-NOV23 */
       if (!CL.length) return "";
       var FIN = {};
-      (DATA.recap || []).forEach(function (g) { if (g.date && g.date >= "2026-10-20") FIN[[g.away, g.home].sort().join("|")] = g; });
+      (DATA.recap || []).concat(dn8pFinals()).forEach(function (g) { if (g.date && g.date >= "2026-10-20") FIN[[g.away, g.home].sort().join("|")] = g; });
       var MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"], DY = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
       function when(ko) {
         var m = /^(\d{4})-(\d\d)-(\d\d)(?:T(\d\d):(\d\d))?/.exec(ko || ""); if (!m) return "";
@@ -10041,7 +10041,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
           '<div class="pb-grid">' +
             '<div class="pb-col pb-l">' + match(qL[0], "q") + match(qL[1], "q") + "</div>" +
             '<div class="pb-col pb-l">' + match(L, "s") + "</div>" +
-            '<div class="pb-col pb-c"><div class="pb-ttl"><b>' + c + "</b><span>State final</span></div>" +
+            '<div class="pb-col pb-c"><div class="pb-ttl">' + (c === "8P" ? '<b style="font-size:.55em;white-space:nowrap">8-Player' : "<b>" + c) + "</b><span>State final</span></div>" +
               match(fin, "f") +
               '<div class="pb-when">' + (fr ? "Champion: <b>" + esc(fr.w) + "</b>" : esc(when(fin.ko)) + (venue ? " &middot; " + esc(venue) : "")) + "</div></div>" +
             '<div class="pb-col pb-r">' + match(R, "s") + "</div>" +
@@ -10052,7 +10052,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       }
       return '<div class="panel pbpanel"><div class="pb-hd"><h2>2026 Playoffs</h2>' +
         '<div class="pb-tabs">' + CL.map(function (c, i) {
-          return '<button type="button" data-pbc="' + c + '" aria-pressed="' + (i === 0) + '">' + c + "</button>";
+          return '<button type="button" data-pbc="' + c + '" aria-pressed="' + (i === 0) + '">' + (c === "8P" ? "8-Player" : c) + "</button>";
         }).join("") + "</div></div>" +
         '<div class="pb-scroll">' + CL.map(build).join("") + "</div>" +
         "</div>";
@@ -10663,7 +10663,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     function rdate(r) { return r.date || ((r.games[0] || {}).ko || "").slice(0, 10); }
     // finals from our game file, keyed by the pair
     var FIN = {};
-    (DATA.recap || []).forEach(function (g) {
+    (DATA.recap || []).concat(dn8pFinals()).forEach(function (g) { /* E8-PBR-NOV23 */
       if (!g.date || g.date < "2026-10-20") return;
       FIN[[g.away, g.home].sort().join("|")] = g;
     });
@@ -13986,6 +13986,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
      News game story, Nov 14 2026: https://www.deseret.com/sports/2026/11/14/high-school-football-1a-8-player-championship-rich-milford/
      It is the same as the UHSAA bracket result. */
   function dn8pFinals() {
+    if ((DATA.e8games || []).length) return DATA.e8games; /* E8-PBR-NOV23: Deseret, build_data.py */
     return [{ date: "2026-11-14", away: "Milford", home: "Rich", away_score: 35, home_score: 69, winner: "Rich", loser: "Milford" }];
   }
   function drawTicker() {
