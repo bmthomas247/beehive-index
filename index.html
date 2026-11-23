@@ -2614,6 +2614,9 @@ body{ font-size:15.5px; letter-spacing:-0.005em; }
 /* ---------- score ticker: flush strip, team color does the work ---------- */
 .tickwrap{ background:var(--surface); border-bottom:1px solid var(--line); padding:0 }
 .tickrail{ gap:0; padding:0 40px }
+/* TICK-CENTER-NOV23: center the cards when they don't fill the strip; still scrolls from the left when they do */
+.tickrail > .tcard:first-child{ margin-left:auto; border-left:1px solid var(--line-soft) }
+.tickrail > .tcard:last-child{ margin-right:auto }
 .tcard{
   flex-basis:230px; background:transparent; border:0; border-right:1px solid var(--line-soft);
   border-radius:0; transition:background .12s;
