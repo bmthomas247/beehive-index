@@ -6596,12 +6596,14 @@ nav.topbar ~ main.wrap{margin-top:20px}
         a.textContent = "Email"; a.title = "His own email, shown because he chose to on his verified profile";
         links.appendChild(a);
       }
-      var vn = document.createElement("div"); vn.className = "vnote";
-      vn.textContent = "Verified profile · claimed " + mdy(p.claimed.on); dh.appendChild(vn);
+      var vn = document.createElement("div"); vn.className = "vnote"; /* PLAYER-REPORTED-NOV23 */
+      if ((p.social_pub || []).length || p.email_pub) vn.title = "Email and social links on this profile were added by the player: player-reported, not verified by us.";
+      vn.textContent = "Verified profile · claimed " + mdy(p.claimed.on) +
+        (((p.social_pub || []).length || p.email_pub) ? " · links added by the player are player-reported, not verified by us" : ""); dh.appendChild(vn);
       var main = host.querySelector(".pp-main");
       if (p.bio_self && main) {
         var c = document.createElement("div"); c.className = "pp-card pp-bio";
-        c.innerHTML = '<div class="sect">Bio</div><p>' + esc(p.bio_self) + "</p><small>Written by the player on his verified profile.</small>";
+        c.innerHTML = '<div class="sect">Bio</div><p>' + esc(p.bio_self) + "</p><small><strong>Player-reported, not verified by us.</strong> Written by the player on the verified profile. A college staff will check it for themselves.</small>";
         main.insertBefore(c, main.firstChild);
       }
     } else {
