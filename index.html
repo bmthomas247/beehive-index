@@ -3577,6 +3577,16 @@ h3.qhow{ margin:18px 0 8px }
 .hpo-t.l{opacity:.5}
 .tkpo-sd{font-weight:700;color:#a57c1b;font-size:.85em;margin-right:1px}
 .tkpo-tag{color:#a57c1b;font-weight:700}
+/* BOWLS-NOV23 */
+.bowlb{display:inline-flex;align-items:center;gap:6px;vertical-align:.18em;margin-left:.45em;padding:2px 9px 2px 2px;border-radius:999px;background:#0B1F3A;color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.02em;line-height:1;cursor:pointer;border:1px solid rgba(255,255,255,.25);white-space:nowrap}
+.bowlb img{width:24px;height:24px;border-radius:50%;object-fit:cover;background:#fff}
+.bowlb:hover{border-color:#d9b45a}
+.tcard.tkbowl{border-color:#d9b45a}
+.tkbowl .tstat{color:#a57c1b;font-weight:700}
+.tkbowl-m{display:flex;align-items:center;gap:8px;padding:4px 0}
+.tkbowl-m img{width:40px;height:40px;border-radius:6px;object-fit:cover;flex:none}
+.tkbowl-m b{display:block;font-size:13px;line-height:1.2}
+.tkbowl-m span{display:block;font-size:11.5px;color:var(--ink-3);margin-top:2px}
 .tcard.tkpo .tstat{color:#a57c1b;font-weight:700}
 /* TICKGO-NOV8 */
 .tcard.tkpo{position:relative;cursor:default}
@@ -4058,6 +4068,45 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .ppo.cm em{color:#fff;font-weight:700}
 .ppo-more{align-self:center;font-family:var(--f-display);font-size:18px;color:rgba(255,255,255,.8)}
 @media(max-width:940px){.pp-facts>.ppo-wrap{flex-basis:100%;border-left:0;padding-left:0!important;margin-top:6px}}
+
+/* ---- CLAIM-V1-NOV23: claim your profile ---- */
+.clbtn{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#0B1F3A;border:1px solid #fff;cursor:pointer}
+.clbtn:hover{background:#E8A33D;border-color:#E8A33D;color:#0B1F3A}
+.vbadge{display:inline-grid;place-items:center;width:.5em;height:.5em;margin-left:.22em;vertical-align:.5em;border-radius:50%;
+  background:#1D9BF0;color:#fff;font-size:.62em;line-height:1;font-family:system-ui,sans-serif;font-weight:900;cursor:help;
+  box-shadow:0 0 0 .05em #fff}
+.vbadge svg{width:62%;height:62%}
+.pp-hero .vnote{display:inline-block;margin-top:8px;font-size:12px;color:rgba(255,255,255,.75)}
+.pp-bio p{margin:0;font-size:15px;line-height:1.65;color:var(--ink)}
+.pp-bio small{display:block;margin-top:8px;font-size:12px;color:var(--ink-3)}
+#clmodal{position:fixed;inset:0;z-index:9999;background:rgba(5,10,20,.72);display:flex;align-items:flex-start;justify-content:center;
+  overflow-y:auto;padding:24px 12px}
+.clbox{background:var(--surface,#fff);color:var(--ink,#111);width:100%;max-width:760px;border-radius:8px;box-shadow:0 20px 60px rgba(0,0,0,.45);
+  padding:22px 24px 26px;position:relative;font-size:14.5px;line-height:1.55}
+.clbox h2{font-family:var(--f-display);font-size:26px;margin:0 30px 4px 0;text-transform:uppercase;letter-spacing:.02em}
+.clx{position:absolute;right:12px;top:10px;border:0;background:none;font-size:22px;cursor:pointer;color:var(--ink-3)}
+.clsum{background:#0B1F3A;color:#fff;border-radius:6px;padding:14px 16px;margin:12px 0 16px}
+.clsum b{color:#E8A33D}
+.clsum ul{margin:6px 0 0;padding-left:18px}
+.clh{font-family:var(--f-display);font-size:15px;letter-spacing:.08em;text-transform:uppercase;margin:20px 0 8px;
+  border-bottom:2px solid var(--line,#ddd);padding-bottom:4px}
+.clterm{display:grid;grid-template-columns:22px 1fr;gap:8px;padding:8px 0;border-bottom:1px solid var(--line-soft,#eee);cursor:pointer}
+.clterm input{margin-top:4px;width:17px;height:17px}
+.clterm b{display:block}
+.clgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}
+.clgrid label,.clrow{display:flex;flex-direction:column;gap:4px;font-size:13px;font-weight:600}
+.clgrid label.w{grid-column:1/-1}
+.clbox input[type=text],.clbox input[type=email],.clbox select,.clbox textarea{font:inherit;font-weight:400;padding:8px 10px;
+  border:1px solid var(--line,#ccc);border-radius:4px;background:var(--bg,#fff);color:inherit}
+.clchk{display:flex !important;flex-direction:row !important;align-items:center;gap:8px;font-weight:400 !important}
+.clcode{font-family:ui-monospace,Consolas,monospace;font-size:20px;font-weight:700;letter-spacing:.12em;background:#0B1F3A;color:#E8A33D;
+  padding:6px 12px;border-radius:4px;display:inline-block}
+.clsend{margin-top:18px;font-family:var(--f-display);font-size:16px;letter-spacing:.06em;text-transform:uppercase;background:#0B1F3A;color:#fff;
+  border:0;border-radius:4px;padding:12px 22px;cursor:pointer}
+.clsend:disabled{opacity:.45;cursor:not-allowed}
+.clerr{color:#B0402F;font-weight:600;margin-top:10px}
+.clfine{font-size:12px;color:var(--ink-3);margin-top:10px}
+@media(max-width:640px){.clgrid{grid-template-columns:1fr}.clbox{padding:18px 14px}}
 
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
@@ -5800,6 +5849,11 @@ nav.topbar ~ main.wrap{margin-top:20px}
         return '<span class="capc" style="--tc:' + esc((byName[p.school] || {}).c1 || "#0B1F3A") + '" title="' +
           esc(cn + " \u2014 " + (p.captain.src || "reported by the program")) + '">C<span class="vh">' + esc(cn) + "</span></span>";
       })(p.captain.note ? p.captain.note : "team captain") : "") +
+      (p.honors_ext || []).filter(function (h) { return h.kind === "bowl" && h.img; }).map(function (h) { /* BOWLS-NOV23 */
+        return '<span class="bowlb" role="button" tabindex="0"' + (h.art ? ' data-art="' + esc(h.art) + '"' : "") +
+          ' title="' + esc(h.t + " \u2014 " + (h.note || "")) + '"><img src="' + esc(h.img) + '" alt="">' +
+          esc(h.t.replace(/^adidas /, "").replace(/ \d{4}$/, "")) + "</span>";
+      }).join("") +
       "</h3>" +
       '<div class="dsub">' + (line || "—") + "</div>" +
       '<div class="dsub"><span data-t="' + esc(p.school) + '" style="cursor:pointer;text-decoration:underline">' +
@@ -5850,6 +5904,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
                 // a UHSAA or Deseret selection
                 return '<div class="game' + (h.kind === "beehive" ? " ourhon" : "") +
                   '" style="grid-template-columns:1fr auto"><div class="op" style="font-weight:600">' +
+                  (h.kind === "bowl" && h.img ? '<img class="hsrc" style="padding:0;height:26px;vertical-align:-8px" src="' + esc(h.img) + '" alt="">' : "") + /* BOWLS-NOV23 */
                   (/^Sports Illustrated/.test(h.t) ? '<img class="hsrc" src="logo-src-si.webp" alt="Sports Illustrated" title="Sports Illustrated">' +
                     esc(h.t.replace(/^Sports Illustrated\s*/, "")) : esc(h.t)) + (h.note ? '<span class="hnote">' + esc(h.note) + (h.u ? ' <a class="hsrcl" href="' + esc(h.u) + '" target="_blank" rel="noopener">source</a>' : "") + "</span>" : "") +
                   '</div><div class="dt" style="text-align:right">' + esc(h.y || "") + "</div></div>";
@@ -6170,6 +6225,165 @@ nav.topbar ~ main.wrap{margin-top:20px}
         collegeMark(o, true).replace(' loading="lazy"', "") + "<em>" + esc(cm ? "Committed" : o) + "</em></span>";
     }).join("") + (more > 0 ? '<span class="ppo-more">+' + more + "</span>" : "") + "</div>";
   }
+  /* ---- CLAIM-V1-NOV23: claim your profile (Brandon, Nov 23 2026) ----
+     Terms in our own words (ideas compared against Facebook, Instagram and X, nothing copied).
+     A claim posts to the "Send us something" Google Form as a PROFILE CLAIM v1 row. Nothing
+     shows on a profile until it is verified and added to data/claims.csv. */
+  var CLAIM_TV = "2026-11-23";
+  var CLAIM_GF = { url: "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeHb-2loZL8toGEOHxouDRRV3GdbRiWvjT0T_ZVAZG-g-BKOA/formResponse",
+    kind: "entry.1345249320", who: "entry.1103206860", school: "entry.1901515078", detail: "entry.577315448",
+    proof: "entry.1287554218", name: "entry.25450899", email: "entry.1307921896", role: "entry.155683173" };
+  var CLAIM_TERMS = [
+    ["What this site is", "Utah High School Football is a public website about Utah high school football: scores, stats, rankings, recruiting and news. A player profile can be seen by anyone, including college coaches, media and the public."],
+    ["Who can claim", "A player who is 18 or older can claim his own profile. For a player under 18, a parent or legal guardian must complete and sign this claim. Nobody under 13 can claim a profile. The person signing promises they are the player (18+) or his parent or legal guardian with the authority to agree for him."],
+    ["Your own profile only", "You may claim only the player's own profile. No claiming someone else's profile, no pretending to be someone else, and no false information. A false claim is removed and blocked."],
+    ["You choose what shows", "Only the items you tick “show” are published. His email stays hidden unless you tick it. We never publish a phone number, home address or date of birth."],
+    ["Public means public", "Anything you choose to show can be seen, copied, screenshotted and shared by others. Search engines and other sites may keep copies that we cannot delete. Think about that before you tick “show”."],
+    ["Self-reported is labelled", "GPA, height, weight, testing numbers and anything else you send are shown as self-reported. You agree they are true to the best of your knowledge. We may ask for proof and may decline to show anything."],
+    ["Our stats come from sources", "Game stats, scores, rankings and ratings come from published sources (MaxPreps, Deseret News, UHSAA). A claim does not let you change them. If one is wrong, report it and we check it against the source."],
+    ["Photos", "This claim does not collect photos. Any photo added later must be one the player owns or has the photographer’s written permission to use, and it will be credited."],
+    ["The permission you give us", "You let us show what you send on this site and in our own posts on X and Facebook, tagged to the player. That is all. We do not sell it, license it or hand it to anyone else to republish. The permission ends when you remove the item, and we delete our own posts about it on request."],
+    ["We review everything", "Every claim and every change is checked by a person before it shows. We can correct, decline or remove anything that is inaccurate or breaks these terms."],
+    ["Take it down any time", "You can remove any item, or the whole claim, at any time through Send us something (“Take my profile down”). We take it off the site the same day and clear our copies within 30 days. His published game stats stay on the site, as they do for every player."],
+    ["We never sell your information", "We never sell or rent your information. Claim details are stored in our Google form responses; published items are hosted with the rest of the site. We share them with no one else unless the law requires it."],
+    ["If these terms change", "We will email the parent (or the player, if 18+) before a change takes effect. If you do not agree, we remove the claimed items."],
+    ["Utah", "These terms are governed by Utah law. Questions go through Send us something; a person reads every one."]
+  ];
+  function claimCode() {
+    var a = "ABCDEFGHJKMNPQRSTUVWXYZ23456789", c = "";
+    try { var r = new Uint32Array(6); crypto.getRandomValues(r); for (var i = 0; i < 6; i++) c += a[r[i] % a.length]; }
+    catch (e) { for (var j = 0; j < 6; j++) c += a[Math.floor(Math.random() * a.length)]; }
+    return "UHS-" + c;
+  }
+  function openClaim(p) {
+    var old = document.getElementById("clmodal"); if (old) old.remove();
+    var code = claimCode();
+    var d = document.createElement("div");
+    d.id = "clmodal"; d.setAttribute("role", "dialog"); d.setAttribute("aria-modal", "true"); d.setAttribute("aria-label", "Claim this profile");
+    d.innerHTML = '<div class="clbox"><button class="clx" type="button" aria-label="Close">✕</button>' +
+      "<h2>Claim " + esc(p.name) + "’s profile</h2><div style='color:var(--ink-3)'>" + esc(p.school) +
+      (p.cls ? " &middot; " + esc(yr2(p.cls)) : "") + "</div>" +
+      '<div class="clsum"><b>The short version</b><ul>' +
+      "<li>His profile is public. You choose what extra goes on it.</li>" +
+      "<li>A person checks every claim and every change before it shows.</li>" +
+      "<li>We never sell your information and never publish a phone number or address.</li>" +
+      "<li>Under 18? A parent or guardian fills this in and signs.</li>" +
+      "<li>Anything comes down the same day you ask.</li></ul></div>" +
+      '<form id="clform" novalidate>' +
+      '<div class="clh">1. Who is filling this in</div><div class="clgrid">' +
+      '<label>I am<select name="role" required><option value="">Choose one…</option>' +
+      '<option value="Parent or guardian">His parent or legal guardian</option><option value="Player">The player, and I am 18 or older</option></select></label>' +
+      '<label>Is the player 13 or older?<select name="age13" required><option value="">Choose…</option><option value="yes">Yes</option><option value="no">No</option></select></label>' +
+      '<label>Your full name<input type="text" name="signer" required autocomplete="name"></label>' +
+      '<label>Your email<input type="email" name="semail" required autocomplete="email"></label></div>' +
+      '<div class="clh">2. Terms (tick each one)</div>' +
+      CLAIM_TERMS.map(function (t, i) {
+        return '<label class="clterm"><input type="checkbox" name="t' + i + '" required><span><b>' + (i + 1) + ". " + esc(t[0]) + "</b>" + esc(t[1]) + "</span></label>";
+      }).join("") +
+      '<div class="clh">3. How we verify it is him</div>' +
+      "<p style='margin:0 0 8px'>Your code: <span class='clcode'>" + code + "</span></p>" +
+      '<div class="clgrid"><label>Verify by<select name="verify" required><option value="">Choose one…</option>' +
+      '<option value="code_x">He sends the code to @TheLedgerUT in a DM from his own X account</option>' +
+      '<option value="code_ig">He puts the code in his Instagram bio for 24 hours</option>' +
+      '<option value="coach">His head coach confirms it to us by email</option></select></label>' +
+      '<label>His X or Instagram handle<input type="text" name="handle" placeholder="@handle (not needed for coach)"' +
+      (p.twitter ? ' value="@' + esc(p.twitter) + '"' : "") + "></label></div>" +
+      '<div class="clh">4. What to show on his profile (optional)</div><div class="clgrid">' +
+      '<label>His email<input type="email" name="pemail" placeholder="his own email"></label>' +
+      '<label class="clchk"><input type="checkbox" name="showemail"> Show his email on his profile</label>' +
+      '<label>GPA<input type="text" name="gpa" inputmode="decimal" placeholder="e.g. 3.6"></label>' +
+      '<label class="clchk"><input type="checkbox" name="showgpa"> Show GPA (labelled self-reported)</label>' +
+      '<label class="w">Other sports he plays<input type="text" name="sports" placeholder="Basketball; Track"></label>' +
+      '<label class="w">In his own words (up to 400 characters)<textarea name="bio" rows="3" maxlength="400"></textarea></label></div>' +
+      '<div class="clh">5. Sign</div><div class="clgrid">' +
+      '<label class="w">Type your full name to sign. You agree to all 14 terms above (version ' + CLAIM_TV + ').<input type="text" name="sig" required></label></div>' +
+      '<div class="clerr" id="clerr" hidden></div>' +
+      '<button class="clsend" type="submit">Send my claim</button>' +
+      "<p class='clfine'>Nothing changes on his profile until a person has verified this claim. Never send a password, phone number or home address.</p>" +
+      "</form></div>";
+    function close() { d.remove(); document.removeEventListener("keydown", onKey); }
+    function onKey(e) { if (e.key === "Escape") close(); }
+    d.addEventListener("click", function (e) { if (e.target === d || e.target.closest(".clx")) close(); });
+    document.addEventListener("keydown", onKey);
+    document.body.appendChild(d);
+    var f = d.querySelector("#clform"), err = d.querySelector("#clerr");
+    f.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var v = function (n) { var el = f.elements[n]; return el ? (el.type === "checkbox" ? el.checked : String(el.value || "").trim()) : ""; };
+      var bad = "";
+      if (!v("role")) bad = "Choose who is filling this in.";
+      else if (v("age13") !== "yes") bad = v("age13") === "no" ? "Players under 13 cannot claim a profile." : "Answer whether the player is 13 or older.";
+      else if (!v("signer") || !/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/.test(v("semail"))) bad = "Enter your full name and a working email.";
+      else if (CLAIM_TERMS.some(function (t, i) { return !v("t" + i); })) bad = "Tick every one of the 14 terms.";
+      else if (!v("verify")) bad = "Choose how we verify it is him.";
+      else if (v("verify") !== "coach" && !v("handle")) bad = "Enter his X or Instagram handle.";
+      else if (v("showemail") && !/^[^@\s]+@[^@\s]+\.[A-Za-z]{2,}$/.test(v("pemail"))) bad = "Enter his email, or untick “show his email”.";
+      else if (v("sig").toLowerCase() !== v("signer").toLowerCase()) bad = "Type your full name exactly as above to sign.";
+      if (bad) { err.textContent = bad; err.hidden = false; return; }
+      err.hidden = true;
+      var now = new Date();
+      var detail = ["PROFILE CLAIM v1", "terms " + CLAIM_TV + " (all 14 ticked)",
+        "signed by: " + v("signer") + " (" + v("role") + "), " + now.toISOString(),
+        "player 13+: yes",
+        "verify: " + v("verify") + " " + v("handle") + " code " + code,
+        "his email: " + (v("pemail") || "-") + " | show: " + (v("showemail") ? "yes" : "no"),
+        "GPA: " + (v("gpa") || "-") + " | show: " + (v("showgpa") ? "yes" : "no"),
+        "other sports: " + (v("sports") || "-"),
+        "bio: " + (v("bio") || "-"),
+        "page: " + location.origin + "/?player=" + encodeURIComponent(p.name + "|" + p.school)].join("\n");
+      var sink = document.getElementById("clsink");
+      if (!sink) { sink = document.createElement("iframe"); sink.name = sink.id = "clsink"; sink.style.display = "none"; sink.title = "submit"; document.body.appendChild(sink); }
+      var pf = document.createElement("form");
+      pf.method = "POST"; pf.action = CLAIM_GF.url; pf.target = "clsink"; pf.style.display = "none";
+      [[CLAIM_GF.kind, "Something else"], [CLAIM_GF.role, v("role")], [CLAIM_GF.who, p.name], [CLAIM_GF.school, p.school],
+       [CLAIM_GF.detail, detail], [CLAIM_GF.proof, v("verify") + " " + v("handle") + " " + code],
+       [CLAIM_GF.name, v("signer")], [CLAIM_GF.email, v("semail")]].forEach(function (kv) {
+        var i = document.createElement("input"); i.type = "hidden"; i.name = kv[0]; i.value = kv[1]; pf.appendChild(i);
+      });
+      document.body.appendChild(pf); pf.submit(); pf.remove();
+      var how = v("verify") === "code_x"
+        ? "Have him send <span class='clcode'>" + code + "</span> in a DM to <a href='https://x.com/TheLedgerUT' target='_blank' rel='noopener'>@TheLedgerUT</a> from " + esc(v("handle")) + "."
+        : v("verify") === "code_ig"
+        ? "Have him put <span class='clcode'>" + code + "</span> in his Instagram bio (" + esc(v("handle")) + ") for the next 24 hours."
+        : "We will email his head coach to confirm. Your reference: <span class='clcode'>" + code + "</span>";
+      d.querySelector(".clbox").innerHTML = '<button class="clx" type="button" aria-label="Close">✕</button>' +
+        "<h2>Claim received</h2><p>Thank you. <strong>One more step:</strong> " + how + "</p>" +
+        "<p>We will email " + esc(v("semail")) + " when his profile is verified. Nothing changes on his profile before then.</p>" +
+        "<p class='clfine'>Write the code down; it is not shown again.</p>";
+      if (window.uhsTrack) window.uhsTrack("claim", true);
+    });
+  }
+  function ppClaimBits(host, p) {
+    var h3 = host.querySelector(".pp-hero h3"), dh = host.querySelector(".pp-hero .dhead > div");
+    if (!h3 || !dh) return;
+    var links = dh.querySelector(".dlinks");
+    if (!links) { links = document.createElement("div"); links.className = "dlinks"; dh.appendChild(links); }
+    if (p.claimed) {
+      var b = document.createElement("span");
+      b.className = "vbadge"; b.title = "Verified profile: claimed " + p.claimed.on + ", confirmed by " + p.claimed.by;
+      b.setAttribute("role", "img"); b.setAttribute("aria-label", "Verified profile");
+      b.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
+      var ln = h3.querySelector(".ppx-ln"); (ln || h3).insertAdjacentElement("afterend", b);
+      if (p.email_pub) {
+        var a = document.createElement("a"); a.className = "dlink"; a.href = "mailto:" + p.email_pub;
+        a.textContent = "Email"; a.title = "His own email, shown because he chose to on his verified profile";
+        links.appendChild(a);
+      }
+      var vn = document.createElement("div"); vn.className = "vnote";
+      vn.textContent = "Verified profile · claimed " + mdy(p.claimed.on); dh.appendChild(vn);
+      var main = host.querySelector(".pp-main");
+      if (p.bio_self && main) {
+        var c = document.createElement("div"); c.className = "pp-card pp-bio";
+        c.innerHTML = '<div class="sect">In his own words</div><p>' + esc(p.bio_self) + "</p><small>Written by the player on his verified profile.</small>";
+        main.insertBefore(c, main.firstChild);
+      }
+    } else {
+      var btn = document.createElement("button"); btn.type = "button"; btn.className = "dlink clbtn";
+      btn.textContent = "Claim this profile";
+      btn.addEventListener("click", function () { openClaim(p); });
+      links.appendChild(btn);
+    }
+  }
   function ppSplitName(h3, name) {
     if (!h3) return;
     var t = h3.firstChild;
@@ -6230,6 +6444,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     VIEWS.forEach(function (v) { var el = document.getElementById("v-" + v); if (el) el.hidden = true; });
     host.hidden = false;
     ppSplitName(host.querySelector(".pp-hero h3"), p.name);
+    ppClaimBits(host, p); /* CLAIM-V1-NOV23 */
     document.title = p.name + " — " + p.school + " football | Utah High School Football";
     if (window.uhsTrack) window.uhsTrack("player", true);
     window.scrollTo({ top: 0, behavior: "instant" });
@@ -14265,7 +14480,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
     POTK.forEach(function (p) { POKEYS[p.key] = 1; });
     TK.forEach(function (g) { TKID[[g.away, g.home].sort().join("|")] = g.id; });
     TK = TK.filter(function (g) { return !POKEYS[[g.away, g.home].sort().join("|")]; });
-    if (!wrap || !rail || (!TK.length && !POTK.length)) return;
+    var BWTK = (function () { /* BOWLS-NOV23: from show_from through the day after the game */
+      function iso(d) { return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2); }
+      var now = new Date(), today = iso(now), yday = iso(new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1));
+      return (DATA.bowls || []).filter(function (b) { return b.show_from <= today && b.date >= yday; });
+    })();
+    if (!wrap || !rail || (!TK.length && !POTK.length && !BWTK.length)) return;
     function poCard(p) {
       function tm(k) { var m = /T(\d\d):(\d\d)/.exec(k); if (!m) return ""; var h = +m[1], ap = h >= 12 ? "pm" : "am"; h = h % 12 || 12; return h + (m[2] !== "00" ? ":" + m[2] : "") + ap; }
       var f = p.f, sc = {};
@@ -14305,7 +14525,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
         "</div>";
     }
 
-    rail.innerHTML = POTK.map(poCard).join("") + TK.map(function (g) {
+    rail.innerHTML = BWTK.map(function (b) { /* BOWLS-NOV23 */
+      return '<button class="tcard tkbowl" type="button" data-art="' + esc(b.art) + '" aria-label="' +
+        esc(b.name + ": " + b.n + " Utah players") + '">' +
+        '<div class="tbars"><i style="background:#0B1F3A"></i><i style="background:#d9b45a"></i></div>' +
+        '<div class="tbody"><div class="tmeta"><span class="tstat">' + esc(b.tv) + "</span>" +
+        "<span>" + esc(mdy(b.date)) + "</span></div>" +
+        '<div class="tkbowl-m"><img src="' + esc(b.logo) + '" alt=""><div><b>' + esc(b.name.replace(/^adidas /, "")) + "</b>" +
+        "<span>" + b.n + " Utah player" + (b.n === 1 ? "" : "s") + "</span></div></div>" +
+        '<div class="tfoot">' + esc(b.when) + "</div></div></button>";
+    }).join("") + POTK.map(poCard).join("") + TK.map(function (g) {
       var fin = g.final;
       // A final grades the pick; an upcoming game shows the number we published.
       var foot;
