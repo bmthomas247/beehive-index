@@ -4041,6 +4041,24 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .capc .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .pp-hero.ppx .capc{vertical-align:.32em}
 
+/* ---- PPLOGO-NOV23: honor marks + hero offer logos ---- */
+.ppi-hon{display:flex;align-items:center;gap:10px}
+.ppi-hon .hm{flex:none;width:30px;height:30px;display:grid;place-items:center;background:#fff;border-radius:50%;overflow:hidden}
+.ppi-hon .hm img,.ppi-hon .hm .crest{width:24px;height:24px;object-fit:contain;filter:none}
+.ppi-hon .hm.si{border-radius:4px;width:40px}
+.ppi-hon .hm.si img{width:34px;height:20px}
+.pp-facts>.ppo-wrap{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:flex-start;gap:8px 12px;border-left:1px solid rgba(255,255,255,.18)}
+.pp-facts .ppo{display:flex;flex-direction:column;align-items:center;width:74px;text-align:center;text-transform:none;letter-spacing:0;color:#fff}
+.ppo .cmark,.ppo .cmark img{width:44px;height:44px;border-radius:8px}
+.ppo .cmark{background-color:#fff;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.ppo .cmark img{background:#fff;filter:none!important;padding:3px;box-sizing:border-box}
+.pp-facts .ppo em{display:block;margin-top:5px;font-style:normal;font-size:11px;line-height:1.2;color:rgba(255,255,255,.88);
+  text-transform:none;letter-spacing:0;max-width:74px;overflow-wrap:anywhere}
+.ppo.cm .cmark{box-shadow:0 0 0 3px var(--sodium-bright,#E8A33D),0 2px 8px rgba(0,0,0,.25)}
+.ppo.cm em{color:#fff;font-weight:700}
+.ppo-more{align-self:center;font-family:var(--f-display);font-size:18px;color:rgba(255,255,255,.8)}
+@media(max-width:940px){.pp-facts>.ppo-wrap{flex-basis:100%;border-left:0;padding-left:0!important;margin-top:6px}}
+
 /* ---- profile tidy (Nov 9 2026) ---- */
 .pl.withmark{display:inline-flex;align-items:center;gap:6px;padding:3px 8px 3px 4px}
 .pl.withmark .cmark,.pl.withmark .cmark img{width:20px;height:20px}
@@ -6125,7 +6143,12 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var hon = (p.honors_ext || []).map(function (h) { return [h.t, h.y || ""]; })
       .concat((p.awards || []).map(function (a) { return [a, ""]; })).slice(0, 4);
     var hb = hon.length ? '<div><div class="ppi-bh">Honors</div><div class="ppi-bs">Career</div>' +
-      hon.map(function (h) { return '<div class="ppi-hon">' + esc(h[0]) + (h[1] ? "<small>" + esc(h[1]) + "</small>" : "") + "</div>"; }).join("") + "</div>" : "";
+      hon.map(function (h) {
+        var si = /^Sports Illustrated/.test(h[0]);
+        var mk = si ? '<span class="hm si"><img src="logo-src-si.webp" alt="Sports Illustrated"></span>'
+                    : '<span class="hm">' + logo(p.school, "md") + "</span>";
+        return '<div class="ppi-hon">' + mk + "<div>" + esc(si ? h[0].replace(/^Sports Illustrated\s*/, "") : h[0]) +
+          (h[1] ? "<small>" + esc(h[1]) + "</small>" : "") + "</div></div>"; }).join("") + "</div>" : "";
     if (pg || hb) blocks.push('<div class="ppi-blk full"><div class="ppi-duo' + (pg && hb ? "" : " one") + '">' + hb + pg + "</div></div>");
     if (!blocks.length) return { html: "", game: false };
     var src = (p.stats_src === "box scores"
@@ -6135,6 +6158,16 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (hon.length ? "; honors as listed under Awards and notes" : "") + ".";
     return { html: '<div class="ppi" style="--tc:' + esc((byName[p.school] || {}).c1 || "#0B1F3A") + '"><div class="ppi-grid">' +
       blocks.join("") + '<div class="ppi-src">Sources: ' + esc(src) + "</div></div></div>", game: game };
+  }
+  function ppOffLogos(p) { /* PPLOGO-NOV23 */
+    var L = (p.commit ? [p.commit] : []).concat((p.offers || []).filter(function (o) { return o !== p.commit; }));
+    if (!L.length) return "";
+    var MAX = 14, more = L.length - MAX;
+    return '<div class="ppo-wrap">' + L.slice(0, MAX).map(function (o, i) {
+      var cm = p.commit && i === 0;
+      return '<span class="ppo' + (cm ? " cm" : "") + '" title="' + esc(o) + (cm ? " (committed)" : " (offer)") + '">' +
+        collegeMark(o, true).replace(' loading="lazy"', "") + "<em>" + esc(cm ? "Committed" : o) + "</em></span>";
+    }).join("") + (more > 0 ? '<span class="ppo-more">+' + more + "</span>" : "") + "</div>";
   }
   function ppSplitName(h3, name) {
     if (!h3) return;
@@ -6187,7 +6220,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       (facts.length ? '<div class="pp-facts">' + facts.map(function (f) {
         return "<div" + (f[4] ? ' title="' + f[4] + '"' : "") +
           "><span>" + f[0] + "</span><b" + (f[3] ? ' class="' + f[3] + '"' : "") + ">" + f[1] + "</b>" +
-          (f[2] ? "<em>" + f[2] + "</em>" : "") + "</div>"; }).join("") + "</div>" : "") +
+          (f[2] ? "<em>" + f[2] + "</em>" : "") + "</div>"; }).join("") + ppOffLogos(p) + "</div>" : "") +
       "</div></div>" + IG.html +
       '<div class="pp-grid"><div class="pp-main">' + (soHtml && !IG.game ? '<div class="pp-card pp-so">' + soHtml + "</div>" : "") +
       '<div class="pp-card">' + main.innerHTML + "</div></div>" +
