@@ -4423,7 +4423,21 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .cx-h h3{margin:0;font-family:var(--f-display);text-transform:uppercase;letter-spacing:.05em;font-size:15px}
 .cx-h small{color:var(--ink-3);font-size:12px}
 .cx-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-@media (min-width:1000px){#cxcards .cx-cards{grid-template-columns:repeat(5,minmax(0,1fr))}} /* ROW5-NOV25 */
+@media (min-width:1000px){#cxcards .cx-cards,#cxoffers .cx-cards{grid-template-columns:repeat(5,minmax(0,1fr))}} /* ROW5-NOV25 */
+/* OFTICKER-NOV25: latest offers ticker, fixed to the bottom of the screen */
+.oftk{position:fixed;left:0;right:0;bottom:0;z-index:55;height:36px;display:flex;align-items:stretch;background:#0B1F3A;color:#fff;border-top:2px solid #2E8B57;font-size:13px;box-shadow:0 -4px 14px rgba(0,0,0,.18)}
+.oftk-lab{flex:0 0 auto;display:flex;align-items:center;padding:0 12px;background:#2E8B57;font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+.oftk-vp{flex:1 1 auto;overflow:hidden;position:relative;min-width:0}
+.oftk-tr{display:inline-flex;align-items:center;height:100%;white-space:nowrap;will-change:transform;animation:oftkmv var(--oftk-dur,120s) linear infinite}
+.oftk:hover .oftk-tr,.oftk:focus-within .oftk-tr{animation-play-state:paused}
+.oftk-it{display:inline-flex;align-items:center;gap:6px;padding:0 16px;border-right:1px solid rgba(255,255,255,.14);height:100%}
+.oftk-it b{font-weight:700}.oftk-it small{color:rgba(255,255,255,.65);font-size:11.5px}
+.oftk-it .cmark,.oftk-it .lg{width:22px!important;height:22px!important;min-width:22px;font-size:8px;line-height:22px;flex:0 0 22px}
+.oftk-it .cmark img,.oftk-it .lg img{width:22px;height:22px;object-fit:contain}
+.oftk-ar{color:#7FD1A6}.oftk-x{flex:0 0 auto;background:none;border:0;color:rgba(255,255,255,.7);font-size:18px;padding:0 12px;cursor:pointer}
+@keyframes oftkmv{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.oftk-tr{animation:none}.oftk-vp{overflow-x:auto}}
+body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
 .cx-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;position:relative;overflow:hidden}
 .cx-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sodium-bright,#E8A33D)}
 .cx-card.cx-ofc:before{background:#2E8B57}
@@ -9221,11 +9235,37 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<a href="' + esc(f.u) + '" target="_blank" rel="noopener noreferrer">' + (f.via === "X" ? "Player&rsquo;s post" : f.via === "247" ? "247Sports" : "Source") + "</a></div></div>";
   }
   function cxOffersInner() {
-    var show = CXST.allo ? CXOF : CXOF.slice(0, 8);
+    var show = CXST.allo ? CXOF : CXOF.slice(0, 5); /* ROW5-NOV25 */
     return (CXOF.length ? '<div class="cx-cards">' + show.map(cxOfCard).join("") + "</div>"
         : '<div class="cx-list"><div class="cx-row"><div class="cx-rt"><span>No new offers in the last 30 days.</span></div></div></div>') +
       (show.length < CXOF.length ? '<button type="button" class="cx-more" data-cx="allo">Show all ' + CXOF.length + " offers</button>" : "");
   }
+  /* OFTICKER-NOV25: latest offers ticker across the bottom of every page */
+  (function oftkMount() {
+    try {
+      if (!CXOF.length || document.getElementById("oftk")) return;
+      try { if (sessionStorage.getItem("oftk-off") === "1") return; } catch (e) {}
+      var items = CXOF.map(function (f) {
+        var p = CXPI[(f.player + "|" + f.school).toLowerCase()] || {};
+        var pwo = (p.pwo || []).indexOf(f.college) >= 0;
+        return '<span class="oftk-it">' + logo(f.school, "sm") +
+          "<b" + pAttr(f.player, f.school) + ">" + esc(f.player) + "</b><small>" + esc(f.school) + "</small>" +
+          '<span class="oftk-ar">&rarr;</span>' + collegeMark(f.college) + "<b>" + esc(f.college) + "</b>" +
+          "<small>" + (pwo ? "PWO offer" : "offer") + " &middot; " + esc(cxD(f.d)) + "</small></span>";
+      }).join("");
+      var el = document.createElement("div");
+      el.id = "oftk"; el.className = "oftk"; el.setAttribute("role", "region"); el.setAttribute("aria-label", "Latest offers");
+      el.innerHTML = '<span class="oftk-lab" data-go="recruit" style="cursor:pointer">Latest offers</span>' +
+        '<div class="oftk-vp"><div class="oftk-tr" style="--oftk-dur:' + Math.max(40, CXOF.length * 7) + 's">' +
+        items + '<span aria-hidden="true" style="display:inline-flex;height:100%">' + items + "</span></div></div>" +
+        '<button type="button" class="oftk-x" aria-label="Hide the offers ticker">&times;</button>';
+      el.querySelector(".oftk-x").addEventListener("click", function () {
+        el.remove(); document.body.classList.remove("has-oftk");
+        try { sessionStorage.setItem("oftk-off", "1"); } catch (e) {}
+      });
+      document.body.appendChild(el); document.body.classList.add("has-oftk");
+    } catch (e) { /* the ticker is optional; never break the page */ }
+  })();
   function cxCardsInner() {
     var list = CXC.filter(function (c) { return !CXST.col || c.col === CXST.col; });
     var show = CXST.all || CXST.col ? list : list.slice(0, 5); /* ROW5-NOV25 */
