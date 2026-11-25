@@ -4425,6 +4425,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .cx-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 .cx-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;position:relative;overflow:hidden}
 .cx-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sodium-bright,#E8A33D)}
+.cx-card.cx-ofc:before{background:#2E8B57}
 .cx-card.new:after{content:"NEW";position:absolute;right:10px;top:10px;font-size:10px;font-weight:700;letter-spacing:.08em;color:#fff;background:#C8102E;border-radius:4px;padding:1px 5px}
 .cx-flow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cx-flow .crest{width:34px;height:34px}
@@ -8785,7 +8786,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
      colours. Colours identify a school; they are not its logo. */
   var CLOGO = {
     /* CLOGO-NOV23: hosted logos, sources in data/college_logo_sources.csv */
-    "Bethany (WV)": "bethany-wv", "Capital": "capital", "Carleton": "carleton", "Culver-Stockton": "culver-stockton", "Kansas Wesleyan": "kansas-wesleyan", "La Verne": "la-verne", "Lewis & Clark": "lewis-clark", "Northern Colorado": "northern-colorado", "Pacific (OR)": "pacific-or", "Pacific Lutheran": "pacific-lutheran", "Rose-Hulman": "rose-hulman", "IMG Academy": "img-academy", "East Texas A&M": "east-texas-am", "Sacred Heart": "sacred-heart", "Saint Mary (KS)": "saint-mary-ks", "El Camino College": "el-camino", "Sterling": "sterling", "Adams State": "adams-state", "Black Hills State": "black-hills-state", "Bucknell": "bucknell", "CSU Pueblo": "csu-pueblo", "Chadron State": "chadron-state", "Clemson": "clemson", "Davidson": "davidson", "Eastern Washington": "eastern-washington", "Fort Lewis": "fort-lewis", "Georgetown": "georgetown", "New Mexico Highlands": "new-mexico-highlands", "South Dakota Mines": "south-dakota-mines", "Southern Oregon": "southern-oregon", "Virginia": "virginia", "Wyoming": "wyoming", "Hamline": "hamline", "Lake Forest": "lake-forest", "North Dakota State College of Science": "ndscs", "Victor Valley College": "victor-valley", "Arizona Christian": "arizona-christian", "Eastern Oregon": "eastern-oregon", "New Mexico Military Institute": "nmmi", "San Bernardino Valley College": "san-bernardino-valley",
+    "Liberty": "liberty", "Morgan State": "morgan-state", "Colgate": "colgate", "West Georgia": "west-georgia", "Columbia": "columbia", "Toledo": "toledo", "Georgia Tech": "georgia-tech", "Kent State": "kent-state", "Miami (OH)": "miami-oh", "Ohio": "ohio", "Texas State": "texas-state", "UTEP": "utep", "UT Martin": "ut-martin", "Western Michigan": "western-michigan", "Bismarck State": "bismarck-state", "Bethel (KS)": "bethel-ks", "Ogden Jets": "ogden-jets", "Allan Hancock College": "allan-hancock-college", "Toronto": "toronto", "Madonna": "madonna", "Crown (MN)": "crown-mn", "Simpson (CA)": "simpson-ca", "Chabot College": "chabot-college", "Cal Lutheran": "cal-lutheran", "Willamette": "willamette", "Wooster": "wooster", "Salt Lake Yetis": "salt-lake-yetis", "Bethany (WV)": "bethany-wv", "Capital": "capital", "Carleton": "carleton", "Culver-Stockton": "culver-stockton", "Kansas Wesleyan": "kansas-wesleyan", "La Verne": "la-verne", "Lewis & Clark": "lewis-clark", "Northern Colorado": "northern-colorado", "Pacific (OR)": "pacific-or", "Pacific Lutheran": "pacific-lutheran", "Rose-Hulman": "rose-hulman", "IMG Academy": "img-academy", "East Texas A&M": "east-texas-am", "Sacred Heart": "sacred-heart", "Saint Mary (KS)": "saint-mary-ks", "El Camino College": "el-camino", "Sterling": "sterling", "Adams State": "adams-state", "Black Hills State": "black-hills-state", "Bucknell": "bucknell", "CSU Pueblo": "csu-pueblo", "Chadron State": "chadron-state", "Clemson": "clemson", "Davidson": "davidson", "Eastern Washington": "eastern-washington", "Fort Lewis": "fort-lewis", "Georgetown": "georgetown", "New Mexico Highlands": "new-mexico-highlands", "South Dakota Mines": "south-dakota-mines", "Southern Oregon": "southern-oregon", "Virginia": "virginia", "Wyoming": "wyoming", "Hamline": "hamline", "Lake Forest": "lake-forest", "North Dakota State College of Science": "ndscs", "Victor Valley College": "victor-valley", "Arizona Christian": "arizona-christian", "Eastern Oregon": "eastern-oregon", "New Mexico Military Institute": "nmmi", "San Bernardino Valley College": "san-bernardino-valley",
     /* Nov 9 2026: hosted copies of ESPN team art for the commit colleges (no hot-link) */
     "Michigan": "michigan", "Arizona": "arizona", "Oklahoma": "oklahoma", "Oregon State": "oregon-state",
     "Colorado": "colorado", "Iowa State": "iowa-state", "Nebraska": "nebraska", "Oregon": "oregon",
@@ -9172,8 +9173,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var pct = rated27 ? Math.round(CXCOM.length / rated27 * 100) : 0;
     var cut = CXS.since30 || "";
     var last30 = CXC.filter(function (c) { return c.d && c.d >= cut; }).length;
-    return '<div class="cx-band"><h2>Utah Commitment Tracker</h2>' +
-      '<div class="cx-sub">Class of 2027 &middot; every commitment we can source, newest first</div>' +
+    return '<div class="cx-band"><h2>Player Offer Tracker</h2>' +
+      '<div class="cx-sub">Commitments, offers and visits for Utah high school players &middot; every one sourced, newest first</div>' +
       '<div class="cx-stats">' +
       '<div class="cx-stat"><b>' + n27 + '</b><span>Seniors committed</span><div class="cx-lv">' +
         ["FBS", "FCS", "D2", "D3", "NAIA", "JUCO", "PREP"].filter(function (k) { return lv[k]; }).map(function (k) {
@@ -9197,6 +9198,27 @@ nav.topbar ~ main.wrap{margin-top:20px}
       '<div class="cx-ft"><span>' + esc(cxD(c.d)) + "</span>" +
       (c.u ? '<a href="' + esc(c.u) + '" target="_blank" rel="noopener noreferrer">' + cxVia(c.via) + "</a>" : "<span>" + cxVia(c.via) + "</span>") +
       "</div></div>";
+  }
+  /* OFFERTRACKER-NOV25: latest offers, newest first, each linked to its source */
+  var CXOF = (CXS.feed || []).filter(function (f) { return f.kind === "offer" && f.u; })
+    .sort(function (a, b) { return a.d < b.d ? 1 : a.d > b.d ? -1 : 0; });
+  var CXPI = {}; (DATA.pindex || []).forEach(function (p) { CXPI[(p.name + "|" + p.school).toLowerCase()] = p; });
+  function cxOfCard(f) {
+    var p = CXPI[(f.player + "|" + f.school).toLowerCase()] || {};
+    var pwo = (p.pwo || []).indexOf(f.college) >= 0;
+    return '<div class="cx-card cx-ofc">' +
+      '<div class="cx-flow">' + logo(f.school, "sm") + '<span class="cx-arr">&rarr;</span>' + collegeMark(f.college, true) + "</div>" +
+      '<div class="cx-nm"' + pAttr(f.player, f.school) + ">" + esc(f.player) + "</div>" +
+      '<div class="cx-meta">' + [cxYr(String(f.cls || p.cls || "")), p.pos, f.school].filter(Boolean).map(esc).join(" &middot; ") + "</div>" +
+      '<div class="cx-col">' + esc(f.college) + ' <small style="font-family:inherit;color:var(--ink-3);font-size:11px">' + (pwo ? "PWO offer" : "Offer") + "</small></div>" +
+      '<div class="cx-ft"><span>' + esc(cxD(f.d)) + "</span>" +
+      '<a href="' + esc(f.u) + '" target="_blank" rel="noopener noreferrer">' + (f.via === "X" ? "Player&rsquo;s post" : f.via === "247" ? "247Sports" : "Source") + "</a></div></div>";
+  }
+  function cxOffersInner() {
+    var show = CXST.allo ? CXOF : CXOF.slice(0, 8);
+    return (CXOF.length ? '<div class="cx-cards">' + show.map(cxOfCard).join("") + "</div>"
+        : '<div class="cx-list"><div class="cx-row"><div class="cx-rt"><span>No new offers in the last 30 days.</span></div></div></div>') +
+      (show.length < CXOF.length ? '<button type="button" class="cx-more" data-cx="allo">Show all ' + CXOF.length + " offers</button>" : "");
   }
   function cxCardsInner() {
     var list = CXC.filter(function (c) { return !CXST.col || c.col === CXST.col; });
@@ -9377,10 +9399,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
   function cxHub() {
     return cxBand() +
       '<div class="cx-h"><h3>Latest commitments</h3><small>tap a college below to filter</small></div><div id="cxcards">' + cxCardsInner() + "</div>" +
+      '<div class="cx-h"><h3>Latest offers</h3><small>last 30 days &middot; players&rsquo; own posts and 247Sports</small></div><div id="cxoffers">' + cxOffersInner() + "</div>" +
       '<div class="cx-h"><h3>Where Utah seniors are going</h3><small>' + Object.keys(CXC.reduce(function (a, c) { a[c.col] = 1; return a; }, {})).length + " colleges</small></div><div id=\"cxwall\">" + cxWall() + "</div>" +
-      '<div class="cx-h"><h3>Still deciding</h3><small>rated players with no commitment published</small></div>' +
-      '<div class="cx-two"><div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">On the rise</h3><small>new offers, last 30 days</small></div>' + cxRise() + "</div>" +
-      '<div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">Visit watch</h3><small>visits, game-day invites, coach good-luck posts</small></div>' + cxWatch() + "</div></div>" +
+      '<div class="cx-h"><h3>Players on the rise</h3><small>uncommitted players with the most new offers, last 30 days</small></div>' + cxRise() +
+      '<div class="cx-h"><h3>Visit watch</h3><small>visits, game-day invites, coach good-luck posts</small></div>' + cxWatch() +
       '<div class="cx-h"><h3>Recruiting radar</h3><small>where the interest is strongest</small></div>' + cxLegend() +
       '<div class="cx-two"><div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">Player radar</h3><small>top colleges by signal score</small></div>' + cxPRadar() + "</div>" +
       '<div><div class="cx-h" style="margin-top:4px"><h3 style="font-size:13px">College radar</h3><small>the Utah kids each school is chasing</small></div>' + cxCRadar() + "</div></div>" +
@@ -9393,6 +9415,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var t = e.target.closest("[data-cx]"); if (!t || !t.closest("#v-recruit")) return;
     var k = t.getAttribute("data-cx");
     if (k === "allc") { CXST.all = true; }
+    else if (k === "allo") { CXST.allo = true; var oo = document.getElementById("cxoffers"); if (oo) oo.innerHTML = cxOffersInner(); return; }
     else if (k === "col") { CXST.col = CXST.col === t.getAttribute("data-v") ? "" : t.getAttribute("data-v"); }
     else if (k === "moreb") { CXST.more = true; }
     else if (k === "f") { CXST[t.getAttribute("data-k")] = t.getAttribute("data-v"); CXST.more = false; }
@@ -14086,7 +14109,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
     { id: "rank", label: "Rankings", views: [
         ["rank", "Schools"], ["prank", "Players"], ["crank", "Coaches"]] },
     { id: "people", label: "Players", views: [
-        ["players", "All Players"], ["recruit", "Commitments"]] },
+        ["players", "All Players"], ["recruit", "Offer Tracker"]] },
     // Brandon, Nov 9 2026: one Highlights page with every player's Hudl reels.
     { id: "hl", label: "Highlights", views: [["hl", "Highlights"]] },
     { id: "programs", label: "Schools", views: [
