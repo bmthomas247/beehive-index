@@ -5941,6 +5941,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
     var bits = [];
     if (p.ht) bits.push(["Height", esc(p.ht)]);
     if (p.wt) bits.push(["Weight", esc(p.wt) + " lb"]);
+    if (p.act && p.act.s && /^https:\/\//.test(p.act.u || ""))   /* ACT-NOV25 */
+      bits.push(["ACT", '<a href="' + esc(p.act.u) + '" target="_blank" rel="noopener noreferrer" title="Posted by the player">' + String(+p.act.s) + "</a>"]);
     // testing comes as "40: 4.84s · Bench: 280 lb · ..." -- split it into cells
     var lifts = [];
     (p.testing || "").split("·").forEach(function (part) {
@@ -6987,6 +6989,8 @@ nav.topbar ~ main.wrap{margin-top:20px}
       ["Class", p.cls ? esc(NWYR[p.cls] || yr2(p.cls)) : "", p.cls && NWYR[p.cls] ? "Class of " + esc(p.cls) : ""],
       ["Height", p.ht ? esc(p.ht) : ""], ["Weight", p.wt ? esc(p.wt) + " lb" : ""],
       ["2026 games", p.games ? String(p.games) : ""],
+      /* ACT-NOV25: only a score the player posted himself, linked to that post */
+      p.act && p.act.s && /^https:\/\//.test(p.act.u || "") ? ["ACT", String(+p.act.s), "His post", "", "ACT composite the player posted himself", p.act.u] : ["ACT", ""],
       p.commit ? ["Committed", esc(p.commit)] : ["Offers", ""]]
       .filter(function (f) { return f[1]; });
     var rks = svcRanks(p).filter(function (f) { return f[1]; });
