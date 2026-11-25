@@ -8967,10 +8967,10 @@ nav.topbar ~ main.wrap{margin-top:20px}
     return w.map(function (x) { return x[0]; }).join("").slice(0, 4).toUpperCase();
   }
   function collegeMark(name, big) {
-    var cls = "cmark" + (big ? " big" : "");
+    var cls = "cmark" + (big ? " big" : ""), tt = ' title="' + esc(name) + '"'; /* CMARK-TITLE-NOV25 */
     // Ours first -- a file we host cannot break.
     if (CLOGO[name]) {
-      return '<span class="' + cls + '"><img src="logo-college-' + CLOGO[name] +
+      return '<span' + tt + ' class="' + cls + '"><img src="logo-college-' + CLOGO[name] +
         '.webp" alt="' + esc(name) + '" loading="lazy"></span>';
     }
     var m = CMONO[name] || [initials(name), "#6C7883"];
@@ -8979,7 +8979,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
       // logo that fails to load leaves the programme's colours showing rather
       // than a broken-image icon. onerror removes the img and the fallback is
       // already there.
-      return '<span class="' + cls + '" style="background:' + esc(m[1]) + '">' +
+      return '<span' + tt + ' class="' + cls + '" style="background:' + esc(m[1]) + '">' +
         esc(m[0]) +
         '<img src="https://a.espncdn.com/i/teamlogos/ncaa/500/' + esc(CESPN[name]) +
         '.png" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" ' +
@@ -8989,7 +8989,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
         // empty plate.
         'onload="this.classList.add(\'ok\')" onerror="this.remove()"></span>';
     }
-    return '<span class="' + cls + '" style="background:' + esc(m[1]) + '">' + esc(m[0]) + "</span>";
+    return '<span' + tt + ' class="' + cls + '" style="background:' + esc(m[1]) + '">' + esc(m[0]) + "</span>";
   }
 
   /* A commit row carries the player's own high school crest and opens his
