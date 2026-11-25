@@ -8811,7 +8811,7 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
      colours. Colours identify a school; they are not its logo. */
   var CLOGO = {
     /* CLOGO-NOV23: hosted logos, sources in data/college_logo_sources.csv */
-    "Minot State": "minot-state", "Puget Sound": "puget-sound", "Centenary (LA)": "centenary-la", "College of the Redwoods": "college-of-the-redwoods", "Citrus College": "citrus-college", "Liberty": "liberty", "Morgan State": "morgan-state", "Colgate": "colgate", "West Georgia": "west-georgia", "Columbia": "columbia", "Toledo": "toledo", "Georgia Tech": "georgia-tech", "Kent State": "kent-state", "Miami (OH)": "miami-oh", "Ohio": "ohio", "Texas State": "texas-state", "UTEP": "utep", "UT Martin": "ut-martin", "Western Michigan": "western-michigan", "Bismarck State": "bismarck-state", "Ogden Jets": "ogden-jets", "Allan Hancock College": "allan-hancock-college", "Toronto": "toronto", "Madonna": "madonna", "Crown (MN)": "crown-mn", "Simpson (CA)": "simpson-ca", "Chabot College": "chabot-college", "Cal Lutheran": "cal-lutheran", "Willamette": "willamette", "Wooster": "wooster", "Salt Lake Yetis": "salt-lake-yetis", "Bethany (WV)": "bethany-wv", "Capital": "capital", "Carleton": "carleton", "Culver-Stockton": "culver-stockton", "Kansas Wesleyan": "kansas-wesleyan", "La Verne": "la-verne", "Lewis & Clark": "lewis-clark", "Northern Colorado": "northern-colorado", "Pacific (OR)": "pacific-or", "Pacific Lutheran": "pacific-lutheran", "Rose-Hulman": "rose-hulman", "IMG Academy": "img-academy", "East Texas A&M": "east-texas-am", "Sacred Heart": "sacred-heart", "Saint Mary (KS)": "saint-mary-ks", "El Camino College": "el-camino", "Sterling": "sterling", "Adams State": "adams-state", "Black Hills State": "black-hills-state", "Bucknell": "bucknell", "CSU Pueblo": "csu-pueblo", "Chadron State": "chadron-state", "Clemson": "clemson", "Davidson": "davidson", "Eastern Washington": "eastern-washington", "Fort Lewis": "fort-lewis", "Georgetown": "georgetown", "New Mexico Highlands": "new-mexico-highlands", "South Dakota Mines": "south-dakota-mines", "Southern Oregon": "southern-oregon", "Virginia": "virginia", "Wyoming": "wyoming", "Hamline": "hamline", "Lake Forest": "lake-forest", "North Dakota State College of Science": "ndscs", "Victor Valley College": "victor-valley", "Arizona Christian": "arizona-christian", "Eastern Oregon": "eastern-oregon", "New Mexico Military Institute": "nmmi", "San Bernardino Valley College": "san-bernardino-valley",
+    "Bethel (KS)": "bethel-ks", "Bluefield State": "bluefield-state", "Minot State": "minot-state", "Puget Sound": "puget-sound", "Centenary (LA)": "centenary-la", "College of the Redwoods": "college-of-the-redwoods", "Citrus College": "citrus-college", "Liberty": "liberty", "Morgan State": "morgan-state", "Colgate": "colgate", "West Georgia": "west-georgia", "Columbia": "columbia", "Toledo": "toledo", "Georgia Tech": "georgia-tech", "Kent State": "kent-state", "Miami (OH)": "miami-oh", "Ohio": "ohio", "Texas State": "texas-state", "UTEP": "utep", "UT Martin": "ut-martin", "Western Michigan": "western-michigan", "Bismarck State": "bismarck-state", "Ogden Jets": "ogden-jets", "Allan Hancock College": "allan-hancock-college", "Toronto": "toronto", "Madonna": "madonna", "Crown (MN)": "crown-mn", "Simpson (CA)": "simpson-ca", "Chabot College": "chabot-college", "Cal Lutheran": "cal-lutheran", "Willamette": "willamette", "Wooster": "wooster", "Salt Lake Yetis": "salt-lake-yetis", "Bethany (WV)": "bethany-wv", "Capital": "capital", "Carleton": "carleton", "Culver-Stockton": "culver-stockton", "Kansas Wesleyan": "kansas-wesleyan", "La Verne": "la-verne", "Lewis & Clark": "lewis-clark", "Northern Colorado": "northern-colorado", "Pacific (OR)": "pacific-or", "Pacific Lutheran": "pacific-lutheran", "Rose-Hulman": "rose-hulman", "IMG Academy": "img-academy", "East Texas A&M": "east-texas-am", "Sacred Heart": "sacred-heart", "Saint Mary (KS)": "saint-mary-ks", "El Camino College": "el-camino", "Sterling": "sterling", "Adams State": "adams-state", "Black Hills State": "black-hills-state", "Bucknell": "bucknell", "CSU Pueblo": "csu-pueblo", "Chadron State": "chadron-state", "Clemson": "clemson", "Davidson": "davidson", "Eastern Washington": "eastern-washington", "Fort Lewis": "fort-lewis", "Georgetown": "georgetown", "New Mexico Highlands": "new-mexico-highlands", "South Dakota Mines": "south-dakota-mines", "Southern Oregon": "southern-oregon", "Virginia": "virginia", "Wyoming": "wyoming", "Hamline": "hamline", "Lake Forest": "lake-forest", "North Dakota State College of Science": "ndscs", "Victor Valley College": "victor-valley", "Arizona Christian": "arizona-christian", "Eastern Oregon": "eastern-oregon", "New Mexico Military Institute": "nmmi", "San Bernardino Valley College": "san-bernardino-valley",
     /* Nov 9 2026: hosted copies of ESPN team art for the commit colleges (no hot-link) */
     "Michigan": "michigan", "Arizona": "arizona", "Oklahoma": "oklahoma", "Oregon State": "oregon-state",
     "Colorado": "colorado", "Iowa State": "iowa-state", "Nebraska": "nebraska", "Oregon": "oregon",
@@ -9185,7 +9185,7 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
   var CXM = CXS.momentum || {};
   var CXUT = { "Utah": 1, "BYU": 1, "Utah State": 1, "Utah Tech": 1, "Southern Utah": 1, "Weber State": 1, "Snow College": 1 };
   var CXMON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  var CXST = { col: "", all: false, cls: "", pos: "", sch: "", sort: "q", more: false };
+  var CXST = { col: "", all: false, cls: "", pos: "", sch: "", sort: "ttd", more: false }; /* BASTAT-NOV25 */
   function cxD(d) { if (!d) return ""; var p = d.split("-"); return CXMON[+p[1] - 1] + " " + (+p[2]) + (p[0] !== String(new Date().getFullYear()) ? ", " + p[0] : ""); }
   function cxYr(c) { return c === "2027" ? "Senior" : c === "2028" ? "Junior" : c === "2029" ? "Sophomore" : c === "2030" ? "Freshman" : ""; }
   function cxVia(via) { return via === "247" ? "247Sports" : via === "X" ? "Player&rsquo;s post" : "Reported"; }
@@ -9369,9 +9369,34 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
       var x = pi[(p.name + "|" + p.school).toLowerCase()] || {};
       var m = cxMom(p.name, p.school);
       return { p: p, offers: x.offers || [], on: x.offer_n || (x.offers || []).length, mo: m ? m.o.length : 0,
-        pr: +x.prod || 0, ln: cxLine(x) };
+        pr: +x.prod || 0, ln: cxLine(x), sv: cxStats(x) };
     });
   }
+  /* BASTAT-NOV25: numbers out of the MaxPreps lines on the card */
+  function cxNum(str, re) { var m = String(str || "").match(re); return m ? +m[1] : 0; }
+  function cxStats(x) {
+    var st = x.stats || {}, ps = st.passing || "", ru = st.rushing || "", rc = st.receiving || "", df = st.defense || "";
+    var o = {
+      pyd: cxNum(ps, /(\d+)\s*yds/i), ptd: cxNum(ps, /(\d+)\s*TD/),
+      ryd: cxNum(ru, /(\d+)\s*yds/i), rtd: cxNum(ru, /(\d+)\s*TD/),
+      rec: cxNum(rc, /(\d+)\s*rec/i), cyd: cxNum(rc, /(\d+)\s*yds/i), ctd: cxNum(rc, /(\d+)\s*TD/),
+      tkl: cxNum(df, /(\d+(?:\.\d+)?)\s*tkl/i), tfl: cxNum(df, /(\d+(?:\.\d+)?)\s*TFL/), sck: cxNum(df, /(\d+(?:\.\d+)?)\s*sack/i),
+      int: cxNum(df, /(\d+)\s*INT/)
+    };
+    o.ttd = o.ptd + o.rtd + o.ctd; o.syd = o.ryd + o.cyd;
+    return o;
+  }
+  var CXSL = { pyd: "PASS YDS", ptd: "PASS TD", ryd: "RUSH YDS", rtd: "RUSH TD", rec: "CATCHES", cyd: "REC YDS", ctd: "REC TD",
+    tkl: "TACKLES", tfl: "TFL", sck: "SACKS", int: "INT", ttd: "TOTAL TD", syd: "SCRIM YDS" };
+  var CXSN = { pyd: "Pass yds", ptd: "Pass TD", ryd: "Rush yds", rtd: "Rush TD", rec: "Catches", cyd: "Rec yds", ctd: "Rec TD",
+    tkl: "Tackles", tfl: "TFL", sck: "Sacks", int: "INT", ttd: "Total TD", syd: "Scrimmage yds", o: "Offers", q: "Grade" };
+  function cxSorts(pos) {
+    return pos === "QB" ? ["pyd", "ptd", "ryd", "o"] : pos === "RB" ? ["ryd", "rtd", "cyd", "o"]
+      : (pos === "WR" || pos === "TE") ? ["cyd", "rec", "ctd", "o"] : pos === "OL" ? ["q", "o"]
+      : (pos === "DL" || pos === "LB") ? ["tkl", "tfl", "sck", "o"] : pos === "DB" ? ["tkl", "int", "tfl", "o"]
+      : ["ttd", "syd", "tkl", "sck", "o"];
+  }
+  function cxFmt(v) { return v >= 1000 ? Math.round(v).toLocaleString("en-US") : String(Math.round(v * 10) / 10); }
   /* BAALL-NOV25: the stat line that fits his position, positive numbers only */
   function cxLine(x) {
     var st = x.stats || {}, g = cxPosGroup(x.pos);
@@ -9390,9 +9415,12 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
     var all = cxOpen();
     var rows = all.filter(function (r) {
       return (!CXST.cls || r.p.cls === CXST.cls) && (!CXST.pos || cxPosGroup(r.p.pos) === CXST.pos) && (!CXST.sch || r.p.school === CXST.sch);
-    }).sort(CXST.sort === "o" ? function (a, b) { return b.on - a.on || (b.p.q || 0) - (a.p.q || 0) || b.pr - a.pr; }
-      : CXST.sort === "p" ? function (a, b) { return b.pr - a.pr || b.on - a.on; }
-      : function (a, b) { return (b.p.q == null ? -1 : b.p.q) - (a.p.q == null ? -1 : a.p.q) || b.pr - a.pr || b.on - a.on; });
+    });
+    var ok = cxSorts(CXST.pos); if (ok.indexOf(CXST.sort) < 0) CXST.sort = ok[0];
+    var sk = CXST.sort;
+    rows.sort(sk === "o" ? function (a, b) { return b.on - a.on || (b.p.q || 0) - (a.p.q || 0) || b.pr - a.pr; }
+      : sk === "q" ? function (a, b) { return (b.p.q == null ? -1 : b.p.q) - (a.p.q == null ? -1 : a.p.q) || b.pr - a.pr || b.on - a.on; }
+      : function (a, b) { return (b.sv[sk] || 0) - (a.sv[sk] || 0) || b.on - a.on || b.pr - a.pr; });
     var show = rows.slice(0, 25 * (CXST.more || 1));
     return '<div class="cx-ba">' + (show.length ? show.map(function (r, i) {
       var p = r.p;
@@ -9401,7 +9429,9 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
         (r.mo ? '<span class="cx-hot">+' + r.mo + " new</span>" : "") + "</b><span>" +
         [cxYr(p.cls), p.pos, p.school, p.team_cls].filter(Boolean).map(esc).join(" &middot; ") + "</span>" +
         (r.ln ? '<span class="cx-ln">2026: ' + esc(r.ln) + "</span>" : "") + "</div>" +
-        (p.q == null ? '<div class="cx-q cx-nr"><small>NOT RATED</small></div>' : '<div class="cx-q">' + esc(String(p.q)) + "<small>GRADE</small></div>") +
+        (sk === "o" || sk === "q"
+          ? (p.q == null ? '<div class="cx-q cx-nr"><small>NOT RATED</small></div>' : '<div class="cx-q">' + esc(String(p.q)) + "<small>GRADE</small></div>")
+          : '<div class="cx-q">' + esc(cxFmt(r.sv[sk] || 0)) + "<small>" + CXSL[sk] + "</small></div>") +
         '<div class="cx-of">' + (r.on ? r.on + " offer" + (r.on === 1 ? "" : "s") : "No offers listed") +
         (r.offers.length ? '<div class="cx-logos">' + r.offers.slice(0, 5).map(function (c) { return collegeMark(c); }).join("") + "</div>" : "") +
         "</div></div>";
@@ -9415,32 +9445,37 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
       '<div class="cx-f">' + CXPOS.map(function (x) { return b("pos", x[0], x[1]); }).join("") + "</div>" +
       '<div class="cx-f"><select data-cx="sch"><option value="">Every school</option>' + sch.map(function (s) {
         return '<option' + (CXST.sch === s ? " selected" : "") + ">" + esc(s) + "</option>"; }).join("") + "</select>" +
-      b("sort", "q", "Sort: grade") + b("sort", "o", "Sort: offers") + b("sort", "p", "Sort: production") + "</div>";
+      (function () { var ok = cxSorts(CXST.pos); if (ok.indexOf(CXST.sort) < 0) CXST.sort = ok[0];
+        return ok.map(function (k) { return b("sort", k, "Sort: " + CXSN[k]); }).join(""); })() + "</div>";
   }
   /* PTW-NOV25: Players to watch - cards, most new offers in the last 30 days, uncommitted */
   function cxPtwRows() {
     var done = {}; CXC.forEach(function (c) { done[(c.n + "|" + c.s).toLowerCase()] = 1; });
-    return Object.keys(CXM).filter(function (k) { var p = CXPI[k] || {}; return CXM[k].o.length && !done[k] && !p.commit; })
+    /* BASTAT-NOV25: most offers in total (Brandon: "the most offers total not just last 30 days") */
+    return Object.keys(CXPI).filter(function (k) { var p = CXPI[k]; return (p.offers || []).length && !done[k] && !p.commit && /^20(27|28|29|30)$/.test(String(p.cls || "")); })
       .sort(function (a, b) {
-        var pa = CXPI[a] || {}, pb = CXPI[b] || {};
-        return CXM[b].o.length - CXM[a].o.length || ((pb.offers || []).length - (pa.offers || []).length) || (CXM[b].o[0][1] > CXM[a].o[0][1] ? 1 : -1);
+        var pa = CXPI[a], pb = CXPI[b], ma = CXM[a] ? CXM[a].o.length : 0, mb = CXM[b] ? CXM[b].o.length : 0;
+        return (pb.offers || []).length - (pa.offers || []).length || mb - ma || (pb.grade || 0) - (pa.grade || 0);
       });
   }
   function cxPtwInner() {
     var rows = cxPtwRows(), show = CXST.allr ? rows : rows.slice(0, 15);
     if (!rows.length) return '<div class="cx-list"><div class="cx-row"><div class="cx-rt"><span>No new offers in the last 30 days.</span></div></div></div>';
     return '<div class="cx-cards">' + show.map(function (k) {
-      var m = CXM[k], p = CXPI[k] || {}, nm = m.nm || p.name || k.split("|")[0], sc = m.sc || p.school || k.split("|")[1];
+      var m = CXM[k] || { o: [] }, p = CXPI[k] || {}, nm = p.name || m.nm || k.split("|")[0], sc = p.school || m.sc || k.split("|")[1];
       var tot = (p.offers || []).length, n = m.o.length;
+      var shown = m.o.map(function (o) { return o[0]; }); (p.offers || []).forEach(function (c) { if (shown.indexOf(c) < 0) shown.push(c); });
+      var ox = (p.offers_x || []).slice().sort(function (a, b) { return a.date < b.date ? 1 : -1; })[0];
+      var last = n ? [m.o[0][1], m.o[0][3], m.o[0][2] === "X" ? "Player&rsquo;s post" : "247Sports"] : ox ? [ox.date, ox.url, "Player&rsquo;s post"] : null;
       return '<div class="cx-card cx-ptw">' +
         '<div class="cx-flow">' + logo(sc, "sm") + '<span class="cx-arr">&rarr;</span>' +
-          m.o.slice(0, 4).map(function (o) { return collegeMark(o[0]); }).join("") + (n > 4 ? '<small class="cx-plusn">+' + (n - 4) + "</small>" : "") + "</div>" +
+          shown.slice(0, 4).map(function (c) { return collegeMark(c); }).join("") + (tot > 4 ? '<small class="cx-plusn">+' + (tot - 4) + "</small>" : "") + "</div>" +
         '<div class="cx-nm"' + pAttr(nm, sc) + ">" + esc(nm) + "</div>" +
         '<div class="cx-meta">' + [cxYr(String(p.cls || "")), p.pos, sc].filter(Boolean).map(esc).join(" &middot; ") + "</div>" +
-        '<div class="cx-col">+' + n + " new offer" + (n === 1 ? "" : "s") +
-          (tot > n ? ' <small style="font-family:inherit;color:var(--ink-3);font-size:11px">' + tot + " total</small>" : "") + "</div>" +
-        '<div class="cx-ft"><span>latest ' + esc(cxD(m.o[0][1])) + "</span>" +
-          (m.o[0][3] ? '<a href="' + esc(m.o[0][3]) + '" target="_blank" rel="noopener noreferrer">' + (m.o[0][2] === "X" ? "Player&rsquo;s post" : "247Sports") + "</a>" : "") + "</div></div>";
+        '<div class="cx-col">' + tot + " offer" + (tot === 1 ? "" : "s") +
+          (n ? ' <small style="font-family:inherit;color:#1D7A4E;font-size:11px;font-weight:700">+' + n + " new</small>" : "") + "</div>" +
+        '<div class="cx-ft"><span>' + (last ? "latest " + esc(cxD(last[0])) : "") + "</span>" +
+          (last && last[1] ? '<a href="' + esc(last[1]) + '" target="_blank" rel="noopener noreferrer">' + last[2] + "</a>" : "") + "</div></div>";
     }).join("") + "</div>" +
       (show.length < rows.length ? '<button type="button" class="cx-more" data-cx="allr">Show all ' + rows.length + "</button>" : "");
   }
@@ -9519,13 +9554,13 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
     return cxBand() +
       '<div class="cx-h"><h3>Latest commitments</h3><small>tap a college below to filter</small></div><div id="cxcards">' + cxCardsInner() + "</div>" +
       '<div class="cx-h"><h3>Latest offers</h3><small>last 30 days &middot; players&rsquo; own posts and 247Sports</small></div><div id="cxoffers">' + cxOffersInner() + "</div>" +
-      '<div class="cx-h"><h3>Players to watch</h3><small>uncommitted, most new offers in the last 30 days</small></div><div id="cxptw">' + cxPtwInner() + "</div>" +
+      '<div class="cx-h"><h3>Players to watch</h3><small>uncommitted players with the most offers</small></div><div id="cxptw">' + cxPtwInner() + "</div>" +
       '<div class="cx-h"><h3>Where Utah seniors are going</h3><small>' + Object.keys(CXC.reduce(function (a, c) { a[c.col] = 1; return a; }, {})).length + " colleges</small></div><div id=\"cxwall\">" + cxWall() + "</div>" +
       '<div class="cx-h"><h3>Visit watch</h3><small>visits, game-day invites, coach good-luck posts</small></div>' + cxWatch() +
       /* PTW-NOV25: Recruiting radar shelved (Brandon: "we can shelf this section for now") */
-      '<div class="cx-h"><h3>Best available</h3><small>every uncommitted player with 2026 stats &middot; rated players first</small></div>' +
+      '<div class="cx-h"><h3>Best available</h3><small>every uncommitted player with 2026 stats &middot; sort by his position&rsquo;s numbers</small></div>' +
       '<div id="cxbf">' + cxFilters() + '</div><div id="cxba">' + cxBoardInner() + "</div>" +
-      '<p class="cx-note">Grade = our blend of whichever of 247Sports, ESPN, Rivals and Prep Redzone rate the player, the same number on every player card. Players no service rates yet are listed by their 2026 production, so every kid with stats is on this board. Offers are from each player&rsquo;s recruiting profile and their own posts.</p>';
+      '<p class="cx-note">Grade = our blend of whichever of 247Sports, ESPN, Rivals and Prep Redzone rate the player, the same number on every player card. Every uncommitted kid with 2026 stats is on this board; sort by his position&rsquo;s numbers (MaxPreps box scores) or by offers. Offers are from each player&rsquo;s recruiting profile and their own posts.</p>';
   }
   document.addEventListener("click", function (e) {
     var t = e.target.closest("[data-cx]"); if (!t || !t.closest("#v-recruit")) return;
