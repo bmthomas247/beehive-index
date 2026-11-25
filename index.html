@@ -4423,6 +4423,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .cx-h h3{margin:0;font-family:var(--f-display);text-transform:uppercase;letter-spacing:.05em;font-size:15px}
 .cx-h small{color:var(--ink-3);font-size:12px}
 .cx-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+@media (min-width:1000px){#cxcards .cx-cards{grid-template-columns:repeat(5,minmax(0,1fr))}} /* ROW5-NOV25 */
 .cx-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;position:relative;overflow:hidden}
 .cx-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sodium-bright,#E8A33D)}
 .cx-card.cx-ofc:before{background:#2E8B57}
@@ -9227,7 +9228,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
   }
   function cxCardsInner() {
     var list = CXC.filter(function (c) { return !CXST.col || c.col === CXST.col; });
-    var show = CXST.all || CXST.col ? list : list.slice(0, 8);
+    var show = CXST.all || CXST.col ? list : list.slice(0, 5); /* ROW5-NOV25 */
     return '<div class="cx-cards">' + show.map(cxCard).join("") + "</div>" +
       (show.length < list.length ? '<button type="button" class="cx-more" data-cx="allc">Show all ' + list.length + " commitments</button>" : "");
   }
