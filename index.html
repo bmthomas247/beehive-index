@@ -4423,7 +4423,7 @@ nav.topbar ~ main.wrap{margin-top:20px}
 .cx-h h3{margin:0;font-family:var(--f-display);text-transform:uppercase;letter-spacing:.05em;font-size:15px}
 .cx-h small{color:var(--ink-3);font-size:12px}
 .cx-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
-@media (min-width:1000px){#cxcards .cx-cards,#cxoffers .cx-cards{grid-template-columns:repeat(5,minmax(0,1fr))}} /* ROW5-NOV25 */
+@media (min-width:1000px){#cxcards .cx-cards,#cxoffers .cx-cards,#cxwatch .cx-cards{grid-template-columns:repeat(5,minmax(0,1fr))}} /* ROW5-NOV25 */
 /* OFTICKER-NOV25: latest offers ticker, fixed to the bottom of the screen */
 .oftk{position:fixed;left:0;right:0;bottom:0;z-index:55;height:36px;display:flex;align-items:stretch;background:#0B1F3A;color:#fff;border-top:2px solid #2E8B57;font-size:13px;box-shadow:0 -4px 14px rgba(0,0,0,.18)}
 .oftk-lab{flex:0 0 auto;display:flex;align-items:center;padding:0 12px;background:#2E8B57;font-family:var(--f-display);font-weight:800;font-size:11px;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
@@ -4442,6 +4442,7 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
 .cx-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;position:relative;overflow:hidden}
 .cx-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sodium-bright,#E8A33D)}
 .cx-card.cx-ofc:before{background:#2E8B57}
+.cx-card.cx-vwc:before{background:#2F6FB5} /* VWCARDS-NOV25 */
 .cx-card.new:after{content:"NEW";position:absolute;right:10px;top:10px;font-size:10px;font-weight:700;letter-spacing:.08em;color:#fff;background:#C8102E;border-radius:4px;padding:1px 5px}
 .cx-flow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cx-flow .crest{width:34px;height:34px}
@@ -9428,18 +9429,33 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
     }).join("") : '<div class="cx-row"><div class="cx-rt"><span>No new offers in the last 30 days.</span></div></div>') + "</div>" +
       '<p class="cx-note">New offers seen since ' + esc(cxD(CXS.since30 || "")) + ": players&rsquo; posts on X, and colleges that appeared on a player&rsquo;s 247Sports College List after we first pulled it (247 as of " + esc(cxD(CXS.s247_asof || "")) + ").</p>";
   }
-  function cxWatch() {
+  /* VWCARDS-NOV25: visit watch as cards, like Latest offers */
+  function cxWatchEv() {
     var done = {}; CXC.forEach(function (c) { done[(c.n + "|" + c.s).toLowerCase()] = 1; });
-    var pi = {}; (DATA.pindex || []).forEach(function (p) { pi[(p.name + "|" + p.school).toLowerCase()] = p; });
     var ev = [];
     Object.keys(CXM).forEach(function (k) { if (done[k]) return; CXM[k].v.forEach(function (v) { ev.push([k, v]); }); });
-    ev.sort(function (a, b) { return a[1][2] < b[1][2] ? 1 : -1; });
-    return '<div class="cx-list">' + (ev.length ? ev.slice(0, 8).map(function (x) {
-      var p = pi[x[0]] || {}, m0 = CXM[x[0]] || {}, nm = m0.nm || p.name || x[0].split("|")[0], sc = m0.sc || p.school || x[0].split("|")[1], v = x[1];
-      return '<div class="cx-row">' + collegeMark(v[0], true) +
-        '<div class="cx-rt"><b' + pAttr(nm, sc) + ">" + esc(nm) + "</b><span>" + esc(v[1]) + " &middot; " + esc(v[0]) + " &middot; " + esc(cxD(v[2])) + "</span></div>" +
-        logo(sc, "sm") + (v[3] ? ' <a href="' + esc(v[3]) + '" target="_blank" rel="noopener noreferrer" style="font-size:12px">Post</a>' : "") + "</div>";
-    }).join("") : '<div class="cx-row"><div class="cx-rt"><span>No visits posted in the last 30 days.</span></div></div>') + "</div>" +
+    ev.sort(function (a, b) { return a[1][2] < b[1][2] ? 1 : a[1][2] > b[1][2] ? -1 : 0; });
+    return ev;
+  }
+  function cxWatchInner() {
+    var ev = cxWatchEv(), show = CXST.allv ? ev : ev.slice(0, 5);
+    if (!ev.length) return '<div class="cx-list"><div class="cx-row"><div class="cx-rt"><span>No visits posted in the last 30 days.</span></div></div></div>';
+    return '<div class="cx-cards">' + show.map(function (x) {
+      var p = CXPI[x[0]] || {}, m0 = CXM[x[0]] || {}, nm = m0.nm || p.name || x[0].split("|")[0], sc = m0.sc || p.school || x[0].split("|")[1], v = x[1];
+      var coach = /good-luck/i.test(v[1] || "");
+      return '<div class="cx-card cx-vwc">' +
+        '<div class="cx-flow">' + logo(sc, "sm") + '<span class="cx-arr">&rarr;</span>' + collegeMark(v[0], true) + "</div>" +
+        '<div class="cx-nm"' + pAttr(nm, sc) + ">" + esc(nm) + "</div>" +
+        '<div class="cx-meta">' + [cxYr(String(p.cls || "")), p.pos, sc].filter(Boolean).map(esc).join(" &middot; ") + "</div>" +
+        '<div class="cx-col">' + esc(v[0]) + ' <small style="font-family:inherit;color:var(--ink-3);font-size:11px">' + esc(v[1]) + "</small></div>" +
+        '<div class="cx-ft"><span>' + esc(cxD(v[2])) + "</span>" +
+        (v[3] ? '<a href="' + esc(v[3]) + '" target="_blank" rel="noopener noreferrer">' + (coach ? "Coach&rsquo;s post" : "Player&rsquo;s post") + "</a>" : "") +
+        "</div></div>";
+    }).join("") + "</div>" +
+      (show.length < ev.length ? '<button type="button" class="cx-more" data-cx="allv">Show all ' + ev.length + "</button>" : "");
+  }
+  function cxWatch() {
+    return '<div id="cxwatch">' + cxWatchInner() + "</div>" +
       '<p class="cx-note">Last 30 days, each linked to the post: visits and invites the players posted, and good-luck posts from college coaches who tagged them. A game-day invite is serious interest; neither is an offer.</p>';
   }
 
@@ -9489,6 +9505,7 @@ body.has-oftk{padding-bottom:38px}body.has-oftk .totop{bottom:52px}
     var t = e.target.closest("[data-cx]"); if (!t || !t.closest("#v-recruit")) return;
     var k = t.getAttribute("data-cx");
     if (k === "allc") { CXST.all = true; }
+    else if (k === "allv") { CXST.allv = true; var vw = document.getElementById("cxwatch"); if (vw) vw.innerHTML = cxWatchInner(); return; }
     else if (k === "allo") { CXST.allo = true; var oo = document.getElementById("cxoffers"); if (oo) oo.innerHTML = cxOffersInner(); return; }
     else if (k === "col") { CXST.col = CXST.col === t.getAttribute("data-v") ? "" : t.getAttribute("data-v"); }
     else if (k === "moreb") { CXST.more = (CXST.more || 1) + 1; }
