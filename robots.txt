@@ -1,5 +1,2 @@
 User-agent: *
-Allow: /
-
-# Every page here is free to read and free to cite.
-Sitemap: https://utahhighschoolfootball.com/sitemap.xml
+Disallow: /
